@@ -73,6 +73,27 @@
   flex-shrink: 0;
 }
 
+.admin-mobile__header-actions .admin-booking-notifications--mobile {
+  max-width: min(11rem, 38vw);
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+}
+
+.admin-mobile__header-actions .admin-booking-notifications--mobile .admin-dashboard__link,
+.admin-mobile__header-actions .admin-booking-notifications--mobile .admin-dashboard__logout {
+  font-size: 0.65rem;
+  padding: 0.3rem 0.45rem;
+  min-height: unset;
+  line-height: 1.2;
+  justify-content: center;
+}
+
+.admin-mobile__header-actions .admin-booking-notifications__err {
+  max-width: 100%;
+  font-size: 0.65rem;
+}
+
 .admin-mobile__header-link {
   padding: 0.45rem 0.75rem;
   border-radius: 999px;

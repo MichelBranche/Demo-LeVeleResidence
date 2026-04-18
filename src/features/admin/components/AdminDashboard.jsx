@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { AdminBookingNotifications } from './AdminBookingNotifications';
+import { AdminBookingsPanel } from './AdminBookingsPanel';
 import { BookingSettingsPanel } from './BookingSettingsPanel';
 import { TodayOverview } from './TodayOverview';
 import { UnitsPlanningBoard } from './UnitsPlanningBoard';
@@ -12,6 +14,7 @@ export function AdminDashboard({ openAccess, onLogout }) {
           <span className="admin-dashboard__product-sub">Admin</span>
         </div>
         <div className="admin-dashboard__topbar-actions">
+          <AdminBookingNotifications className="admin-booking-notifications--bar" />
           <Link to="/" className="admin-dashboard__link">
             Torna al sito
           </Link>
@@ -32,12 +35,14 @@ export function AdminDashboard({ openAccess, onLogout }) {
         <header className="admin-dashboard__header">
           <h1 className="admin-dashboard__title">Planning unità</h1>
           <p className="admin-dashboard__lead">
-            Calendario delle 18 monolocali: clic su una cella per aggiornare lo stato. I dati restano nel browser fino al
-            backend.
+            Calendario delle 18 monolocali: clic su una cella per aggiornare lo stato. Con Vercel KV il planning e le
+            richieste sono sincronizzati in cloud; in locale senza API resta il salvataggio nel browser.
           </p>
         </header>
 
         <TodayOverview />
+
+        <AdminBookingsPanel />
 
         <section className="admin-dashboard__planning" aria-labelledby="admin-planning-title">
           <h2 id="admin-planning-title" className="visually-hidden">
@@ -54,13 +59,12 @@ export function AdminDashboard({ openAccess, onLogout }) {
           </h2>
           <ul className="admin-dashboard__list">
             <li>
-              La barra «Verifica disponibilità» sul sito (senza <code>VITE_API_BASE_URL</code>) usa già le stesse celle del
-              planning salvate qui: tipologia libera se almeno un monolocale della categoria ha tutte le notti in stato
-              Libero.
+              La barra «Verifica disponibilità» sul sito prova <code>POST /api/v1/availability/search</code> (planning in
+              KV); se non disponibile (es. sviluppo locale senza API) usa il mock con planning nel browser.
             </li>
             <li>
-              In produzione: <code>POST /v1/availability/search</code> sul backend che legge il planning definitivo e
-              sostituisce il mock.
+              Con <code>VITE_API_BASE_URL</code> puoi puntare a un backend esterno:{' '}
+              <code>POST {'{base}'}/v1/availability/search</code>.
             </li>
             <li>Autenticazione lato server (JWT / session) al posto della sola password in variabile d’ambiente.</li>
           </ul>

@@ -6,6 +6,7 @@ import {
   findActiveCoupon,
 } from '../lib/checkoutPricing';
 import { loadBookingSettings } from '../storage/bookingSettingsStorage';
+import { createBookingRequest } from '../api/bookingRequestClient';
 import './checkout.css';
 
 /**
@@ -35,6 +36,9 @@ export function CheckoutPage() {
   const [couponError, setCouponError] = useState('');
   const [payment, setPayment] = useState('card');
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [bookingId, setBookingId] = useState('');
 
   const checkIn = payload?.checkIn ? parseIso(payload.checkIn) : null;
   const checkOut = payload?.checkOut ? parseIso(payload.checkOut) : null;
@@ -77,10 +81,31 @@ export function CheckoutPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!firstName.trim() || !lastName.trim() || !email.trim() || !phone.trim()) return;
-    setSubmitted(true);
+    setSubmitError('');
+    setSubmitLoading(true);
+    try {
+      const unitIds = selectedUnits.map((u) => u.unitId);
+      const res = await createBookingRequest({
+        checkIn: payload.checkIn,
+        checkOut: payload.checkOut,
+        unitIds,
+        guests,
+        customer: { firstName, lastName, email, phone },
+        notes,
+        payment,
+        coupon: appliedCouponCode || '',
+        totalEuro: total,
+      });
+      setBookingId(res.bookingId || '');
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err?.message || 'Errore durante l’invio della richiesta.');
+    } finally {
+      setSubmitLoading(false);
+    }
   };
 
   if (!valid) {
@@ -97,10 +122,15 @@ export function CheckoutPage() {
             </Link>
           </header>
           <div className="checkout-success">
-            <h1 className="checkout-title">Richiesta registrata (demo)</h1>
+            <h1 className="checkout-title">Richiesta inviata</h1>
             <p className="checkout-lead">
-              In produzione qui confermeremmo il pagamento e invieremmo una email di riepilogo. Totale indicativo:{' '}
-              <strong>{total.toFixed(2)} €</strong>.
+              Abbiamo registrato la tua richiesta{bookingId ? (
+                <>
+                  {' '}
+                  con codice <strong>{bookingId}</strong>
+                </>
+              ) : null}
+              . Totale indicativo: <strong>{total.toFixed(2)} €</strong>.
             </p>
             <button type="button" className="checkout-btn" onClick={() => navigate('/')}>
               Chiudi
@@ -220,8 +250,13 @@ export function CheckoutPage() {
               </fieldset>
 
               <button type="submit" className="checkout-btn checkout-btn--primary">
-                Invia richiesta
+                {submitLoading ? 'Invio…' : 'Invia richiesta'}
               </button>
+              {submitError ? (
+                <p className="checkout-coupon-bad" role="alert" style={{ marginTop: 10 }}>
+                  {submitError}
+                </p>
+              ) : null}
             </form>
           </section>
 

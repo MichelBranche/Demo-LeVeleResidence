@@ -1,5 +1,6 @@
 import { getMockAvailabilityResponse } from './mockAvailability';
 import { toISODateString } from './serializeDates';
+import { apiUrl } from '../../../shared/api/apiBase';
 
 /**
  * @typedef {import('./types').GuestBreakdown} GuestBreakdown
@@ -26,39 +27,53 @@ export function toSearchPayload(params) {
 
 /**
  * Ricerca disponibilità.
- * - Se `VITE_API_BASE_URL` non è impostato → mock locale (sviluppo).
- * - Altrimenti → `POST {base}/v1/availability/search`
+ * - Se `VITE_API_BASE_URL` è impostato → `POST {base}/v1/availability/search` (API esterna).
+ * - Altrimenti prova `POST /api/v1/availability/search` (Vercel + KV); se non disponibile → mock locale.
  *
  * @param {{ checkIn: Date; checkOut: Date; guests: GuestBreakdown }} params
  * @returns {Promise<AvailabilitySearchResponse>}
  */
 export async function searchAvailability(params) {
   const base = import.meta.env.VITE_API_BASE_URL?.replace(/\/$/, '') ?? '';
-
-  if (!base) {
-    return Promise.resolve(getMockAvailabilityResponse(params));
-  }
-
   const payload = toSearchPayload(params);
-  const res = await fetch(`${base}/v1/availability/search`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
 
-  if (!res.ok) {
-    let msg = `Richiesta non riuscita (${res.status})`;
-    try {
-      const body = await res.json();
-      if (body?.message) msg = body.message;
-    } catch {
-      /* ignore */
+  if (base) {
+    const res = await fetch(`${base}/v1/availability/search`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      let msg = `Richiesta non riuscita (${res.status})`;
+      try {
+        const body = await res.json();
+        if (body?.message) msg = body.message;
+      } catch {
+        /* ignore */
+      }
+      throw new Error(msg);
     }
-    throw new Error(msg);
+
+    return res.json();
   }
 
-  return res.json();
+  try {
+    const res = await fetch(apiUrl('/api/v1/availability/search'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) return res.json();
+  } catch {
+    /* rete / dev senza route API */
+  }
+
+  return getMockAvailabilityResponse(params);
 }

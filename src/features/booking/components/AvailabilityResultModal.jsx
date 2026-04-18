@@ -153,6 +153,10 @@ export function AvailabilityResultModal({
               ? 'Le disponibilità seguono il planning admin (stesso salvataggio nel browser). Con API backend saranno sincronizzate centralmente con il gestionale.'
               : 'Modalità demo: risposta simulata. Con backend vedrai dati reali dal planning.'}
           </p>
+        ) : data.source === 'api' && data.syncedFromPlanning ? (
+          <p className="availability-modal__demo">
+            Le disponibilità seguono il planning salvato in cloud (Vercel KV), condiviso tra tutti i dispositivi.
+          </p>
         ) : null}
       </div>
     ) : (

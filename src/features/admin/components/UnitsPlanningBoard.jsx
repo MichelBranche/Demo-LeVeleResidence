@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { RESIDENCE_UNITS, UNIT_CATEGORY_LABEL } from '../data/residenceUnits';
+import { fetchPlanningCells, savePlanningCellsRemote } from '../api/adminApiClient';
 import {
   STATUS_CYCLE,
   STATUS_LABEL,
@@ -57,6 +58,7 @@ export function UnitsPlanningBoard({ layout = 'desktop', embedCommitVisible = tr
   });
   const [savedCells, setSavedCells] = useState(() => loadPlanningCells());
   const [cells, setCells] = useState(() => loadPlanningCells());
+  const [remoteInfo, setRemoteInfo] = useState({ enabled: false, error: '' });
 
   const isDirty = useMemo(() => !cellsEqual(cells, savedCells), [cells, savedCells]);
 
@@ -75,6 +77,40 @@ export function UnitsPlanningBoard({ layout = 'desktop', embedCommitVisible = tr
     setSavedCells({ ...cells });
     notifyPlanningCellsChanged();
   }, [cells]);
+
+  // Caricamento planning remoto (se disponibile). Fallback: localStorage demo.
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const remoteCells = await fetchPlanningCells();
+        if (!alive) return;
+        if (remoteCells && typeof remoteCells === 'object') {
+          savePlanningCells(remoteCells);
+          setSavedCells(remoteCells);
+          setCells(remoteCells);
+          setRemoteInfo({ enabled: true, error: '' });
+        }
+      } catch (e) {
+        if (!alive) return;
+        setRemoteInfo({ enabled: false, error: e?.message || '' });
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const commitChangesRemote = useCallback(async () => {
+    commitChanges();
+    if (!remoteInfo.enabled) return;
+    try {
+      await savePlanningCellsRemote(cells);
+      setRemoteInfo({ enabled: true, error: '' });
+    } catch (e) {
+      setRemoteInfo((prev) => ({ ...prev, error: e?.message || 'Errore salvataggio backend.' }));
+    }
+  }, [cells, commitChanges, remoteInfo.enabled]);
 
   const discardChanges = useCallback(() => {
     setCells({ ...savedCells });
@@ -140,15 +176,21 @@ export function UnitsPlanningBoard({ layout = 'desktop', embedCommitVisible = tr
     <>
       <p className="planning-board__commit-msg" role="status">
         Hai modifiche non confermate: la disponibilità sul sito si aggiorna solo dopo la conferma.
+        {remoteInfo.enabled ? ' (sincronizzato su backend)' : ''}
       </p>
       <div className="planning-board__commit-actions">
         <button type="button" className="planning-board__btn planning-board__btn--ghost" onClick={discardChanges}>
           Annulla
         </button>
-        <button type="button" className="planning-board__btn planning-board__btn--primary" onClick={commitChanges}>
+        <button type="button" className="planning-board__btn planning-board__btn--primary" onClick={commitChangesRemote}>
           Conferma modifiche
         </button>
       </div>
+      {remoteInfo.error ? (
+        <p className="planning-board__hint" role="status">
+          Backend: {remoteInfo.error}
+        </p>
+      ) : null}
     </>
   );
 
@@ -208,7 +250,7 @@ export function UnitsPlanningBoard({ layout = 'desktop', embedCommitVisible = tr
               <button
                 type="button"
                 className="planning-board__toolbar-save"
-                onClick={commitChanges}
+                onClick={commitChangesRemote}
                 aria-label="Salva modifiche planning e aggiorna disponibilità"
               >
                 Salva

@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { BookingSettingsPanel } from '../components/BookingSettingsPanel';
+import { AdminBookingsPanel } from '../components/AdminBookingsPanel';
+import { AdminBookingNotifications } from '../components/AdminBookingNotifications';
 import { TodayOverview } from '../components/TodayOverview';
 import { UnitsPlanningBoard } from '../components/UnitsPlanningBoard';
 import './admin-mobile.css';
@@ -8,6 +10,7 @@ import './admin-mobile.css';
 const TABS = /** @type {const} */ ([
   { id: 'planning', label: 'Planning' },
   { id: 'today', label: 'Oggi' },
+  { id: 'bookings', label: 'Richieste' },
   { id: 'pricing', label: 'Tariffe' },
   { id: 'more', label: 'Altro' },
 ]);
@@ -35,6 +38,7 @@ export function AdminMobileApp({ openAccess, onLogout }) {
           <span className="admin-mobile__badge">Gestionale</span>
         </div>
         <div className="admin-mobile__header-actions">
+          <AdminBookingNotifications className="admin-booking-notifications--mobile" />
           <Link to="/" className="admin-mobile__header-link">
             Sito
           </Link>
@@ -75,6 +79,17 @@ export function AdminMobileApp({ openAccess, onLogout }) {
         </div>
 
         <div
+          className={`admin-mobile__panel${tab !== 'bookings' ? ' admin-mobile__panel--hidden' : ''}`}
+          role="tabpanel"
+          id="admin-mobile-panel-bookings"
+          aria-hidden={tab !== 'bookings'}
+        >
+          <h1 className="admin-mobile__h1">Richieste</h1>
+          <p className="admin-mobile__lead">Prenotazioni inviate dal sito e stato «vista».</p>
+          <AdminBookingsPanel />
+        </div>
+
+        <div
           className={`admin-mobile__panel${tab !== 'pricing' ? ' admin-mobile__panel--hidden' : ''}`}
           role="tabpanel"
           id="admin-mobile-panel-pricing"
@@ -97,9 +112,9 @@ export function AdminMobileApp({ openAccess, onLogout }) {
               Prossimi passi
             </h2>
             <ul className="admin-dashboard__list">
-              <li>La ricerca sul sito usa le celle confermate del planning (stesso browser).</li>
+              <li>La ricerca sul sito usa il planning in cloud (KV) se l’API è disponibile; altrimenti mock locale.</li>
               <li>
-                Backend: <code>POST /v1/availability/search</code> e auth server-side.
+                Disponibilità: <code>POST /api/v1/availability/search</code>.
               </li>
             </ul>
           </section>
