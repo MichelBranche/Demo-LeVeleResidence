@@ -1,0 +1,776 @@
+/**
+ * Area admin — tema chiaro ispirato a Material / Google Workspace:
+ * superfici bianche, testo ad alto contrasto, pochi accenti, struttura lineare.
+ */
+
+.admin-page {
+  --admin-font: 'Roboto', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --admin-bg: #f8f9fa;
+  --admin-surface: #ffffff;
+  --admin-border: #dadce0;
+  --admin-border-strong: #bdc1c6;
+  --admin-text: #202124;
+  --admin-text-secondary: #5f6368;
+  --admin-text-muted: #80868b;
+  --admin-primary: #1a73e8;
+  --admin-primary-hover: #1765cc;
+  --admin-primary-soft: #e8f0fe;
+  --admin-danger-soft: #fce8e6;
+  --admin-danger-border: #f9ab9e;
+  --admin-radius-sm: 8px;
+  --admin-radius: 12px;
+  --admin-radius-pill: 999px;
+  --admin-shadow-1: 0 1px 2px rgb(60 64 67 / 28%), 0 1px 3px 1px rgb(60 64 67 / 12%);
+  --admin-shadow-2: 0 1px 3px rgb(60 64 67 / 28%), 0 4px 8px 3px rgb(60 64 67 / 12%);
+
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(clamp(1.25rem, 4vw, 2rem), env(safe-area-inset-top))
+    max(clamp(1.25rem, 4vw, 2rem), env(safe-area-inset-right))
+    max(clamp(1.25rem, 4vw, 2rem), env(safe-area-inset-bottom))
+    max(clamp(1.25rem, 4vw, 2rem), env(safe-area-inset-left));
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: var(--admin-font);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.admin-page__inner {
+  width: 100%;
+  max-width: 28rem;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.admin-page--dashboard {
+  align-items: flex-start;
+  justify-content: center;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  overflow-x: clip;
+}
+
+.admin-page--dashboard .admin-page__inner {
+  width: min(100%, 120rem);
+  max-width: 120rem;
+  margin-inline: auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Gestionale mobile dedicato: niente max-width, full-bleed */
+.admin-page--mobile-gestionale {
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  /* Altezza fissa al viewport: altrimenti la colonna flex si allunga col contenuto,
+     .admin-mobile__main non ha overflow e lo scroll verticale si perde (iOS / body). */
+  min-height: 100dvh;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow-x: clip;
+  overflow-y: visible;
+  overscroll-behavior-x: none;
+}
+
+.admin-page--mobile-gestionale .admin-page__inner {
+  max-width: none;
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.admin-page__brand {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.admin-page__brand-name {
+  display: block;
+  font-size: 1.375rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--admin-text);
+}
+
+.admin-page__brand-tag {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--admin-text-secondary);
+}
+
+.admin-page__h1 {
+  margin: 0 0 1.25rem;
+  font-size: clamp(1.375rem, 4vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--admin-text);
+}
+
+.admin-page__warn {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--admin-radius-sm);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  background: var(--admin-danger-soft);
+  border: 1px solid var(--admin-danger-border);
+  color: #c5221f;
+}
+
+.admin-page__warn code {
+  font-size: 0.75rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 80%);
+  color: #202124;
+}
+
+/* Login */
+.admin-login {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem 1.5rem 1.75rem;
+  border-radius: var(--admin-radius);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-shadow-2);
+}
+
+.admin-login__label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--admin-text-secondary);
+}
+
+.admin-login__input {
+  width: 100%;
+  padding: 0.6875rem 0.875rem;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-login__input::placeholder {
+  color: var(--admin-text-muted);
+}
+
+.admin-login__input:hover {
+  border-color: var(--admin-border-strong);
+}
+
+.admin-login__input:focus {
+  outline: none;
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 1px var(--admin-primary);
+}
+
+.admin-login__input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  background: #f1f3f4;
+}
+
+.admin-login__error {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #c5221f;
+}
+
+.admin-login__submit {
+  margin-top: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border: 0;
+  border-radius: var(--admin-radius-pill);
+  background: var(--admin-primary);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: var(--admin-shadow-1);
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.admin-login__submit:hover:not(:disabled) {
+  background: var(--admin-primary-hover);
+  box-shadow: 0 1px 2px rgb(60 64 67 / 32%), 0 2px 6px 2px rgb(60 64 67 / 14%);
+}
+
+.admin-login__submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Dashboard shell */
+.admin-dashboard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.admin-dashboard__topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.75rem clamp(1rem, 3vw, 1.5rem);
+  background: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  box-shadow: 0 1px 2px rgb(60 64 67 / 8%);
+}
+
+.admin-dashboard__topbar-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.admin-dashboard__product {
+  font-size: 1.1875rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--admin-text);
+}
+
+.admin-dashboard__product-sub {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--admin-text-secondary);
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--admin-radius-pill);
+  background: #f1f3f4;
+}
+
+.admin-dashboard__topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.admin-dashboard__main {
+  flex: 1;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  max-width: 120rem;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.admin-dashboard__open-banner {
+  margin: 0 0 1.25rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--admin-radius-sm);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  background: var(--admin-primary-soft);
+  border: 1px solid rgb(26 115 232 / 28%);
+  color: #174ea6;
+  text-align: left;
+}
+
+.admin-dashboard__open-banner code {
+  font-size: 0.875rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: rgb(255 255 255 / 85%);
+  color: #174ea6;
+}
+
+.admin-dashboard__header {
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+.admin-dashboard__title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.5rem, 2.8vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--admin-text);
+}
+
+.admin-dashboard__lead {
+  margin: 0;
+  max-width: 52rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--admin-text-secondary);
+}
+
+.admin-dashboard__planning {
+  margin-bottom: 1.5rem;
+}
+
+/* Riepilogo giornaliero (meteo + movimenti) */
+.admin-today {
+  margin-bottom: 1.75rem;
+}
+
+.admin-today__head {
+  margin-bottom: 1rem;
+}
+
+.admin-today__title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.25rem, 2.2vw, 1.375rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--admin-text);
+}
+
+.admin-today__subtitle {
+  margin: 0;
+  max-width: 48rem;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--admin-text-secondary);
+}
+
+.admin-today__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (max-width: 900px) {
+  .admin-today__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-today__card {
+  padding: 1rem 1.125rem;
+  border-radius: var(--admin-radius);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-shadow-1);
+}
+
+.admin-today__card--weather {
+  background: linear-gradient(165deg, #e8f0fe 0%, #ffffff 55%);
+  border-color: rgb(26 115 232 / 22%);
+}
+
+.admin-today__card-title {
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--admin-text-secondary);
+}
+
+.admin-today__weather-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.admin-today__temp {
+  font-size: clamp(2rem, 5vw, 2.5rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--admin-text);
+}
+
+.admin-today__cond {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--admin-text);
+}
+
+.admin-today__weather-meta {
+  margin: 0 0 0.75rem;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.admin-today__meta-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.875rem;
+}
+
+.admin-today__meta-row dt {
+  margin: 0;
+  color: var(--admin-text-secondary);
+  font-weight: 400;
+}
+
+.admin-today__meta-row dd {
+  margin: 0;
+  font-weight: 500;
+  color: var(--admin-text);
+}
+
+.admin-today__weather-time {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+.admin-today__muted {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--admin-text-secondary);
+}
+
+.admin-today__error {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #c5221f;
+}
+
+.admin-today__empty {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--admin-text-secondary);
+}
+
+.admin-today__list {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--admin-text);
+}
+
+.admin-today__list li {
+  margin-bottom: 0.35rem;
+}
+
+.admin-today__list li:last-child {
+  margin-bottom: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.admin-dashboard__card {
+  margin-bottom: 1rem;
+  padding: 1rem 1.125rem;
+  border-radius: var(--admin-radius);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-shadow-1);
+  text-align: left;
+}
+
+.admin-dashboard__card--muted {
+  background: #f8f9fa;
+  box-shadow: none;
+  border-style: dashed;
+}
+
+.admin-dashboard__h2 {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--admin-text-secondary);
+}
+
+.admin-dashboard__list {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--admin-text);
+}
+
+.admin-dashboard__list li {
+  margin-bottom: 0.35rem;
+}
+
+.admin-dashboard__list li:last-child {
+  margin-bottom: 0;
+}
+
+.admin-dashboard__note {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--admin-text-secondary);
+}
+
+.admin-dashboard__link {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--admin-radius-pill);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--admin-primary);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.admin-dashboard__link:hover {
+  background: var(--admin-primary-soft);
+  text-decoration: none;
+}
+
+.admin-dashboard__logout {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-pill);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.admin-dashboard__logout:hover {
+  background: #f1f3f4;
+  border-color: var(--admin-border-strong);
+}
+
+/* Tariffe / buoni checkout */
+.admin-booking-settings__lead {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--admin-text-secondary);
+}
+
+.admin-booking-settings__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.admin-booking-settings__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--admin-text-secondary);
+}
+
+.admin-booking-settings__field input,
+.admin-booking-settings__field select {
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  background: #fff;
+  font: inherit;
+  font-size: 0.9375rem;
+  color: var(--admin-text);
+}
+
+.admin-booking-settings__h3 {
+  margin: 0 0 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--admin-text);
+}
+
+.admin-booking-settings__coupons {
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-booking-settings__empty {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--admin-text-secondary);
+}
+
+.admin-booking-settings__coupon-row {
+  display: grid;
+  grid-template-columns: 1fr 7rem 5.5rem 1fr auto auto;
+  gap: 0.5rem 0.65rem;
+  align-items: end;
+  padding: 0.75rem;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  background: #f8f9fa;
+}
+
+@media (max-width: 900px) {
+  .admin-booking-settings__coupon-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.admin-booking-settings__coupon-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--admin-text-secondary);
+}
+
+.admin-booking-settings__coupon-row input,
+.admin-booking-settings__coupon-row select {
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--admin-border);
+  font: inherit;
+  font-size: 0.875rem;
+}
+
+.admin-booking-settings__check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.35rem !important;
+  text-transform: none !important;
+  font-size: 0.8125rem !important;
+}
+
+.admin-booking-settings__remove {
+  padding: 0.45rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--admin-danger-border, #f9ab9e);
+  background: #fff;
+  color: #c5221f;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-booking-settings__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.admin-booking-settings__add {
+  padding: 0.5rem 1rem;
+  border-radius: var(--admin-radius-pill);
+  border: 1px dashed var(--admin-border);
+  background: transparent;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--admin-primary);
+  cursor: pointer;
+}
+
+.admin-booking-settings__save {
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--admin-radius-pill);
+  border: 0;
+  background: var(--admin-primary);
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-booking-settings__save:hover {
+  background: var(--admin-primary-hover);
+}
+
+.admin-booking-settings__ok {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+  color: #137333;
+}
+
+/* —— Responsive —— */
+
+@media (max-width: 640px) {
+  .admin-dashboard__topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .admin-dashboard__topbar-actions {
+    justify-content: flex-end;
+  }
+
+  .admin-dashboard__product {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .admin-dashboard__main {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+
+  .admin-dashboard__open-banner {
+    word-break: break-word;
+  }
+
+  .admin-dashboard__link,
+  .admin-dashboard__logout {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+
+  .admin-dashboard__link {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-login {
+    padding: 1.25rem 1.1rem 1.5rem;
+  }
+
+  .admin-page__h1 {
+    font-size: 1.25rem;
+  }
+}

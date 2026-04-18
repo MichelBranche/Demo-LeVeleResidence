@@ -1,0 +1,409 @@
+/* Pagina dedicata a La Pelosa — hero riusa .hero della landing */
+
+.pelosa-page {
+  overflow-x: hidden;
+}
+
+.pelosa-hero .pelosa-hero-kicker {
+  letter-spacing: 0.32em;
+}
+
+.pelosa-hero-title {
+  margin: 1rem 0 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 9vw, 8rem);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 0.95;
+}
+
+.pelosa-hero-tagline {
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pelosa-hero-lede {
+  max-width: 38rem;
+}
+
+.pelosa-section {
+  padding: clamp(3.5rem, 7vh, 5rem) 0;
+}
+
+.pelosa-section-inner {
+  max-width: 42rem;
+}
+
+.pelosa-intro-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.pelosa-intro-rule {
+  width: 2px;
+  height: 1.65rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--terra), var(--mirto));
+  flex-shrink: 0;
+}
+
+.pelosa-section-title {
+  margin: 0 0 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.85rem, 4vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1.15;
+  color: var(--carbone);
+}
+
+.pelosa-lead {
+  margin: 0 0 1rem;
+  font-size: clamp(1rem, 1.8vw, 1.12rem);
+  line-height: 1.75;
+  color: rgb(58 49 43 / 88%);
+}
+
+.pelosa-body {
+  margin: 0;
+  font-size: clamp(0.92rem, 1.5vw, 0.98rem);
+  line-height: 1.7;
+  color: rgb(58 49 43 / 72%);
+}
+
+.pelosa-gallery-block {
+  padding-top: 0;
+  border-top: 1px solid rgb(58 49 43 / 8%);
+}
+
+.pelosa-gallery-title {
+  margin: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  font-weight: 500;
+  font-style: italic;
+  text-align: center;
+  color: var(--carbone);
+}
+
+.pelosa-gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.pelosa-gallery-item--wide {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  .pelosa-gallery-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+  }
+}
+
+.pelosa-gallery-item {
+  margin: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgb(58 49 43 / 10%);
+}
+
+.pelosa-gallery-item img {
+  display: block;
+  width: 100%;
+  height: min(42vh, 380px);
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pelosa-gallery-item--wide img {
+  height: min(48vh, 440px);
+}
+
+.pelosa-gallery-trigger {
+  position: relative;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  cursor: zoom-in;
+  display: block;
+  width: 100%;
+  isolation: isolate;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.pelosa-gallery-trigger::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgb(26 21 18 / 40%) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.pelosa-gallery-trigger:hover img,
+.pelosa-gallery-trigger:focus-visible img {
+  transform: scale(1.03);
+}
+
+.pelosa-gallery-trigger:hover::after,
+.pelosa-gallery-trigger:focus-visible::after {
+  opacity: 1;
+}
+
+.pelosa-gallery-trigger:focus-visible {
+  outline: 2px solid var(--crema);
+  outline-offset: 4px;
+}
+
+.pelosa-gallery-zoom {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: rgb(250 248 245 / 92%);
+  color: #1a1512;
+  box-shadow: 0 8px 22px rgb(0 0 0 / 22%);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+
+.pelosa-gallery-trigger:hover .pelosa-gallery-zoom,
+.pelosa-gallery-trigger:focus-visible .pelosa-gallery-zoom {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Lightbox */
+.pelosa-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10300;
+  display: flex;
+  flex-direction: column;
+}
+
+.pelosa-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(12 10 9 / 92%);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+}
+
+.pelosa-lightbox-stage {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(clamp(3.5rem, 8vh, 6rem) + env(safe-area-inset-top))
+    calc(clamp(1rem, 4vw, 3rem) + env(safe-area-inset-right))
+    calc(clamp(1rem, 3vh, 2rem) + env(safe-area-inset-bottom))
+    calc(clamp(1rem, 4vw, 3rem) + env(safe-area-inset-left));
+  cursor: zoom-out;
+}
+
+.pelosa-lightbox-img {
+  display: block;
+  max-width: min(96vw, 1600px);
+  max-height: min(82vh, 82dvh);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 55%);
+  cursor: default;
+  will-change: transform;
+  touch-action: manipulation;
+}
+
+.pelosa-lightbox-close {
+  position: absolute;
+  top: calc(clamp(0.75rem, 2vh, 1.5rem) + env(safe-area-inset-top));
+  right: calc(clamp(0.75rem, 2vw, 1.5rem) + env(safe-area-inset-right));
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid rgb(250 248 245 / 35%);
+  background: rgb(26 21 18 / 55%);
+  color: var(--crema);
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  z-index: 2;
+}
+
+.pelosa-lightbox-close:hover {
+  background: rgb(26 21 18 / 85%);
+  border-color: var(--crema);
+  transform: scale(1.05);
+}
+
+.pelosa-lightbox-caption {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin: 0 auto clamp(1rem, 3vh, 1.75rem);
+  padding: 0 1.25rem;
+  max-width: 44rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgb(250 248 245 / 82%);
+  letter-spacing: 0.02em;
+}
+
+.pelosa-cta-block {
+  position: relative;
+  padding: clamp(4.5rem, 9vh, 6.5rem) 0;
+  color: var(--crema);
+  /* Sfondo proprio indipendente dal data-bg della pagina, così il testo crema
+     è sempre leggibile anche prima della transizione di colore. */
+  background:
+    radial-gradient(ellipse at 50% 0%, rgb(122 98 79 / 28%), transparent 62%),
+    linear-gradient(180deg, #3A312B 0%, #2A231E 100%);
+  isolation: isolate;
+}
+
+.pelosa-cta-block::before,
+.pelosa-cta-block::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(72%, 520px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgb(250 248 245 / 22%), transparent);
+}
+
+.pelosa-cta-block::before {
+  top: 0;
+}
+
+.pelosa-cta-block::after {
+  bottom: 0;
+}
+
+.pelosa-cta-inner {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pelosa-cta-rule {
+  width: 2px;
+  height: 2.25rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgb(250 248 245 / 70%), rgb(250 248 245 / 0%));
+  margin-bottom: 1rem;
+}
+
+.pelosa-cta-eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgb(250 248 245 / 72%);
+}
+
+.pelosa-cta-title {
+  margin: 0 0 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4.6vw, 3rem);
+  font-weight: 500;
+  font-style: italic;
+  line-height: 1.15;
+  color: var(--crema);
+  text-wrap: balance;
+}
+
+.pelosa-cta-text {
+  margin: 0 0 2rem;
+  font-size: clamp(0.98rem, 1.6vw, 1.08rem);
+  line-height: 1.7;
+  color: rgb(250 248 245 / 92%);
+  max-width: 34rem;
+  text-wrap: pretty;
+}
+
+.pelosa-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .pelosa-cta-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pelosa-cta-btn {
+    width: 100%;
+  }
+}
+
+.pelosa-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.75rem;
+  border-radius: 999px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.pelosa-cta-btn--primary {
+  background: var(--crema);
+  color: var(--carbone);
+  border: 1px solid var(--crema);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 28%);
+}
+
+.pelosa-cta-btn--primary:hover {
+  background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgb(0 0 0 / 34%);
+}
+
+.pelosa-cta-btn--ghost {
+  background: rgb(250 248 245 / 6%);
+  color: var(--crema);
+  border: 1px solid rgb(250 248 245 / 55%);
+}
+
+.pelosa-cta-btn--ghost:hover {
+  border-color: var(--crema);
+  background: rgb(250 248 245 / 14%);
+  transform: translateY(-2px);
+}

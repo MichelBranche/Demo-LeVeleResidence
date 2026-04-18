@@ -1,0 +1,400 @@
+.availability-modal__scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 10240;
+  background: rgb(26 21 18 / 48%);
+  animation: availability-fade-in 0.2s ease;
+}
+
+.availability-modal {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10250;
+  width: min(26rem, calc(100vw - 2rem));
+  max-height: min(85vh, 32rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: 1.25rem;
+  background: #fff;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 22%);
+  border: 1px solid rgb(0 0 0 / 7%);
+  animation: availability-pop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.availability-modal--wide {
+  width: min(46rem, calc(100vw - 1.5rem));
+  max-height: min(88vh, 44rem);
+}
+
+@keyframes availability-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes availability-pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.availability-modal__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgb(58 49 43 / 10%);
+  flex-shrink: 0;
+}
+
+.availability-modal__title {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--carbone);
+}
+
+.availability-modal__close {
+  border: 0;
+  background: rgb(0 0 0 / 6%);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--carbone);
+}
+
+.availability-modal__body {
+  padding: 1rem 1.1rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.availability-modal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem 1rem;
+  border-top: 1px solid rgb(58 49 43 / 8%);
+  flex-shrink: 0;
+}
+
+.availability-modal__foot-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.availability-modal__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: rgb(58 49 43 / 78%);
+}
+
+.availability-modal__spinner {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 2px solid rgb(58 49 43 / 12%);
+  border-top-color: var(--booking-rose);
+  animation: availability-spin 0.7s linear infinite;
+}
+
+@keyframes availability-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.availability-modal__hint {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgb(58 49 43 / 82%);
+}
+
+.availability-modal__hint--warn {
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  background: rgb(224 122 95 / 12%);
+  border: 1px solid rgb(224 122 95 / 25%);
+  color: var(--carbone);
+}
+
+.availability-modal__error {
+  text-align: center;
+}
+
+.availability-modal__error p {
+  margin: 0 0 0.85rem;
+  font-size: 0.9rem;
+  color: rgb(58 49 43 / 88%);
+}
+
+.availability-modal__result {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.availability-modal__meta {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: rgb(58 49 43 / 82%);
+}
+
+.availability-modal__badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(58 49 43 / 8%);
+  color: rgb(58 49 43 / 72%);
+}
+
+.availability-modal__badge--ok {
+  background: rgb(129 178 154 / 22%);
+  color: rgb(58 49 43 / 88%);
+}
+
+.availability-modal__message {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: rgb(58 49 43 / 72%);
+}
+
+.availability-modal__units {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.availability-modal__unit {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 12px;
+  border: 1px solid rgb(58 49 43 / 10%);
+  background: rgb(250 248 245 / 80%);
+}
+
+.availability-modal__unit.is-available {
+  border-color: rgb(129 178 154 / 28%);
+}
+
+.availability-modal__unit-name {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--carbone);
+}
+
+.availability-modal__unit-kicker {
+  margin: 0.2rem 0 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgb(58 49 43 / 48%);
+}
+
+.availability-modal__unit-reason {
+  margin: 0.4rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgb(58 49 43 / 62%);
+}
+
+.availability-modal__unit-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.availability-modal__pill {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  background: rgb(58 49 43 / 10%);
+  color: rgb(58 49 43 / 72%);
+}
+
+.availability-modal__pill--ok {
+  background: rgb(129 178 154 / 25%);
+  color: var(--carbone);
+}
+
+.availability-modal__link {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--booking-rose);
+  text-decoration: none;
+}
+
+.availability-modal__link:hover {
+  text-decoration: underline;
+}
+
+.availability-modal__link.muted {
+  font-weight: 600;
+  color: rgb(58 49 43 / 55%);
+}
+
+.availability-modal__demo {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: rgb(58 49 43 / 48%);
+}
+
+.availability-modal__btn {
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--carbone);
+  color: var(--crema);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.availability-modal__btn.secondary {
+  background: rgb(58 49 43 / 10%);
+  color: var(--carbone);
+}
+
+.availability-modal__btn:hover {
+  filter: brightness(1.06);
+}
+
+.availability-modal__btn--primary {
+  background: var(--terra, #e07a5f);
+  color: #fff;
+}
+
+.availability-modal__btn--primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: none;
+}
+
+.availability-modal__pick-hint {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: rgb(58 49 43 / 78%);
+}
+
+.availability-modal__pick-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.65rem;
+}
+
+.availability-modal__pick-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.55rem;
+  border-radius: 12px;
+  border: 2px solid rgb(58 49 43 / 12%);
+  background: rgb(250 248 245 / 90%);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.availability-modal__pick-card:hover {
+  border-color: rgb(129 178 154 / 35%);
+}
+
+.availability-modal__pick-card.is-selected {
+  border-color: rgb(129 178 154 / 65%);
+  box-shadow: 0 0 0 1px rgb(129 178 154 / 35%);
+}
+
+.availability-modal__pick-check {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.availability-modal__pick-img-wrap {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: rgb(58 49 43 / 8%);
+}
+
+.availability-modal__pick-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.availability-modal__pick-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.availability-modal__pick-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--carbone);
+}
+
+.availability-modal__pick-kicker {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(58 49 43 / 48%);
+}

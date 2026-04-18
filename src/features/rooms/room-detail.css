@@ -1,0 +1,531 @@
+.room-page {
+  min-height: 100vh;
+  background: var(--crema, #faf8f5);
+  color: var(--carbone, #3a312b);
+  font-family: 'DM Sans', sans-serif;
+}
+
+.room-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem clamp(1.25rem, 4vw, 2.5rem);
+  background: rgb(250 248 245 / 88%);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgb(58 49 43 / 10%);
+}
+
+.room-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: inherit;
+  text-decoration: none;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.room-back:hover {
+  color: var(--terra, #e07a5f);
+  transform: translateX(-2px);
+}
+
+.room-logo {
+  height: 36px;
+  filter: invert(23%) sepia(9%) saturate(724%) hue-rotate(346deg) brightness(92%) contrast(86%);
+}
+
+.room-cta-small {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  border-radius: 999px;
+  background: var(--carbone, #3a312b);
+  color: var(--crema, #faf8f5);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.room-cta-small:hover {
+  background: var(--terra, #e07a5f);
+  transform: translateY(-2px);
+}
+
+.room-hero {
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-height: min(92vh, 760px);
+  padding: clamp(3rem, 8vh, 5rem) clamp(1.5rem, 5vw, 3rem);
+  overflow: hidden;
+}
+
+.room-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.room-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.room-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(26 21 18 / 15%) 0%, rgb(26 21 18 / 72%) 100%);
+}
+
+.room-hero-content {
+  position: relative;
+  z-index: 1;
+  color: var(--crema, #faf8f5);
+  max-width: min(55rem, 100%);
+}
+
+.room-eyebrow {
+  margin: 0 0 0.6rem;
+  color: #ffd4b9;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.room-title {
+  margin: 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: 0.002em;
+  text-shadow: 0 2px 18px rgb(0 0 0 / 45%);
+}
+
+.room-intro {
+  margin: 1rem 0 0;
+  max-width: 42rem;
+  font-size: clamp(0.95rem, 1.8vw, 1.05rem);
+  line-height: 1.7;
+  color: rgb(250 248 245 / 88%);
+}
+
+.room-meta {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 clamp(1.5rem, 4vw, 2.75rem);
+}
+
+.room-meta li {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgb(250 248 245 / 22%);
+  min-width: 9rem;
+}
+
+.room-meta span {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(250 248 245 / 65%);
+  margin-bottom: 0.25rem;
+}
+
+.room-meta strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.room-carousel-section {
+  margin: clamp(2.5rem, 6vh, 4rem) 0 0;
+  padding: 0;
+}
+
+.room-carousel {
+  position: relative;
+  width: 100%;
+  padding: 0;
+}
+
+.room-carousel-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .room-carousel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .room-carousel-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.room-carousel-slide {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgb(0 0 0 / 12%);
+  background: #e8e3d8;
+}
+
+.room-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.room-carousel-slide:hover img {
+  transform: scale(1.03);
+}
+
+
+.room-config {
+  margin: 2rem 0 1.5rem;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  background: var(--sabbia, #efeae1);
+  border: 1px solid rgb(58 49 43 / 10%);
+}
+
+.room-config-label {
+  margin: 0 0 0.85rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--terra, #e07a5f);
+  font-weight: 700;
+}
+
+.room-config-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.room-config-option {
+  flex: 1;
+  min-width: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid rgb(58 49 43 / 18%);
+  background: var(--crema, #faf8f5);
+  color: var(--carbone, #3a312b);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.room-config-option:hover {
+  border-color: rgb(58 49 43 / 40%);
+  transform: translateY(-2px);
+}
+
+.room-config-option.is-active {
+  border-color: var(--terra, #e07a5f);
+  background: #fff7f2;
+  box-shadow: 0 6px 18px rgb(224 122 95 / 18%);
+}
+
+.room-config-count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--terra, #e07a5f);
+}
+
+.room-config-caption {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgb(58 49 43 / 82%);
+}
+
+.room-config-details {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(58 49 43 / 12%);
+}
+
+.room-config-details p {
+  margin: 0 0 0.4rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgb(58 49 43 / 82%);
+}
+
+.room-config-details strong {
+  color: var(--carbone, #3a312b);
+  font-weight: 600;
+}
+
+.room-config-note {
+  font-size: 0.85rem;
+  color: rgb(58 49 43 / 65%);
+  font-style: italic;
+}
+
+.room-features-config {
+  margin: -0.4rem 0 1rem;
+  font-size: 0.78rem;
+  color: rgb(58 49 43 / 68%);
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.room-body {
+  max-width: min(72rem, 100%);
+  margin: clamp(3rem, 7vh, 5rem) auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+.room-description h2 {
+  margin: 0 0 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 500;
+}
+
+.room-description p {
+  margin: 0 0 0.9rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: rgb(58 49 43 / 82%);
+}
+
+.room-hint {
+  font-size: 0.82rem;
+  color: rgb(58 49 43 / 58%);
+  font-style: italic;
+}
+
+.room-features {
+  background: var(--sabbia, #efeae1);
+  border-radius: 1rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid rgb(58 49 43 / 10%);
+  height: fit-content;
+}
+
+.room-features h3 {
+  margin: 0 0 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.room-features ul {
+  list-style: none;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.room-features li {
+  font-size: 0.82rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgb(58 49 43 / 12%);
+  color: rgb(58 49 43 / 82%);
+}
+
+.room-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border-radius: 999px;
+  background: var(--carbone, #3a312b);
+  color: var(--crema, #faf8f5);
+  text-decoration: none;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.room-cta:hover {
+  background: var(--terra, #e07a5f);
+  transform: translateY(-2px);
+}
+
+.room-other {
+  max-width: min(72rem, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem) clamp(3rem, 6vh, 4rem);
+}
+
+.room-other h2 {
+  margin: 0 0 1.25rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.room-other-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.room-other-card {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  color: var(--crema, #faf8f5);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 1rem;
+  isolation: isolate;
+}
+
+.room-other-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.room-other-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgb(26 21 18 / 70%) 100%);
+  z-index: 1;
+}
+
+.room-other-card:hover img {
+  transform: scale(1.05);
+}
+
+.room-other-copy {
+  position: absolute;
+  left: 1.2rem;
+  right: 1.2rem;
+  bottom: 1rem;
+  z-index: 2;
+}
+
+.room-other-copy span {
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(250 248 245 / 78%);
+}
+
+.room-other-copy h3 {
+  margin: 0.2rem 0 0.3rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.room-other-copy p {
+  margin: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--terra, #e07a5f);
+}
+
+.room-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: center;
+  padding: 2rem 1rem;
+  background: var(--sabbia, #efeae1);
+  color: rgb(58 49 43 / 78%);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.room-footer a {
+  color: var(--terra, #e07a5f);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+@media (min-width: 900px) {
+  .room-body {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .room-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 2rem clamp(1.5rem, 5vw, 3rem);
+  }
+
+  .room-features {
+    position: sticky;
+    top: calc(72px + 1.5rem);
+  }
+}
+
+@media (max-width: 600px) {
+  .room-hero {
+    min-height: 88svh;
+  }
+
+  .room-meta {
+    gap: 0 1.25rem;
+  }
+
+  .room-meta li {
+    min-width: 7.5rem;
+  }
+
+  .room-features ul {
+    grid-template-columns: 1fr;
+  }
+}
