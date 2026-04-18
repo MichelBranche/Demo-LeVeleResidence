@@ -13,14 +13,14 @@ export function useLandingAnimations({ setBookingVisible }) {
       easing: (t) => Math.min(1, 1.001 - 2 ** (-10 * t)),
     });
 
-    const raf = (time) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-    const rafId = requestAnimationFrame(raf);
-
+    /* Un solo `lenis.raf` per frame, in sync con GSAP (stesso pattern di `useLenisSmoothScroll`).
+       Prima c'erano insieme `requestAnimationFrame` e `gsap.ticker` → doppio step Lenis, scroll
+       non allineato a ScrollTrigger (pin/scrub in particolare su mobile). */
     lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    const lenisTickerFn = (time) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(lenisTickerFn);
 
     const splits = [];
     let heroLettersTween = null;
@@ -110,16 +110,29 @@ export function useLandingAnimations({ setBookingVisible }) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!prefersReducedMotion) {
-      gsap.to('.circle-mask', {
-        clipPath: 'circle(150% at 50% 50%)',
-        scrollTrigger: {
-          trigger: '#circle-reveal',
-          start: 'top top',
-          end: '+=120%',
-          scrub: 1,
-          pin: true,
-        },
-      });
+      const circleReveal = document.querySelector('#circle-reveal');
+      const circleMask = document.querySelector('.circle-mask');
+      if (circleReveal && circleMask) {
+        gsap.fromTo(
+          circleMask,
+          { clipPath: 'circle(15% at 50% 50%)' },
+          {
+            clipPath: 'circle(150% at 50% 50%)',
+            ease: 'none',
+            scrollTrigger: {
+              trigger: circleReveal,
+              start: 'top top',
+              /* Schermi stretti: più traccia di scroll così lo scrub resta controllabile col touch. */
+              end: () => (window.innerWidth < 1024 ? '+=220%' : '+=120%'),
+              scrub: 1,
+              pin: true,
+              anticipatePin: 1,
+              fastScrollEnd: true,
+              invalidateOnRefresh: true,
+            },
+          }
+        );
+      }
     } else {
       /* Rivelazione statica senza pin/scrub per chi preferisce meno movimento. */
       gsap.set('.circle-mask', { clipPath: 'circle(150% at 50% 50%)' });
@@ -300,6 +313,13 @@ export function useLandingAnimations({ setBookingVisible }) {
     window.addEventListener('resize', onScroll, { passive: true });
     onScroll();
 
+    /* Ricalibra altezze (100vh/addr bar) dopo il layout, importante per i pin su mobile. */
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    });
+
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
@@ -310,7 +330,7 @@ export function useLandingAnimations({ setBookingVisible }) {
       splits.forEach((split) => split.revert());
       /* revert() rimuove in modo sicuro tutti i tween/pin creati dentro mm.add(). */
       mm.revert();
-      cancelAnimationFrame(rafId);
+      gsap.ticker.remove(lenisTickerFn);
       lenis.destroy();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
