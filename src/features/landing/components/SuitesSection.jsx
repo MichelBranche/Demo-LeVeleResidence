@@ -29,30 +29,46 @@ export function SuitesSection() {
     if (!mare || !giardino || !intro) return;
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
     gsap.set([mare, giardino], {
       transformOrigin: '50% 62%',
       opacity: 0,
       y: 16,
-      filter: 'blur(6px)',
     });
 
     /* Onde: ciclo continuo (ripete all’infinito dopo l’ingresso) */
     const waveTl = gsap.timeline({ repeat: -1, paused: true });
-    waveTl
-      .to(mare, { y: -7, rotate: -2.8, duration: 0.7, ease: 'sine.inOut' })
-      .to(mare, { y: 6, rotate: 3, duration: 0.8, ease: 'sine.inOut' })
-      .to(mare, { y: -3, rotate: -1.2, duration: 0.6, ease: 'sine.inOut' })
-      .to(mare, { y: 0, rotate: 0, duration: 0.75, ease: 'sine.inOut' });
+    if (isMobile) {
+      waveTl
+        .to(mare, { y: -5, duration: 0.7, ease: 'sine.inOut' })
+        .to(mare, { y: 4, duration: 0.8, ease: 'sine.inOut' })
+        .to(mare, { y: -2, duration: 0.6, ease: 'sine.inOut' })
+        .to(mare, { y: 0, duration: 0.75, ease: 'sine.inOut' });
+    } else {
+      waveTl
+        .to(mare, { y: -7, rotate: -2.8, duration: 0.7, ease: 'sine.inOut' })
+        .to(mare, { y: 6, rotate: 3, duration: 0.8, ease: 'sine.inOut' })
+        .to(mare, { y: -3, rotate: -1.2, duration: 0.6, ease: 'sine.inOut' })
+        .to(mare, { y: 0, rotate: 0, duration: 0.75, ease: 'sine.inOut' });
+    }
 
     /* Vento: solo x / rotate (no skewX: su testo italic + inline-block crea spesso una
        sottile linea chiara lungo il bordo che “scivola” con lo skew). */
     const windTl = gsap.timeline({ repeat: -1, paused: true });
-    windTl
-      .to(giardino, { x: 7, rotate: 1.4, duration: 1.9, ease: 'sine.inOut' })
-      .to(giardino, { x: -6, rotate: -1.2, duration: 2.15, ease: 'sine.inOut' })
-      .to(giardino, { x: 4, rotate: 0.65, duration: 1.5, ease: 'sine.inOut' })
-      .to(giardino, { x: 0, rotate: 0, duration: 1.55, ease: 'sine.inOut' });
+    if (isMobile) {
+      windTl
+        .to(giardino, { x: 5, duration: 1.9, ease: 'sine.inOut' })
+        .to(giardino, { x: -4, duration: 2.15, ease: 'sine.inOut' })
+        .to(giardino, { x: 3, duration: 1.5, ease: 'sine.inOut' })
+        .to(giardino, { x: 0, duration: 1.55, ease: 'sine.inOut' });
+    } else {
+      windTl
+        .to(giardino, { x: 7, rotate: 1.4, duration: 1.9, ease: 'sine.inOut' })
+        .to(giardino, { x: -6, rotate: -1.2, duration: 2.15, ease: 'sine.inOut' })
+        .to(giardino, { x: 4, rotate: 0.65, duration: 1.5, ease: 'sine.inOut' })
+        .to(giardino, { x: 0, rotate: 0, duration: 1.55, ease: 'sine.inOut' });
+    }
 
     let loopsStarted = false;
     const startLoops = () => {
@@ -71,7 +87,6 @@ export function SuitesSection() {
     entranceTl.to([mare, giardino], {
       opacity: 1,
       y: 0,
-      filter: 'blur(0px)',
       duration: 0.75,
       stagger: 0.14,
       ease: 'power3.out',

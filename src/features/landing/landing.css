@@ -2114,6 +2114,10 @@ body {
   vertical-align: baseline;
   /* Evita alone/bordi fantasma sui layer animati (Chrome / skew o blur). */
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  contain: paint;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -3376,6 +3380,12 @@ body {
 
   .suite-intro h2 {
     font-size: clamp(2.15rem, 11vw, 3.5rem);
+  }
+
+  /* Mobile: riduce artefatti di compositing sui token animati mare/giardino. */
+  .suite-view-word--mare,
+  .suite-view-word--giardino {
+    text-shadow: none;
   }
 
   .suite-copy {
