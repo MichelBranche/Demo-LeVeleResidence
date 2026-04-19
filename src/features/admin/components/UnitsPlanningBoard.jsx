@@ -101,6 +101,41 @@ export function UnitsPlanningBoard({ layout = 'desktop', embedCommitVisible = tr
     };
   }, []);
 
+  const reloadPlanningFromExternal = useCallback(async () => {
+    try {
+      const remoteCells = await fetchPlanningCells();
+      if (remoteCells && typeof remoteCells === 'object') {
+        savePlanningCells(remoteCells);
+        setSavedCells(remoteCells);
+        setCells(remoteCells);
+        setRemoteInfo({ enabled: true, error: '' });
+        notifyPlanningCellsChanged();
+        return;
+      }
+    } catch {
+      /* niente API: usa locale */
+    }
+    const local = loadPlanningCells();
+    setSavedCells(local);
+    setCells(local);
+    notifyPlanningCellsChanged();
+  }, []);
+
+  useEffect(() => {
+    /** @param {CustomEvent<{ mode?: string }>} e */
+    const onExternal = (e) => {
+      if (e.detail?.mode === 'local') {
+        const local = loadPlanningCells();
+        setSavedCells(local);
+        setCells(local);
+        return;
+      }
+      reloadPlanningFromExternal();
+    };
+    window.addEventListener('levele-planning-external-sync', /** @type {EventListener} */ (onExternal));
+    return () => window.removeEventListener('levele-planning-external-sync', /** @type {EventListener} */ (onExternal));
+  }, [reloadPlanningFromExternal]);
+
   const commitChangesRemote = useCallback(async () => {
     commitChanges();
     if (!remoteInfo.enabled) return;

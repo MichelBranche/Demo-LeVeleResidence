@@ -6,6 +6,7 @@ import { HeroSection } from './components/HeroSection';
 import { LoadingScreen } from './components/LoadingScreen';
 import { CircleRevealSection } from './components/CircleRevealSection';
 import { AccordionSection } from './components/AccordionSection';
+import { PackagesOffersSection } from './components/PackagesOffersSection';
 import { SuitesSection } from './components/SuitesSection';
 import { InfoServicesSection } from './components/InfoServicesSection';
 import { ReviewsSection } from './components/ReviewsSection';
@@ -324,6 +325,7 @@ export function LandingPage() {
         <HeroSection videoRef={videoRef} isMuted={isMuted} onToggleMute={handleToggleMute} />
         <CircleRevealSection />
         <AccordionSection />
+        <PackagesOffersSection />
         <SuitesSection />
         <InfoServicesSection />
         <ReviewsSection />

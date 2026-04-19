@@ -52,6 +52,14 @@ export function AdminBookingsPanel() {
     load();
   }, [load]);
 
+  useEffect(() => {
+    const onRefresh = () => {
+      load();
+    };
+    window.addEventListener('levele-admin-bookings-refresh', onRefresh);
+    return () => window.removeEventListener('levele-admin-bookings-refresh', onRefresh);
+  }, [load]);
+
   const onAck = async (id) => {
     if (!id) return;
     try {
@@ -70,8 +78,8 @@ export function AdminBookingsPanel() {
             Prenotazioni / richieste
           </h2>
           <p className="admin-bookings__lead">
-            Elenco delle richieste inviate dal sito (storage Vercel KV). «Segna vista» toglie la prenotazione dalle notifiche
-            in alto.
+            Elenco delle richieste dal sito e dall’extranet (storage KV). «Segna vista» toglie la prenotazione dalle
+            notifiche in alto.
           </p>
         </div>
         <button type="button" className="admin-bookings__refresh" onClick={load} disabled={loading}>
@@ -124,6 +132,12 @@ export function AdminBookingsPanel() {
                   <div className="admin-bookings__detail">
                     <p>
                       <strong>Registrata:</strong> {fmtShort(b.createdAt)}
+                      {b.source ? (
+                        <>
+                          {' '}
+                          · <strong>Origine:</strong> {b.source === 'extranet' ? 'Extranet' : b.source === 'website' ? 'Sito' : String(b.source)}
+                        </>
+                      ) : null}
                     </p>
                     <p>
                       <strong>Email:</strong> {b.customer?.email || '—'} · <strong>Tel:</strong> {b.customer?.phone || '—'}

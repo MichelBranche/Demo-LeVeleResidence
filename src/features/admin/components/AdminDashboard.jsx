@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { AdminProfileBadges } from './AdminProfileBadges';
 import { AdminBookingNotifications } from './AdminBookingNotifications';
 import { AdminBookingsPanel } from './AdminBookingsPanel';
+import { BookingExtranetPanel } from './BookingExtranetPanel';
 import { BookingSettingsPanel } from './BookingSettingsPanel';
 import { TodayOverview } from './TodayOverview';
 import { UnitsPlanningBoard } from './UnitsPlanningBoard';
@@ -12,6 +14,7 @@ export function AdminDashboard({ openAccess, onLogout }) {
         <div className="admin-dashboard__topbar-brand">
           <span className="admin-dashboard__product">Le Vele Residence</span>
           <span className="admin-dashboard__product-sub">Admin</span>
+          {!openAccess ? <AdminProfileBadges /> : null}
         </div>
         <div className="admin-dashboard__topbar-actions">
           <AdminBookingNotifications className="admin-booking-notifications--bar" />
@@ -43,6 +46,8 @@ export function AdminDashboard({ openAccess, onLogout }) {
         <TodayOverview />
 
         <AdminBookingsPanel />
+
+        <BookingExtranetPanel />
 
         <section className="admin-dashboard__planning" aria-labelledby="admin-planning-title">
           <h2 id="admin-planning-title" className="visually-hidden">

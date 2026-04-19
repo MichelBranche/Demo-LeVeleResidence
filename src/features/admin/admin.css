@@ -155,6 +155,77 @@
   box-shadow: var(--admin-shadow-2);
 }
 
+.admin-login__fieldset {
+  margin: 0 0 0.25rem;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.admin-login__legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin: 0 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--admin-text-secondary);
+}
+
+.admin-login__hint {
+  clear: both;
+  margin: 0 0 0.75rem;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--admin-text-muted);
+}
+
+.admin-login__profiles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.admin-login__check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  background: #fafbfc;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.admin-login__check:hover {
+  border-color: var(--admin-border-strong);
+  background: #f1f3f4;
+}
+
+.admin-login__check:has(.admin-login__check-input:focus-visible) {
+  outline: 2px solid var(--admin-primary);
+  outline-offset: 1px;
+}
+
+.admin-login__check-input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--admin-primary);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.admin-login__check-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--admin-text);
+  cursor: pointer;
+  user-select: none;
+}
+
 .admin-login__label {
   font-size: 0.75rem;
   font-weight: 500;
@@ -250,8 +321,34 @@
 
 .admin-dashboard__topbar-brand {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.admin-session-profiles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.admin-session-profiles__chip {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--admin-radius-pill);
+  background: var(--admin-primary-soft);
+  color: #174ea6;
+  border: 1px solid rgb(26 115 232 / 22%);
+}
+
+.admin-session-profiles--compact .admin-session-profiles__chip {
+  font-size: 0.6rem;
+  padding: 0.15rem 0.4rem;
+  letter-spacing: 0.03em;
 }
 
 .admin-dashboard__product {
@@ -741,6 +838,156 @@
   font-size: 0.75rem;
   color: var(--admin-text-secondary);
   max-width: 14rem;
+}
+
+/* Extranet Booking (admin) */
+.admin-extranet__lead {
+  margin: 0.35rem 0 1rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--admin-text-secondary);
+}
+
+.admin-extranet__row {
+  margin: 0 0 1rem;
+}
+
+.admin-extranet__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--admin-primary);
+  text-decoration: none;
+}
+
+.admin-extranet__link:hover {
+  text-decoration: underline;
+}
+
+.admin-extranet__actions {
+  margin-bottom: 1rem;
+}
+
+.admin-extranet__autosync {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--admin-radius-sm);
+  background: #f8f9fa;
+  border: 1px solid var(--admin-border);
+}
+
+.admin-extranet__check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--admin-text);
+  cursor: pointer;
+}
+
+.admin-extranet__interval {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--admin-text-secondary);
+}
+
+.admin-extranet__interval select {
+  font: inherit;
+  font-size: 0.875rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  background: #fff;
+}
+
+.admin-extranet__btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--admin-radius-pill);
+  border: 1px solid var(--admin-border);
+  background: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.admin-extranet__btn:hover:not(:disabled) {
+  background: #f1f3f4;
+}
+
+.admin-extranet__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.admin-extranet__btn--primary {
+  border-color: transparent;
+  background: var(--admin-primary);
+  color: #fff;
+}
+
+.admin-extranet__btn--primary:hover:not(:disabled) {
+  background: var(--admin-primary-hover);
+}
+
+.admin-extranet__ok {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: #137333;
+}
+
+.admin-extranet__err {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: #c5221f;
+}
+
+.admin-extranet__details {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--admin-radius-sm);
+  border: 1px dashed var(--admin-border);
+  background: #fafbfc;
+}
+
+.admin-extranet__details summary {
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--admin-text);
+}
+
+.admin-extranet__hint {
+  margin: 0.75rem 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--admin-text-secondary);
+}
+
+.admin-extranet__textarea {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.5rem 0;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--admin-radius-sm);
+  border: 1px solid var(--admin-border);
+  font-family: ui-monospace, monospace;
+  font-size: 0.8125rem;
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.admin-extranet__note {
+  margin: 1rem 0 0;
+  font-size: 0.8125rem;
 }
 
 .admin-bookings__head {

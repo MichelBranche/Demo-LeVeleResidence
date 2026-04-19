@@ -158,6 +158,139 @@ export function useLandingAnimations({ setBookingVisible }) {
       });
     });
 
+    const cleanupMagnet = [];
+
+    if (!prefersReducedMotion) {
+      const offersSection = document.querySelector('.offers-section');
+      const offersHeader = document.querySelector('.offers-header');
+      const offersCards = gsap.utils.toArray('.offers-section .offer-card');
+      const offersOrbs = gsap.utils.toArray('.offers-section .offers-orb');
+      const offerIcons = gsap.utils.toArray('.offers-section .offer-icon-wrap');
+      const offersMarquee = document.querySelector('.offers-top-marquee');
+      const offerGlow = gsap.utils.toArray('.offers-section .offer-glow');
+      const cleanupOfferTilt = [];
+
+      if (offersSection && offersHeader && offersCards.length > 0) {
+        const offersTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: offersSection,
+            start: 'top 74%',
+            once: true,
+          },
+        });
+
+        offersTl.from(offersHeader, {
+          y: 38,
+          opacity: 0,
+          duration: 0.95,
+          ease: 'power4.out',
+        });
+
+        offersTl.from(
+          offersCards,
+          {
+            clipPath: 'inset(0 0 100% 0 round 12px)',
+            y: 44,
+            opacity: 0,
+            rotateX: 6,
+            transformOrigin: 'top center',
+            duration: 1.05,
+            stagger: 0.15,
+            ease: 'power4.out',
+          },
+          '-=0.55'
+        );
+
+        offersTl.from(
+          offerGlow,
+          {
+            scale: 0.6,
+            opacity: 0,
+            duration: 1,
+            ease: 'power2.out',
+            stagger: 0.1,
+          },
+          '-=0.9'
+        );
+
+        offersCards.forEach((card) => {
+          const onMove = (event) => {
+            const rect = card.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = (event.clientY - rect.top) / rect.height;
+            const rotateY = (x - 0.5) * 8;
+            const rotateX = (0.5 - y) * 6;
+            gsap.to(card, {
+              rotateX,
+              rotateY,
+              y: -6,
+              transformPerspective: 900,
+              transformOrigin: 'center',
+              duration: 0.35,
+              ease: 'power2.out',
+            });
+          };
+
+          const onLeave = () => {
+            gsap.to(card, {
+              rotateX: 0,
+              rotateY: 0,
+              y: 0,
+              duration: 0.5,
+              ease: 'power3.out',
+            });
+          };
+
+          card.addEventListener('mousemove', onMove);
+          card.addEventListener('mouseleave', onLeave);
+          cleanupOfferTilt.push(() => {
+            card.removeEventListener('mousemove', onMove);
+            card.removeEventListener('mouseleave', onLeave);
+          });
+        });
+      }
+
+      if (offersMarquee) {
+        gsap.to(offersMarquee, {
+          xPercent: -12,
+          duration: 18,
+          ease: 'none',
+          repeat: -1,
+          yoyo: true,
+        });
+      }
+
+      if (offersOrbs.length > 0) {
+        gsap.to(offersOrbs, {
+          yPercent: -14,
+          xPercent: 8,
+          duration: 8,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          stagger: 0.8,
+        });
+      }
+
+      if (offerIcons.length > 0) {
+        gsap.to(offerIcons, {
+          y: -5,
+          rotate: 3,
+          duration: 2.4,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          stagger: 0.2,
+        });
+      }
+
+      if (cleanupOfferTilt.length > 0) {
+        cleanupMagnet.push(() => {
+          cleanupOfferTilt.forEach((cleanup) => cleanup());
+        });
+      }
+    }
+
     /* Suites section:
        - Desktop (>=1024px) → scroll orizzontale con pin (layout "gallery").
        - Mobile/tablet (<1024px) → stack verticale con entrance stagger su scroll. */
@@ -199,7 +332,7 @@ export function useLandingAnimations({ setBookingVisible }) {
       const tweens = targets.map((el) =>
         gsap.from(el, {
           scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-          y: 40,
+          y: 42,
           opacity: 0,
           duration: 0.85,
           ease: 'power3.out',
@@ -275,7 +408,6 @@ export function useLandingAnimations({ setBookingVisible }) {
     }
 
     const magnets = document.querySelectorAll('.magnetic-wrap');
-    const cleanupMagnet = [];
     magnets.forEach((magnet) => {
       const button = magnet.querySelector('.magnetic-btn');
       if (!button || window.innerWidth <= 768) return;

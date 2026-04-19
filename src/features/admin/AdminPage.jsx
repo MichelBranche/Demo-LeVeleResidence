@@ -35,8 +35,8 @@ export function AdminPage() {
     };
   }, [showDashboard]);
 
-  const handleLoginSuccess = useCallback(() => {
-    setAdminSession();
+  const handleLoginSuccess = useCallback((payload) => {
+    setAdminSession(payload);
     setAuthed(true);
   }, []);
 

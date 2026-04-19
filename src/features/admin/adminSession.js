@@ -1,3 +1,5 @@
+import { normalizeAdminProfiles } from './adminProfiles';
+
 const SESSION_KEY = 'levele_admin_session_v1';
 /** Durata sessione dopo login (stesso tab). */
 const SESSION_MS = 24 * 60 * 60 * 1000;
@@ -11,17 +13,37 @@ export function getAdminSession() {
       sessionStorage.removeItem(SESSION_KEY);
       return null;
     }
+    if (isAdminPasswordConfigured()) {
+      const profiles = normalizeAdminProfiles(p.profiles);
+      if (profiles.length === 0) {
+        sessionStorage.removeItem(SESSION_KEY);
+        return null;
+      }
+      return { ...p, profiles };
+    }
+    if (Array.isArray(p.profiles)) {
+      return { ...p, profiles: normalizeAdminProfiles(p.profiles) };
+    }
     return p;
   } catch {
     return null;
   }
 }
 
-export function setAdminSession() {
+/**
+ * @param {{ profiles?: string[] }} [payload]
+ */
+export function setAdminSession(payload = {}) {
+  const profiles = normalizeAdminProfiles(payload.profiles ?? []);
   sessionStorage.setItem(
     SESSION_KEY,
-    JSON.stringify({ v: 1, exp: Date.now() + SESSION_MS, at: Date.now() }),
+    JSON.stringify({ v: 1, exp: Date.now() + SESSION_MS, at: Date.now(), profiles }),
   );
+}
+
+/** Profili della sessione corrente (vuoto in modalità aperta senza login). */
+export function getAdminProfiles() {
+  return normalizeAdminProfiles(getAdminSession()?.profiles);
 }
 
 export function clearAdminSession() {

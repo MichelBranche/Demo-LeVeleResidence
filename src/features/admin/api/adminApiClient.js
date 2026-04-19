@@ -54,3 +54,15 @@ export async function savePlanningCellsRemote(cells) {
   return body;
 }
 
+/** Sincronizza prenotazioni dall’extranet (server → BOOKING_EXTRANET_PULL_URL) e aggiorna planning in KV. */
+export async function postExtranetSync() {
+  const res = await fetch(apiUrl('/api/v1/admin/extranet/sync'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json', ...adminPasswordHeader() },
+    body: JSON.stringify({}),
+  });
+  const body = await res.json().catch(() => null);
+  if (!res.ok || !body?.ok) throw new Error(body?.message || `Errore (${res.status})`);
+  return body;
+}
+

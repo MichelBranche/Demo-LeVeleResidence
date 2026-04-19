@@ -1,7 +1,9 @@
 import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AdminProfileBadges } from '../components/AdminProfileBadges';
 import { BookingSettingsPanel } from '../components/BookingSettingsPanel';
 import { AdminBookingsPanel } from '../components/AdminBookingsPanel';
+import { BookingExtranetPanel } from '../components/BookingExtranetPanel';
 import { AdminBookingNotifications } from '../components/AdminBookingNotifications';
 import { TodayOverview } from '../components/TodayOverview';
 import { UnitsPlanningBoard } from '../components/UnitsPlanningBoard';
@@ -36,6 +38,7 @@ export function AdminMobileApp({ openAccess, onLogout }) {
         <div className="admin-mobile__brand">
           <span className="admin-mobile__name">Le Vele</span>
           <span className="admin-mobile__badge">Gestionale</span>
+          {!openAccess ? <AdminProfileBadges className="admin-session-profiles--compact" /> : null}
         </div>
         <div className="admin-mobile__header-actions">
           <AdminBookingNotifications className="admin-booking-notifications--mobile" />
@@ -87,6 +90,7 @@ export function AdminMobileApp({ openAccess, onLogout }) {
           <h1 className="admin-mobile__h1">Richieste</h1>
           <p className="admin-mobile__lead">Prenotazioni inviate dal sito e stato «vista».</p>
           <AdminBookingsPanel />
+          <BookingExtranetPanel />
         </div>
 
         <div
