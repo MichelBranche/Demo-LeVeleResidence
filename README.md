@@ -2,17 +2,97 @@
 
 ![Hero Section](preview.png)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Le Vele Residence — Website
 
-Currently, two official plugins are available:
+Website ufficiale per **Le Vele Residence (Stintino, Sardegna)**.  
+Progetto sviluppato con focus su **esperienza immersiva, storytelling visivo e UI premium**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🔗 Live preview: https://demo-le-vele-residence.vercel.app/
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Overview
 
-## Expanding the ESLint configuration
+Questo progetto nasce con un obiettivo chiaro:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project...
+> Trasformare una semplice presenza online in un’esperienza che faccia già “sentire” la vacanza.
+
+Il sito utilizza **video, tipografia editoriale e animazioni leggere** per comunicare atmosfera, non solo informazioni.
+
+---
+
+## Features
+
+- 🎥 Hero con video full-screen
+- ✨ UI minimal ed elegante
+- 📱 Design completamente responsive
+- 🌊 Storytelling visivo (focus su immagini e location)
+- ⚡ Performance ottimizzate per web
+- 🎯 UX orientata alla conversione (prenotazione / contatto)
+
+---
+
+## Tech Stack
+
+- HTML5
+- CSS3 (layout moderno, responsive)
+- JavaScript (vanilla)
+- Deploy: Vercel
+
+---
+
+## Design Direction
+
+Il progetto segue una direzione chiara:
+
+- **Luxury minimal**
+- **Editorial typography**
+- **Visual-first approach**
+- Palette naturale (mare, sabbia, luce)
+
+L’interfaccia lascia spazio ai contenuti:  
+le immagini fanno il lavoro, il design le supporta.
+
+---
+
+## Project Structure
+
+
+/assets
+/images
+/videos
+/index.html
+/style.css
+/script.js
+
+
+---
+
+## Performance & SEO
+
+- Ottimizzazione immagini
+- Lazy loading
+- Struttura semantica HTML
+- Base SEO migliorabile (in ottica produzione)
+
+---
+
+## Notes
+
+Questo progetto è una **demo / redesign concept**, non il sito ufficiale online del residence.
+
+---
+
+## Author
+
+**Michel Branche**  
+Frontend Developer  
+
+- GitHub: https://github.com/MichelBranche
+- LinkedIn: https://www.linkedin.com/in/michel-branche-328501301/
+
+---
+
+## License
+
+Questo progetto è a scopo dimostrativo.
