@@ -10,8 +10,11 @@ export function HeroSection({ videoRef, isMuted, onToggleMute }) {
             loop
             muted={isMuted}
             playsInline
+            disablePictureInPicture
+            controlsList="nodownload noplaybackrate noremoteplayback"
             preload="auto"
             aria-label="Video panoramico della Sardegna"
+            onContextMenu={(event) => event.preventDefault()}
           />
         </div>
       </div>

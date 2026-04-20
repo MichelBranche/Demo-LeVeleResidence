@@ -10,8 +10,11 @@ export function LaPelosaHero({ videoRef, isMuted, onToggleMute }) {
             loop
             muted={isMuted}
             playsInline
+            disablePictureInPicture
+            controlsList="nodownload noplaybackrate noremoteplayback"
             preload="auto"
             aria-label="Video della spiaggia La Pelosa a Stintino"
+            onContextMenu={(event) => event.preventDefault()}
           />
         </div>
       </div>

@@ -1,98 +1,173 @@
-# React + Vite
+# Residence Le Vele - Full Stack Web App
 
 ![Hero Section](preview.png)
 
-# Le Vele Residence — Website
+Sito ufficiale del Residence Le Vele con:
 
-Website ufficiale per **Le Vele Residence (Stintino, Sardegna)**.  
-Progetto sviluppato con focus su **esperienza immersiva, storytelling visivo e UI premium**.
+- landing page animata e contenuti editoriali;
+- pagine camere e flusso prenotazione;
+- area admin (planning, prenotazioni, sync extranet);
+- API serverless deployabili su Vercel.
 
-🔗 Live preview: https://demo-le-vele-residence.vercel.app/
+## Full Tech Stack
 
----
+### Frontend
 
-## Overview
+- `React` (v19)
+- `React Router DOM` (routing SPA)
+- `Vite` (dev server + build)
+- CSS custom (no framework CSS utility)
+- `GSAP` + `ScrollTrigger` (animazioni scroll e interaction)
+- `Lenis` (smooth scroll)
+- `SplitType` (animazioni tipografiche)
 
-Questo progetto nasce con un obiettivo chiaro:
+### Backend/API
 
-> Trasformare una semplice presenza online in un’esperienza che faccia già “sentire” la vacanza.
+- API serverless in `api/` (runtime Node.js su Vercel)
+- Endpoints REST custom (booking, availability, admin, extranet sync)
+- Autenticazione admin via header `x-admin-password`
+- Persistenza dati su `Upstash Redis` via REST API
 
-Il sito utilizza **video, tipografia editoriale e animazioni leggere** per comunicare atmosfera, non solo informazioni.
+### Tooling / Quality
 
----
+- `ESLint` (flat config)
+- `@vitejs/plugin-react`
+- `npm` + `package-lock.json` per dependency lock
 
-## Features
+### Deploy / Infra
 
-- 🎥 Hero con video full-screen
-- ✨ UI minimal ed elegante
-- 📱 Design completamente responsive
-- 🌊 Storytelling visivo (focus su immagini e location)
-- ⚡ Performance ottimizzate per web
-- 🎯 UX orientata alla conversione (prenotazione / contatto)
+- `Vercel` (frontend + serverless functions)
+- Config SPA fallback in `vercel.json`
 
----
+## Architettura progetto
 
-## Tech Stack
+- `src/` - applicazione React
+- `src/features/landing/` - home, sezioni animate, storytelling
+- `src/features/booking/` - ricerca disponibilita, checkout e storage bozza
+- `src/features/rooms/` - pagine dettaglio camere
+- `src/features/admin/` - dashboard admin, planning, extranet UI
+- `api/v1/` - endpoint REST pubblici e admin
+- `api/_lib/` - funzioni condivise backend (auth, kv, planning model)
 
-- HTML5
-- CSS3 (layout moderno, responsive)
-- JavaScript (vanilla)
-- Deploy: Vercel
+## Routing frontend
 
----
+Gestito in `src/App.jsx`:
 
-## Design Direction
+- `/` -> Landing page
+- `/la-pelosa` -> pagina dedicata alla spiaggia
+- `/camere/:slug` -> dettaglio camera
+- `/prenota/conferma` -> checkout
+- `/admin` -> area amministrazione
 
-Il progetto segue una direzione chiara:
+## API disponibili
 
-- **Luxury minimal**
-- **Editorial typography**
-- **Visual-first approach**
-- Palette naturale (mare, sabbia, luce)
+### Public
 
-L’interfaccia lascia spazio ai contenuti:  
-le immagini fanno il lavoro, il design le supporta.
+- `POST /api/v1/availability/search`
+- `POST /api/v1/bookings/create`
 
----
+### Admin
 
-## Project Structure
+- `GET /api/v1/admin/bookings/list`
+- `POST /api/v1/admin/bookings/ack`
+- `GET /api/v1/admin/bookings/unseen`
+- `GET /api/v1/admin/planning/get`
+- `POST /api/v1/admin/planning/set`
+- `POST /api/v1/admin/extranet/sync`
 
+## Variabili d'ambiente
 
-/assets
-/images
-/videos
-/index.html
-/style.css
-/script.js
+### Frontend (Vite)
 
+Usate in browser (`import.meta.env`):
 
----
+- `VITE_API_BASE_URL` - base URL API (opzionale, default path relativi)
+- `VITE_ADMIN_PASSWORD` - password admin lato client (solo per flussi demo/interni)
+- `VITE_BOOKING_EXTRANET_PORTAL_URL` - link portale extranet in UI admin
 
-## Performance & SEO
+### Backend (Vercel / Node)
 
-- Ottimizzazione immagini
-- Lazy loading
-- Struttura semantica HTML
-- Base SEO migliorabile (in ottica produzione)
+Usate nelle serverless functions (`process.env`):
 
----
+- `KV_REST_API_URL` - endpoint Upstash Redis REST
+- `KV_REST_API_TOKEN` - token Upstash Redis REST
+- `ADMIN_API_PASSWORD` - password admin server-side (consigliata)
+- `BOOKING_EXTRANET_PULL_URL` - endpoint remoto da cui importare prenotazioni extranet
+- `BOOKING_EXTRANET_BEARER_TOKEN` - bearer token per chiamata extranet (opzionale)
+- `BOOKING_EXTRANET_PULL_METHOD` - `GET` oppure `POST` (default `GET`)
 
-## Notes
+## Setup locale
 
-Questo progetto è una **demo / redesign concept**, non il sito ufficiale online del residence.
+Prerequisiti:
 
----
+- Node.js 20+ (consigliato)
+- npm 10+
 
-## Author
+Installazione:
 
-**Michel Branche**  
-Frontend Developer  
+```bash
+npm install
+```
 
-- GitHub: https://github.com/MichelBranche
-- LinkedIn: https://www.linkedin.com/in/michel-branche-328501301/
+Avvio sviluppo:
 
----
+```bash
+npm run dev
+```
 
-## License
+Build produzione:
 
-Questo progetto è a scopo dimostrativo.
+```bash
+npm run build
+```
+
+Preview build:
+
+```bash
+npm run preview
+```
+
+Lint:
+
+```bash
+npm run lint
+```
+
+## Esempio `.env.local` (frontend)
+
+```env
+VITE_API_BASE_URL=
+VITE_ADMIN_PASSWORD=
+VITE_BOOKING_EXTRANET_PORTAL_URL=
+```
+
+## Esempio variabili su Vercel (backend)
+
+Configura nel project settings di Vercel:
+
+- `KV_REST_API_URL`
+- `KV_REST_API_TOKEN`
+- `ADMIN_API_PASSWORD`
+- `BOOKING_EXTRANET_PULL_URL` (se usi sync extranet)
+- `BOOKING_EXTRANET_BEARER_TOKEN` (opzionale)
+- `BOOKING_EXTRANET_PULL_METHOD` (opzionale)
+
+## Note operative
+
+- Se `VITE_API_BASE_URL` non e impostata, il frontend usa path relativi verso le API nello stesso progetto.
+- Alcuni moduli booking supportano fallback/mock in assenza di backend configurato.
+- L'area admin puo essere protetta solo lato server impostando `ADMIN_API_PASSWORD`.
+- In mancanza di credenziali KV, gli endpoint che richiedono storage restituiscono errore esplicito.
+
+## Deploy
+
+Deploy consigliato: Vercel.
+
+- Build command: `npm run build`
+- Output directory: `dist`
+- Le API in `api/` vengono pubblicate come funzioni serverless.
+- `vercel.json` include rewrite SPA verso `index.html`.
+
+## Licenza
+
+Progetto privato (repository non destinato a uso pubblico salvo diversa indicazione del proprietario).
