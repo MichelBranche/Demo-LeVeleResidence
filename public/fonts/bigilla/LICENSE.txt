@@ -1,0 +1,8 @@
+Bigilla — Demo Font (EULA 1.0)
+
+Font files in this folder are from the "BIGILLA DEMO" package.
+See Demo-Font-EULA-1.0.pdf for full license terms before commercial use.
+
+Files:
+- Bigilla.otf (Regular)
+- Bigilla-Bold.otf (Bold)

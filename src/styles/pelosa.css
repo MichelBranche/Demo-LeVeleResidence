@@ -1,0 +1,561 @@
+/* Pagina La Pelosa — layout editoriale / awwwards */
+
+.page:has(.pelosa-page) .site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10050;
+}
+
+.page:has(.pelosa-page) .site-footer {
+  margin-top: 0;
+}
+
+.pelosa-page {
+  overflow-x: clip;
+  background: var(--crema);
+  color: var(--carbone);
+}
+
+/* Hero */
+.pelosa-hero {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.pelosa-hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.pelosa-hero__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.pelosa-hero__mute {
+  position: absolute;
+  right: var(--page-pad);
+  bottom: clamp(2.5rem, 6vh, 4rem);
+  z-index: 3;
+}
+
+.pelosa-hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgb(26 21 18 / 35%) 0%,
+    rgb(26 21 18 / 18%) 42%,
+    rgb(26 21 18 / 72%) 100%
+  );
+}
+
+.pelosa-hero__inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: min(76rem, 100%);
+  margin: 0 auto;
+  padding: clamp(5rem, 12vh, 7rem) var(--page-pad) clamp(2.5rem, 6vh, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vh, 3.5rem);
+  min-height: 100dvh;
+  justify-content: flex-end;
+}
+
+.pelosa-hero__back {
+  position: absolute;
+  top: clamp(5.5rem, 11vh, 6.5rem);
+  left: var(--page-pad);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgb(250 248 245 / 78%);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.pelosa-hero__back:hover {
+  color: var(--crema);
+}
+
+.pelosa-hero__content {
+  max-width: min(52rem, 100%);
+}
+
+.pelosa-hero__eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--terra);
+}
+
+.pelosa-hero__title {
+  margin: 0 0 0.65rem;
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--crema);
+  text-wrap: balance;
+}
+
+.pelosa-hero__tagline {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.5vw, 1.65rem);
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgb(250 248 245 / 92%);
+}
+
+.pelosa-hero__lede {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.6vw, 1.05rem);
+  line-height: 1.6;
+  color: rgb(250 248 245 / 72%);
+  max-width: 40ch;
+}
+
+.pelosa-hero__scroll {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.65rem;
+  align-self: flex-start;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(250 248 245 / 65%);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.pelosa-hero__scroll:hover {
+  color: var(--crema);
+}
+
+.pelosa-hero__scroll-line {
+  display: block;
+  width: 1px;
+  height: 2.5rem;
+  background: linear-gradient(180deg, var(--terra), transparent);
+  animation: pelosa-scroll-pulse 2s ease-in-out infinite;
+}
+
+@keyframes pelosa-scroll-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scaleY(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pelosa-hero__scroll-line {
+    animation: none;
+  }
+}
+
+/* Intro */
+.pelosa-intro {
+  padding: clamp(4.5rem, 10vh, 6.5rem) var(--page-pad);
+  background: var(--crema);
+  border-top: 1px solid rgb(58 49 43 / 8%);
+}
+
+.pelosa-intro__inner {
+  max-width: min(76rem, 100%);
+  margin: 0 auto;
+}
+
+.pelosa-intro__eyebrow {
+  margin: 0 0 0.85rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--terra);
+}
+
+.pelosa-intro__title {
+  margin: 0;
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.pelosa-intro__header {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2rem);
+  border-bottom: 1px solid rgb(58 49 43 / 12%);
+}
+
+.pelosa-intro__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+
+@media (min-width: 900px) {
+  .pelosa-intro__grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.5fr);
+    align-items: start;
+  }
+}
+
+.pelosa-intro__lead {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--carbone);
+  max-width: 38ch;
+}
+
+.pelosa-intro__body {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.75;
+  color: rgb(58 49 43 / 78%);
+  max-width: 52ch;
+}
+
+.pelosa-intro__aside {
+  display: flex;
+  align-items: flex-end;
+}
+
+@media (min-width: 900px) {
+  .pelosa-intro__aside {
+    justify-content: flex-end;
+    text-align: right;
+  }
+}
+
+.pelosa-intro__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+}
+
+.pelosa-intro__stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1;
+  color: var(--carbone);
+}
+
+.pelosa-intro__stat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgb(58 49 43 / 55%);
+}
+
+/* Gallery */
+.pelosa-gallery {
+  padding: clamp(3.5rem, 8vh, 5.5rem) var(--page-pad) clamp(4rem, 9vh, 6rem);
+  background: var(--sabbia);
+}
+
+.pelosa-gallery__inner {
+  max-width: min(76rem, 100%);
+  margin: 0 auto;
+}
+
+.pelosa-gallery__title {
+  margin: 0 0 clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.pelosa-gallery__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.85rem, 2vw, 1.15rem);
+}
+
+@media (min-width: 768px) {
+  .pelosa-gallery__grid {
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: minmax(200px, 28vw);
+  }
+
+  .pelosa-gallery__item:nth-child(1),
+  .pelosa-gallery__item:nth-child(4) {
+    grid-column: span 8;
+  }
+
+  .pelosa-gallery__item:nth-child(2),
+  .pelosa-gallery__item:nth-child(3) {
+    grid-column: span 4;
+  }
+}
+
+.pelosa-gallery__item {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: clamp(10px, 1.5vw, 16px);
+  overflow: hidden;
+  cursor: zoom-in;
+  background: var(--carbone);
+  min-height: 220px;
+}
+
+.pelosa-gallery__item img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pelosa-gallery__item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(26 21 18 / 0%);
+  transition: background 0.35s ease;
+  pointer-events: none;
+}
+
+.pelosa-gallery__item:hover img,
+.pelosa-gallery__item:focus-visible img {
+  transform: scale(1.05);
+}
+
+.pelosa-gallery__item:hover::after,
+.pelosa-gallery__item:focus-visible::after {
+  background: rgb(26 21 18 / 22%);
+}
+
+.pelosa-gallery__zoom {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 1.35rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--crema);
+  background: rgb(26 21 18 / 55%);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.pelosa-gallery__item:hover .pelosa-gallery__zoom,
+.pelosa-gallery__item:focus-visible .pelosa-gallery__zoom {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* CTA */
+.pelosa-cta {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(4.5rem, 10vh, 6.5rem) var(--page-pad);
+  background: var(--hero-dark);
+  color: var(--crema);
+}
+
+.pelosa-cta::before,
+.pelosa-cta::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.pelosa-cta::before {
+  width: min(420px, 70vw);
+  height: min(420px, 70vw);
+  top: -30%;
+  right: -12%;
+  background: radial-gradient(circle, rgb(224 122 95 / 35%) 0%, transparent 70%);
+}
+
+.pelosa-cta::after {
+  width: min(320px, 55vw);
+  height: min(320px, 55vw);
+  bottom: -25%;
+  left: -8%;
+  background: radial-gradient(circle, rgb(129 178 154 / 28%) 0%, transparent 70%);
+}
+
+.pelosa-cta__inner {
+  position: relative;
+  z-index: 1;
+  max-width: min(40rem, 100%);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pelosa-cta__eyebrow {
+  margin: 0 0 1rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--terra);
+}
+
+.pelosa-cta__title {
+  margin: 0 0 1rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.pelosa-cta__text {
+  margin: 0 0 2rem;
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.65;
+  color: rgb(250 248 245 / 72%);
+}
+
+.pelosa-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem 1rem;
+  justify-content: center;
+}
+
+.pelosa-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.pelosa-cta__btn--primary {
+  background: var(--terra);
+  color: var(--crema);
+}
+
+.pelosa-cta__btn--primary:hover {
+  background: #c9684f;
+  transform: translateY(-2px);
+}
+
+.pelosa-cta__btn--ghost {
+  border: 1px solid rgb(250 248 245 / 28%);
+  color: var(--crema);
+}
+
+.pelosa-cta__btn--ghost:hover {
+  border-color: rgb(250 248 245 / 55%);
+  background: rgb(250 248 245 / 8%);
+}
+
+/* Lightbox */
+.pelosa-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 2rem);
+}
+
+.pelosa-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgb(26 21 18 / 88%);
+  cursor: pointer;
+}
+
+.pelosa-lightbox__close {
+  position: absolute;
+  top: clamp(1rem, 3vw, 1.5rem);
+  right: clamp(1rem, 3vw, 1.5rem);
+  z-index: 2;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid rgb(250 248 245 / 25%);
+  border-radius: 999px;
+  background: rgb(26 21 18 / 65%);
+  color: var(--crema);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.pelosa-lightbox__stage {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-width: min(1200px, 96vw);
+  max-height: 86vh;
+}
+
+.pelosa-lightbox__stage img {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 8px;
+}
+
+.pelosa-lightbox__stage figcaption {
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  text-align: center;
+  color: rgb(250 248 245 / 75%);
+}

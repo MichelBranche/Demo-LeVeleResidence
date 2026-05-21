@@ -1,0 +1,29 @@
+/* Absans — body copy (SIL OFL 1.1) — /public/fonts/absans */
+
+@font-face {
+  font-family: 'Absans';
+  src:
+    url('/fonts/absans/Absans-Regular.woff2') format('woff2'),
+    url('/fonts/absans/Absans-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bigilla — display / titoli (Demo EULA 1.0) — /public/fonts/bigilla */
+
+@font-face {
+  font-family: 'Bigilla';
+  src: url('/fonts/bigilla/Bigilla.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bigilla';
+  src: url('/fonts/bigilla/Bigilla-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
