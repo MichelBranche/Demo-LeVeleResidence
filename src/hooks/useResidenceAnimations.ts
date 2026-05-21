@@ -61,41 +61,6 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
         });
       }
 
-      const items = gsap.utils.toArray<HTMLElement>('.residence__item', section);
-      items.forEach((item) => {
-        const content = item.querySelector<HTMLElement>('.residence__item-content');
-        const index = item.querySelector<HTMLElement>('.residence__index');
-
-        if (content) {
-          gsap.from(content.children, {
-            y: 36,
-            opacity: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            stagger: 0.08,
-            scrollTrigger: {
-              trigger: item,
-              start: 'top 78%',
-              toggleActions: 'play none none none',
-            },
-          });
-        }
-
-        if (index) {
-          gsap.from(index, {
-            x: -24,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: item,
-              start: 'top 85%',
-              toggleActions: 'play none none none',
-            },
-          });
-        }
-      });
-
       const track = section.querySelector<HTMLElement>('.residence__marquee-track');
       if (track) {
         gsap.to(track, {

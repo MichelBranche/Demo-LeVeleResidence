@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import type { RefObject } from 'react';
+import { isMobileViewport } from '../lib/motion';
 import { subscribeScroll } from '../lib/scroll';
 
 export function useScrollAccordion(
@@ -14,9 +15,18 @@ export function useScrollAccordion(
       root.querySelectorAll<HTMLElement>(itemSelector),
     );
 
+    const mobile = isMobileViewport();
+
     cards.forEach((card) => {
-      card.style.position = 'sticky';
+      card.style.position = mobile ? 'static' : 'sticky';
     });
+
+    if (mobile) {
+      cards.forEach((card) => {
+        card.querySelector<HTMLElement>('.scroll-accordion__content')?.setAttribute('aria-expanded', 'true');
+      });
+      return;
+    }
 
     const activeClass = 'scroll-accordion__item--active';
 

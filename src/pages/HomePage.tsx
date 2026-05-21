@@ -4,7 +4,15 @@ import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { HeroSection } from '../components/HeroSection';
 import { Preloader } from '../components/Preloader';
+import { useConsent } from '../hooks/useConsent';
+import { useNetworkTier } from '../hooks/useNetworkTier';
 import { hero, preloaderText } from '../data/site';
+import {
+  shouldAutoplayHeroVideoImmediately,
+  shouldDeferHeroVideoLoad,
+  shouldRunVideoPreloader,
+  shouldUsePosterOnlyHero,
+} from '../lib/network';
 
 const HomeHeroAnimations = lazy(() => import('../components/HomeHeroAnimations'));
 const ResidenceSection = lazy(() =>
@@ -19,9 +27,6 @@ const GallerySection = lazy(() =>
 const OffersSection = lazy(() =>
   import('../components/sections/OffersSection').then((m) => ({ default: m.OffersSection })),
 );
-const ServicesSection = lazy(() =>
-  import('../components/sections/ServicesSection').then((m) => ({ default: m.ServicesSection })),
-);
 const InfoServicesSection = lazy(() =>
   import('../components/sections/InfoServicesSection').then((m) => ({
     default: m.InfoServicesSection,
@@ -35,6 +40,8 @@ const ContactSection = lazy(() =>
 );
 
 const PRELOADER_DONE_KEY = 'lv-preloader-done';
+
+type IntroPhase = 'pending-consent' | 'preloader' | 'complete';
 
 function readPreloaderDone(): boolean {
   if (typeof window === 'undefined') return false;
@@ -52,7 +59,6 @@ function BelowFoldSections() {
       <SuitesSection />
       <GallerySection />
       <OffersSection />
-      <ServicesSection />
       <InfoServicesSection />
       <ReviewsSection />
       <ContactSection />
@@ -61,13 +67,56 @@ function BelowFoldSections() {
 }
 
 export function HomePage() {
-  const preloaderDone = readPreloaderDone();
-  const [showPreloader, setShowPreloader] = useState(!preloaderDone);
-  const [ready, setReady] = useState(preloaderDone);
+  const { isReady, bannerOpen, hasConsent } = useConsent();
+  const networkTier = useNetworkTier();
+  const [introPhase, setIntroPhase] = useState<IntroPhase>(() =>
+    readPreloaderDone() ? 'complete' : 'pending-consent',
+  );
   const [isMuted, setIsMuted] = useState(true);
+  const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
+    shouldAutoplayHeroVideoImmediately() ? hero.video : undefined,
+  );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const introDoneEventSentRef = useRef(false);
+
+  const lightPreloader = !shouldRunVideoPreloader();
+  const posterOnlyHero = shouldUsePosterOnlyHero();
+  const showPreloader = introPhase === 'preloader';
+  const ready = introPhase === 'complete';
+
+  useEffect(() => {
+    if (!isReady) return;
+
+    if (readPreloaderDone()) {
+      setIntroPhase('complete');
+      return;
+    }
+
+    if (!hasConsent || bannerOpen) {
+      setIntroPhase('pending-consent');
+      return;
+    }
+
+    if (networkTier === 'minimal') {
+      try {
+        sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
+      } catch {
+        /* ignore */
+      }
+      setIntroPhase('complete');
+      return;
+    }
+
+    setIntroPhase('preloader');
+  }, [isReady, bannerOpen, hasConsent, networkTier]);
+
+  useEffect(() => {
+    if (introPhase !== 'preloader' || lightPreloader) return;
+    const video = videoRef.current;
+    if (!video || video.getAttribute('src')) return;
+    video.src = hero.video;
+  }, [introPhase, lightPreloader]);
 
   const handlePreloaderComplete = useCallback(() => {
     try {
@@ -75,10 +124,7 @@ export function HomePage() {
     } catch {
       /* ignore */
     }
-    setShowPreloader(false);
-    requestAnimationFrame(() => {
-      setReady(true);
-    });
+    setIntroPhase('complete');
   }, []);
 
   useEffect(() => {
@@ -101,16 +147,7 @@ export function HomePage() {
 
     let cancelled = false;
 
-    const run = async () => {
-      if (cancelled) return;
-
-      video.muted = true;
-      try {
-        await video.play();
-      } catch {
-        /* autoplay bloccato */
-      }
-
+    const dispatchIntroDone = () => {
       if (cancelled || introDoneEventSentRef.current) return;
       introDoneEventSentRef.current = true;
       requestAnimationFrame(() => {
@@ -118,6 +155,21 @@ export function HomePage() {
           window.dispatchEvent(new CustomEvent('intro:done'));
         });
       });
+    };
+
+    const run = async () => {
+      if (cancelled) return;
+
+      video.muted = true;
+      if (heroVideoSrc) {
+        try {
+          await video.play();
+        } catch {
+          /* autoplay bloccato */
+        }
+      }
+
+      dispatchIntroDone();
     };
 
     const id = requestAnimationFrame(() => {
@@ -128,7 +180,20 @@ export function HomePage() {
       cancelled = true;
       cancelAnimationFrame(id);
     };
-  }, [ready]);
+  }, [ready, heroVideoSrc]);
+
+  useEffect(() => {
+    if (!ready || heroVideoSrc || posterOnlyHero) return;
+    if (!shouldDeferHeroVideoLoad()) return;
+
+    const enable = () => setHeroVideoSrc(hero.video);
+    if (typeof requestIdleCallback === 'function') {
+      const id = requestIdleCallback(enable, { timeout: 5000 });
+      return () => cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(enable, 2500);
+    return () => window.clearTimeout(id);
+  }, [ready, heroVideoSrc, posterOnlyHero]);
 
   useEffect(() => {
     if (!ready) return;
@@ -145,21 +210,29 @@ export function HomePage() {
     setIsMuted(nextMuted);
   };
 
+  const shellClass = [
+    'home-hero-shell',
+    ready ? 'home-hero-shell--ready' : '',
+    introPhase === 'pending-consent' ? 'home-hero-shell--awaiting-consent' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <>
       <main>
-        <div className={`home-hero-shell${ready ? ' home-hero-shell--ready' : ''}`}>
+        <div className={shellClass}>
           <div className="oh-video-bg" ref={videoSlotRef}>
             <video
               ref={videoRef}
-              src={hero.video}
+              {...(heroVideoSrc ? { src: heroVideoSrc } : {})}
               poster={hero.poster}
               className="hero-bg-video"
-              autoPlay
+              autoPlay={ready && !!heroVideoSrc}
               muted={isMuted}
               loop
               playsInline
-              preload={preloaderDone ? 'auto' : 'metadata'}
+              preload={heroVideoSrc ? (ready ? 'metadata' : 'none') : 'none'}
               width={1920}
               height={1080}
               aria-label="Video panoramico della Sardegna — Residence Le Vele Stintino"
@@ -177,6 +250,8 @@ export function HomePage() {
               videoRef={videoRef}
               videoSlotRef={videoSlotRef}
               onComplete={handlePreloaderComplete}
+              lightMode={lightPreloader}
+              posterSrc={hero.poster}
             />
           )}
         </div>

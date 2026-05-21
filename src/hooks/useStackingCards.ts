@@ -2,6 +2,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { RefObject } from 'react';
+import { isMobileViewport, prefersReducedMotion } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -18,6 +19,14 @@ export function useStackingCards(
         wrapper.querySelectorAll(cardSelector),
       );
       if (!cards.length) return;
+
+      if (isMobileViewport() || prefersReducedMotion()) {
+        cards.forEach((card) => {
+          card.style.position = 'relative';
+          card.style.top = 'auto';
+        });
+        return;
+      }
 
       cards.forEach((card) => {
         card.style.position = 'sticky';

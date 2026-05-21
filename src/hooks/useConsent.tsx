@@ -71,23 +71,33 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let disposed = false;
 
-    const stored = getConsent();
-    setConsentState(stored);
-    setBannerOpen(stored === null);
-    setIsReady(true);
-
     void (async () => {
-      if (!stored || disposed) return;
+      const stored = getConsent();
+
+      if (!stored) {
+        if (disposed) return;
+        setConsentState(null);
+        setBannerOpen(true);
+        setIsReady(true);
+        return;
+      }
+
       const valid = await verifyConsentHashAsync(stored);
       if (disposed) return;
+
       if (!valid) {
         clearConsent();
         revokeAllTracking();
         setConsentState(null);
         setBannerOpen(true);
+        setIsReady(true);
         return;
       }
+
+      setConsentState(stored);
+      setBannerOpen(false);
       applyTrackingIfConsented(stored);
+      setIsReady(true);
     })();
 
     return () => {

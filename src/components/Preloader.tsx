@@ -8,6 +8,9 @@ type PreloaderProps = {
   videoRef: RefObject<HTMLVideoElement | null>;
   videoSlotRef: RefObject<HTMLDivElement | null>;
   onComplete: () => void;
+  /** Mobile / 4G: niente download video durante l’intro. */
+  lightMode?: boolean;
+  posterSrc?: string;
 };
 
 function getSlotTarget(slot: HTMLElement) {
@@ -21,7 +24,24 @@ function getSlotTarget(slot: HTMLElement) {
   };
 }
 
-export function Preloader({ text, videoRef, videoSlotRef, onComplete }: PreloaderProps) {
+function waitForFonts(maxMs: number): Promise<void> {
+  const fontsReady = document.fonts?.ready ?? Promise.resolve();
+  return Promise.race([
+    fontsReady.then(() => undefined),
+    new Promise<void>((resolve) => {
+      window.setTimeout(resolve, maxMs);
+    }),
+  ]);
+}
+
+export function Preloader({
+  text,
+  videoRef,
+  videoSlotRef,
+  onComplete,
+  lightMode = false,
+  posterSrc,
+}: PreloaderProps) {
   const [visible, setVisible] = useState(true);
   const onCompleteRef = useRef(onComplete);
   onCompleteRef.current = onComplete;
@@ -43,7 +63,8 @@ export function Preloader({ text, videoRef, videoSlotRef, onComplete }: Preloade
     const preloaderEl = preloaderRef.current;
     const video = videoRef.current;
     const heroSlot = videoSlotRef.current;
-    if (!textEl || !textContainer || !revealMedia || !preloaderEl || !video || !heroSlot) return undefined;
+    if (!textEl || !textContainer || !revealMedia || !preloaderEl || !heroSlot) return undefined;
+    if (!lightMode && !video) return undefined;
 
     const words = text.trim().split(/\s+/);
     const staggerTime = 0.05;
@@ -90,7 +111,14 @@ export function Preloader({ text, videoRef, videoSlotRef, onComplete }: Preloade
     gsap.set(textContainer, { visibility: 'visible', opacity: 1 });
     gsap.set(wordElements, { opacity: 1, x: 0 });
 
+    const finishIntro = () => {
+      document.body.classList.remove('oh-preloader-active');
+      onCompleteRef.current();
+      setVisible(false);
+    };
+
     const returnVideoToSlot = () => {
+      if (!video) return;
       if (video.parentElement !== heroSlot) {
         heroSlot.appendChild(video);
       }
@@ -100,6 +128,62 @@ export function Preloader({ text, videoRef, videoSlotRef, onComplete }: Preloade
       video.playsInline = true;
       gsap.set(video, { clearProps: 'transform,opacity,filter' });
     };
+
+    if (lightMode) {
+      const posterEl = document.createElement('img');
+      posterEl.className = 'oh-preloader__poster';
+      posterEl.src = posterSrc ?? '';
+      posterEl.alt = '';
+      posterEl.decoding = 'async';
+      posterEl.setAttribute('fetchpriority', 'high');
+      revealMedia.appendChild(posterEl);
+
+      gsap.set(revealMedia, { opacity: 0, scale: 0.96 });
+
+      const lightTl = gsap.timeline({
+        paused: true,
+        onComplete: finishIntro,
+      });
+
+      words.forEach((_w, i) => {
+        const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
+        lightTl.to(
+          chars,
+          {
+            yPercent: 0,
+            duration: 0.38,
+            ease: 'power3.out',
+            stagger: 0.04,
+          },
+          i === 0 ? 0.15 : '<0.08',
+        );
+      });
+
+      lightTl
+        .to(revealMedia, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, '>+0.2')
+        .to([textContainer, ...wordElements, revealMedia], {
+          opacity: 0,
+          duration: 0.35,
+          ease: 'power2.inOut',
+        }, '>+0.35')
+        .to(preloaderEl, {
+          opacity: 0,
+          backgroundColor: 'rgba(245, 245, 245, 0)',
+          duration: 0.4,
+          ease: 'power2.inOut',
+        }, '<0.06');
+
+      void waitForFonts(600).then(() => {
+        lightTl.play();
+      });
+
+      return () => {
+        posterEl.remove();
+        document.body.classList.remove('oh-preloader-active');
+        gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
+        lightTl.kill();
+      };
+    }
 
     const handoffToHero = () => {
       const exitTl = gsap.timeline({
@@ -139,6 +223,7 @@ export function Preloader({ text, videoRef, videoSlotRef, onComplete }: Preloade
     };
 
     const runAnimation = () => {
+      if (!video) return;
       if (video.parentElement === heroSlot) {
         revealMedia.appendChild(video);
       }
@@ -227,6 +312,7 @@ export function Preloader({ text, videoRef, videoSlotRef, onComplete }: Preloade
     };
 
     const onReady = () => {
+      if (!video) return;
       if (video.readyState >= 1) {
         runAnimation();
       } else {
@@ -234,15 +320,15 @@ export function Preloader({ text, videoRef, videoSlotRef, onComplete }: Preloade
       }
     };
 
-    void document.fonts.ready.then(onReady);
+    void waitForFonts(1200).then(onReady);
 
     return () => {
-      video.removeEventListener('loadedmetadata', runAnimation);
+      video?.removeEventListener('loadedmetadata', runAnimation);
       document.body.classList.remove('oh-preloader-active');
       gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
       returnVideoToSlot();
     };
-  }, [text, videoRef, videoSlotRef]);
+  }, [text, videoRef, videoSlotRef, lightMode, posterSrc]);
 
   if (!visible) return null;
 

@@ -379,20 +379,30 @@
 .site-footer__consent {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1rem;
-  margin-top: 0.75rem;
-  font-size: 0.82rem;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  font-size: 0.78rem;
+  color: rgb(250 248 245 / 58%);
+}
+
+.site-footer__consent a,
+.site-footer__consent button {
+  color: inherit;
+  opacity: 0.9;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease;
 }
 
 .site-footer__consent button {
   text-decoration: underline;
   text-underline-offset: 3px;
-  color: inherit;
-  opacity: 0.85;
 }
 
+.site-footer__consent a:hover,
 .site-footer__consent button:hover {
   opacity: 1;
+  color: var(--terra);
 }
 
 @media (max-width: 540px) {

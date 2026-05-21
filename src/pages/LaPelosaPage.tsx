@@ -2,30 +2,54 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PelosaLightbox } from '../components/PelosaLightbox';
 import { pelosaPage } from '../data/site';
+import { useNetworkTier } from '../hooks/useNetworkTier';
 import { usePelosaAnimations } from '../hooks/usePelosaAnimations';
+import {
+  shouldAutoplayHeroVideoImmediately,
+  shouldDeferHeroVideoLoad,
+  shouldUsePosterOnlyHero,
+} from '../lib/network';
 
 export function LaPelosaPage() {
   const pageRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const [isMuted, setIsMuted] = useState(true);
+  const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
+    shouldAutoplayHeroVideoImmediately() ? pelosaPage.hero.video : undefined,
+  );
+  const networkTier = useNetworkTier();
+  const posterOnlyHero = shouldUsePosterOnlyHero();
   usePelosaAnimations(pageRef);
 
-  const { hero, intro, gallery, cta } = pelosaPage;
+  const { hero, intro, gallery } = pelosaPage;
+
+  useEffect(() => {
+    if (heroVideoSrc || posterOnlyHero) return;
+    if (!shouldDeferHeroVideoLoad()) return;
+
+    const enable = () => setHeroVideoSrc(hero.video);
+    if (typeof requestIdleCallback === 'function') {
+      const id = requestIdleCallback(enable, { timeout: 6000 });
+      return () => cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(enable, 2500);
+    return () => window.clearTimeout(id);
+  }, [heroVideoSrc, posterOnlyHero, hero.video, networkTier]);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !heroVideoSrc) return;
     video.muted = isMuted;
     void video.play().catch(() => {});
-  }, [isMuted]);
+  }, [isMuted, heroVideoSrc]);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !heroVideoSrc) return;
     video.muted = true;
     void video.play().catch(() => {});
-  }, []);
+  }, [heroVideoSrc]);
 
   return (
     <main className="pelosa-page" ref={pageRef}>
@@ -34,13 +58,13 @@ export function LaPelosaPage() {
           <video
             ref={videoRef}
             className="pelosa-hero__video"
-            src={hero.video}
+            {...(heroVideoSrc ? { src: heroVideoSrc } : {})}
             poster={hero.poster}
             loop
             muted
             playsInline
-            autoPlay
-            preload="auto"
+            autoPlay={!!heroVideoSrc}
+            preload={heroVideoSrc ? 'metadata' : 'none'}
             aria-label={hero.videoLabel}
           />
         </div>
@@ -126,24 +150,6 @@ export function LaPelosaPage() {
                 </span>
               </button>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="pelosa-cta" aria-labelledby="pelosa-cta-title">
-        <div className="pelosa-cta__inner" data-pelosa-reveal>
-          <p className="pelosa-cta__eyebrow">{cta.eyebrow}</p>
-          <h2 id="pelosa-cta-title" className="pelosa-cta__title display-serif">
-            {cta.title}
-          </h2>
-          <p className="pelosa-cta__text">{cta.text}</p>
-          <div className="pelosa-cta__actions">
-            <Link to={cta.primaryTo} className="pelosa-cta__btn pelosa-cta__btn--primary">
-              {cta.primaryLabel}
-            </Link>
-            <Link to={cta.secondaryTo} className="pelosa-cta__btn pelosa-cta__btn--ghost">
-              {cta.secondaryLabel}
-            </Link>
           </div>
         </div>
       </section>

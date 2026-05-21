@@ -7,6 +7,7 @@ import { PageSeo } from './components/seo/PageSeo';
 import { StructuredData } from './components/seo/StructuredData';
 import { TrackingRouteSync } from './components/seo/TrackingRouteSync';
 import { SubPageLayout } from './components/SubPageLayout';
+import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries } from './data/routes';
 import { scrollToHash, scrollToTop } from './lib/scroll';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HomePage } from './pages/HomePage';
@@ -46,6 +47,11 @@ function RouteFallback() {
 }
 
 export default function App() {
+  const laPelosaPaths = getLaPelosaPaths();
+  const privacyPaths = getPagePaths('privacy-policy');
+  const cookiePaths = getPagePaths('cookie-policy');
+  const suiteRoutes = getSuiteRouteEntries();
+
   return (
     <BrowserRouter>
       <CookieConsentRoot>
@@ -59,10 +65,18 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route element={<SubPageLayout />}>
-              <Route path="/la-pelosa" element={<LaPelosaPage />} />
-              <Route path="/camere/:slug" element={<SuitePage />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-              <Route path="/cookie-policy" element={<CookiePolicyPage />} />
+              {laPelosaPaths.map((path) => (
+                <Route key={path} path={path} element={<LaPelosaPage />} />
+              ))}
+              {suiteRoutes.map(({ path }) => (
+                <Route key={path} path={path} element={<SuitePage />} />
+              ))}
+              {privacyPaths.map((path) => (
+                <Route key={path} path={path} element={<PrivacyPolicyPage />} />
+              ))}
+              {cookiePaths.map((path) => (
+                <Route key={path} path={path} element={<CookiePolicyPage />} />
+              ))}
             </Route>
           </Routes>
         </Suspense>

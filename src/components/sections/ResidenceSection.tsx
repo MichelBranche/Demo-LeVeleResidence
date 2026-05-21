@@ -1,6 +1,7 @@
 import { useRef } from 'react';
-import { residenceCards, residenceHighlights, residenceIntro } from '../../data/site';
+import { residenceHighlights, residenceIntro } from '../../data/site';
 import { useResidenceAnimations } from '../../hooks/useResidenceAnimations';
+import { ServicesAccordion } from './ServicesAccordion';
 
 const marqueeItems = ['Cala Lupo', 'La Pelosa', 'Calette', 'Nord Sardegna', 'Stintino'] as const;
 
@@ -47,19 +48,7 @@ export function ResidenceSection() {
           ))}
         </dl>
 
-        <div className="residence__list">
-          {residenceCards.map((item, index) => (
-            <article key={item.title} className="residence__item">
-              <span className="residence__index" aria-hidden>
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <div className="residence__item-content">
-                <h3 className="residence__item-title">{item.title}</h3>
-                <p className="residence__item-desc">{item.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
+        <ServicesAccordion className="residence__accordion" />
       </div>
     </section>
   );

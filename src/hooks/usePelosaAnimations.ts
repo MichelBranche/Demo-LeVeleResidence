@@ -2,6 +2,8 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { RefObject } from 'react';
+import { isMobileViewport } from '../lib/motion';
+import { getNetworkTier } from '../lib/network';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -15,7 +17,8 @@ export function usePelosaAnimations(pageRef: RefObject<HTMLElement | null>) {
       if (prefersReduced) return;
 
       const heroMedia = page.querySelector<HTMLElement>('.pelosa-hero__video');
-      if (heroMedia) {
+      const lightMotion = isMobileViewport() || getNetworkTier() !== 'fast';
+      if (heroMedia && !lightMotion) {
         gsap.fromTo(
           heroMedia,
           { scale: 1.12 },

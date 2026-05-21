@@ -1,0 +1,37 @@
+{
+  "spaFallback": true,
+  "pages": [
+    {
+      "id": "home",
+      "path": "/"
+    },
+    {
+      "id": "la-pelosa",
+      "path": "/la-pelosa",
+      "aliases": ["/pelosa", "/la_pelosa", "/spiaggia-la-pelosa"]
+    },
+    {
+      "id": "privacy-policy",
+      "path": "/privacy-policy",
+      "aliases": ["/privacy", "/informativa-privacy"]
+    },
+    {
+      "id": "cookie-policy",
+      "path": "/cookie-policy",
+      "aliases": ["/cookie", "/cookies"]
+    }
+  ],
+  "suites": {
+    "basePath": "/camere",
+    "items": [
+      {
+        "slug": "vista-giardino",
+        "aliases": ["/giardino", "/suite-giardino", "/monolocale-giardino"]
+      },
+      {
+        "slug": "vista-mare",
+        "aliases": ["/mare", "/suite-mare", "/monolocale-mare", "/vista-mare"]
+      }
+    ]
+  }
+}

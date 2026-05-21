@@ -11,6 +11,7 @@ export default defineConfig({
           if (id.includes('node_modules/gsap')) return 'gsap';
           if (id.includes('node_modules/lenis')) return 'lenis';
           if (id.includes('node_modules/split-type')) return 'split-type';
+          if (id.includes('node_modules/react-router')) return 'router';
         },
       },
     },

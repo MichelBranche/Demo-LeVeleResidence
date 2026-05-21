@@ -1,3 +1,4 @@
+import { normalizePathname } from './routes';
 import { getSuiteBySlug, site, siteMap } from './site';
 
 const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://www.rtalevele.com';
@@ -43,14 +44,15 @@ export const pageSeo: Record<string, PageSeoConfig> = {
 };
 
 export function getSeoForPath(pathname: string, search = ''): PageSeoConfig {
-  const path = pathname.toLowerCase();
+  const canonicalPath = normalizePathname(pathname);
+  const path = canonicalPath.toLowerCase();
 
   if (path.startsWith('/camere/')) {
     const slug = path.replace('/camere/', '');
     const suite = getSuiteBySlug(slug);
     if (suite) {
       return {
-        path: `${path}${search}`,
+        path: `${canonicalPath}${search}`,
         title: `${suite.title} | Residence Le Vele — Appartamenti Stintino`,
         description: `${suite.description} Prenota il monolocale a Stintino, vicino a La Pelosa.`,
         keywords: 'monolocale stintino, appartamenti vacanze sardegna, residence le vele',
@@ -58,9 +60,17 @@ export function getSeoForPath(pathname: string, search = ''): PageSeoConfig {
     }
   }
 
-  return pageSeo[path] ?? {
+  const known = pageSeo[path];
+  if (known) {
+    return {
+      ...known,
+      path: `${canonicalPath}${search}`,
+    };
+  }
+
+  return {
     ...defaultSeo,
-    path: `${path}${search}`,
+    path: `${canonicalPath}${search}`,
     title: `${site.name} | Stintino, Sardegna`,
   };
 }

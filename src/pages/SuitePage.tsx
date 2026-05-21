@@ -1,9 +1,12 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { getSuiteSlugFromPathname } from '../data/routes';
 import { getSuiteBySlug } from '../data/site';
 import { Button } from '../components/Button';
 
 export function SuitePage() {
-  const { slug = '' } = useParams();
+  const { slug: paramSlug = '' } = useParams();
+  const { pathname } = useLocation();
+  const slug = paramSlug || getSuiteSlugFromPathname(pathname) || '';
   const suite = getSuiteBySlug(slug);
 
   if (!suite) {

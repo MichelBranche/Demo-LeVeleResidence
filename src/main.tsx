@@ -9,6 +9,7 @@ import './styles/landing-intro.css';
 import './styles/oh-layout.css';
 import './styles/pelosa.css';
 import './styles/consent.css';
+import './styles/mobile.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
