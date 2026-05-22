@@ -4,7 +4,9 @@ import { fingerprintConsent } from './consentHash';
 export const CONSENT_STORAGE_KEY = 'lv_consent';
 export const CONSENT_COOKIE_NAME = 'lv_consent';
 
-export type ConsentLocale = 'it' | 'en';
+import type { SiteLocale } from './siteLocales';
+
+export type ConsentLocale = SiteLocale;
 
 export type Consent = {
   necessary: true;

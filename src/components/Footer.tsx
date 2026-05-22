@@ -1,14 +1,16 @@
 import { Link } from 'react-router-dom';
 import { consentCopy } from '../data/consentCopy';
-import { legalEntity, logo, navLinks, site } from '../data/site';
 import { useConsent } from '../hooks/useConsent';
+import { useSiteLocale } from '../hooks/useSiteLocale';
 import { GatedMap } from './maps/GatedMap';
 
 const PORTFOLIO_URL = 'https://www.michelbranche.it';
 
 export function Footer() {
-  const { locale, openBanner } = useConsent();
+  const { locale, content } = useSiteLocale();
+  const { openBanner } = useConsent();
   const consentLabels = consentCopy[locale].footer;
+  const { footer, navLinks, config: site, legalEntity, logo } = content;
   const year = new Date().getFullYear();
 
   return (
@@ -19,14 +21,11 @@ export function Footer() {
             <Link to="/" className="site-footer__logo">
               <img src={logo.footer} alt={site.name} width={200} height={98} loading="lazy" />
             </Link>
-            <p className="site-footer__about">
-              Residence a Stintino per vacanze in Sardegna: appartamenti vicino a La Pelosa, tra privacy,
-              comfort e l&apos;atmosfera del Nord Sardegna.
-            </p>
+            <p className="site-footer__about">{footer.about}</p>
           </div>
 
           <div className="site-footer__col">
-            <h3 className="site-footer__heading">Esplora</h3>
+            <h3 className="site-footer__heading">{footer.explore}</h3>
             <nav className="site-footer__nav" aria-label="Navigazione footer">
               <ul className="site-footer__nav-list" role="list">
                 {navLinks.map((link) => (
@@ -39,22 +38,22 @@ export function Footer() {
           </div>
 
           <div className="site-footer__col">
-            <h3 className="site-footer__heading">Contatti</h3>
+            <h3 className="site-footer__heading">{footer.contacts}</h3>
             <ul className="site-footer__contact-list" role="list">
               <li>
-                <span className="site-footer__contact-label">Telefono</span>
+                <span className="site-footer__contact-label">{content.contactLabels.phone}</span>
                 <a href={`tel:${site.phone.replace(/\s/g, '')}`}>{site.phone}</a>
               </li>
               <li>
-                <span className="site-footer__contact-label">Mobile</span>
+                <span className="site-footer__contact-label">{content.contactLabels.mobile}</span>
                 <a href={`tel:${site.mobile.replace(/\s/g, '')}`}>{site.mobile}</a>
               </li>
               <li>
-                <span className="site-footer__contact-label">Email</span>
+                <span className="site-footer__contact-label">{content.contactLabels.email}</span>
                 <a href={`mailto:${site.email}`}>{site.email}</a>
               </li>
               <li>
-                <span className="site-footer__contact-label">Indirizzo</span>
+                <span className="site-footer__contact-label">{content.contactLabels.address}</span>
                 <address>
                   {site.address.street}
                   <br />
@@ -65,7 +64,7 @@ export function Footer() {
           </div>
         </div>
 
-        <section className="site-footer__map" aria-label="Mappa del residence">
+        <section className="site-footer__map" aria-label={content.siteMap.mapSectionAria}>
           <GatedMap />
         </section>
 
@@ -89,7 +88,7 @@ export function Footer() {
               <Link to="/cookie-policy">{consentLabels.cookies}</Link>
             </nav>
             <p className="site-footer__credit">
-              Design by{' '}
+              {footer.designBy}{' '}
               <a
                 href={PORTFOLIO_URL}
                 className="site-footer__credit-link"

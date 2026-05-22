@@ -13,6 +13,7 @@ import './styles/suite-detail.css';
 import './styles/consent.css';
 import './styles/mobile.css';
 import './styles/chrome.css';
+import './styles/error-fallback.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

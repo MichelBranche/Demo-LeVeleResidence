@@ -150,7 +150,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
       bannerOpen,
       panelOpen,
       locale,
-      copy: consentCopy[locale],
+      copy: consentCopy[locale] ?? consentCopy.it,
       setLocale,
       persistPreferences,
       applyTrackingScripts,

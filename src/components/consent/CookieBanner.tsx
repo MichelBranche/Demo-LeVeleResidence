@@ -13,8 +13,6 @@ function prefersReducedMotion(): boolean {
 export function CookieBanner() {
   const {
     copy,
-    locale,
-    setLocale,
     panelOpen,
     closePanel,
     acceptAll,
@@ -234,25 +232,6 @@ export function CookieBanner() {
             />
           )}
 
-          <div className="cookie-consent__locale">
-            <button
-              type="button"
-              className={`cookie-consent__lang ${locale === 'it' ? 'is-active' : ''}`}
-              onClick={() => setLocale('it')}
-              aria-label={copy.aria.localeSwitch}
-              aria-pressed={locale === 'it'}
-            >
-              IT
-            </button>
-            <button
-              type="button"
-              className={`cookie-consent__lang ${locale === 'en' ? 'is-active' : ''}`}
-              onClick={() => setLocale('en')}
-              aria-pressed={locale === 'en'}
-            >
-              EN
-            </button>
-          </div>
         </div>
       </div>
     </div>,

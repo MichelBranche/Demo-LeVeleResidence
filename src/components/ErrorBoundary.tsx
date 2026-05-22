@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { ErrorFallback } from './ErrorFallback';
 
 type Props = { children: ReactNode };
 type State = { error: Error | null };
@@ -16,25 +17,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.error) {
-      return (
-        <div
-          style={{
-            minHeight: '100dvh',
-            padding: '2rem',
-            fontFamily: 'system-ui, sans-serif',
-            background: '#564a42',
-            color: '#faf8f5',
-          }}
-        >
-          <h1 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>Errore di caricamento</h1>
-          <p style={{ marginBottom: '1rem' }}>
-            Ricarica la pagina. Se il problema resta, cancella i dati del sito in DevTools → Application.
-          </p>
-          <pre style={{ fontSize: '0.8rem', overflow: 'auto', opacity: 0.8 }}>
-            {this.state.error.message}
-          </pre>
-        </div>
-      );
+      return <ErrorFallback error={this.state.error} />;
     }
 
     return this.props.children;

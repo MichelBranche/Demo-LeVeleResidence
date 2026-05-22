@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { logo, navLinks, site } from '../data/site';
+import { useSiteLocale } from '../hooks/useSiteLocale';
 import { scrollToHash, subscribeScroll } from '../lib/scroll';
+import { LanguageToggle } from './LanguageToggle';
 
 const MOBILE_NAV_MQ = '(max-width: 1023px)';
 
@@ -40,6 +41,8 @@ function scheduleHashScroll(hash: string) {
 }
 
 export function Header() {
+  const { content } = useSiteLocale();
+  const { navLinks, headerUi: ui, config: site, logo } = content;
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -171,10 +174,10 @@ export function Header() {
         <button
           type="button"
           className="site-header__backdrop"
-          aria-label="Chiudi menu"
+          aria-label={ui.closeMenuBackdrop}
           onClick={() => setMenuOpen(false)}
         />
-        <nav className="site-header__mobile-nav" aria-label="Menu principale">
+        <nav className="site-header__mobile-nav" aria-label={content.header.navAria}>
           {renderNavLinks('mobile')}
         </nav>
       </div>,
@@ -186,20 +189,22 @@ export function Header() {
       {mobileMenuPortal}
 
       <div className="site-header__bar">
-        <nav className="site-header__nav" aria-label="Principale">
+        <nav className="site-header__nav" aria-label={content.header.mainNavAria}>
           <button
             type="button"
             className="site-header__menu"
             aria-expanded={menuOpen}
             aria-controls="site-primary-nav"
-            aria-label={menuOpen ? 'Chiudi menu' : 'Apri menu'}
+            aria-label={menuOpen ? ui.menuOpen : ui.menuClosed}
             onClick={() => setMenuOpen((open) => !open)}
           >
             <span className="site-header__menu-icon" aria-hidden>
               <span />
               <span />
             </span>
-            <span className="site-header__menu-label">{menuOpen ? 'Chiudi' : 'Menu'}</span>
+            <span className="site-header__menu-label">
+              {menuOpen ? ui.menuLabelOpen : ui.menuLabelClosed}
+            </span>
           </button>
 
           {!isMobileNav && renderNavLinks('desktop')}
@@ -217,11 +222,12 @@ export function Header() {
         </Link>
 
         <div className="site-header__aside">
+          <LanguageToggle />
           <a
             className="site-header__cta"
             href={`mailto:${site.email}`}
             rel="noreferrer"
-            aria-label="Prenota — richiedi disponibilità via email"
+            aria-label={ui.bookAria}
           >
             <span className="site-header__cta-icon" aria-hidden>
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -237,7 +243,7 @@ export function Header() {
                 />
               </svg>
             </span>
-            <span className="site-header__cta-text">Prenota</span>
+            <span className="site-header__cta-text">{ui.book}</span>
             <span className="site-header__cta-arrow" aria-hidden>
               →
             </span>

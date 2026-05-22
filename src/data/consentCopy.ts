@@ -130,4 +130,124 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       localeSwitch: 'Change language',
     },
   },
+  de: {
+    banner: {
+      eyebrow: 'Datenschutz & Cookies',
+      title: 'Ihr Erlebnis, Ihre Wahl',
+      description:
+        'Wir verwenden technisch notwendige Cookies und — nur mit Ihrer Einwilligung — Analyse- und Marketing-Tools. Sie können alle akzeptieren, nicht notwendige Cookies ablehnen oder Einstellungen anpassen.',
+      acceptAll: 'Alle akzeptieren',
+      rejectAll: 'Alle ablehnen',
+      customize: 'Anpassen',
+      privacyLink: 'Datenschutz',
+      cookieLink: 'Cookie-Richtlinie',
+    },
+    panel: {
+      title: 'Cookie-Einstellungen',
+      description:
+        'Wählen Sie die Kategorien. Notwendige Cookies bleiben für Sicherheit und Grundfunktionen aktiv.',
+      necessary: {
+        title: 'Notwendig',
+        description: 'Erforderlich für Navigation, Sicherheit und Speicherung Ihrer Einwilligung.',
+        alwaysOn: 'Immer aktiv',
+      },
+      analytics: {
+        title: 'Analytisch',
+        description: 'Helfen uns zu verstehen, wie die Website genutzt wird (z. B. Google Analytics), aggregiert.',
+      },
+      marketing: {
+        title: 'Marketing',
+        description: 'Werbung und Remarketing (z. B. Meta Pixel) nur mit Ihrer Einwilligung.',
+      },
+      preferences: {
+        title: 'Präferenzen',
+        description:
+          'Aktivieren u. a. die interaktive Google-Karte. Ohne diese Einwilligung wird die Karte nicht geladen.',
+      },
+      save: 'Einstellungen speichern',
+      back: 'Zurück',
+    },
+    footer: { manage: 'Cookies verwalten', privacy: 'Datenschutz', cookies: 'Cookies' },
+    aria: { dialog: 'Cookie-Einwilligung', panel: 'Cookie-Einstellungen', localeSwitch: 'Sprache ändern' },
+  },
+  fr: {
+    banner: {
+      eyebrow: 'Confidentialité & cookies',
+      title: 'Votre expérience, vos choix',
+      description:
+        'Nous utilisons des cookies techniques nécessaires et, uniquement avec votre consentement, des outils d’analyse et marketing. Acceptez tout, refusez les cookies non essentiels ou personnalisez.',
+      acceptAll: 'Tout accepter',
+      rejectAll: 'Tout refuser',
+      customize: 'Personnaliser',
+      privacyLink: 'Politique de confidentialité',
+      cookieLink: 'Politique cookies',
+    },
+    panel: {
+      title: 'Préférences cookies',
+      description:
+        'Choisissez les catégories à activer. Les cookies nécessaires restent toujours actifs pour la sécurité et le fonctionnement de base.',
+      necessary: {
+        title: 'Nécessaires',
+        description: 'Indispensables à la navigation, la sécurité et la mémorisation de vos choix.',
+        alwaysOn: 'Toujours actifs',
+      },
+      analytics: {
+        title: 'Analytiques',
+        description: 'Nous aident à comprendre l’usage du site (ex. Google Analytics), de façon agrégée.',
+      },
+      marketing: {
+        title: 'Marketing',
+        description: 'Promotion et remarketing (ex. Meta Pixel) uniquement si vous l’autorisez.',
+      },
+      preferences: {
+        title: 'Préférences',
+        description:
+          'Activent notamment la carte Google interactive. Sans ce consentement, la carte n’est pas chargée.',
+      },
+      save: 'Enregistrer',
+      back: 'Retour',
+    },
+    footer: { manage: 'Gérer les cookies', privacy: 'Confidentialité', cookies: 'Cookies' },
+    aria: { dialog: 'Consentement cookies', panel: 'Préférences cookies', localeSwitch: 'Changer de langue' },
+  },
+  es: {
+    banner: {
+      eyebrow: 'Privacidad y cookies',
+      title: 'Tu experiencia, tus elecciones',
+      description:
+        'Usamos cookies técnicas necesarias y, solo con tu consentimiento, herramientas de análisis y marketing. Puedes aceptar todo, rechazar las no esenciales o personalizar.',
+      acceptAll: 'Aceptar todo',
+      rejectAll: 'Rechazar todo',
+      customize: 'Personalizar',
+      privacyLink: 'Política de privacidad',
+      cookieLink: 'Política de cookies',
+    },
+    panel: {
+      title: 'Preferencias de cookies',
+      description:
+        'Elige las categorías. Las cookies necesarias permanecen activas para seguridad y funciones básicas.',
+      necessary: {
+        title: 'Necesarias',
+        description: 'Imprescindibles para navegar, la seguridad y guardar tu consentimiento.',
+        alwaysOn: 'Siempre activas',
+      },
+      analytics: {
+        title: 'Analíticas',
+        description: 'Nos ayudan a entender el uso del sitio (p. ej. Google Analytics), de forma agregada.',
+      },
+      marketing: {
+        title: 'Marketing',
+        description: 'Promoción y remarketing (p. ej. Meta Pixel) solo si lo autorizas.',
+      },
+      preferences: {
+        title: 'Preferencias',
+        description:
+          'Activan funciones como el mapa interactivo de Google. Sin este consentimiento el mapa no se carga.',
+      },
+      save: 'Guardar preferencias',
+      back: 'Atrás',
+    },
+    footer: { manage: 'Gestionar cookies', privacy: 'Privacidad', cookies: 'Cookies' },
+    aria: { dialog: 'Consentimiento de cookies', panel: 'Preferencias de cookies', localeSwitch: 'Cambiar idioma' },
+  },
 };

@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { formatCopy } from '../i18n';
 import { getSuiteSlugFromPathname } from '../data/routes';
-import { getSuiteBySlug, suites } from '../data/site';
+import { useSiteLocale } from '../hooks/useSiteLocale';
 import { useSuitePageAnimations } from '../hooks/useSuitePageAnimations';
 
 function splitSuiteTitle(title: string) {
@@ -15,10 +16,12 @@ function splitSuiteTitle(title: string) {
 }
 
 export function SuitePage() {
+  const { content } = useSiteLocale();
+  const { suitePage, suites, config } = content;
   const { slug: paramSlug = '' } = useParams();
   const { pathname } = useLocation();
   const slug = paramSlug || getSuiteSlugFromPathname(pathname) || '';
-  const suite = getSuiteBySlug(slug);
+  const suite = suites.find((s) => s.slug === slug);
   const pageRef = useRef<HTMLElement>(null);
   useSuitePageAnimations(pageRef);
 
@@ -30,14 +33,14 @@ export function SuitePage() {
   if (!suite) {
     return (
       <main className="page-inner placeholder-page">
-        <h1 className="display-title">Suite non trovata</h1>
-        <Link to="/#suites">← Torna alle suites</Link>
+        <h1 className="display-title">{suitePage.notFound}</h1>
+        <Link to="/#suites">{suitePage.backToSuites}</Link>
       </main>
     );
   }
 
   const otherSuite = suites.find((s) => s.slug !== suite.slug);
-  const mailSubject = `Prenotazione ${suite.title}`;
+  const mailSubject = `${suitePage.mailSubjectPrefix} ${suite.title}`;
   const marqueeLabel = `${suite.title} · Stintino · Sardegna · `;
   const { line1: titleLine1, line2: titleLine2 } = splitSuiteTitle(suite.title);
 
@@ -53,7 +56,7 @@ export function SuitePage() {
           <img
             className="suite-hero__img"
             src={suite.image}
-            alt={`${suite.title} — monolocale vacanze Stintino, Residence Le Vele`}
+            alt={`${suite.title}${suitePage.heroAltSuffix}`}
             fetchPriority="high"
             decoding="async"
           />
@@ -61,7 +64,7 @@ export function SuitePage() {
         <div className="suite-hero__overlay" aria-hidden />
         <div className="suite-hero__inner">
           <Link to="/#suites" className="suite-hero__back">
-            ← Le Suites
+            {suitePage.backLink}
           </Link>
           <div className="suite-hero__content" data-suite-reveal-stagger>
             <h1 id="suite-hero-title" className="suite-hero__title display-serif">
@@ -73,24 +76,24 @@ export function SuitePage() {
               )}
             </h1>
             <p className="suite-hero__tagline">{suite.tagline}</p>
-            <ul className="suite-hero__specs" aria-label="Informazioni suite">
+            <ul className="suite-hero__specs" aria-label={suitePage.specsAria}>
               <li>
-                <span className="suite-hero__spec-value">2–4</span>
-                <span className="suite-hero__spec-label">ospiti</span>
+                <span className="suite-hero__spec-value">{suitePage.guests}</span>
+                <span className="suite-hero__spec-label">{suitePage.guestsLabel}</span>
               </li>
               <li>
-                <span className="suite-hero__spec-value">Stintino</span>
-                <span className="suite-hero__spec-label">Sardegna</span>
+                <span className="suite-hero__spec-value">{suitePage.locationValue}</span>
+                <span className="suite-hero__spec-label">{suitePage.locationLabel}</span>
               </li>
               <li>
-                <span className="suite-hero__spec-value">Monolocale</span>
-                <span className="suite-hero__spec-label">vacanze</span>
+                <span className="suite-hero__spec-value">{suitePage.typeValue}</span>
+                <span className="suite-hero__spec-label">{suitePage.typeLabel}</span>
               </li>
             </ul>
           </div>
-          <a href="#suite-story" className="suite-hero__scroll" aria-label="Scorri verso il contenuto">
+          <a href="#suite-story" className="suite-hero__scroll" aria-label={suitePage.scrollAria}>
             <span className="suite-hero__scroll-line" aria-hidden />
-            <span>Scorri</span>
+            <span>{suitePage.scrollLabel}</span>
           </a>
         </div>
       </section>
@@ -107,19 +110,19 @@ export function SuitePage() {
         <div className="suite-story__grid">
           <div className="suite-story__label-col" data-suite-reveal>
             <span className="suite-story__index">{suite.index}</span>
-            <p className="suite-story__label">L&apos;esperienza</p>
+            <p className="suite-story__label">{suitePage.experience}</p>
           </div>
           <div className="suite-story__body" data-suite-reveal>
             <p className="suite-story__lead">{suite.description}</p>
-            <p className="suite-story__note">
-              Appartamento vacanze al Residence Le Vele — Stintino, a pochi minuti dalle spiagge più
-              belle del Nord Sardegna.
-            </p>
+            <p className="suite-story__note">{suitePage.storyNote}</p>
           </div>
         </div>
       </section>
 
-      <section className="suite-gallery" aria-label={`Galleria ${suite.title}`}>
+      <section
+        className="suite-gallery"
+        aria-label={formatCopy(suitePage.galleryAria, { title: suite.title })}
+      >
         <div className="suite-gallery__grid">
           {suite.gallery.map((item) => (
             <figure
@@ -134,9 +137,9 @@ export function SuitePage() {
 
       <section className="suite-amenities" aria-labelledby="suite-amenities-title">
         <div className="suite-amenities__head" data-suite-reveal-stagger>
-          <p className="suite-amenities__eyebrow">Dotazioni</p>
+          <p className="suite-amenities__eyebrow">{suitePage.amenitiesEyebrow}</p>
           <h2 id="suite-amenities-title" className="suite-amenities__title display-serif">
-            Tutto il necessario
+            {suitePage.amenitiesTitle}
           </h2>
         </div>
         <ul className="suite-amenities__list" role="list">
@@ -153,19 +156,16 @@ export function SuitePage() {
         <div className="suite-cta__wrap">
           <div className="suite-cta__panel" data-suite-reveal>
             <div className="suite-cta__panel-inner">
-              <p className="suite-cta__eyebrow">Prenotazioni</p>
+              <p className="suite-cta__eyebrow">{suitePage.bookingEyebrow}</p>
               <h2 id="suite-cta-title" className="suite-cta__title display-serif">
-                Richiedi disponibilità
+                {suitePage.bookingTitle}
               </h2>
-              <p className="suite-cta__text">
-                Scrivici per date, numero di ospiti e preferenze — ti rispondiamo con un preventivo
-                personalizzato.
-              </p>
+              <p className="suite-cta__text">{suitePage.bookingText}</p>
               <a
                 className="suite-cta__btn"
-                href={`mailto:info@rtalevele.com?subject=${encodeURIComponent(mailSubject)}`}
+                href={`mailto:${config.email}?subject=${encodeURIComponent(mailSubject)}`}
               >
-                <span className="suite-cta__btn-label">Richiedi preventivo</span>
+                <span className="suite-cta__btn-label">{suitePage.bookingCta}</span>
                 <span className="suite-cta__btn-arrow" aria-hidden>
                   →
                 </span>
@@ -181,7 +181,7 @@ export function SuitePage() {
                 data-suite-reveal
               >
                 <span className="suite-cta__sibling-text">
-                  <span className="suite-cta__sibling-label">Altra suite</span>
+                  <span className="suite-cta__sibling-label">{suitePage.otherSuite}</span>
                   <span className="suite-cta__sibling-title display-serif">{otherSuite.title}</span>
                 </span>
                 <span className="suite-cta__sibling-arrow" aria-hidden>
@@ -190,7 +190,7 @@ export function SuitePage() {
               </Link>
             )}
             <Link to="/#suites" className="suite-cta__home">
-              ← Tutte le suites
+              {suitePage.allSuites}
             </Link>
           </div>
         </div>

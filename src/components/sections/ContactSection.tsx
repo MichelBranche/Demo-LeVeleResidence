@@ -1,12 +1,15 @@
-import { contactIntro, site } from '../../data/site';
-
-const channels = [
-  { label: 'Telefono', href: `tel:${site.phone.replace(/\s/g, '')}`, value: site.phone },
-  { label: 'Mobile', href: `tel:${site.mobile.replace(/\s/g, '')}`, value: site.mobile },
-  { label: 'Email', href: `mailto:${site.email}`, value: site.email },
-] as const;
+import { useSiteLocale } from '../../hooks/useSiteLocale';
 
 export function ContactSection() {
+  const { content } = useSiteLocale();
+  const { contactIntro, contactLabels, config: site } = content;
+
+  const channels = [
+    { label: contactLabels.phone, href: `tel:${site.phone.replace(/\s/g, '')}`, value: site.phone },
+    { label: contactLabels.mobile, href: `tel:${site.mobile.replace(/\s/g, '')}`, value: site.mobile },
+    { label: contactLabels.email, href: `mailto:${site.email}`, value: site.email },
+  ] as const;
+
   return (
     <section id="contatti" className="contact-section" aria-labelledby="contatti-title">
       <div className="contact-section__inner">
@@ -29,7 +32,7 @@ export function ContactSection() {
               <br />
               {site.address.postalCode} {site.address.city} ({site.address.region})
               <br />
-              {site.address.country}
+              {content.addressCountry}
             </address>
           </div>
 

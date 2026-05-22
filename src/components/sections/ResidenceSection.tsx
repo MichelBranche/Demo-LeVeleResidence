@@ -1,11 +1,11 @@
 import { useRef } from 'react';
-import { residenceHighlights, residenceIntro } from '../../data/site';
 import { useResidenceAnimations } from '../../hooks/useResidenceAnimations';
+import { useSiteLocale } from '../../hooks/useSiteLocale';
 import { ServicesAccordion } from './ServicesAccordion';
 
-const marqueeItems = ['Cala Lupo', 'La Pelosa', 'Calette', 'Nord Sardegna', 'Stintino'] as const;
-
 export function ResidenceSection() {
+  const { content } = useSiteLocale();
+  const { residenceIntro, residenceHighlights } = content;
   const sectionRef = useRef<HTMLElement>(null);
   useResidenceAnimations(sectionRef);
 
@@ -31,7 +31,7 @@ export function ResidenceSection() {
 
         <div className="residence__marquee" aria-hidden>
           <div className="residence__marquee-track">
-            {[...marqueeItems, ...marqueeItems].map((label, i) => (
+            {[...residenceIntro.marquee, ...residenceIntro.marquee].map((label, i) => (
               <span key={`${label}-${i}`}>{label}</span>
             ))}
           </div>
@@ -39,7 +39,7 @@ export function ResidenceSection() {
 
         <p className="residence__lead">{residenceIntro.lead}</p>
 
-        <dl className="residence__metrics" aria-label="In sintesi">
+        <dl className="residence__metrics" aria-label={residenceIntro.metricsAria}>
           {residenceHighlights.map((item) => (
             <div key={item.label} className="residence__metric">
               <dt>{item.label}</dt>

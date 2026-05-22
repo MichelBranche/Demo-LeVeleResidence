@@ -1,6 +1,9 @@
-import { hero } from '../data/site';
+import { useSiteLocale } from '../hooks/useSiteLocale';
 
 export function HeroSection() {
+  const { content } = useSiteLocale();
+  const { hero } = content;
+
   return (
     <section id="hero" className="hero">
       <div className="hero-content">
@@ -13,12 +16,17 @@ export function HeroSection() {
         <p className="hero-lede">{hero.lede}</p>
       </div>
 
-      <a href="#residence" className="hero-scroll-cue" aria-label="Scorri verso il Residence">
+      <a href="#residence" className="hero-scroll-cue" aria-label={hero.scrollAria}>
         <span className="hero-scroll-mouse" aria-hidden>
           <span className="hero-scroll-wheel" />
         </span>
-        <span className="hero-scroll-label">Scorri</span>
+        <span className="hero-scroll-label">{hero.scrollLabel}</span>
       </a>
     </section>
   );
+}
+
+export function useHeroMedia() {
+  const { content } = useSiteLocale();
+  return content.heroMedia;
 }

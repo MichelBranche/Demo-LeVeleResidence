@@ -1,15 +1,13 @@
 import { useRef } from 'react';
-import {
-  getReviewListingUrl,
-  getReviewsForDisplay,
-  reviewLinks,
-  type Review,
-} from '../../data/reviews';
+import { formatCopy, getReviewListingUrl } from '../../i18n';
+import type { ReviewCopy } from '../../i18n/types';
 import { useReviewsMarquee } from '../../hooks/useReviewsMarquee';
+import { useSiteLocale } from '../../hooks/useSiteLocale';
 
-function StarRow({ rating }: { rating: number }) {
+function StarRow({ rating, ariaTemplate }: { rating: number; ariaTemplate: string }) {
+  const aria = formatCopy(ariaTemplate, { rating: String(rating) });
   return (
-    <div className="review-card__stars" aria-label={`Valutazione ${rating} su 5`}>
+    <div className="review-card__stars" aria-label={aria}>
       {Array.from({ length: 5 }, (_, i) => (
         <span key={i} className={i < rating ? 'review-card__star--on' : undefined}>
           ★
@@ -19,17 +17,26 @@ function StarRow({ rating }: { rating: number }) {
   );
 }
 
-function ReviewCard({ review }: { review: Review }) {
+function ReviewCard({
+  review,
+  openOnTemplate,
+  ratingAria,
+}: {
+  review: ReviewCopy;
+  openOnTemplate: string;
+  ratingAria: string;
+}) {
   const isGoogle = review.source === 'google';
+  const platform = isGoogle ? 'Google' : 'Tripadvisor';
   const listingUrl = getReviewListingUrl(review);
 
   return (
     <li className={`review-card review-card--${review.source}`}>
       <div className="review-card__top">
         <span className={`review-card__badge review-card__badge--${review.source}`}>
-          {isGoogle ? 'Google' : 'Tripadvisor'}
+          {platform}
         </span>
-        <StarRow rating={review.rating} />
+        <StarRow rating={review.rating} ariaTemplate={ratingAria} />
       </div>
       <blockquote className="review-card__quote">
         <p>{review.text}</p>
@@ -45,43 +52,60 @@ function ReviewCard({ review }: { review: Review }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Apri su {isGoogle ? 'Google' : 'Tripadvisor'} →
+          {formatCopy(openOnTemplate, { platform })}
         </a>
       </footer>
     </li>
   );
 }
 
+const REVIEW_LINK_JOIN: Record<string, string> = {
+  it: ' e ',
+  en: ' and ',
+  de: ' und ',
+  fr: ' et ',
+  es: ' y ',
+};
+
 export function ReviewsSection() {
+  const { locale, content } = useSiteLocale();
+  const { reviews, reviewLinks } = content;
   const sectionRef = useRef<HTMLElement>(null);
-  const displayReviews = getReviewsForDisplay();
+  const displayReviews = (reviews.items ?? []).filter((r) => r.rating >= 4);
   useReviewsMarquee(sectionRef);
 
   const renderStrip = (suffix: string) =>
-    displayReviews.map((review) => <ReviewCard key={`${review.id}${suffix}`} review={review} />);
+    displayReviews.map((review) => (
+      <ReviewCard
+        key={`${review.id}${suffix}`}
+        review={review}
+        openOnTemplate={reviews.openOn}
+        ratingAria={reviews.ratingAria}
+      />
+    ));
 
   return (
     <section id="recensioni" className="reviews" ref={sectionRef} aria-labelledby="recensioni-title">
       <div className="reviews__inner">
         <header className="reviews__header">
-          <p className="reviews__eyebrow">Recensioni</p>
+          <p className="reviews__eyebrow">{reviews.eyebrow}</p>
           <h2 id="recensioni-title" className="reviews__title">
-            Cosa dicono gli ospiti
+            {reviews.title}
           </h2>
           <p className="reviews__subtitle">
-            Estratti da{' '}
+            {reviews.subtitleBefore}{' '}
             <a href={reviewLinks.google.url} target="_blank" rel="noopener noreferrer">
               Google
             </a>{' '}
-            e{' '}
+            {REVIEW_LINK_JOIN[locale] ?? ' · '}
             <a href={reviewLinks.tripadvisor.url} target="_blank" rel="noopener noreferrer">
               Tripadvisor
             </a>
-            .
+            {reviews.subtitleAfter}
           </p>
         </header>
 
-        <div className="reviews__marquee" aria-label="Recensioni degli ospiti">
+        <div className="reviews__marquee" aria-label={reviews.marqueeAria}>
           <div className="reviews__marquee-mask">
             <div className="reviews__marquee-track">
               <ul className="reviews__marquee-strip" role="list">

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getSeoForPath, absoluteUrl } from '../../data/seo';
+import { getLocaleCopy } from '../../i18n';
+import { absoluteUrl, getSeoForPath } from '../../data/seo';
+import { useSiteLocale } from '../../hooks/useSiteLocale';
 
 function upsertMeta(name: string, content: string, property = false) {
   const attr = property ? 'property' : 'name';
@@ -25,10 +27,12 @@ function upsertLink(rel: string, href: string) {
 
 export function PageSeo() {
   const { pathname, search } = useLocation();
+  const { locale } = useSiteLocale();
 
   useEffect(() => {
-    const seo = getSeoForPath(pathname, search);
+    const seo = getSeoForPath(pathname, search, locale);
     const url = absoluteUrl(seo.path);
+    const ogLocale = getLocaleCopy(locale).ogLocale;
 
     document.title = seo.title;
     upsertMeta('description', seo.description);
@@ -40,12 +44,12 @@ export function PageSeo() {
     upsertMeta('og:description', seo.description, true);
     upsertMeta('og:type', 'website', true);
     upsertMeta('og:url', url, true);
-    upsertMeta('og:locale', 'it_IT', true);
+    upsertMeta('og:locale', ogLocale, true);
 
     upsertMeta('twitter:card', 'summary_large_image');
     upsertMeta('twitter:title', seo.title);
     upsertMeta('twitter:description', seo.description);
-  }, [pathname, search]);
+  }, [pathname, search, locale]);
 
   return null;
 }

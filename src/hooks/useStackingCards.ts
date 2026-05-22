@@ -2,13 +2,14 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { RefObject } from 'react';
-import { isMobileViewport, prefersReducedMotion } from '../lib/motion';
+import { allowScrollScrub, isMobileViewport, prefersReducedMotion } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 export function useStackingCards(
   wrapperRef: RefObject<HTMLElement | null>,
   cardSelector: string,
+  extraDeps: readonly unknown[] = [],
 ) {
   useGSAP(
     () => {
@@ -24,6 +25,7 @@ export function useStackingCards(
         cards.forEach((card) => {
           card.style.position = 'relative';
           card.style.top = 'auto';
+          card.style.zIndex = '';
         });
         return;
       }
@@ -48,11 +50,11 @@ export function useStackingCards(
             trigger: wrapper,
             start: `${(index0 / numCards) * 100}% top`,
             end: 'bottom center',
-            scrub: true,
+            scrub: allowScrollScrub(),
           },
         });
       });
     },
-    { scope: wrapperRef, dependencies: [cardSelector] },
+    { scope: wrapperRef, dependencies: [cardSelector, ...extraDeps] },
   );
 }

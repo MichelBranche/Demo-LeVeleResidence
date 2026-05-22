@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { siteMap } from '../../data/site';
 import { useConsent } from '../../hooks/useConsent';
-const MAP_EMBED_SRC = `https://www.google.com/maps?q=${siteMap.embedQuery}&output=embed`;
+import { useSiteLocale } from '../../hooks/useSiteLocale';
 
 export function GatedMap() {
+  const { content } = useSiteLocale();
+  const { siteMap, siteMapCoords } = content;
+  const mapEmbedSrc = `https://www.google.com/maps?q=${siteMapCoords.embedQuery}&output=embed`;
   const { consent, hasConsent, isReady, openBanner, persistPreferences, updatePreferences } =
     useConsent();
   const [revealed, setRevealed] = useState(false);
@@ -33,12 +35,10 @@ export function GatedMap() {
   if (mapAllowed) {
     return (
       <div className={`gated-map gated-map--live${revealed ? ' is-revealed' : ''}`}>
-        <div className="map-badge">
-          {siteMap.badgeLabel}
-        </div>
+        <div className="map-badge">{siteMap.badgeLabel}</div>
         <iframe
           title={siteMap.iframeTitle}
-          src={MAP_EMBED_SRC}
+          src={mapEmbedSrc}
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
           className="gated-map__iframe"
@@ -51,7 +51,7 @@ export function GatedMap() {
     <div className="gated-map gated-map--placeholder">
       <div className="map-badge">{siteMap.badgeLabel}</div>
       <img
-        src={siteMap.placeholderImage}
+        src={siteMapCoords.placeholderImage}
         alt={siteMap.placeholderAlt}
         className="gated-map__placeholder-img"
         width={1200}
@@ -59,7 +59,7 @@ export function GatedMap() {
         loading="lazy"
         decoding="async"
       />
-      <div className="gated-map__overlay" role="group" aria-label="Attivazione mappa interattiva">
+      <div className="gated-map__overlay" role="group" aria-label={siteMap.activateAria}>
         <div className="gated-map__overlay-inner">
           <p className="gated-map__hint">{siteMap.enableHint}</p>
           <button type="button" className="gated-map__enable" onClick={() => void handleEnableMap()}>

@@ -1,6 +1,7 @@
+import { getLocaleCopy, getSiteContent } from '../i18n';
+import { siteConfig, siteMapCoords } from '../i18n/siteMedia';
+import type { SiteLocale } from '../lib/siteLocales';
 import { normalizePathname } from './routes';
-import { getSuiteBySlug, site, siteMap } from './site';
-
 const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://www.rtalevele.com';
 
 export type PageSeoConfig = {
@@ -11,67 +12,42 @@ export type PageSeoConfig = {
   noindex?: boolean;
 };
 
-export const defaultSeo: PageSeoConfig = {
-  path: '/',
-  title: 'Residence Le Vele | Appartamenti vacanze a Stintino, Sardegna',
-  description:
-    'Residence Le Vele a Stintino: monolocali vista mare e giardino, soggiorni vicino a La Pelosa. Prenota il tuo appartamento vacanze in Sardegna.',
-  keywords:
-    'residence stintino, appartamenti vacanze sardegna, soggiorno vicino al mare, la pelosa, cala lupo, monolocali stintino',
-};
-
-export const pageSeo: Record<string, PageSeoConfig> = {
-  '/': defaultSeo,
-  '/la-pelosa': {
-    path: '/la-pelosa',
-    title: 'La Pelosa Stintino | Residence Le Vele — Spiaggia e mare',
-    description:
-      'La Pelosa a Stintino: una delle spiagge più belle della Sardegna, a pochi minuti dal Residence Le Vele. Scopri mare turchese, sabbia bianca e la Torre aragonese.',
-    keywords: 'la pelosa stintino, spiaggia stintino, residence le vele, mare sardegna',
-  },
-  '/privacy-policy': {
-    path: '/privacy-policy',
-    title: 'Privacy Policy | Residence Le Vele Stintino',
-    description: 'Informativa privacy e trattamento dati personali del Residence Le Vele a Stintino.',
-    noindex: true,
-  },
-  '/cookie-policy': {
-    path: '/cookie-policy',
-    title: 'Cookie Policy | Residence Le Vele Stintino',
-    description: 'Cookie policy e gestione del consenso del sito Residence Le Vele.',
-    noindex: true,
-  },
-};
-
-export function getSeoForPath(pathname: string, search = ''): PageSeoConfig {
+export function getSeoForPath(pathname: string, search = '', locale: SiteLocale = 'it'): PageSeoConfig {
+  const copy = getLocaleCopy(locale);
+  const { seo } = copy;
   const canonicalPath = normalizePathname(pathname);
   const path = canonicalPath.toLowerCase();
 
   if (path.startsWith('/camere/')) {
     const slug = path.replace('/camere/', '');
-    const suite = getSuiteBySlug(slug);
-    if (suite) {
+    const localized = getSiteContent(locale).suites.find((s) => s.slug === slug);
+    if (localized) {
       return {
         path: `${canonicalPath}${search}`,
-        title: `${suite.title} | Residence Le Vele — Appartamenti Stintino`,
-        description: `${suite.description} Prenota il monolocale a Stintino, vicino a La Pelosa.`,
-        keywords: 'monolocale stintino, appartamenti vacanze sardegna, residence le vele',
+        title: `${localized.title} ${seo.suiteTitleSuffix}`,
+        description: `${localized.description} ${seo.suiteDescriptionSuffix}`,
+        keywords: seo.suiteKeywords,
       };
     }
   }
 
-  const known = pageSeo[path];
+  const pages: Record<string, PageSeoConfig> = {
+    '/': { path: '/', ...seo.default },
+    '/la-pelosa': { path: '/la-pelosa', ...seo.pelosa },
+    '/privacy-policy': { path: '/privacy-policy', ...seo.privacy, noindex: true },
+    '/cookie-policy': { path: '/cookie-policy', ...seo.cookie, noindex: true },
+  };
+
+  const known = pages[path];
   if (known) {
-    return {
-      ...known,
-      path: `${canonicalPath}${search}`,
-    };
+    return { ...known, path: `${canonicalPath}${search}` };
   }
 
   return {
-    ...defaultSeo,
     path: `${canonicalPath}${search}`,
-    title: `${site.name} | Stintino, Sardegna`,
+    title: `${siteConfig.name} ${seo.fallbackTitleSuffix}`,
+    description: seo.default.description,
+    keywords: seo.default.keywords,
   };
 }
 
@@ -81,36 +57,19 @@ export function absoluteUrl(path: string): string {
   return `${base}${normalized}`;
 }
 
-const nearbyAttractions = [
-  {
-    '@type': 'TouristAttraction',
-    name: 'La Pelosa',
-    description: 'Spiaggia iconica di Stintino, a circa 2 km dal residence.',
-  },
-  {
-    '@type': 'TouristAttraction',
-    name: 'Baia di Cala Lupo',
-    description: 'Baia tranquilla dove sorge il Residence Le Vele.',
-  },
-  {
-    '@type': 'TouristAttraction',
-    name: 'Centro storico di Stintino',
-    description: 'Borgo marinaresco del Nord Sardegna, vicino al residence.',
-  },
-] as const;
-
-export function buildLodgingSchema() {
-  const { address } = site;
+export function buildLodgingSchema(locale: SiteLocale = 'it') {
+  const copy = getLocaleCopy(locale);
+  const { address } = siteConfig;
 
   return {
     '@context': 'https://schema.org',
     '@type': 'LodgingBusiness',
     '@id': `${absoluteUrl('/')}#lodging`,
-    name: site.name,
-    description: defaultSeo.description,
+    name: siteConfig.name,
+    description: copy.seo.schemaDescription,
     url: absoluteUrl('/'),
-    email: site.email,
-    telephone: [site.phone, site.mobile],
+    email: siteConfig.email,
+    telephone: [siteConfig.phone, siteConfig.mobile],
     image: absoluteUrl('/logo_le_vele_stintino_white.svg'),
     priceRange: '€€',
     address: {
@@ -123,34 +82,34 @@ export function buildLodgingSchema() {
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: siteMap.latitude,
-      longitude: siteMap.longitude,
+      latitude: siteMapCoords.latitude,
+      longitude: siteMapCoords.longitude,
     },
-    hasMap: siteMap.hasMapUrl,
+    hasMap: siteMapCoords.hasMapUrl,
     areaServed: [
       { '@type': 'City', name: 'Stintino' },
       { '@type': 'AdministrativeArea', name: 'Sassari' },
-      { '@type': 'Place', name: 'Nord Sardegna' },
+      { '@type': 'Place', name: 'North Sardinia' },
     ],
     containedInPlace: {
       '@type': 'Place',
-      name: 'Stintino, Sardegna, Italia',
+      name: `Stintino, Sardinia, ${copy.addressCountry}`,
     },
-    amenityFeature: [
-      { '@type': 'LocationFeatureSpecification', name: 'Wi-Fi gratuito', value: true },
-      { '@type': 'LocationFeatureSpecification', name: 'Aria condizionata', value: true },
-      { '@type': 'LocationFeatureSpecification', name: 'Veranda o terrazza', value: true },
-      { '@type': 'LocationFeatureSpecification', name: 'Giardino privato', value: true },
-      { '@type': 'LocationFeatureSpecification', name: 'Angolo cucina', value: true },
-      { '@type': 'LocationFeatureSpecification', name: 'Vista mare', value: true },
-    ],
-    touristType: ['Famiglie', 'Coppie', 'Escursionisti'],
-    nearbyAttraction: nearbyAttractions,
+    amenityFeature: copy.seo.schemaAmenities.map((name) => ({
+      '@type': 'LocationFeatureSpecification',
+      name,
+      value: true,
+    })),
+    touristType: [...copy.seo.schemaTouristTypes],
+    nearbyAttraction: copy.seo.nearbyAttractions.map((a) => ({
+      '@type': 'TouristAttraction',
+      name: a.name,
+      description: a.description,
+    })),
     numberOfRooms: 18,
     checkinTime: '15:00',
     checkoutTime: '10:00',
   };
 }
 
-/** @deprecated Usare buildLodgingSchema() */
-export const lodgingSchema = buildLodgingSchema();
+export const lodgingSchema = buildLodgingSchema('it');

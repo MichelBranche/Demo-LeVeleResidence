@@ -1,9 +1,11 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { residenceCards } from '../../data/site';
 import { useScrollAccordion } from '../../hooks/useScrollAccordion';
+import { useSiteLocale } from '../../hooks/useSiteLocale';
 
-function AccordionMedia({ service }: { service: (typeof residenceCards)[number] }) {
+type AccordionCard = ReturnType<typeof useSiteLocale>['content']['residenceCardsMerged'][number];
+
+function AccordionMedia({ service }: { service: AccordionCard }) {
   if ('images' in service && service.images) {
     return (
       <div className="scroll-accordion__gallery">
@@ -22,7 +24,7 @@ function AccordionMedia({ service }: { service: (typeof residenceCards)[number] 
       <figure>
         <img
           src={service.image}
-          alt={'imageAlt' in service ? service.imageAlt : ''}
+          alt={service.imageAlt ?? ''}
           loading="lazy"
           decoding="async"
         />
@@ -39,6 +41,8 @@ type ServicesAccordionProps = {
 };
 
 export function ServicesAccordion({ showIntro = true, className = '' }: ServicesAccordionProps) {
+  const { content } = useSiteLocale();
+  const { residenceCardsMerged, residenceAccordion } = content;
   const accordionRef = useRef<HTMLDivElement>(null);
   useScrollAccordion(accordionRef, '.scroll-accordion__item');
 
@@ -46,13 +50,13 @@ export function ServicesAccordion({ showIntro = true, className = '' }: Services
     <div className={`section--services-accordion ${className}`.trim()}>
       {showIntro && (
         <div className="section--services-accordion__intro">
-          <p className="eyebrow">In dettaglio</p>
-          <h3 className="section-title display-serif">Posizione &amp; servizi</h3>
+          <p className="eyebrow">{residenceAccordion.eyebrow}</p>
+          <h3 className="section-title display-serif">{residenceAccordion.title}</h3>
         </div>
       )}
 
       <div className="scroll-accordion" ref={accordionRef}>
-        {residenceCards.map((service) => (
+        {residenceCardsMerged.map((service) => (
           <article key={service.title} className="scroll-accordion__item">
             <div className="scroll-accordion__card">
               <h4 className="scroll-accordion__heading">
@@ -73,7 +77,7 @@ export function ServicesAccordion({ showIntro = true, className = '' }: Services
                   )}
                   {'link' in service && service.link && (
                     <Link to={service.link} className="scroll-accordion__link">
-                      {'linkLabel' in service && service.linkLabel ? service.linkLabel : 'Scopri di più'} →
+                      {service.linkLabel ?? residenceAccordion.discoverMore} →
                     </Link>
                   )}
                 </div>

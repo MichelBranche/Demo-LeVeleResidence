@@ -1,10 +1,20 @@
-import { useState, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { siteConfig } from '../i18n/siteMedia';
 import { useConsent } from '../hooks/useConsent';
-import { site } from '../data/site';
+import { useSiteLocale } from '../hooks/useSiteLocale';
+import type { SiteLocale } from '../lib/siteLocales';
 
-type Lang = 'it' | 'en';
+type LegalDoc = { title: string; updated: string; sections: { h: string; body: ReactNode }[] };
 
-const content: Record<Lang, { title: string; updated: string; sections: { h: string; body: ReactNode }[] }> = {
+const cookiePrefsCopy: Record<SiteLocale, { title: string; button: string }> = {
+  it: { title: 'Modifica preferenze', button: 'Apri pannello cookie' },
+  en: { title: 'Change preferences', button: 'Open cookie panel' },
+  de: { title: 'Einstellungen ändern', button: 'Cookie-Einstellungen öffnen' },
+  fr: { title: 'Modifier les préférences', button: 'Ouvrir le panneau cookies' },
+  es: { title: 'Cambiar preferencias', button: 'Abrir panel de cookies' },
+};
+
+const cookieByLang: Record<SiteLocale, LegalDoc> = {
   it: {
     title: 'Cookie Policy',
     updated: 'Ultimo aggiornamento: maggio 2026',
@@ -77,7 +87,7 @@ const content: Record<Lang, { title: string; updated: string; sections: { h: str
         h: '7. Contatti',
         body: (
           <p>
-            Per domande su cookie e privacy: <a href={`mailto:${site.email}`}>{site.email}</a>
+            Per domande su cookie e privacy: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           </p>
         ),
       },
@@ -152,7 +162,139 @@ const content: Record<Lang, { title: string; updated: string; sections: { h: str
         h: '7. Contact',
         body: (
           <p>
-            Questions: <a href={`mailto:${site.email}`}>{site.email}</a>
+            Questions: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          </p>
+        ),
+      },
+    ],
+  },
+  de: {
+    title: 'Cookie-Richtlinie',
+    updated: 'Letzte Aktualisierung: Mai 2026',
+    sections: [
+      {
+        h: '1. Was sind Cookies?',
+        body: (
+          <p>
+            Cookies sind kleine Textdateien auf Ihrem Gerät für Funktionalität, Präferenzen und — nur mit Einwilligung —
+            Analyse oder Marketing.
+          </p>
+        ),
+      },
+      {
+        h: '2. Technisch notwendige Cookies',
+        body: (
+          <ul>
+            <li>
+              <strong>lv_consent</strong> — Einwilligung, Zeitstempel, Policy-Version (Cookie + localStorage, 12 Monate).
+            </li>
+            <li>Sitzungs- und Sicherheitscookies des Hostings.</li>
+          </ul>
+        ),
+      },
+      {
+        h: '3. Analytische Cookies',
+        body: <p>Nur bei Einwilligung zur Kategorie Analytisch (z. B. Google Analytics).</p>,
+      },
+      {
+        h: '4. Marketing-Cookies',
+        body: <p>Nur bei Einwilligung zur Kategorie Marketing (z. B. Meta Pixel).</p>,
+      },
+      {
+        h: '5. Präferenz-Cookies',
+        body: <p>Ermöglichen u. a. die interaktive Google-Karte — nur mit Einwilligung Präferenzen.</p>,
+      },
+      {
+        h: '6. Verwaltung',
+        body: <p>Sie können die Einwilligung jederzeit im Banner oder unten auf dieser Seite ändern.</p>,
+      },
+      {
+        h: '7. Kontakt',
+        body: (
+          <p>
+            Fragen: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          </p>
+        ),
+      },
+    ],
+  },
+  fr: {
+    title: 'Politique cookies',
+    updated: 'Dernière mise à jour : mai 2026',
+    sections: [
+      {
+        h: '1. Qu’est-ce qu’un cookie ?',
+        body: (
+          <p>
+            Petits fichiers texte sur votre appareil pour le fonctionnement, les préférences et — avec consentement —
+            l’analyse ou le marketing.
+          </p>
+        ),
+      },
+      {
+        h: '2. Cookies nécessaires',
+        body: (
+          <ul>
+            <li>
+              <strong>lv_consent</strong> — consentement, horodatage, version de la policy (cookie + localStorage, 12 mois).
+            </li>
+            <li>Cookies de session et de sécurité de l’hébergement.</li>
+          </ul>
+        ),
+      },
+      { h: '3. Cookies analytiques', body: <p>Uniquement si vous acceptez la catégorie Analytiques.</p> },
+      { h: '4. Cookies marketing', body: <p>Uniquement si vous acceptez la catégorie Marketing.</p> },
+      {
+        h: '5. Cookies de préférences',
+        body: <p>Permettent notamment la carte Google interactive — avec consentement Préférences.</p>,
+      },
+      { h: '6. Gestion', body: <p>Vous pouvez modifier votre choix via le bandeau ou ci-dessous.</p> },
+      {
+        h: '7. Contact',
+        body: (
+          <p>
+            Questions : <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          </p>
+        ),
+      },
+    ],
+  },
+  es: {
+    title: 'Política de cookies',
+    updated: 'Última actualización: mayo 2026',
+    sections: [
+      {
+        h: '1. ¿Qué son las cookies?',
+        body: (
+          <p>
+            Pequeños archivos de texto en su dispositivo para funcionalidad, preferencias y — con consentimiento — análisis o
+            marketing.
+          </p>
+        ),
+      },
+      {
+        h: '2. Cookies necesarias',
+        body: (
+          <ul>
+            <li>
+              <strong>lv_consent</strong> — consentimiento, marca temporal, versión de la policy (cookie + localStorage, 12 meses).
+            </li>
+            <li>Cookies de sesión y seguridad del alojamiento.</li>
+          </ul>
+        ),
+      },
+      { h: '3. Cookies analíticas', body: <p>Solo si acepta la categoría Analíticas.</p> },
+      { h: '4. Cookies de marketing', body: <p>Solo si acepta la categoría Marketing.</p> },
+      {
+        h: '5. Cookies de preferencias',
+        body: <p>Permiten, entre otras, el mapa interactivo de Google — con consentimiento Preferencias.</p>,
+      },
+      { h: '6. Gestión', body: <p>Puede cambiar su elección en el banner o más abajo.</p> },
+      {
+        h: '7. Contacto',
+        body: (
+          <p>
+            Consultas: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           </p>
         ),
       },
@@ -161,30 +303,14 @@ const content: Record<Lang, { title: string; updated: string; sections: { h: str
 };
 
 export function CookiePolicyPage() {
-  const [lang, setLang] = useState<Lang>('it');
+  const { locale, content } = useSiteLocale();
+  const site = content.config;
   const { openBanner } = useConsent();
-  const doc = content[lang];
+  const doc = cookieByLang[locale];
+  const prefs = cookiePrefsCopy[locale];
 
   return (
     <article className="legal-page">
-      <div className="legal-page__locale">
-        <button
-          type="button"
-          className={`legal-page__lang ${lang === 'it' ? 'is-active' : ''}`}
-          onClick={() => setLang('it')}
-          aria-pressed={lang === 'it'}
-        >
-          IT
-        </button>
-        <button
-          type="button"
-          className={`legal-page__lang ${lang === 'en' ? 'is-active' : ''}`}
-          onClick={() => setLang('en')}
-          aria-pressed={lang === 'en'}
-        >
-          EN
-        </button>
-      </div>
       <p className="legal-page__eyebrow">{site.name}</p>
       <h1 className="legal-page__title display-serif">{doc.title}</h1>
       <p className="legal-page__updated">{doc.updated}</p>
@@ -195,10 +321,10 @@ export function CookiePolicyPage() {
         </section>
       ))}
       <section>
-        <h2>{lang === 'it' ? 'Modifica preferenze' : 'Change preferences'}</h2>
+        <h2>{prefs.title}</h2>
         <p>
           <button type="button" className="consent-btn consent-btn--primary" onClick={() => openBanner({ panel: true })}>
-            {lang === 'it' ? 'Apri pannello cookie' : 'Open cookie panel'}
+            {prefs.button}
           </button>
         </p>
       </section>

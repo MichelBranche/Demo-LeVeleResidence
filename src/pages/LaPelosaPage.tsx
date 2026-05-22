@@ -1,20 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PelosaLightbox } from '../components/PelosaLightbox';
-import { pelosaPage } from '../data/site';
+import { formatCopy } from '../i18n';
 import { usePelosaAnimations } from '../hooks/usePelosaAnimations';
+import { useSiteLocale } from '../hooks/useSiteLocale';
 import { shouldUsePosterOnlyHero } from '../lib/network';
 
 export function LaPelosaPage() {
+  const { content } = useSiteLocale();
+  const { pelosa, pelosaMedia } = content;
+  const { hero, intro, gallery, ui } = pelosa;
   const pageRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const posterOnlyHero = shouldUsePosterOnlyHero();
-  const heroVideoSrc = posterOnlyHero ? undefined : pelosaPage.hero.video;
+  const heroVideoSrc = posterOnlyHero ? undefined : pelosaMedia.video;
   usePelosaAnimations(pageRef);
 
-  const { hero, intro, gallery } = pelosaPage;
+  const galleryItems = pelosaMedia.gallery.map((item, i) => ({
+    ...item,
+    alt: gallery.imageAlts[i] ?? '',
+  }));
 
   useEffect(() => {
     const video = videoRef.current;
@@ -38,7 +45,7 @@ export function LaPelosaPage() {
             ref={videoRef}
             className="pelosa-hero__video"
             {...(heroVideoSrc ? { src: heroVideoSrc } : {})}
-            poster={hero.poster}
+            poster={pelosaMedia.poster}
             loop
             muted
             playsInline
@@ -50,7 +57,7 @@ export function LaPelosaPage() {
         <div className="pelosa-hero__overlay" aria-hidden />
         <div className="pelosa-hero__inner">
           <Link to="/" className="pelosa-hero__back">
-            ← Residence Le Vele
+            {ui.back}
           </Link>
           <div className="pelosa-hero__content" data-pelosa-reveal>
             <p className="pelosa-hero__eyebrow">{hero.eyebrow}</p>
@@ -60,16 +67,16 @@ export function LaPelosaPage() {
             <p className="pelosa-hero__tagline">{hero.tagline}</p>
             <p className="pelosa-hero__lede">{hero.lede}</p>
           </div>
-          <a href="#pelosa-intro" className="pelosa-hero__scroll" aria-label="Scorri verso il contenuto">
+          <a href="#pelosa-intro" className="pelosa-hero__scroll" aria-label={ui.scrollAria}>
             <span className="pelosa-hero__scroll-line" aria-hidden />
-            <span>Scorri</span>
+            <span>{ui.scrollLabel}</span>
           </a>
         </div>
         <button
           type="button"
           className={`mute-toggle pelosa-hero__mute ${isMuted ? '' : 'is-on'}`}
           onClick={() => setIsMuted((m) => !m)}
-          aria-label={isMuted ? 'Attiva audio' : 'Disattiva audio'}
+          aria-label={isMuted ? ui.muteOn : ui.muteOff}
           aria-pressed={!isMuted}
         >
           {isMuted ? (
@@ -115,13 +122,13 @@ export function LaPelosaPage() {
             {gallery.title}
           </h2>
           <div className="pelosa-gallery__grid">
-            {gallery.items.map((item) => (
+            {galleryItems.map((item) => (
               <button
                 key={item.src}
                 type="button"
                 className={`pelosa-gallery__item pelosa-gallery__item--${item.layout}`}
                 onClick={() => setLightbox({ src: item.src, alt: item.alt })}
-                aria-label={`Apri immagine: ${item.alt}`}
+                aria-label={formatCopy(ui.openImage, { alt: item.alt })}
               >
                 <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
                 <span className="pelosa-gallery__zoom" aria-hidden>
@@ -134,7 +141,13 @@ export function LaPelosaPage() {
       </section>
 
       {lightbox && (
-        <PelosaLightbox src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />
+        <PelosaLightbox
+          src={lightbox.src}
+          alt={lightbox.alt}
+          closeLabel={ui.closeLightbox}
+          closeGalleryLabel={ui.closeGallery}
+          onClose={() => setLightbox(null)}
+        />
       )}
     </main>
   );

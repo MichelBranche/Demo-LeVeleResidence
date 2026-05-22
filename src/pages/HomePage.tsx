@@ -7,7 +7,7 @@ import { HeroSection } from '../components/HeroSection';
 import { Preloader } from '../components/Preloader';
 import { useConsent } from '../hooks/useConsent';
 import { useNetworkTier } from '../hooks/useNetworkTier';
-import { hero, preloaderText } from '../data/site';
+import { useSiteLocale } from '../hooks/useSiteLocale';
 import { markIntroDone } from '../lib/intro';
 import {
   shouldAutoplayHeroVideoImmediately,
@@ -71,13 +71,15 @@ function BelowFoldSections() {
 }
 
 export function HomePage() {
+  const { content } = useSiteLocale();
+  const { hero, heroMedia, preloaderText } = content;
   const { isReady, bannerOpen, hasConsent } = useConsent();
   const networkTier = useNetworkTier();
   const [introPhase, setIntroPhase] = useState<IntroPhase>(() =>
     readPreloaderDone() ? 'complete' : 'pending-consent',
   );
   const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
-    shouldAutoplayHeroVideoImmediately() ? hero.video : undefined,
+    shouldAutoplayHeroVideoImmediately() ? heroMedia.video : undefined,
   );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -124,7 +126,7 @@ export function HomePage() {
     const video = videoRef.current;
     if (!video) return;
     if (!video.currentSrc) {
-      video.src = hero.video;
+      video.src = heroMedia.video;
     }
     video.preload = 'metadata';
   }, [introPhase, lightPreloader]);
@@ -218,7 +220,7 @@ export function HomePage() {
     if (!ready || heroVideoSrc || posterOnlyHero) return;
     if (!shouldDeferHeroVideoLoad()) return;
 
-    const enable = () => setHeroVideoSrc(hero.video);
+    const enable = () => setHeroVideoSrc(heroMedia.video);
     if (typeof requestIdleCallback === 'function') {
       const id = requestIdleCallback(enable, { timeout: 5000 });
       return () => cancelIdleCallback(id);
@@ -248,7 +250,7 @@ export function HomePage() {
             <video
               ref={videoRef}
               {...(heroVideoSrc ? { src: heroVideoSrc } : {})}
-              poster={hero.poster}
+              poster={heroMedia.poster}
               className="hero-bg-video"
               autoPlay={ready && !!heroVideoSrc}
               muted
@@ -265,7 +267,7 @@ export function HomePage() {
               }
               width={1920}
               height={1080}
-              aria-label="Video panoramico della Sardegna — Residence Le Vele Stintino"
+              aria-label={hero.videoAria}
             />
           </div>
 
@@ -280,7 +282,7 @@ export function HomePage() {
               videoSlotRef={videoSlotRef}
               onComplete={handlePreloaderComplete}
               lightMode={lightPreloader}
-              posterSrc={hero.poster}
+              posterSrc={heroMedia.poster}
             />
           )}
         </div>

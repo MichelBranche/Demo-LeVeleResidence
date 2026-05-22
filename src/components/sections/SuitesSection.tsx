@@ -1,11 +1,11 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { suites, suitesIntro } from '../../data/site';
+import { useSiteLocale } from '../../hooks/useSiteLocale';
 import { useSuitesAnimations } from '../../hooks/useSuitesAnimations';
 
-const marqueeItems = ['Vista mare', 'Vista giardino', 'Monolocali', 'Stintino', 'La Pelosa'] as const;
-
 export function SuitesSection() {
+  const { content } = useSiteLocale();
+  const { suitesIntro, suites } = content;
   const sectionRef = useRef<HTMLElement>(null);
   useSuitesAnimations(sectionRef);
 
@@ -30,7 +30,7 @@ export function SuitesSection() {
 
         <div className="suites__marquee" aria-hidden>
           <div className="suites__marquee-track">
-            {[...marqueeItems, ...marqueeItems].map((label, i) => (
+            {[...suitesIntro.marquee, ...suitesIntro.marquee].map((label, i) => (
               <span key={`${label}-${i}`}>{label}</span>
             ))}
           </div>
@@ -49,7 +49,7 @@ export function SuitesSection() {
               <Link
                 to={`/camere/${suite.slug}`}
                 className="suites__media"
-                aria-label={`Scopri ${suite.title}`}
+                aria-label={suite.discoverAria}
               >
                 <div className="suites__media-inner">
                   <img src={suite.image} alt={suite.title} loading="lazy" decoding="async" />
@@ -58,7 +58,7 @@ export function SuitesSection() {
               </Link>
 
               <div className="suites__content">
-                <p className="suites__label">{index === 0 ? 'Giardino' : 'Mare'}</p>
+                <p className="suites__label">{suite.listLabel}</p>
                 <h3 className="suites__name display-serif">{suite.title}</h3>
                 <p className="suites__desc">{suite.description}</p>
                 <ul className="suites__features" role="list">
@@ -67,7 +67,7 @@ export function SuitesSection() {
                   ))}
                 </ul>
                 <Link to={`/camere/${suite.slug}`} className="suites__cta">
-                  <span className="suites__cta-text">Esplora la suite</span>
+                  <span className="suites__cta-text">{suite.exploreCta}</span>
                   <span className="suites__cta-arrow" aria-hidden>
                     →
                   </span>

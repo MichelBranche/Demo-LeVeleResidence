@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { ConsentProvider, useConsent } from '../../hooks/useConsent';
+import { SiteLocaleProvider } from '../../hooks/useSiteLocale';
 import { CookieBanner } from './CookieBanner';
 
 export function CookieBannerGate() {
@@ -17,8 +18,10 @@ export function CookieBannerGate() {
 export function CookieConsentRoot({ children }: { children: ReactNode }) {
   return (
     <ConsentProvider>
-      {children}
-      <CookieBannerGate />
+      <SiteLocaleProvider>
+        {children}
+        <CookieBannerGate />
+      </SiteLocaleProvider>
     </ConsentProvider>
   );
 }
