@@ -111,7 +111,10 @@ export function Preloader({
     gsap.set(textContainer, { visibility: 'visible', opacity: 1 });
     gsap.set(wordElements, { opacity: 1, x: 0 });
 
+    let introFinished = false;
     const finishIntro = () => {
+      if (introFinished) return;
+      introFinished = true;
       document.body.classList.remove('oh-preloader-active');
       onCompleteRef.current();
       setVisible(false);
@@ -173,11 +176,14 @@ export function Preloader({
           ease: 'power2.inOut',
         }, '<0.06');
 
+      const lightSafety = window.setTimeout(finishIntro, 8000);
+
       void waitForFonts(600).then(() => {
         lightTl.play();
       });
 
       return () => {
+        window.clearTimeout(lightSafety);
         posterEl.remove();
         document.body.classList.remove('oh-preloader-active');
         gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
@@ -187,11 +193,7 @@ export function Preloader({
 
     const handoffToHero = () => {
       const exitTl = gsap.timeline({
-        onComplete: () => {
-          document.body.classList.remove('oh-preloader-active');
-          onCompleteRef.current();
-          setVisible(false);
-        },
+        onComplete: finishIntro,
       });
 
       exitTl
@@ -320,9 +322,33 @@ export function Preloader({
       }
     };
 
+    const forceComplete = () => {
+      if (!video) {
+        finishIntro();
+        return;
+      }
+      returnVideoToSlot();
+      finishIntro();
+    };
+
+    const metadataTimeout = window.setTimeout(() => {
+      if (video && video.readyState < 1) {
+        forceComplete();
+      }
+    }, 10000);
+
+    const onVideoError = () => {
+      window.clearTimeout(metadataTimeout);
+      forceComplete();
+    };
+
+    video?.addEventListener('error', onVideoError, { once: true });
+
     void waitForFonts(1200).then(onReady);
 
     return () => {
+      window.clearTimeout(metadataTimeout);
+      video?.removeEventListener('error', onVideoError);
       video?.removeEventListener('loadedmetadata', runAnimation);
       document.body.classList.remove('oh-preloader-active');
       gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);

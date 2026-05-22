@@ -93,8 +93,12 @@ export function HomePage() {
       return;
     }
 
-    if (!hasConsent || bannerOpen) {
+    if (!hasConsent) {
       setIntroPhase('pending-consent');
+      return;
+    }
+
+    if (bannerOpen) {
       return;
     }
 
@@ -139,6 +143,9 @@ export function HomePage() {
         ease: 'power3.out',
         stagger: 0.1,
         delay: 0.05,
+        onComplete: () => {
+          gsap.set(revealItems, { clearProps: 'opacity,transform' });
+        },
       });
     }
 

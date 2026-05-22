@@ -75,6 +75,11 @@
   pointer-events: auto;
 }
 
+.home-hero-shell--ready .oh-reveal > .site-header,
+.home-hero-shell--ready .oh-reveal > .hero {
+  opacity: 1;
+}
+
 .oh-reveal > .site-header,
 .oh-reveal > .hero {
   opacity: 0;
