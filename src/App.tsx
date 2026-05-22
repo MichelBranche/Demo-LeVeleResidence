@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { AppBootstrap } from './components/AppBootstrap';
+import { CustomCursor } from './components/CustomCursor';
 import { CookieConsentRoot } from './components/consent/CookieConsentRoot';
 import { LenisScroll } from './components/LenisScroll';
 import { PageSeo } from './components/seo/PageSeo';
@@ -60,6 +61,7 @@ export default function App() {
         <TrackingRouteSync />
         <AppBootstrap />
         <LenisScroll />
+        <CustomCursor />
         <ScrollOnNavigate />
         <Suspense fallback={<RouteFallback />}>
           <Routes>
