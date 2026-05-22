@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { logo, navLinks, site } from '../data/site';
 import { scrollToHash, subscribeScroll } from '../lib/scroll';
+
+const MOBILE_NAV_MQ = '(max-width: 1023px)';
 
 function parseNavTarget(to: string): { pathname: string; hash: string } {
   const hashIndex = to.indexOf('#');
@@ -28,16 +31,33 @@ function isNavLinkActive(
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
+function scheduleHashScroll(hash: string) {
+  const scroll = () => scrollToHash(hash);
+  requestAnimationFrame(scroll);
+  for (const ms of [120, 400, 900, 1600, 2400]) {
+    window.setTimeout(scroll, ms);
+  }
+}
+
 export function Header() {
   const location = useLocation();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileNav, setIsMobileNav] = useState(false);
 
   useEffect(() => {
-    document.body.classList.toggle('site-nav-open', menuOpen);
+    const mq = window.matchMedia(MOBILE_NAV_MQ);
+    const update = () => setIsMobileNav(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('site-nav-open', menuOpen && isMobileNav);
     return () => document.body.classList.remove('site-nav-open');
-  }, [menuOpen]);
+  }, [menuOpen, isMobileNav]);
 
   useEffect(() => {
     const close = () => setMenuOpen(false);
@@ -55,6 +75,29 @@ export function Header() {
     return subscribeScroll(update);
   }, []);
 
+  const navigateTo = useCallback(
+    (to: string) => {
+      const { pathname, hash } = parseNavTarget(to);
+
+      if (!hash) {
+        navigate(pathname);
+        setMenuOpen(false);
+        return;
+      }
+
+      const path = `${pathname}${hash}`;
+      const samePlace = location.pathname === pathname && location.hash === hash;
+
+      if (!samePlace) {
+        navigate(path);
+      }
+
+      setMenuOpen(false);
+      scheduleHashScroll(hash);
+    },
+    [location.hash, location.pathname, navigate],
+  );
+
   const headerClass = [
     'site-header',
     scrolled ? 'site-header--scrolled' : '',
@@ -63,38 +106,84 @@ export function Header() {
     .filter(Boolean)
     .join(' ');
 
-  const handleHashNavClick = (to: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
-    const { pathname, hash } = parseNavTarget(to);
-    if (!hash) return;
+  const renderNavLinks = (variant: 'desktop' | 'mobile') => (
+    <ul
+      id={variant === 'desktop' ? 'site-primary-nav' : undefined}
+      className={
+        variant === 'mobile'
+          ? 'site-header__links site-header__links--mobile is-open'
+          : 'site-header__links'
+      }
+    >
+      {navLinks.map((link, index) => {
+        const active = isNavLinkActive(link.to, location);
+        const content = (
+          <>
+            <span className="site-header__link-index">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span className="site-header__link-text">{link.label}</span>
+          </>
+        );
 
-    event.preventDefault();
-    setMenuOpen(false);
+        if (variant === 'mobile') {
+          return (
+            <li key={link.to}>
+              <a
+                href={link.to}
+                className={active ? 'is-active' : undefined}
+                onClick={(event) => {
+                  event.preventDefault();
+                  navigateTo(link.to);
+                }}
+              >
+                {content}
+              </a>
+            </li>
+          );
+        }
 
-    const scroll = () => scrollToHash(hash);
+        return (
+          <li key={link.to}>
+            <NavLink
+              to={link.to}
+              className={() => (active ? 'is-active' : undefined)}
+              onClick={(event) => {
+                if (!link.to.includes('#')) return;
+                event.preventDefault();
+                navigateTo(link.to);
+              }}
+            >
+              {content}
+            </NavLink>
+          </li>
+        );
+      })}
+    </ul>
+  );
 
-    if (location.pathname === pathname && location.hash === hash) {
-      requestAnimationFrame(scroll);
-      window.setTimeout(scroll, 350);
-      return;
-    }
-
-    navigate({ pathname, hash });
-
-    requestAnimationFrame(scroll);
-    window.setTimeout(scroll, 350);
-    window.setTimeout(scroll, 900);
-  };
-
-  return (
-    <header className={headerClass}>
-      {menuOpen && (
+  const mobileMenuPortal =
+    isMobileNav &&
+    menuOpen &&
+    typeof document !== 'undefined' &&
+    createPortal(
+      <div className="site-header__mobile-layer" role="presentation">
         <button
           type="button"
           className="site-header__backdrop"
           aria-label="Chiudi menu"
           onClick={() => setMenuOpen(false)}
         />
-      )}
+        <nav className="site-header__mobile-nav" aria-label="Menu principale">
+          {renderNavLinks('mobile')}
+        </nav>
+      </div>,
+      document.body,
+    );
+
+  return (
+    <header className={headerClass}>
+      {mobileMenuPortal}
 
       <div className="site-header__bar">
         <nav className="site-header__nav" aria-label="Principale">
@@ -113,32 +202,7 @@ export function Header() {
             <span className="site-header__menu-label">{menuOpen ? 'Chiudi' : 'Menu'}</span>
           </button>
 
-          <ul
-            id="site-primary-nav"
-            className={`site-header__links ${menuOpen ? 'is-open' : ''}`}
-          >
-            {navLinks.map((link, index) => {
-              const active = isNavLinkActive(link.to, location);
-              return (
-                <li key={link.to}>
-                  <NavLink
-                    to={link.to}
-                    onClick={
-                      link.to.includes('#')
-                        ? handleHashNavClick(link.to)
-                        : () => setMenuOpen(false)
-                    }
-                    className={() => (active ? 'is-active' : undefined)}
-                  >
-                    <span className="site-header__link-index">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span className="site-header__link-text">{link.label}</span>
-                  </NavLink>
-                </li>
-              );
-            })}
-          </ul>
+          {!isMobileNav && renderNavLinks('desktop')}
         </nav>
 
         <Link to="/" className="site-header__logo" onClick={() => setMenuOpen(false)}>
