@@ -1,10 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { logo, navLinks, site } from '../data/site';
-import { Button } from './Button';
+import { subscribeScroll } from '../lib/scroll';
+
+/** Evita che tutti i link `/#sezione` risultino attivi sulla home (default di NavLink). */
+function isNavLinkActive(
+  to: string,
+  { pathname, hash }: { pathname: string; hash: string },
+): boolean {
+  const hashIndex = to.indexOf('#');
+  if (hashIndex !== -1) {
+    const targetHash = to.slice(hashIndex);
+    return pathname === '/' && hash === targetHash;
+  }
+
+  const path = to.split('#')[0] || to;
+  if (path === '/') return pathname === '/';
+  return pathname === path || pathname.startsWith(`${path}/`);
+}
 
 export function Header() {
+  const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle('site-nav-open', menuOpen);
@@ -17,8 +35,26 @@ export function Header() {
     return () => window.removeEventListener('resize', close);
   }, []);
 
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 56);
+    update();
+    return subscribeScroll(update);
+  }, []);
+
+  const headerClass = [
+    'site-header',
+    scrolled ? 'site-header--scrolled' : '',
+    menuOpen ? 'site-header--menu-open' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <header className="site-header">
+    <header className={headerClass}>
       {menuOpen && (
         <button
           type="button"
@@ -27,33 +63,45 @@ export function Header() {
           onClick={() => setMenuOpen(false)}
         />
       )}
+
       <div className="site-header__bar">
         <nav className="site-header__nav" aria-label="Principale">
           <button
             type="button"
-            className="site-header__toggle"
+            className="site-header__menu"
             aria-expanded={menuOpen}
             aria-controls="site-primary-nav"
             aria-label={menuOpen ? 'Chiudi menu' : 'Apri menu'}
             onClick={() => setMenuOpen((open) => !open)}
           >
-            <span className="site-header__toggle-icon" />
+            <span className="site-header__menu-icon" aria-hidden>
+              <span />
+              <span />
+            </span>
+            <span className="site-header__menu-label">{menuOpen ? 'Chiudi' : 'Menu'}</span>
           </button>
+
           <ul
             id="site-primary-nav"
             className={`site-header__links ${menuOpen ? 'is-open' : ''}`}
           >
-            {navLinks.map((link) => (
-              <li key={link.to}>
-                <NavLink
-                  to={link.to}
-                  onClick={() => setMenuOpen(false)}
-                  className={({ isActive }) => (isActive ? 'is-active' : undefined)}
-                >
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
+            {navLinks.map((link, index) => {
+              const active = isNavLinkActive(link.to, location);
+              return (
+                <li key={link.to}>
+                  <NavLink
+                    to={link.to}
+                    onClick={() => setMenuOpen(false)}
+                    className={() => (active ? 'is-active' : undefined)}
+                  >
+                    <span className="site-header__link-index">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="site-header__link-text">{link.label}</span>
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
@@ -68,8 +116,17 @@ export function Header() {
           />
         </Link>
 
-        <div className="site-header__actions">
-          <Button href={`mailto:${site.email}`}>Prenota</Button>
+        <div className="site-header__aside">
+          <a
+            className="site-header__cta"
+            href={`mailto:${site.email}`}
+            rel="noreferrer"
+          >
+            <span className="site-header__cta-text">Prenota</span>
+            <span className="site-header__cta-arrow" aria-hidden>
+              →
+            </span>
+          </a>
         </div>
       </div>
     </header>

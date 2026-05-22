@@ -22,8 +22,8 @@ export class ErrorBoundary extends Component<Props, State> {
             minHeight: '100dvh',
             padding: '2rem',
             fontFamily: 'system-ui, sans-serif',
-            background: '#faf8f5',
-            color: '#3a312b',
+            background: '#564a42',
+            color: '#faf8f5',
           }}
         >
           <h1 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>Errore di caricamento</h1>

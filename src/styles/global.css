@@ -1,9 +1,19 @@
 :root {
-  --crema: #faf8f5;
-  --carbone: #3a312b;
+  /* Gerarchia palette */
+  --crema: #564a42;
+  --carbone: #564a42;
+  --surface: #62544b;
+  --accent-primary: #b5a886;
+  --gallery-card: var(--accent-primary);
+  --accent-secondary: #b6a6ca;
+  --header-accent: var(--accent-secondary);
+  --accent: var(--accent-secondary);
+  --panna: #f4eee8;
+  --text-main: #f4eee8;
+  --text-muted: rgb(244 238 232 / 60%);
   --terra: #e07a5f;
   --mirto: #81b29a;
-  --sabbia: #efeae1;
+  --sabbia: #4a4039;
   --hero-dark: #1a1512;
   --font-absans: 'Absans', system-ui, sans-serif;
   --font-bigilla: 'Bigilla', var(--font-absans);
@@ -55,7 +65,7 @@ body {
   font-size: 17px;
   font-weight: 400;
   line-height: 1.45;
-  color: var(--carbone);
+  color: var(--panna);
   background: var(--crema);
 }
 
@@ -113,7 +123,7 @@ button {
 }
 
 .text-terra {
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .page {
@@ -131,7 +141,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .oh-video-bg {
@@ -179,7 +189,7 @@ button {
   letter-spacing: 0.2em;
   font-size: 0.72rem;
   font-weight: 700;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .hero-title {
@@ -217,91 +227,6 @@ button {
   color: rgb(250 248 245 / 88%);
 }
 
-.site-header {
-  position: relative;
-  z-index: 10050;
-  padding: clamp(14px, 2.5vh, 22px) clamp(14px, 2.5vw, 28px) 0;
-  color: var(--crema);
-}
-
-.site-header__bar {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 12px 20px;
-  padding: 10px clamp(14px, 2vw, 22px);
-  background: rgb(26 21 18 / 52%);
-  backdrop-filter: blur(14px) saturate(1.25);
-  -webkit-backdrop-filter: blur(14px) saturate(1.25);
-  border: 1px solid rgb(250 248 245 / 14%);
-  border-radius: 14px;
-  box-shadow: 0 12px 40px rgb(0 0 0 / 18%);
-}
-
-.site-header__nav {
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.site-header__toggle {
-  display: none;
-  width: 40px;
-  height: 40px;
-  color: var(--crema);
-}
-
-.site-header__toggle-icon {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: currentColor;
-  box-shadow: 0 7px 0 currentColor, 0 -7px 0 currentColor;
-}
-
-.site-header__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px 4px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.site-header__links a {
-  padding: 8px 12px;
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgb(250 248 245 / 92%);
-  transition: color 0.2s ease, background-color 0.2s ease;
-  border-radius: 8px;
-}
-
-.site-header__links a:hover {
-  color: var(--crema);
-  background: rgb(250 248 245 / 8%);
-}
-
-.site-header__links a.is-active {
-  color: var(--terra);
-}
-
-.site-header__logo {
-  justify-self: center;
-  line-height: 0;
-}
-
-.site-header__logo img {
-  width: min(168px, 36vw);
-  height: auto;
-}
-
-.site-header__actions {
-  justify-self: end;
-}
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -311,7 +236,7 @@ button {
   position: relative;
   overflow: hidden;
   background: var(--terra);
-  color: var(--crema);
+  color: var(--panna);
   font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -338,7 +263,7 @@ button {
   letter-spacing: 0.18em;
   font-size: 0.68rem;
   font-weight: 700;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .display-title {
@@ -359,7 +284,7 @@ button {
 .section-kicker {
   margin: 0 0 32px;
   font-size: 1.1rem;
-  color: rgb(58 49 43 / 75%);
+  color: rgb(250 248 245 / 75%);
   max-width: 52ch;
 }
 
@@ -369,14 +294,14 @@ button {
   font-size: clamp(1.5rem, 3.5vw, 2.4rem);
   font-style: normal;
   line-height: 1.2;
-  color: var(--carbone);
+  color: var(--panna);
   max-width: 900px;
 }
 
 .body-text {
   max-width: 68ch;
   margin: 16px 0;
-  color: rgb(58 49 43 / 88%);
+  color: rgb(250 248 245 / 88%);
 }
 
 .line-reveal__mask {
@@ -395,8 +320,8 @@ button {
   overflow-x: clip;
   padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(3rem, 6vh, 4.5rem);
   background: var(--crema);
-  color: var(--carbone);
-  border-top: 1px solid rgb(58 49 43 / 6%);
+  color: var(--panna);
+  border-top: 1px solid rgb(250 248 245 / 8%);
 }
 
 .residence__inner {
@@ -410,7 +335,7 @@ button {
   grid-template-columns: 1fr;
   gap: clamp(1.5rem, 4vw, 2.5rem);
   padding-bottom: clamp(2rem, 4vw, 3rem);
-  border-bottom: 1px solid rgb(58 49 43 / 12%);
+  border-bottom: 1px solid rgb(250 248 245 / 12%);
 }
 
 @media (min-width: 900px) {
@@ -426,7 +351,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .residence__title {
@@ -481,7 +406,7 @@ button {
   font-family: var(--font-display);
   font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1;
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .residence__stat-label {
@@ -489,21 +414,21 @@ button {
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgb(58 49 43 / 55%);
+  color: rgb(250 248 245 / 55%);
 }
 
 .residence__kicker {
   margin: 0;
   font-size: clamp(0.95rem, 1.6vw, 1.05rem);
   line-height: 1.55;
-  color: rgb(58 49 43 / 72%);
+  color: rgb(250 248 245 / 72%);
 }
 
 .residence__marquee {
   overflow: hidden;
   margin: 0 calc(-1 * var(--page-pad)) clamp(2rem, 4vw, 3rem);
   padding-block: 0.85rem;
-  border-block: 1px solid rgb(58 49 43 / 8%);
+  border-block: 1px solid rgb(250 248 245 / 8%);
   mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
@@ -521,7 +446,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: rgb(58 49 43 / 32%);
+  color: rgb(250 248 245 / 32%);
   white-space: nowrap;
 }
 
@@ -529,7 +454,7 @@ button {
   content: '◆';
   margin-left: clamp(2rem, 5vw, 4rem);
   font-size: 0.45em;
-  color: var(--terra);
+  color: var(--accent);
   vertical-align: middle;
 }
 
@@ -538,7 +463,7 @@ button {
   font-size: clamp(1.15rem, 2.2vw, 1.45rem);
   font-weight: 500;
   line-height: 1.55;
-  color: rgb(58 49 43 / 88%);
+  color: rgb(250 248 245 / 88%);
   max-width: min(42rem, 100%);
 }
 
@@ -548,7 +473,7 @@ button {
   gap: clamp(1rem, 2vw, 1.5rem);
   margin: 0 0 clamp(2.5rem, 5vw, 4rem);
   padding: clamp(1.25rem, 2.5vw, 1.75rem) 0;
-  border-block: 1px solid rgb(58 49 43 / 12%);
+  border-block: 1px solid rgb(250 248 245 / 12%);
 }
 
 @media (max-width: 640px) {
@@ -559,7 +484,7 @@ button {
 
   .residence__metric {
     padding: 0.85rem 0;
-    border-bottom: 1px solid rgb(58 49 43 / 10%);
+    border-bottom: 1px solid rgb(250 248 245 / 10%);
   }
 
   .residence__metric:last-child {
@@ -573,7 +498,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .residence__metric dd {
@@ -581,7 +506,7 @@ button {
   font-size: clamp(1.2rem, 2.2vw, 1.5rem);
   font-weight: 600;
   line-height: 1.15;
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .residence__accordion.section--services-accordion {
@@ -593,12 +518,12 @@ button {
   padding-top: clamp(1.5rem, 3vw, 2.5rem);
   padding-bottom: clamp(2.5rem, 5vw, 4rem);
   padding-inline: var(--page-pad);
-  border-top: 1px solid rgb(58 49 43 / 10%);
+  border-top: 1px solid rgb(250 248 245 / 10%);
   background: transparent;
   box-sizing: border-box;
 }
 
-/* Sfondo sabbia full-bleed senza allargare il layout (evita scroll/vuoto a destra) */
+/* Sfondo pagina full-bleed senza allargare il layout (evita scroll/vuoto a destra) */
 .residence__accordion.section--services-accordion::before {
   content: '';
   position: absolute;
@@ -607,7 +532,7 @@ button {
   bottom: 0;
   left: calc(50% - 50svw);
   width: 100svw;
-  background: var(--sabbia);
+  background: var(--crema);
 }
 
 .residence__accordion .section--services-accordion__intro .section-title {
@@ -626,7 +551,7 @@ button {
   grid-template-columns: 1fr;
   gap: 1rem;
   padding: clamp(2rem, 4vw, 3rem) 0;
-  border-top: 1px solid rgb(58 49 43 / 10%);
+  border-top: 1px solid rgb(250 248 245 / 10%);
 }
 
 @media (min-width: 768px) {
@@ -643,7 +568,7 @@ button {
   font-size: clamp(3rem, 8vw, 6rem);
   line-height: 1;
   font-weight: 400;
-  color: rgb(58 49 43 / 8%);
+  color: rgb(250 248 245 / 8%);
   pointer-events: none;
   user-select: none;
 }
@@ -667,14 +592,14 @@ button {
   font-size: clamp(1.35rem, 2.5vw, 1.75rem);
   font-weight: 600;
   line-height: 1.2;
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .residence__item-desc {
   margin: 0;
   font-size: clamp(0.95rem, 1.5vw, 1.05rem);
   line-height: 1.7;
-  color: rgb(58 49 43 / 76%);
+  color: rgb(250 248 245 / 76%);
   max-width: 58ch;
 }
 
@@ -690,7 +615,7 @@ button {
   overflow-x: clip;
   padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(3rem, 6vh, 4.5rem);
   background: var(--hero-dark);
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .suites__inner {
@@ -720,7 +645,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .suites__title {
@@ -764,7 +689,7 @@ button {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 6vw, 4rem);
   line-height: 1;
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .suites__stat-label {
@@ -812,7 +737,7 @@ button {
   content: '◆';
   margin-left: clamp(2rem, 5vw, 4rem);
   font-size: 0.45em;
-  color: var(--terra);
+  color: var(--accent);
   vertical-align: middle;
 }
 
@@ -922,7 +847,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .suites__content {
@@ -946,7 +871,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--mirto);
+  color: var(--accent);
 }
 
 .suites__name {
@@ -985,7 +910,7 @@ button {
   text-transform: uppercase;
   color: rgb(250 248 245 / 55%);
   padding-left: 1rem;
-  border-left: 2px solid var(--terra);
+  border-left: 2px solid var(--accent);
 }
 
 .suites__cta {
@@ -999,7 +924,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--crema);
+  color: var(--panna);
   text-decoration: none;
   position: relative;
   width: fit-content;
@@ -1012,7 +937,7 @@ button {
   bottom: 0;
   width: 100%;
   height: 1px;
-  background: var(--terra);
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1060,29 +985,47 @@ button {
 }
 
 .stacking-card {
+  --stacking-radius: 20px;
+  --stacking-inset: clamp(5px, 0.55vw, 9px);
   position: sticky;
-  border-radius: 20px;
+  box-sizing: border-box;
+  display: grid;
+  height: min(72vh, 740px);
+  padding: var(--stacking-inset);
+  border-radius: var(--stacking-radius);
   overflow: hidden;
-  background: var(--crema);
-  box-shadow: 0 12px 40px rgb(58 49 43 / 12%);
+  background: var(--gallery-card);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 22%);
+}
+
+.stacking-card figure {
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--stacking-radius) - var(--stacking-inset));
 }
 
 .stacking-card img {
+  display: block;
   width: 100%;
-  height: min(70vh, 720px);
+  height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 
 /* Offers */
 .section--offers {
   background: var(--hero-dark);
-  color: var(--crema);
+  color: var(--panna);
   margin: var(--page-pad);
   border-radius: var(--radius);
 }
 
 .section--offers .eyebrow {
-  color: var(--mirto);
+  color: var(--accent);
 }
 
 .section--offers .body-text {
@@ -1110,7 +1053,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .offer-card h3 {
@@ -1130,7 +1073,12 @@ button {
   display: grid;
   grid-template-columns: minmax(260px, 36%) 1fr;
   gap: 48px;
-  background: var(--sabbia);
+  background: var(--crema);
+  color: var(--panna);
+}
+
+.section--services-accordion__intro .section-title {
+  color: var(--panna);
 }
 
 .scroll-accordion__item {
@@ -1139,8 +1087,8 @@ button {
 }
 
 .scroll-accordion__card {
-  background: var(--crema);
-  box-shadow: 0 10px 36px rgb(58 49 43 / 10%);
+  background: var(--surface);
+  box-shadow: 0 10px 36px rgb(0 0 0 / 24%);
   overflow: hidden;
 }
 
@@ -1152,7 +1100,8 @@ button {
   padding: 22px 28px;
   font-size: 1.2rem;
   font-weight: 600;
-  border-bottom: 1px solid rgb(58 49 43 / 8%);
+  color: var(--panna);
+  border-bottom: 1px solid rgb(250 248 245 / 8%);
 }
 
 .scroll-accordion__content {
@@ -1167,6 +1116,7 @@ button {
 
 .scroll-accordion__copy p {
   margin: 0 0 1rem;
+  color: rgb(250 248 245 / 82%);
 }
 
 .scroll-accordion__link {
@@ -1175,11 +1125,11 @@ button {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .scroll-accordion__link:hover {
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .scroll-accordion__routes {
@@ -1198,7 +1148,7 @@ button {
   align-items: baseline;
   font-size: 0.9rem;
   line-height: 1.4;
-  color: rgb(58 49 43 / 82%);
+  color: rgb(250 248 245 / 82%);
 }
 
 .scroll-accordion__route-distance {
@@ -1206,7 +1156,7 @@ button {
   font-size: 0.78rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .scroll-accordion__content > figure,
@@ -1253,7 +1203,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--crema);
+  color: var(--panna);
   background: linear-gradient(0deg, rgb(26 21 18 / 75%) 0%, transparent 100%);
 }
 
@@ -1290,7 +1240,7 @@ button {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .info-times p {
@@ -1308,10 +1258,12 @@ button {
 
 /* Reviews — marquee orizzontale */
 .reviews {
+  --review-ink: rgb(42 36 32);
+  --review-ink-muted: rgb(42 36 32 / 72%);
   position: relative;
   overflow-x: clip;
   padding: clamp(4rem, 8vh, 5.5rem) 0;
-  background: var(--sabbia);
+  background: var(--crema);
 }
 
 .reviews__inner {
@@ -1332,7 +1284,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .reviews__title {
@@ -1340,7 +1292,7 @@ button {
   font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 600;
   line-height: 1.1;
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .reviews__subtitle {
@@ -1348,17 +1300,17 @@ button {
   max-width: 36ch;
   font-size: clamp(0.92rem, 1.5vw, 1rem);
   line-height: 1.55;
-  color: rgb(58 49 43 / 72%);
+  color: rgb(250 248 245 / 72%);
 }
 
 .reviews__subtitle a {
-  color: var(--carbone);
+  color: var(--panna);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .reviews__subtitle a:hover {
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .reviews__marquee {
@@ -1445,25 +1397,25 @@ button {
   margin: 0;
   padding: 1.25rem 1.35rem 1.15rem;
   border-radius: 14px;
-  border: 1px solid rgb(58 49 43 / 10%);
-  background: var(--crema);
-  box-shadow: 0 8px 28px rgb(58 49 43 / 6%);
+  border: 1px solid rgb(42 36 32 / 10%);
+  background: var(--gallery-card);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 18%);
   transition:
     box-shadow 0.35s ease,
     border-color 0.35s ease;
 }
 
 .review-card:hover {
-  border-color: rgb(58 49 43 / 18%);
-  box-shadow: 0 12px 32px rgb(58 49 43 / 10%);
+  border-color: rgb(42 36 32 / 18%);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 24%);
 }
 
 .review-card--google {
-  border-left: 3px solid rgb(66 133 244 / 50%);
+  border-left: 3px solid rgb(154 90 70 / 55%);
 }
 
 .review-card--tripadvisor {
-  border-left: 3px solid rgb(0 170 108 / 55%);
+  border-left: 3px solid rgb(95 125 108 / 55%);
 }
 
 .review-card__top {
@@ -1481,30 +1433,32 @@ button {
   text-transform: uppercase;
   padding: 0.35rem 0.65rem;
   border-radius: 999px;
-  background: rgb(58 49 43 / 6%);
-  color: rgb(58 49 43 / 75%);
+  background: rgb(42 36 32 / 8%);
+  color: var(--review-ink-muted);
 }
 
 .review-card__badge--google {
-  color: #1a5fb4;
-  background: rgb(66 133 244 / 12%);
+  color: #6b3d2e;
+  background: rgb(224 122 95 / 18%);
+  border: 1px solid rgb(154 90 70 / 30%);
 }
 
 .review-card__badge--tripadvisor {
-  color: #007a4d;
-  background: rgb(0 170 108 / 12%);
+  color: #3d5248;
+  background: rgb(129 178 154 / 22%);
+  border: 1px solid rgb(95 125 108 / 32%);
 }
 
 .review-card__stars {
   display: flex;
   gap: 0.1rem;
   font-size: 0.85rem;
-  color: rgb(58 49 43 / 22%);
+  color: rgb(42 36 32 / 22%);
   margin: 0;
 }
 
 .review-card__star--on {
-  color: var(--terra);
+  color: #b85c42;
 }
 
 .review-card__quote {
@@ -1516,7 +1470,7 @@ button {
   margin: 0;
   font-size: 0.95rem;
   line-height: 1.65;
-  color: rgb(58 49 43 / 88%);
+  color: rgb(42 36 32 / 88%);
 }
 
 .review-card__footer {
@@ -1527,7 +1481,7 @@ button {
   gap: 0.75rem 1rem;
   margin-top: 1rem;
   padding-top: 0.85rem;
-  border-top: 1px solid rgb(58 49 43 / 8%);
+  border-top: 1px solid rgb(42 36 32 / 12%);
 }
 
 .review-card__meta {
@@ -1539,12 +1493,12 @@ button {
 .review-card__author {
   font-size: 0.88rem;
   font-weight: 600;
-  color: var(--carbone);
+  color: var(--review-ink);
 }
 
 .review-card__date {
   font-size: 0.75rem;
-  color: rgb(58 49 43 / 55%);
+  color: rgb(42 36 32 / 58%);
 }
 
 .review-card__link {
@@ -1552,18 +1506,18 @@ button {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: #9a4a38;
 }
 
 .review-card__link:hover {
-  color: var(--carbone);
+  color: var(--review-ink);
 }
 
 /* Contact */
 .contact-section {
   padding: clamp(5rem, 10vh, 7.5rem) var(--page-pad);
   background: var(--sabbia);
-  border-top: 1px solid rgb(58 49 43 / 8%);
+  border-top: 1px solid rgb(250 248 245 / 8%);
 }
 
 .contact-section__inner {
@@ -1592,7 +1546,7 @@ button {
   width: 2px;
   height: 1.85rem;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--terra), var(--mirto));
+  background: linear-gradient(180deg, var(--accent), var(--mirto));
   flex-shrink: 0;
 }
 
@@ -1602,7 +1556,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .contact-section__title {
@@ -1610,14 +1564,14 @@ button {
   font-size: clamp(2.25rem, 5vw, 3.35rem);
   font-weight: 600;
   line-height: 1.1;
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .contact-section__kicker {
   margin: 0;
   font-size: clamp(0.95rem, 1.6vw, 1.1rem);
   line-height: 1.65;
-  color: rgb(58 49 43 / 72%);
+  color: rgb(250 248 245 / 72%);
   max-width: min(58ch, 100%);
   margin-inline: auto;
 }
@@ -1625,15 +1579,15 @@ button {
 .contact-section__panel {
   padding: clamp(2rem, 4vw, 3rem) clamp(2rem, 5vw, 3.5rem);
   border-radius: 18px;
-  border: 1px solid rgb(58 49 43 / 10%);
-  background: var(--crema);
-  box-shadow: 0 16px 48px rgb(58 49 43 / 7%);
+  border: 1px solid rgb(250 248 245 / 10%);
+  background: var(--surface);
+  box-shadow: 0 16px 48px rgb(0 0 0 / 26%);
 }
 
 .contact-section__residence {
   padding-bottom: 1.75rem;
   margin-bottom: 1.75rem;
-  border-bottom: 1px solid rgb(58 49 43 / 10%);
+  border-bottom: 1px solid rgb(250 248 245 / 10%);
 }
 
 .contact-section__panel-title {
@@ -1641,14 +1595,14 @@ button {
   font-size: clamp(1.1rem, 2vw, 1.25rem);
   font-weight: 600;
   letter-spacing: 0.04em;
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .contact-section__address {
   font-style: normal;
   font-size: clamp(1rem, 1.5vw, 1.08rem);
   line-height: 1.85;
-  color: rgb(58 49 43 / 85%);
+  color: rgb(250 248 245 / 85%);
 }
 
 .contact-section__channels {
@@ -1680,7 +1634,7 @@ button {
     margin-bottom: 0;
     border-bottom: none;
     padding-right: clamp(2rem, 4vw, 3rem);
-    border-right: 1px solid rgb(58 49 43 / 10%);
+    border-right: 1px solid rgb(250 248 245 / 10%);
   }
 
   .contact-section__channels {
@@ -1696,8 +1650,8 @@ button {
   min-height: 5.5rem;
   padding: clamp(1.1rem, 2vw, 1.5rem) clamp(1.15rem, 2vw, 1.65rem);
   border-radius: 12px;
-  background: rgb(255 255 255 / 55%);
-  border: 1px solid rgb(58 49 43 / 8%);
+  background: rgb(250 248 245 / 6%);
+  border: 1px solid rgb(250 248 245 / 10%);
 }
 
 .contact-section__channel-label {
@@ -1705,18 +1659,18 @@ button {
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .contact-section__channels a {
   font-size: clamp(0.95rem, 1.4vw, 1.05rem);
   font-weight: 500;
-  color: var(--carbone);
+  color: var(--panna);
   word-break: break-word;
 }
 
 .contact-section__channels a:hover {
-  color: var(--terra);
+  color: var(--accent);
 }
 
 /* Footer */
@@ -1725,7 +1679,7 @@ button {
   padding: clamp(3rem, 8vw, 4.5rem) 0 clamp(1.75rem, 4vw, 2.5rem);
   padding-bottom: calc(clamp(1.75rem, 4vw, 2.5rem) + env(safe-area-inset-bottom));
   background: var(--hero-dark);
-  color: var(--crema);
+  color: var(--panna);
   box-sizing: border-box;
 }
 
@@ -1786,7 +1740,7 @@ button {
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .site-footer__nav-list,
@@ -1809,7 +1763,7 @@ button {
 }
 
 .site-footer__nav-list a:hover {
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .site-footer__contact-list li {
@@ -1834,7 +1788,7 @@ button {
 }
 
 .site-footer__contact-list a:hover {
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .site-footer__contact-list address {
@@ -1904,7 +1858,7 @@ button {
   border-radius: 999px;
   padding: 0.65rem 1.35rem;
   background: rgb(250 248 245 / 10%);
-  color: var(--crema);
+  color: var(--panna);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -1922,7 +1876,7 @@ button {
 }
 
 .gated-map__enable:focus-visible {
-  outline: 2px solid var(--terra);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -1945,7 +1899,7 @@ button {
   background: rgb(26 21 18 / 75%);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .route-fallback {
@@ -2024,8 +1978,8 @@ button {
 }
 
 .site-footer__credit-link:hover {
-  color: var(--terra);
-  text-decoration-color: var(--terra);
+  color: var(--accent);
+  text-decoration-color: var(--accent);
 }
 
 .back-link {
@@ -2033,7 +1987,7 @@ button {
 }
 
 .back-link a {
-  color: var(--terra);
+  color: var(--accent);
   font-weight: 700;
 }
 
@@ -2045,7 +1999,7 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: var(--crema);
   overflow: hidden;
   will-change: opacity, background-color;
 }
@@ -2082,7 +2036,7 @@ button {
   font-size: inherit;
   font-weight: 400;
   font-style: normal;
-  color: #1a1a1a;
+  color: var(--panna);
   letter-spacing: 0.015em;
   line-height: 1;
   will-change: transform;
@@ -2152,40 +2106,6 @@ body.oh-preloader-active {
 }
 
 @media (max-width: 767px) {
-  .site-header__bar {
-    grid-template-columns: auto 1fr auto;
-  }
-
-  .site-header__toggle {
-    display: block;
-  }
-
-  .site-header__links {
-    position: absolute;
-    top: calc(100% + 12px);
-    left: 0;
-    flex-direction: column;
-    width: min(280px, 85vw);
-    padding: 16px;
-    border-radius: 16px;
-    background: rgba(26, 21, 18, 0.92);
-    border: 1px solid rgb(250 248 245 / 15%);
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(-8px);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-  }
-
-  .site-header__links.is-open {
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
-  }
-
-  .site-header__nav {
-    position: relative;
-  }
-
   .hero-content {
     margin-bottom: 1rem;
   }

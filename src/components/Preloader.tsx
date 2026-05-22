@@ -184,7 +184,7 @@ export function Preloader({
           preloaderEl,
           {
             opacity: 0,
-            backgroundColor: 'rgba(245, 245, 245, 0)',
+            backgroundColor: 'rgba(86, 74, 66, 0)',
             duration: 0.4,
             ease: 'power2.inOut',
           },
@@ -252,7 +252,7 @@ export function Preloader({
           preloaderEl,
           {
             opacity: 0,
-            backgroundColor: 'rgba(245, 245, 245, 0)',
+            backgroundColor: 'rgba(86, 74, 66, 0)',
             duration: 0.45,
             ease: 'power2.inOut',
           },

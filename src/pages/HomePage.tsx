@@ -137,7 +137,7 @@ export function HomePage() {
   useEffect(() => {
     if (!ready) return undefined;
 
-    const revealItems = document.querySelectorAll('.oh-reveal > .site-header, .oh-reveal > .hero');
+    const revealItems = document.querySelectorAll('.oh-reveal > .hero');
     if (revealItems.length) {
       gsap.to(revealItems, {
         opacity: 1,
@@ -215,7 +215,12 @@ export function HomePage() {
 
   return (
     <>
-      <main>
+      <main className="home-page">
+        {ready && (
+          <div className="home-page__sticky-header">
+            <Header />
+          </div>
+        )}
         <div className={shellClass}>
           <div className="oh-video-bg" ref={videoSlotRef}>
             <video
@@ -243,7 +248,6 @@ export function HomePage() {
           </div>
 
           <div className="oh-reveal">
-            {ready && <Header />}
             {ready && <HeroSection />}
           </div>
 

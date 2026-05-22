@@ -15,7 +15,7 @@
 .pelosa-page {
   overflow-x: clip;
   background: var(--crema);
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 /* Hero */
@@ -88,7 +88,7 @@
 }
 
 .pelosa-hero__back:hover {
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .pelosa-hero__content {
@@ -101,7 +101,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .pelosa-hero__title {
@@ -110,7 +110,7 @@
   font-weight: 400;
   line-height: 0.92;
   letter-spacing: -0.03em;
-  color: var(--crema);
+  color: var(--panna);
   text-wrap: balance;
 }
 
@@ -147,7 +147,7 @@
 }
 
 .pelosa-hero__scroll:hover {
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .pelosa-hero__scroll-line {
@@ -180,7 +180,7 @@
 .pelosa-intro {
   padding: clamp(4.5rem, 10vh, 6.5rem) var(--page-pad);
   background: var(--crema);
-  border-top: 1px solid rgb(58 49 43 / 8%);
+  border-top: 1px solid rgb(250 248 245 / 8%);
 }
 
 .pelosa-intro__inner {
@@ -194,7 +194,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .pelosa-intro__title {
@@ -209,7 +209,7 @@
 .pelosa-intro__header {
   margin-bottom: clamp(2rem, 4vw, 3rem);
   padding-bottom: clamp(1.5rem, 3vw, 2rem);
-  border-bottom: 1px solid rgb(58 49 43 / 12%);
+  border-bottom: 1px solid rgb(250 248 245 / 12%);
 }
 
 .pelosa-intro__grid {
@@ -232,7 +232,7 @@
   font-weight: 400;
   line-height: 1.65;
   letter-spacing: 0.02em;
-  color: rgb(58 49 43 / 88%);
+  color: rgb(250 248 245 / 88%);
   max-width: 42ch;
 }
 
@@ -240,7 +240,7 @@
   margin: 0;
   font-size: clamp(0.95rem, 1.5vw, 1.05rem);
   line-height: 1.75;
-  color: rgb(58 49 43 / 78%);
+  color: rgb(250 248 245 / 78%);
   max-width: 52ch;
 }
 
@@ -267,7 +267,7 @@
   font-family: var(--font-display);
   font-size: clamp(2.25rem, 5vw, 3.5rem);
   line-height: 1;
-  color: var(--carbone);
+  color: var(--panna);
 }
 
 .pelosa-intro__stat-label {
@@ -275,7 +275,7 @@
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgb(58 49 43 / 55%);
+  color: rgb(250 248 245 / 55%);
 }
 
 /* Gallery */
@@ -373,7 +373,7 @@
   font-size: 1.35rem;
   font-weight: 300;
   line-height: 1;
-  color: var(--crema);
+  color: var(--panna);
   background: rgb(26 21 18 / 55%);
   backdrop-filter: blur(6px);
   opacity: 0;
@@ -395,7 +395,7 @@
   overflow: hidden;
   padding: clamp(4.5rem, 10vh, 6.5rem) var(--page-pad);
   background: var(--hero-dark);
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .pelosa-cta::before,
@@ -437,7 +437,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 .pelosa-cta__title {
@@ -483,7 +483,7 @@
 
 .pelosa-cta__btn--primary {
   background: var(--terra);
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .pelosa-cta__btn--primary:hover {
@@ -493,7 +493,7 @@
 
 .pelosa-cta__btn--ghost {
   border: 1px solid rgb(250 248 245 / 28%);
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .pelosa-cta__btn--ghost:hover {
@@ -529,7 +529,7 @@
   border: 1px solid rgb(250 248 245 / 25%);
   border-radius: 999px;
   background: rgb(26 21 18 / 65%);
-  color: var(--crema);
+  color: var(--panna);
   font-size: 1.5rem;
   line-height: 1;
   cursor: pointer;

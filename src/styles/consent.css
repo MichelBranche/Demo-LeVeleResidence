@@ -42,7 +42,7 @@
   box-shadow:
     0 24px 80px rgba(0, 0, 0, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .cookie-consent__panel-inner {
@@ -108,7 +108,7 @@
 
 .consent-btn--primary {
   background: var(--terra);
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .consent-btn--primary:hover {
@@ -117,7 +117,7 @@
 
 .consent-btn--ghost {
   background: transparent;
-  color: var(--crema);
+  color: var(--panna);
   border: 1px solid rgba(250, 248, 245, 0.25);
 }
 
@@ -134,7 +134,7 @@
 
 .consent-btn--outline:hover {
   border-color: var(--mirto);
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .cookie-consent__legal {
@@ -153,7 +153,7 @@
 }
 
 .cookie-consent__legal a:hover {
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .cookie-consent__locale {
@@ -176,7 +176,7 @@
 
 .cookie-consent__lang.is-active,
 .cookie-consent__lang:hover {
-  color: var(--crema);
+  color: var(--panna);
   border-color: rgba(250, 248, 245, 0.2);
 }
 
@@ -277,7 +277,7 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: var(--crema);
+  background: var(--panna);
   transition: transform 0.25s ease;
 }
 
@@ -311,7 +311,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(58, 49, 43, 0.55);
+  color: rgba(250, 248, 245, 0.55);
 }
 
 .legal-page__title {
@@ -323,7 +323,7 @@
 .legal-page__updated {
   margin: 0 0 2.5rem;
   font-size: 0.88rem;
-  color: rgba(58, 49, 43, 0.6);
+  color: rgba(250, 248, 245, 0.6);
 }
 
 .legal-page section {
@@ -342,7 +342,7 @@
 .legal-page p,
 .legal-page li {
   line-height: 1.65;
-  color: rgba(58, 49, 43, 0.88);
+  color: rgba(250, 248, 245, 0.88);
 }
 
 .legal-page ul {
@@ -367,13 +367,13 @@
   font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  border: 1px solid rgba(58, 49, 43, 0.2);
-  color: rgba(58, 49, 43, 0.6);
+  border: 1px solid rgba(250, 248, 245, 0.2);
+  color: rgba(250, 248, 245, 0.6);
 }
 
 .legal-page__lang.is-active {
-  border-color: var(--carbone);
-  color: var(--carbone);
+  border-color: var(--panna);
+  color: var(--panna);
 }
 
 .site-footer__consent {
@@ -402,7 +402,7 @@
 .site-footer__consent a:hover,
 .site-footer__consent button:hover {
   opacity: 1;
-  color: var(--terra);
+  color: var(--accent);
 }
 
 @media (max-width: 540px) {

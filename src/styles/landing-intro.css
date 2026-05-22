@@ -8,7 +8,7 @@
     radial-gradient(circle at 18% 18%, rgb(129 178 154 / 14%), transparent 34%),
     radial-gradient(circle at 82% 82%, rgb(224 122 95 / 14%), transparent 36%),
     #1a1512;
-  color: var(--crema);
+  color: var(--panna);
   display: grid;
   place-items: center;
   transition: opacity 0.45s ease, visibility 0.45s ease;
@@ -25,7 +25,7 @@
 
 .loading-kicker {
   margin: 0;
-  color: var(--terra);
+  color: var(--accent);
   text-transform: uppercase;
   letter-spacing: 0.24em;
   font-size: 0.68rem;
@@ -73,7 +73,7 @@
   margin-top: 1.2rem;
   border: 1px solid rgb(250 248 245 / 35%);
   background: transparent;
-  color: var(--crema);
+  color: var(--panna);
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.7rem;
@@ -87,7 +87,7 @@
 .hero-content {
   position: relative;
   z-index: 2;
-  color: var(--crema);
+  color: var(--panna);
   text-align: center;
   max-width: min(92vw, 1000px);
 }
@@ -98,7 +98,7 @@
   font-size: 0.72rem;
   padding-inline: 0.8rem;
   margin: 0;
-  color: var(--terra);
+  color: var(--accent);
   font-weight: 600;
 }
 
@@ -165,7 +165,7 @@
 }
 
 .hero-scroll-cue:hover {
-  color: var(--crema);
+  color: var(--panna);
 }
 
 .hero-scroll-cue:hover .hero-scroll-mouse {
@@ -257,12 +257,12 @@
 
 .mute-toggle:hover {
   opacity: 1;
-  color: var(--crema);
+  color: var(--panna);
   transform: translateY(-1px);
 }
 
 .mute-toggle.is-on {
-  color: var(--crema);
+  color: var(--panna);
   opacity: 0.95;
 }
 

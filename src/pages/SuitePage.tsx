@@ -64,10 +64,6 @@ export function SuitePage() {
             ← Le Suites
           </Link>
           <div className="suite-hero__content" data-suite-reveal-stagger>
-            <div className="suite-hero__meta">
-              <span className="suite-hero__index">{suite.index}</span>
-              <p className="suite-hero__eyebrow">{suite.kicker}</p>
-            </div>
             <h1 id="suite-hero-title" className="suite-hero__title display-serif">
               <span className="suite-hero__title-line">{titleLine1}</span>
               {titleLine2 && (

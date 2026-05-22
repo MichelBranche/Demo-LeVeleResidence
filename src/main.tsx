@@ -5,6 +5,7 @@ import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 import 'lenis/dist/lenis.css';
 import './styles/fonts.css';
 import './styles/global.css';
+import './styles/header.css';
 import './styles/landing-intro.css';
 import './styles/oh-layout.css';
 import './styles/pelosa.css';
