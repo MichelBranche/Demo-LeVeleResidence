@@ -34,11 +34,27 @@ html {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100000;
+  /* Sopra cookie (10000), header (10050) e menu mobile — portal su body */
+  z-index: 100060;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.35s ease;
   will-change: transform;
+}
+
+/* Pannello cookie scuro: contrasto più alto */
+body:has(.cookie-consent--visible) .custom-cursor__dot {
+  background: var(--text-main);
+  box-shadow: 0 0 14px rgb(244 238 232 / 35%);
+}
+
+body:has(.cookie-consent--visible) .custom-cursor__ring {
+  border-color: rgb(244 238 232 / 55%);
+}
+
+body:has(.cookie-consent--visible) .custom-cursor.is-hover .custom-cursor__ring {
+  border-color: var(--accent-primary);
+  background: rgb(181 168 134 / 16%);
 }
 
 .custom-cursor.is-visible {

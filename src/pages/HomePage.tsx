@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { HeroSection } from '../components/HeroSection';
@@ -7,12 +8,15 @@ import { Preloader } from '../components/Preloader';
 import { useConsent } from '../hooks/useConsent';
 import { useNetworkTier } from '../hooks/useNetworkTier';
 import { hero, preloaderText } from '../data/site';
+import { markIntroDone } from '../lib/intro';
 import {
   shouldAutoplayHeroVideoImmediately,
   shouldDeferHeroVideoLoad,
   shouldRunVideoPreloader,
   shouldUsePosterOnlyHero,
 } from '../lib/network';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HomeHeroAnimations = lazy(() => import('../components/HomeHeroAnimations'));
 const ResidenceSection = lazy(() =>
@@ -108,6 +112,7 @@ export function HomePage() {
         /* ignore */
       }
       setIntroPhase('complete');
+      requestAnimationFrame(() => markIntroDone());
       return;
     }
 
@@ -157,12 +162,13 @@ export function HomePage() {
 
     let cancelled = false;
 
-    const dispatchIntroDone = () => {
+    const finishIntro = () => {
       if (cancelled || introDoneEventSentRef.current) return;
       introDoneEventSentRef.current = true;
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          window.dispatchEvent(new CustomEvent('intro:done'));
+          markIntroDone();
+          ScrollTrigger.refresh();
         });
       });
     };
@@ -170,16 +176,19 @@ export function HomePage() {
     const run = async () => {
       if (cancelled) return;
 
-      video.muted = true;
-      if (heroVideoSrc) {
-        try {
-          await video.play();
-        } catch {
-          /* autoplay bloccato */
-        }
+      if (!video || !heroVideoSrc) {
+        finishIntro();
+        return;
       }
 
-      dispatchIntroDone();
+      video.muted = true;
+      try {
+        await video.play();
+      } catch {
+        /* autoplay bloccato o video non pronto — poster resta visibile */
+      }
+
+      finishIntro();
     };
 
     const id = requestAnimationFrame(() => {
@@ -191,6 +200,19 @@ export function HomePage() {
       cancelAnimationFrame(id);
     };
   }, [ready, heroVideoSrc]);
+
+  useEffect(() => {
+    if (!ready) return;
+    const refresh = () => ScrollTrigger.refresh();
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(refresh);
+    });
+    const t = window.setTimeout(refresh, 600);
+    return () => {
+      cancelAnimationFrame(id);
+      window.clearTimeout(t);
+    };
+  }, [ready]);
 
   useEffect(() => {
     if (!ready || heroVideoSrc || posterOnlyHero) return;

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { isIntroDone, onIntroDone } from '../lib/intro';
 import { useNativeScrollOnMobile } from '../lib/motion';
 import { setLenisInstance } from '../lib/scroll';
 
@@ -57,16 +58,15 @@ export function useLenisScroll() {
       /* ignore */
     }
 
-    if (!onHome || preloaderSkipped) {
+    if (!onHome || preloaderSkipped || isIntroDone()) {
       startDeferred();
     } else {
-      const onIntroDone = () => startDeferred();
-      window.addEventListener('intro:done', onIntroDone, { once: true });
-      const fallback = window.setTimeout(startDeferred, 20000);
+      const unsub = onIntroDone(startDeferred);
+      const fallback = window.setTimeout(startDeferred, 12000);
 
       return () => {
         disposed = true;
-        window.removeEventListener('intro:done', onIntroDone);
+        unsub();
         window.clearTimeout(fallback);
         cancelSchedule?.();
         setLenisInstance(null);

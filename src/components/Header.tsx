@@ -121,7 +121,22 @@ export function Header() {
             className="site-header__cta"
             href={`mailto:${site.email}`}
             rel="noreferrer"
+            aria-label="Prenota — richiedi disponibilità via email"
           >
+            <span className="site-header__cta-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="4.5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M3 9.5h18" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M8 3v3.5M16 3v3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                <path
+                  d="M9.25 14.25 11 16l3.75-3.75"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
             <span className="site-header__cta-text">Prenota</span>
             <span className="site-header__cta-arrow" aria-hidden>
               →

@@ -110,6 +110,8 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
           repeat: -1,
         });
       }
+
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     },
     { scope: sectionRef, dependencies: [] },
   );

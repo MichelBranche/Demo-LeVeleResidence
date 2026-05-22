@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 
 const INTERACTIVE =
-  'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for], .site-header__cta, .site-header__menu, .site-header__backdrop, [data-cursor-hover]';
+  'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for], .site-header__cta, .site-header__menu, .site-header__backdrop, .consent-btn, .consent-toggle, .cookie-consent__lang, [data-cursor-hover]';
 
 const LERP_DOT = 0.28;
 const LERP_RING = 0.14;
@@ -114,10 +115,14 @@ export function CustomCursor() {
     };
   }, []);
 
-  return (
+  const cursor = (
     <div ref={rootRef} className="custom-cursor" aria-hidden>
       <div ref={ringRef} className="custom-cursor__ring" />
       <div ref={dotRef} className="custom-cursor__dot" />
     </div>
   );
+
+  if (typeof document === 'undefined') return cursor;
+
+  return createPortal(cursor, document.body);
 }

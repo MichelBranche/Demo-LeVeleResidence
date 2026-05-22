@@ -4,7 +4,8 @@ import gsap from 'gsap';
 import { scrollToTop } from '../lib/scroll';
 
 const INTRO_LIGHT_MAX_MS = 7000;
-const INTRO_VIDEO_MAX_MS = 16000;
+const INTRO_VIDEO_MAX_MS = 14000;
+const INTRO_METADATA_MAX_MS = 6000;
 
 type PreloaderProps = {
   text: string;
@@ -126,6 +127,7 @@ export function Preloader({
     let introFinished = false;
     let animationStarted = false;
     let safetyTimer = 0;
+    let metadataTimer = 0;
     let posterEl: HTMLImageElement | null = null;
     let mainTimeline: gsap.core.Timeline | null = null;
     let lightTimeline: gsap.core.Timeline | null = null;
@@ -134,6 +136,7 @@ export function Preloader({
       if (introFinished) return;
       introFinished = true;
       window.clearTimeout(safetyTimer);
+      window.clearTimeout(metadataTimer);
       document.body.classList.remove('oh-preloader-active');
       onCompleteRef.current();
       setVisible(false);
@@ -383,21 +386,30 @@ export function Preloader({
 
     const onVideoError = () => {
       if (introFinished) return;
+      window.clearTimeout(metadataTimer);
       returnVideoToSlot();
       completeIntro();
     };
 
+    const onMetadataReady = () => {
+      window.clearTimeout(metadataTimer);
+      onReady();
+    };
+
     heroVideoEl.addEventListener('error', onVideoError, { once: true });
 
+    metadataTimer = window.setTimeout(onVideoError, INTRO_METADATA_MAX_MS);
+
     if (heroVideoEl.readyState >= 1) {
-      void waitForFonts(1200).then(onReady);
+      void waitForFonts(1200).then(onMetadataReady);
     } else {
-      heroVideoEl.addEventListener('loadedmetadata', onReady, { once: true });
+      heroVideoEl.addEventListener('loadedmetadata', onMetadataReady, { once: true });
     }
 
     return () => {
       window.clearTimeout(safetyTimer);
-      heroVideoEl.removeEventListener('loadedmetadata', onReady);
+      window.clearTimeout(metadataTimer);
+      heroVideoEl.removeEventListener('loadedmetadata', onMetadataReady);
       heroVideoEl.removeEventListener('error', onVideoError);
       mainTimeline?.kill();
       document.body.classList.remove('oh-preloader-active');

@@ -6,6 +6,7 @@ export type NetworkTier = 'fast' | 'constrained' | 'minimal';
 type NetworkInformation = {
   saveData?: boolean;
   effectiveType?: string;
+  downlink?: number;
   addEventListener?: (type: string, listener: () => void) => void;
   removeEventListener?: (type: string, listener: () => void) => void;
 };
@@ -13,6 +14,11 @@ type NetworkInformation = {
 function getConnection(): NetworkInformation | undefined {
   if (typeof navigator === 'undefined') return undefined;
   return (navigator as Navigator & { connection?: NetworkInformation }).connection;
+}
+
+function downlinkMbps(): number | undefined {
+  const downlink = getConnection()?.downlink;
+  return typeof downlink === 'number' && Number.isFinite(downlink) ? downlink : undefined;
 }
 
 export function getNetworkTier(): NetworkTier {
@@ -23,38 +29,54 @@ export function getNetworkTier(): NetworkTier {
   if (conn?.saveData) return 'minimal';
 
   const effectiveType = conn?.effectiveType;
-  if (effectiveType === 'slow-2g' || effectiveType === '2g' || effectiveType === '3g') {
+  const mbps = downlinkMbps();
+
+  if (effectiveType === 'slow-2g' || effectiveType === '2g') {
     return 'minimal';
   }
 
+  if (typeof mbps === 'number') {
+    if (mbps < 1) return 'minimal';
+    if (mbps < 4) return 'constrained';
+    return 'fast';
+  }
+
+  if (effectiveType === '3g') {
+    return typeof mbps === 'number' && mbps >= 2 ? 'constrained' : 'minimal';
+  }
+
+  if (effectiveType === '4g') {
+    return 'fast';
+  }
+
+  /* API assente: non penalizzare il mobile — solo viewport stretta → motion leggera */
   if (isMobileViewport()) return 'constrained';
 
   return 'fast';
 }
 
-/** Hero ~11 MB, La Pelosa ~21 MB — video su desktop e 4G; solo poster su 3G / risparmio dati. */
+/** Preloader cinematico con video (~11 MB). */
 export function shouldRunVideoPreloader(): boolean {
   return getNetworkTier() !== 'minimal';
 }
 
-/** Carica il video hero per preloader + autoplay (tier non minimal). */
+/** Carica il video hero subito (non solo poster). */
 export function shouldAutoplayHeroVideoImmediately(): boolean {
   return getNetworkTier() !== 'minimal';
 }
 
-/** Differire il video dopo il poster — non serve con hero compresso. */
 export function shouldDeferHeroVideoLoad(): boolean {
   return false;
 }
 
-/** Su 3G / risparmio dati: solo poster, niente download video. */
+/** Solo poster: 2G / risparmio dati / downlink molto basso. */
 export function shouldUsePosterOnlyHero(): boolean {
   return getNetworkTier() === 'minimal';
 }
 
-/** SplitType + animazioni hero copy — evita JS extra su mobile / rete lenta. */
+/** SplitType hero — attivo su fast e constrained (leggero su constrained). */
 export function shouldLoadSplitHeroAnimations(): boolean {
-  return getNetworkTier() === 'fast' && !prefersReducedMotion();
+  return getNetworkTier() !== 'minimal' && !prefersReducedMotion();
 }
 
 export function subscribeToNetworkChanges(onChange: () => void): () => void {

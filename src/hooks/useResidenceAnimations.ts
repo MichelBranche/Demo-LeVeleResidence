@@ -70,6 +70,8 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
           repeat: -1,
         });
       }
+
+      requestAnimationFrame(() => ScrollTrigger.refresh());
     },
     { scope: sectionRef, dependencies: [] },
   );
