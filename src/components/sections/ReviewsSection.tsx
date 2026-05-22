@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { ReviewSummaryCard } from '@/components/ui/card-2';
 import { formatCopy, getReviewListingUrl } from '../../i18n';
 import type { ReviewCopy } from '../../i18n/types';
 import { useReviewsMarquee } from '../../hooks/useReviewsMarquee';
@@ -70,6 +71,7 @@ const REVIEW_LINK_JOIN: Record<string, string> = {
 export function ReviewsSection() {
   const { locale, content } = useSiteLocale();
   const { reviews, reviewLinks } = content;
+  const { summary } = reviews;
   const sectionRef = useRef<HTMLElement>(null);
   const displayReviews = (reviews.items ?? []).filter((r) => r.rating >= 4);
   useReviewsMarquee(sectionRef);
@@ -105,15 +107,42 @@ export function ReviewsSection() {
           </p>
         </header>
 
-        <div className="reviews__marquee" aria-label={reviews.marqueeAria}>
-          <div className="reviews__marquee-mask">
-            <div className="reviews__marquee-track">
-              <ul className="reviews__marquee-strip" role="list">
-                {renderStrip('')}
-              </ul>
-              <ul className="reviews__marquee-strip" role="presentation" aria-hidden>
-                {renderStrip('-dup')}
-              </ul>
+        <div className="reviews__summaries" role="group" aria-label={reviews.eyebrow}>
+          <ReviewSummaryCard
+            staggerIndex={0}
+            className="review-summary-card--google"
+            rating={summary.google.rating}
+            reviewCount={summary.google.reviewCount}
+            summaryText={summary.google.summaryText}
+            reviewCountLabel={summary.reviewCountLabel}
+            platformLabel={summary.google.platformLabel}
+            locale={locale}
+            href={reviewLinks.google.url}
+          />
+          <ReviewSummaryCard
+            staggerIndex={1}
+            className="review-summary-card--tripadvisor"
+            rating={summary.tripadvisor.rating}
+            reviewCount={summary.tripadvisor.reviewCount}
+            summaryText={summary.tripadvisor.summaryText}
+            reviewCountLabel={summary.reviewCountLabel}
+            platformLabel={summary.tripadvisor.platformLabel}
+            locale={locale}
+            href={reviewLinks.tripadvisor.url}
+          />
+        </div>
+
+        <div className="reviews__marquee-zone">
+          <div className="reviews__marquee" aria-label={reviews.marqueeAria}>
+            <div className="reviews__marquee-mask">
+              <div className="reviews__marquee-track">
+                <ul className="reviews__marquee-strip" role="list">
+                  {renderStrip('')}
+                </ul>
+                <ul className="reviews__marquee-strip" role="presentation" aria-hidden>
+                  {renderStrip('-dup')}
+                </ul>
+              </div>
             </div>
           </div>
         </div>

@@ -95,6 +95,21 @@ export type LocaleCopy = {
     marqueeAria: string;
     ratingAria: string;
     openOn: string;
+    summary: {
+      reviewCountLabel: string;
+      google: {
+        rating: number;
+        reviewCount: number;
+        summaryText: string;
+        platformLabel: string;
+      };
+      tripadvisor: {
+        rating: number;
+        reviewCount: number;
+        summaryText: string;
+        platformLabel: string;
+      };
+    };
     items: readonly ReviewCopy[];
   };
   contactIntro: { eyebrow: string; title: string; kicker: string };

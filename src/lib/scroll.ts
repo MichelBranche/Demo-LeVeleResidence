@@ -13,7 +13,6 @@ export function getLenisInstance(): Lenis | null {
 export function scrollToTop(immediate = true): void {
   if (lenisInstance) {
     lenisInstance.scrollTo(0, { immediate });
-    return;
   }
 
   window.scrollTo({
@@ -21,6 +20,38 @@ export function scrollToTop(immediate = true): void {
     left: 0,
     behavior: immediate ? 'instant' : 'smooth',
   });
+}
+
+/** Porta in cima alla hero suite (pathname /camere/* o alias /mare, /giardino, …). */
+export function scrollToSuiteHero(immediate = true): void {
+  scrollToTop(immediate);
+
+  const hero = document.querySelector<HTMLElement>('.suite-hero');
+  if (!hero) return;
+
+  if (lenisInstance) {
+    lenisInstance.scrollTo(hero, { immediate, offset: 0 });
+    return;
+  }
+
+  hero.scrollIntoView({ behavior: immediate ? 'instant' : 'smooth', block: 'start' });
+}
+
+/** Retry scroll — utile dopo lazy route, Lenis e layout immagini. */
+export function scheduleScrollToSuiteHero(): () => void {
+  scrollToSuiteHero(true);
+
+  const rafIds: number[] = [];
+  const run = () => scrollToSuiteHero(true);
+  rafIds.push(requestAnimationFrame(run));
+  rafIds.push(requestAnimationFrame(() => requestAnimationFrame(run)));
+
+  const timers = [50, 150, 400, 900, 1600].map((ms) => window.setTimeout(run, ms));
+
+  return () => {
+    rafIds.forEach((id) => cancelAnimationFrame(id));
+    timers.forEach((id) => window.clearTimeout(id));
+  };
 }
 
 export function scrollToHash(hash: string, immediate = false): void {

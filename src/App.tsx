@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { AppBootstrap } from './components/AppBootstrap';
 import { CustomCursor } from './components/CustomCursor';
@@ -8,8 +8,8 @@ import { PageSeo } from './components/seo/PageSeo';
 import { StructuredData } from './components/seo/StructuredData';
 import { TrackingRouteSync } from './components/seo/TrackingRouteSync';
 import { SubPageLayout } from './components/SubPageLayout';
-import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries } from './data/routes';
-import { scrollToHash, scrollToTop } from './lib/scroll';
+import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath } from './data/routes';
+import { scheduleScrollToSuiteHero, scrollToHash, scrollToTop } from './lib/scroll';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HomePage } from './pages/HomePage';
 
@@ -26,6 +26,18 @@ const CookiePolicyPage = lazy(() =>
 
 function ScrollOnNavigate() {
   const location = useLocation();
+  const isSuite = isSuiteDetailPath(location.pathname);
+
+  useLayoutEffect(() => {
+    if (location.hash) return;
+
+    if (isSuite) {
+      scrollToTop(true);
+      return;
+    }
+
+    scrollToTop(true);
+  }, [location.pathname, location.hash, isSuite]);
 
   useEffect(() => {
     if (location.hash) {
@@ -39,9 +51,12 @@ function ScrollOnNavigate() {
       return () => timers.forEach((id) => window.clearTimeout(id));
     }
 
-    scrollToTop(true);
+    if (isSuite) {
+      return scheduleScrollToSuiteHero();
+    }
+
     requestAnimationFrame(() => ScrollTrigger.refresh());
-  }, [location.pathname, location.hash]);
+  }, [location.pathname, location.hash, isSuite]);
 
   return null;
 }

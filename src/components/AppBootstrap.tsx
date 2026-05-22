@@ -17,6 +17,10 @@ export function AppBootstrap() {
       ScrollTrigger.normalizeScroll(false);
     }
 
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
     document.body.style.overflow = '';
     document.body.style.pointerEvents = '';
     document.body.classList.remove('oh-preloader-active');

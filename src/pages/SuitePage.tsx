@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { formatCopy } from '../i18n';
 import { getSuiteSlugFromPathname } from '../data/routes';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { useSuitePageAnimations } from '../hooks/useSuitePageAnimations';
+import { scheduleScrollToSuiteHero, scrollToTop } from '../lib/scroll';
 
 function splitSuiteTitle(title: string) {
   const parts = title.trim().split(/\s+/);
@@ -18,6 +19,7 @@ function splitSuiteTitle(title: string) {
 export function SuitePage() {
   const { content } = useSiteLocale();
   const { suitePage, suites, config } = content;
+  const navigate = useNavigate();
   const { slug: paramSlug = '' } = useParams();
   const { pathname } = useLocation();
   const slug = paramSlug || getSuiteSlugFromPathname(pathname) || '';
@@ -25,9 +27,20 @@ export function SuitePage() {
   const pageRef = useRef<HTMLElement>(null);
   useSuitePageAnimations(pageRef);
 
+  useLayoutEffect(() => {
+    scrollToTop(true);
+  }, [slug]);
+
   useEffect(() => {
+    const cancelScroll = scheduleScrollToSuiteHero();
     requestAnimationFrame(() => ScrollTrigger.refresh());
-    return () => ScrollTrigger.getAll().forEach((t) => t.kill());
+    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 500);
+
+    return () => {
+      cancelScroll();
+      window.clearTimeout(refreshTimer);
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
   }, [slug]);
 
   if (!suite) {
@@ -179,6 +192,11 @@ export function SuitePage() {
                 to={`/camere/${otherSuite.slug}`}
                 className="suite-cta__sibling"
                 data-suite-reveal
+                onClick={(event) => {
+                  event.preventDefault();
+                  scrollToTop(true);
+                  navigate(`/camere/${otherSuite.slug}`);
+                }}
               >
                 <span className="suite-cta__sibling-text">
                   <span className="suite-cta__sibling-label">{suitePage.otherSuite}</span>

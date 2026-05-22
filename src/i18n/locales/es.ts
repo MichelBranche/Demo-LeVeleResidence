@@ -165,6 +165,21 @@ export const es: LocaleCopy = {
     marqueeAria: 'Reseñas de huéspedes',
     ratingAria: 'Valoración {rating} de 5',
     openOn: 'Abrir en {platform} →',
+    summary: {
+      reviewCountLabel: 'reseñas',
+      google: {
+        rating: 4.9,
+        reviewCount: 142,
+        platformLabel: 'Google',
+        summaryText: 'Excelente en Google: los huéspedes destacan ubicación, limpieza y trato.',
+      },
+      tripadvisor: {
+        rating: 4.5,
+        reviewCount: 96,
+        platformLabel: 'Tripadvisor',
+        summaryText: 'Muy buenas puntuaciones en Tripadvisor por el mar, la tranquilidad y familias.',
+      },
+    },
     items: [
       {
         id: 'g-1',

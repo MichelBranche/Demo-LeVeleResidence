@@ -45,6 +45,11 @@ export function getPagePaths(id: RoutePageId): string[] {
   return [page.path, ...(page.aliases ?? [])];
 }
 
+/** True se il path è una pagina suite (canonica o alias). */
+export function isSuiteDetailPath(pathname: string): boolean {
+  return getSuiteSlugFromPathname(pathname) !== null;
+}
+
 /** Slug suite da pathname (anche alias tipo /mare → vista-mare). */
 export function getSuiteSlugFromPathname(pathname: string): string | null {
   const canonical = normalizePathname(pathname);

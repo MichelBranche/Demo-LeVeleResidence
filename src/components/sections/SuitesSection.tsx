@@ -1,13 +1,20 @@
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 import { useSuitesAnimations } from '../../hooks/useSuitesAnimations';
+import { scrollToTop } from '../../lib/scroll';
 
 export function SuitesSection() {
   const { content } = useSiteLocale();
   const { suitesIntro, suites } = content;
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLElement>(null);
   useSuitesAnimations(sectionRef);
+
+  const goToSuite = (slug: string) => {
+    scrollToTop(true);
+    navigate(`/camere/${slug}`);
+  };
 
   return (
     <section id="suites" className="suites" ref={sectionRef} aria-labelledby="suites-title">
@@ -50,6 +57,10 @@ export function SuitesSection() {
                 to={`/camere/${suite.slug}`}
                 className="suites__media"
                 aria-label={suite.discoverAria}
+                onClick={(event) => {
+                  event.preventDefault();
+                  goToSuite(suite.slug);
+                }}
               >
                 <div className="suites__media-inner">
                   <img src={suite.image} alt={suite.title} loading="lazy" decoding="async" />
@@ -66,7 +77,14 @@ export function SuitesSection() {
                     <li key={feature}>{feature}</li>
                   ))}
                 </ul>
-                <Link to={`/camere/${suite.slug}`} className="suites__cta">
+                <Link
+                  to={`/camere/${suite.slug}`}
+                  className="suites__cta"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    goToSuite(suite.slug);
+                  }}
+                >
                   <span className="suites__cta-text">{suite.exploreCta}</span>
                   <span className="suites__cta-arrow" aria-hidden>
                     →

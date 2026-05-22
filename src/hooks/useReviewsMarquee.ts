@@ -18,17 +18,31 @@ export function useReviewsMarquee(sectionRef: RefObject<HTMLElement | null>) {
 
       const track = section.querySelector<HTMLElement>('.reviews__marquee-track');
       const strip = track?.querySelector<HTMLElement>('.reviews__marquee-strip');
-      if (!track || !strip) return;
+      const mask = section.querySelector<HTMLElement>('.reviews__marquee-mask');
+      if (!track || !strip || !mask) return;
 
       let tween: gsap.core.Tween | null = null;
+
+      const getCenterOffset = () => {
+        const maskWidth = mask.clientWidth;
+        const firstCard = strip.querySelector<HTMLElement>('.review-card');
+        const cardWidth = firstCard?.offsetWidth ?? 0;
+        if (maskWidth < 8 || cardWidth < 8) return 0;
+        return Math.max(0, (maskWidth - cardWidth) * 0.5);
+      };
 
       const startMarquee = () => {
         tween?.kill();
         const width = strip.offsetWidth;
         if (width < 8) return;
+        const startX = getCenterOffset();
         const speed = isMobileViewport() ? 36 : 48;
         const duration = Math.max(28, width / speed);
-        tween = gsap.fromTo(track, { x: 0 }, { x: -width, duration, ease: 'none', repeat: -1 });
+        tween = gsap.fromTo(
+          track,
+          { x: startX },
+          { x: startX - width, duration, ease: 'none', repeat: -1 },
+        );
       };
 
       requestAnimationFrame(() => {
@@ -43,9 +57,14 @@ export function useReviewsMarquee(sectionRef: RefObject<HTMLElement | null>) {
         tween?.kill();
         const width = strip.offsetWidth;
         if (width < 8) return;
+        const startX = getCenterOffset();
         const speed = isMobileViewport() ? 36 : 48;
         const duration = Math.max(28, width / speed);
-        tween = gsap.fromTo(track, { x: 0 }, { x: -width, duration, ease: 'none', repeat: -1 });
+        tween = gsap.fromTo(
+          track,
+          { x: startX },
+          { x: startX - width, duration, ease: 'none', repeat: -1 },
+        );
         tween.progress(progress);
       };
       window.addEventListener('resize', onResize);
