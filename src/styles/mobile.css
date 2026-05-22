@@ -20,7 +20,6 @@
 
   body.site-nav-open {
     overflow: hidden;
-    touch-action: none;
   }
 
   /* —— Hero home —— */

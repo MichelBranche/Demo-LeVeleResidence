@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { logo, navLinks, site } from '../data/site';
-import { subscribeScroll } from '../lib/scroll';
+import { scrollToHash, subscribeScroll } from '../lib/scroll';
+
+function parseNavTarget(to: string): { pathname: string; hash: string } {
+  const hashIndex = to.indexOf('#');
+  if (hashIndex === -1) return { pathname: to, hash: '' };
+  return {
+    pathname: to.slice(0, hashIndex) || '/',
+    hash: to.slice(hashIndex),
+  };
+}
 
 /** Evita che tutti i link `/#sezione` risultino attivi sulla home (default di NavLink). */
 function isNavLinkActive(
@@ -21,6 +30,7 @@ function isNavLinkActive(
 
 export function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -52,6 +62,28 @@ export function Header() {
   ]
     .filter(Boolean)
     .join(' ');
+
+  const handleHashNavClick = (to: string) => (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const { pathname, hash } = parseNavTarget(to);
+    if (!hash) return;
+
+    event.preventDefault();
+    setMenuOpen(false);
+
+    const scroll = () => scrollToHash(hash);
+
+    if (location.pathname === pathname && location.hash === hash) {
+      requestAnimationFrame(scroll);
+      window.setTimeout(scroll, 350);
+      return;
+    }
+
+    navigate({ pathname, hash });
+
+    requestAnimationFrame(scroll);
+    window.setTimeout(scroll, 350);
+    window.setTimeout(scroll, 900);
+  };
 
   return (
     <header className={headerClass}>
@@ -91,7 +123,11 @@ export function Header() {
                 <li key={link.to}>
                   <NavLink
                     to={link.to}
-                    onClick={() => setMenuOpen(false)}
+                    onClick={
+                      link.to.includes('#')
+                        ? handleHashNavClick(link.to)
+                        : () => setMenuOpen(false)
+                    }
                     className={() => (active ? 'is-active' : undefined)}
                   >
                     <span className="site-header__link-index">

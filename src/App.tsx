@@ -29,11 +29,14 @@ function ScrollOnNavigate() {
 
   useEffect(() => {
     if (location.hash) {
-      requestAnimationFrame(() => {
+      const scroll = () => {
         scrollToHash(location.hash);
         ScrollTrigger.refresh();
-      });
-      return;
+      };
+      requestAnimationFrame(scroll);
+      const delays = [350, 900, 1600];
+      const timers = delays.map((ms) => window.setTimeout(scroll, ms));
+      return () => timers.forEach((id) => window.clearTimeout(id));
     }
 
     scrollToTop(true);

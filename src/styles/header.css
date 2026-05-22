@@ -344,7 +344,7 @@
   .site-header__links {
     position: fixed;
     inset: 0;
-    z-index: 10048;
+    z-index: 10051;
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
@@ -354,9 +354,9 @@
     margin: 0;
     padding: max(6rem, calc(env(safe-area-inset-top) + 5rem)) var(--page-pad)
       max(2.5rem, env(safe-area-inset-bottom));
-    background: rgb(86 74 66 / 94%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgb(30 26 23 / 96%);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
@@ -374,11 +374,11 @@
     transform: none;
   }
 
-  /* Barra superiore (Menu / logo / CTA) sopra il pannello fullscreen */
+  /* Barra superiore (Menu / logo / CTA) sopra overlay, sotto i link cliccabili */
   .site-header--menu-open .site-header__menu,
   .site-header--menu-open .site-header__logo,
   .site-header--menu-open .site-header__aside {
-    z-index: 10049;
+    z-index: 10052;
   }
 
   .site-header__links li {
@@ -390,15 +390,19 @@
   }
 
   .site-header__links a {
+    position: relative;
+    z-index: 1;
     justify-content: space-between;
     width: 100%;
+    min-height: var(--touch-min, 44px);
     padding: clamp(0.85rem, 3vh, 1.15rem) 0;
     font-family: var(--font-display);
-    font-size: clamp(1.85rem, 9vw, 3rem);
-    font-weight: 400;
+    font-size: clamp(1.75rem, 8.5vw, 2.75rem);
+    font-weight: 500;
     letter-spacing: -0.02em;
     text-transform: none;
-    color: var(--text-main);
+    color: var(--panna);
+    -webkit-tap-highlight-color: rgb(181 168 134 / 22%);
   }
 
   .site-header__links a::after {
@@ -407,17 +411,23 @@
 
   .site-header__link-index {
     font-family: var(--font-body);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
+    font-weight: 700;
     letter-spacing: 0.2em;
-    color: var(--accent-secondary);
+    color: var(--accent-primary);
   }
 
   .site-header__link-text {
     text-align: right;
+    color: inherit;
   }
 
-  .site-header__links a.is-active {
+  .site-header__links a.is-active .site-header__link-text {
     color: var(--accent-primary);
+  }
+
+  .site-header__links a:active {
+    opacity: 0.88;
   }
 
   .site-header__logo img {
@@ -447,7 +457,7 @@
   .site-header__backdrop {
     position: fixed;
     inset: 0;
-    z-index: 10047;
+    z-index: 10050;
     border: 0;
     padding: 0;
     margin: 0;
