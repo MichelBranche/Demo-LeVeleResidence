@@ -8,6 +8,7 @@ import './styles/global.css';
 import './styles/landing-intro.css';
 import './styles/oh-layout.css';
 import './styles/pelosa.css';
+import './styles/suite-detail.css';
 import './styles/consent.css';
 import './styles/mobile.css';
 

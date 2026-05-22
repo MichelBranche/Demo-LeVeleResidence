@@ -156,21 +156,61 @@ export const suitesIntro = {
 export const suites = [
   {
     slug: 'vista-giardino',
+    index: '01',
+    theme: 'giardino' as const,
     title: 'Con Vista Giardino',
     kicker: 'Monolocale per 2 o 4 persone',
+    tagline: 'Veranda, giardino privato e quiete della macchia.',
     description:
       'Monolocale con veranda coperta e accesso diretto al giardino privato: colazioni all’ombra, cene sotto il patio e il profumo della macchia mediterranea.',
     image: `${GARDEN}/vista%20giardino%201.jpg`,
     features: ['Veranda coperta', 'Giardino privato', 'Angolo cucina', 'Wi-Fi gratuito'],
+    gallery: [
+      {
+        src: `${GARDEN}/esterno%20giardino.jpg`,
+        alt: 'Giardino privato del monolocale vista giardino — Residence Le Vele, Stintino',
+        layout: 'wide' as const,
+      },
+      {
+        src: `${GARDEN}/39.JPG`,
+        alt: 'Veranda coperta e area esterna — appartamento vacanze Sardegna',
+        layout: 'tall' as const,
+      },
+      {
+        src: `${GARDEN}/24.JPG`,
+        alt: 'Interno monolocale con angolo cucina — Residence Le Vele',
+        layout: 'tall' as const,
+      },
+    ],
   },
   {
     slug: 'vista-mare',
+    index: '02',
+    theme: 'mare' as const,
     title: 'Con Vista Mare',
     kicker: 'Monolocale per 2 o 4 persone',
+    tagline: 'Terrazza privata e luce sulla baia di Stintino.',
     description:
       'Monolocale con terrazza privata e affaccio sulla baia: luce del Nord Sardegna al mattino, tramonti dorati verso la Pelosa alla sera.',
     image: `${SEA}/le_vele_residence_stintino_appartamenti_27.jpg`,
     features: ['Terrazza privata', 'Vista mare', 'Aria condizionata', 'Wi-Fi gratuito'],
+    gallery: [
+      {
+        src: `${SEA}/14.JPG`,
+        alt: 'Terrazza con vista mare — monolocale Residence Le Vele, Stintino',
+        layout: 'wide' as const,
+      },
+      {
+        src: `${SEA}/29.JPG`,
+        alt: 'Panorama dalla suite vista mare — Stintino, Sardegna',
+        layout: 'tall' as const,
+      },
+      {
+        src: `${SEA}/40.JPG`,
+        alt: 'Dettaglio interno monolocale vista mare — Le Vele',
+        layout: 'tall' as const,
+      },
+    ],
   },
 ] as const;
 

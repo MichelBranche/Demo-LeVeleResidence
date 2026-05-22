@@ -32,20 +32,19 @@ export function getNetworkTier(): NetworkTier {
   return 'fast';
 }
 
-/** Preloader con video (~45 MB) — solo desktop e rete veloce. */
+/** Hero ~11 MB, La Pelosa ~21 MB — video su desktop e 4G; solo poster su 3G / risparmio dati. */
 export function shouldRunVideoPreloader(): boolean {
-  return getNetworkTier() === 'fast';
+  return getNetworkTier() !== 'minimal';
 }
 
-/** Autoplay video subito dopo l’intro (nessun defer). */
+/** Carica il video hero per preloader + autoplay (tier non minimal). */
 export function shouldAutoplayHeroVideoImmediately(): boolean {
-  return getNetworkTier() === 'fast';
+  return getNetworkTier() !== 'minimal';
 }
 
-/** Carica il video in background dopo LCP (poster) — mobile 4G / desktop non critico. */
+/** Differire il video dopo il poster — non serve con hero compresso. */
 export function shouldDeferHeroVideoLoad(): boolean {
-  const tier = getNetworkTier();
-  return tier === 'constrained';
+  return false;
 }
 
 /** Su 3G / risparmio dati: solo poster, niente download video. */

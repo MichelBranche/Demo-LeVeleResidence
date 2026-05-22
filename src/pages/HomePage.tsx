@@ -72,7 +72,6 @@ export function HomePage() {
   const [introPhase, setIntroPhase] = useState<IntroPhase>(() =>
     readPreloaderDone() ? 'complete' : 'pending-consent',
   );
-  const [isMuted, setIsMuted] = useState(true);
   const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
     shouldAutoplayHeroVideoImmediately() ? hero.video : undefined,
   );
@@ -118,11 +117,15 @@ export function HomePage() {
   useEffect(() => {
     if (introPhase !== 'preloader' || lightPreloader) return;
     const video = videoRef.current;
-    if (!video || video.getAttribute('src')) return;
-    video.src = hero.video;
+    if (!video) return;
+    if (!video.currentSrc) {
+      video.src = hero.video;
+    }
+    video.preload = 'metadata';
   }, [introPhase, lightPreloader]);
 
   const handlePreloaderComplete = useCallback(() => {
+    document.body.classList.remove('oh-preloader-active');
     try {
       sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
     } catch {
@@ -202,21 +205,6 @@ export function HomePage() {
     return () => window.clearTimeout(id);
   }, [ready, heroVideoSrc, posterOnlyHero]);
 
-  useEffect(() => {
-    if (!ready) return;
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = isMuted;
-  }, [isMuted, ready]);
-
-  const handleToggleMute = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    const nextMuted = !video.muted;
-    video.muted = nextMuted;
-    setIsMuted(nextMuted);
-  };
-
   const shellClass = [
     'home-hero-shell',
     ready ? 'home-hero-shell--ready' : '',
@@ -236,10 +224,18 @@ export function HomePage() {
               poster={hero.poster}
               className="hero-bg-video"
               autoPlay={ready && !!heroVideoSrc}
-              muted={isMuted}
+              muted
               loop
               playsInline
-              preload={heroVideoSrc ? (ready ? 'metadata' : 'none') : 'none'}
+              preload={
+                heroVideoSrc
+                  ? showPreloader && !lightPreloader
+                    ? 'metadata'
+                    : ready
+                      ? 'metadata'
+                      : 'none'
+                  : 'none'
+              }
               width={1920}
               height={1080}
               aria-label="Video panoramico della Sardegna — Residence Le Vele Stintino"
@@ -248,7 +244,7 @@ export function HomePage() {
 
           <div className="oh-reveal">
             {ready && <Header />}
-            {ready && <HeroSection isMuted={isMuted} onToggleMute={handleToggleMute} />}
+            {ready && <HeroSection />}
           </div>
 
           {showPreloader && (

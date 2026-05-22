@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { scrollToTop } from '../lib/scroll';
 
+const INTRO_LIGHT_MAX_MS = 7000;
+const INTRO_VIDEO_MAX_MS = 16000;
+
 type PreloaderProps = {
   text: string;
   videoRef: RefObject<HTMLVideoElement | null>;
   videoSlotRef: RefObject<HTMLDivElement | null>;
   onComplete: () => void;
-  /** Mobile / 4G: niente download video durante l’intro. */
   lightMode?: boolean;
   posterSrc?: string;
 };
@@ -32,6 +34,14 @@ function waitForFonts(maxMs: number): Promise<void> {
       window.setTimeout(resolve, maxMs);
     }),
   ]);
+}
+
+function waitForLayout(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => resolve());
+    });
+  });
 }
 
 export function Preloader({
@@ -65,6 +75,8 @@ export function Preloader({
     const heroSlot = videoSlotRef.current;
     if (!textEl || !textContainer || !revealMedia || !preloaderEl || !heroSlot) return undefined;
     if (!lightMode && !video) return undefined;
+
+    const heroVideo = video;
 
     const words = text.trim().split(/\s+/);
     const staggerTime = 0.05;
@@ -112,45 +124,44 @@ export function Preloader({
     gsap.set(wordElements, { opacity: 1, x: 0 });
 
     let introFinished = false;
-    const finishIntro = () => {
+    let animationStarted = false;
+    let safetyTimer = 0;
+    let posterEl: HTMLImageElement | null = null;
+    let mainTimeline: gsap.core.Timeline | null = null;
+    let lightTimeline: gsap.core.Timeline | null = null;
+
+    const completeIntro = () => {
       if (introFinished) return;
       introFinished = true;
+      window.clearTimeout(safetyTimer);
       document.body.classList.remove('oh-preloader-active');
       onCompleteRef.current();
       setVisible(false);
     };
 
-    const returnVideoToSlot = () => {
-      if (!video) return;
-      if (video.parentElement !== heroSlot) {
-        heroSlot.appendChild(video);
-      }
-      video.classList.add('hero-bg-video');
-      video.loop = true;
-      video.muted = true;
-      video.playsInline = true;
-      gsap.set(video, { clearProps: 'transform,opacity,filter' });
-    };
-
     if (lightMode) {
-      const posterEl = document.createElement('img');
+      const forceLightExit = () => {
+        lightTimeline?.kill();
+        completeIntro();
+      };
+
+      safetyTimer = window.setTimeout(forceLightExit, INTRO_LIGHT_MAX_MS);
+      posterEl = document.createElement('img');
       posterEl.className = 'oh-preloader__poster';
       posterEl.src = posterSrc ?? '';
       posterEl.alt = '';
       posterEl.decoding = 'async';
-      posterEl.setAttribute('fetchpriority', 'high');
       revealMedia.appendChild(posterEl);
-
       gsap.set(revealMedia, { opacity: 0, scale: 0.96 });
 
-      const lightTl = gsap.timeline({
+      lightTimeline = gsap.timeline({
         paused: true,
-        onComplete: finishIntro,
+        onComplete: completeIntro,
       });
 
       words.forEach((_w, i) => {
         const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
-        lightTl.to(
+        lightTimeline!.to(
           chars,
           {
             yPercent: 0,
@@ -162,39 +173,64 @@ export function Preloader({
         );
       });
 
-      lightTl
+      lightTimeline
         .to(revealMedia, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, '>+0.2')
-        .to([textContainer, ...wordElements, revealMedia], {
-          opacity: 0,
-          duration: 0.35,
-          ease: 'power2.inOut',
-        }, '>+0.35')
-        .to(preloaderEl, {
-          opacity: 0,
-          backgroundColor: 'rgba(245, 245, 245, 0)',
-          duration: 0.4,
-          ease: 'power2.inOut',
-        }, '<0.06');
+        .to(
+          [textContainer, ...wordElements, revealMedia],
+          { opacity: 0, duration: 0.35, ease: 'power2.inOut' },
+          '>+0.35',
+        )
+        .to(
+          preloaderEl,
+          {
+            opacity: 0,
+            backgroundColor: 'rgba(245, 245, 245, 0)',
+            duration: 0.4,
+            ease: 'power2.inOut',
+          },
+          '<0.06',
+        );
 
-      const lightSafety = window.setTimeout(finishIntro, 8000);
-
-      void waitForFonts(600).then(() => {
-        lightTl.play();
+      void waitForFonts(800).then(() => {
+        if (introFinished) return;
+        lightTimeline?.play(0);
       });
 
       return () => {
-        window.clearTimeout(lightSafety);
-        posterEl.remove();
+        window.clearTimeout(safetyTimer);
+        posterEl?.remove();
+        lightTimeline?.kill();
         document.body.classList.remove('oh-preloader-active');
         gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
-        lightTl.kill();
       };
     }
 
+    if (!heroVideo) return undefined;
+
+    const heroVideoEl = heroVideo;
+
+    const returnVideoToSlot = () => {
+      if (heroVideoEl.parentElement !== heroSlot) {
+        heroSlot.appendChild(heroVideoEl);
+      }
+      heroVideoEl.classList.add('hero-bg-video');
+      heroVideoEl.loop = true;
+      heroVideoEl.muted = true;
+      heroVideoEl.playsInline = true;
+      gsap.set(heroVideoEl, { clearProps: 'transform,opacity,filter' });
+      gsap.set(revealMedia, { clearProps: 'all' });
+    };
+
+    const forceVideoExit = () => {
+      mainTimeline?.kill();
+      returnVideoToSlot();
+      completeIntro();
+    };
+
+    safetyTimer = window.setTimeout(forceVideoExit, INTRO_VIDEO_MAX_MS);
+
     const handoffToHero = () => {
-      const exitTl = gsap.timeline({
-        onComplete: finishIntro,
-      });
+      const exitTl = gsap.timeline({ onComplete: completeIntro });
 
       exitTl
         .to([textContainer, ...wordElements], {
@@ -225,23 +261,39 @@ export function Preloader({
     };
 
     const runAnimation = () => {
-      if (!video) return;
-      if (video.parentElement === heroSlot) {
-        revealMedia.appendChild(video);
+      if (introFinished || animationStarted) return;
+      animationStarted = true;
+
+      if (heroVideoEl.parentElement === heroSlot) {
+        revealMedia.appendChild(heroVideoEl);
       }
+
+      heroVideoEl.muted = true;
+      heroVideoEl.playsInline = true;
+      heroVideoEl.loop = true;
+      void heroVideoEl.play().catch(() => {});
 
       const textRect = textEl.getBoundingClientRect();
       const textHeight = textRect.height;
+      if (textHeight < 8) {
+        returnVideoToSlot();
+        completeIntro();
+        return;
+      }
 
       const aspectRatio =
-        video.videoWidth > 0 && video.videoHeight > 0
-          ? video.videoWidth / video.videoHeight
+        heroVideoEl.videoWidth > 0 && heroVideoEl.videoHeight > 0
+          ? heroVideoEl.videoWidth / heroVideoEl.videoHeight
           : 16 / 9;
       const mediaWidth = textHeight * aspectRatio;
       const halfMedia = mediaWidth / 2 + textGap;
 
       const slotSpace = textEl.querySelector<HTMLElement>('.oh-preloader__word-space');
-      if (!slotSpace) return;
+      if (!slotSpace) {
+        returnVideoToSlot();
+        completeIntro();
+        return;
+      }
 
       const slotRect = slotSpace.getBoundingClientRect();
       const slotCenterX = slotRect.left + slotRect.width / 2;
@@ -255,11 +307,11 @@ export function Preloader({
         opacity: 0,
       });
 
-      const tl = gsap.timeline();
+      mainTimeline = gsap.timeline();
 
       words.forEach((_w, i) => {
         const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
-        tl.to(
+        mainTimeline!.to(
           chars,
           {
             yPercent: 0,
@@ -271,85 +323,83 @@ export function Preloader({
         );
       });
 
-      tl.to(
-        revealMedia,
-        {
-          opacity: 1,
-          duration: splitDuration * 0.35,
-          ease: 'power2.out',
-        },
-        `>+${splitDelay}`,
-      );
-
-      tl.fromTo(
-        revealMedia,
-        { clipPath: 'inset(0 50% 0 50%)' },
-        { clipPath: 'inset(0 0% 0 0%)', duration: splitDuration, ease: 'power4.inOut' },
-        '<',
-      );
+      mainTimeline
+        .to(
+          revealMedia,
+          {
+            opacity: 1,
+            duration: splitDuration * 0.35,
+            ease: 'power2.out',
+          },
+          `>+${splitDelay}`,
+        )
+        .fromTo(
+          revealMedia,
+          { clipPath: 'inset(0 50% 0 50%)' },
+          { clipPath: 'inset(0 0% 0 0%)', duration: splitDuration, ease: 'power4.inOut' },
+          '<',
+        );
 
       if (wordElements[0]) {
-        tl.to(wordElements[0], { x: -halfMedia, duration: splitDuration, ease: 'power4.inOut' }, '<');
+        mainTimeline.to(
+          wordElements[0],
+          { x: -halfMedia, duration: splitDuration, ease: 'power4.inOut' },
+          '<',
+        );
       }
       if (wordElements[1]) {
-        tl.to(wordElements[1], { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' }, '<');
+        mainTimeline.to(
+          wordElements[1],
+          { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
+          '<',
+        );
       }
       if (wordElements[2]) {
-        tl.to(wordElements[2], { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' }, '<');
+        mainTimeline.to(
+          wordElements[2],
+          { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
+          '<',
+        );
       }
 
-      tl.to(slotSpace, { width: 0, duration: splitDuration, ease: 'power4.inOut' }, '<');
-
-      tl.to(
-        revealMedia,
-        {
-          ...getSlotTarget(heroSlot),
-          duration: expandDuration,
-          ease: 'power3.inOut',
-        },
-        '>+=0.3',
-      );
-
-      tl.call(handoffToHero);
+      mainTimeline
+        .to(slotSpace, { width: 0, duration: splitDuration, ease: 'power4.inOut' }, '<')
+        .to(
+          revealMedia,
+          {
+            ...getSlotTarget(heroSlot),
+            duration: expandDuration,
+            ease: 'power3.inOut',
+          },
+          '>+=0.3',
+        )
+        .call(handoffToHero);
     };
 
     const onReady = () => {
-      if (!video) return;
-      if (video.readyState >= 1) {
-        runAnimation();
-      } else {
-        video.addEventListener('loadedmetadata', runAnimation, { once: true });
-      }
+      if (introFinished || animationStarted) return;
+      void waitForLayout().then(runAnimation);
     };
-
-    const forceComplete = () => {
-      if (!video) {
-        finishIntro();
-        return;
-      }
-      returnVideoToSlot();
-      finishIntro();
-    };
-
-    const metadataTimeout = window.setTimeout(() => {
-      if (video && video.readyState < 1) {
-        forceComplete();
-      }
-    }, 10000);
 
     const onVideoError = () => {
-      window.clearTimeout(metadataTimeout);
-      forceComplete();
+      if (introFinished) return;
+      returnVideoToSlot();
+      completeIntro();
     };
 
-    video?.addEventListener('error', onVideoError, { once: true });
+    heroVideoEl.addEventListener('error', onVideoError, { once: true });
 
-    void waitForFonts(1200).then(onReady);
+    if (heroVideoEl.readyState >= 1) {
+      void waitForFonts(1200).then(onReady);
+    } else {
+      heroVideoEl.addEventListener('loadedmetadata', onReady, { once: true });
+    }
 
     return () => {
-      window.clearTimeout(metadataTimeout);
-      video?.removeEventListener('error', onVideoError);
-      video?.removeEventListener('loadedmetadata', runAnimation);
+      window.clearTimeout(safetyTimer);
+      heroVideoEl.removeEventListener('loadedmetadata', onReady);
+      heroVideoEl.removeEventListener('error', onVideoError);
+      mainTimeline?.kill();
       document.body.classList.remove('oh-preloader-active');
       gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
       returnVideoToSlot();
@@ -362,7 +412,6 @@ export function Preloader({
     <div className="oh-preloader" ref={preloaderRef} aria-hidden={false} aria-busy="true">
       <div className="oh-preloader__reveal-media" ref={mediaRef} />
       <div className="oh-preloader__text-container" ref={textContainerRef}>
-        {/* Testo inserito via GSAP — evita flash da re-render React */}
         <span className="oh-preloader__text" ref={textRef} />
       </div>
     </div>

@@ -2,40 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PelosaLightbox } from '../components/PelosaLightbox';
 import { pelosaPage } from '../data/site';
-import { useNetworkTier } from '../hooks/useNetworkTier';
 import { usePelosaAnimations } from '../hooks/usePelosaAnimations';
-import {
-  shouldAutoplayHeroVideoImmediately,
-  shouldDeferHeroVideoLoad,
-  shouldUsePosterOnlyHero,
-} from '../lib/network';
+import { shouldUsePosterOnlyHero } from '../lib/network';
 
 export function LaPelosaPage() {
   const pageRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const [isMuted, setIsMuted] = useState(true);
-  const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
-    shouldAutoplayHeroVideoImmediately() ? pelosaPage.hero.video : undefined,
-  );
-  const networkTier = useNetworkTier();
   const posterOnlyHero = shouldUsePosterOnlyHero();
+  const heroVideoSrc = posterOnlyHero ? undefined : pelosaPage.hero.video;
   usePelosaAnimations(pageRef);
 
   const { hero, intro, gallery } = pelosaPage;
-
-  useEffect(() => {
-    if (heroVideoSrc || posterOnlyHero) return;
-    if (!shouldDeferHeroVideoLoad()) return;
-
-    const enable = () => setHeroVideoSrc(hero.video);
-    if (typeof requestIdleCallback === 'function') {
-      const id = requestIdleCallback(enable, { timeout: 6000 });
-      return () => cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(enable, 2500);
-    return () => window.clearTimeout(id);
-  }, [heroVideoSrc, posterOnlyHero, hero.video, networkTier]);
 
   useEffect(() => {
     const video = videoRef.current;
