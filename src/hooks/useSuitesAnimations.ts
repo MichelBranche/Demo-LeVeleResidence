@@ -2,6 +2,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { RefObject } from 'react';
+import { allowScrollScrub, isMobileViewport, prefersReducedMotion } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -11,8 +12,7 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
       const section = sectionRef.current;
       if (!section) return;
 
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) return;
+      if (prefersReducedMotion()) return;
 
       const intro = section.querySelector<HTMLElement>('.suites__intro');
       if (intro) {
@@ -53,7 +53,7 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
           );
 
           const img = mediaInner.querySelector('img');
-          if (img) {
+          if (img && allowScrollScrub()) {
             gsap.fromTo(
               img,
               { scale: 1.18 },
@@ -68,6 +68,8 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
                 },
               },
             );
+          } else if (img && isMobileViewport()) {
+            gsap.set(img, { scale: 1 });
           }
         }
 

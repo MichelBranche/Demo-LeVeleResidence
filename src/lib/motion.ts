@@ -13,3 +13,9 @@ export function prefersReducedMotion(): boolean {
 export function useNativeScrollOnMobile(): boolean {
   return isMobileViewport();
 }
+
+/** ScrollTrigger scrub legato al dito — disattivato su mobile (causa “scatti”). */
+export function allowScrollScrub(): boolean {
+  if (typeof window === 'undefined') return false;
+  return !isMobileViewport() && !prefersReducedMotion();
+}
