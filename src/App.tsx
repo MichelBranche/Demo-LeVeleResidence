@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react';
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { AppBootstrap } from './components/AppBootstrap';
@@ -113,6 +114,7 @@ export default function App() {
             </Route>
           </Routes>
         </Suspense>
+        <Analytics />
       </CookieConsentRoot>
     </BrowserRouter>
   );
