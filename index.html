@@ -22,6 +22,12 @@
     <title>Residence Le Vele | Appartamenti vacanze a Stintino, Sardegna</title>
   </head>
   <body>
+    <script>
+      try {
+        var locale = localStorage.getItem('lv-site-locale');
+        if (locale) document.documentElement.lang = locale;
+      } catch (e) {}
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -3,7 +3,7 @@ import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isIntroDone, onIntroDone } from '../lib/intro';
-import { useNativeScrollOnMobile } from '../lib/motion';
+import { isMobileViewport } from '../lib/motion';
 import { setLenisInstance } from '../lib/scroll';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -26,7 +26,7 @@ export function useLenisScroll() {
     let cancelSchedule: (() => void) | undefined;
 
     const initLenis = () => {
-      if (disposed || useNativeScrollOnMobile()) return;
+      if (disposed || isMobileViewport()) return;
 
       const root = document.documentElement;
       root.classList.add('lenis', 'lenis-smooth');

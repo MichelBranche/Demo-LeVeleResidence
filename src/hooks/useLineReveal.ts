@@ -10,7 +10,7 @@ function wrapLines(element: HTMLElement) {
   const words = text.split(/\s+/);
   element.innerHTML = '';
 
-  let line = document.createElement('span');
+  const line = document.createElement('span');
   line.className = 'line-reveal__line';
   const mask = document.createElement('span');
   mask.className = 'line-reveal__mask';

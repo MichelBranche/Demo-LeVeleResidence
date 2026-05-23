@@ -128,6 +128,8 @@ export type LocaleCopy = {
     explore: string;
     contacts: string;
     designBy: string;
+    starsAria: string;
+    instagramAria: string;
   };
   pelosa: {
     hero: {

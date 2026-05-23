@@ -7,11 +7,13 @@ import { LenisScroll } from './components/LenisScroll';
 import { PageSeo } from './components/seo/PageSeo';
 import { StructuredData } from './components/seo/StructuredData';
 import { TrackingRouteSync } from './components/seo/TrackingRouteSync';
+import { LanguageToggle } from './components/LanguageToggle';
+import { SkipToMain } from './components/SkipToMain';
 import { SubPageLayout } from './components/SubPageLayout';
 import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath } from './data/routes';
 import { scheduleScrollToSuiteHero, scrollToHash, scrollToTop } from './lib/scroll';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { HomePage } from './pages/HomePage';
+const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
 
 const LaPelosaPage = lazy(() =>
   import('./pages/LaPelosaPage').then((m) => ({ default: m.LaPelosaPage })),
@@ -65,6 +67,15 @@ function RouteFallback() {
   return <div className="route-fallback" aria-hidden />;
 }
 
+function MobileLangFab() {
+  const { pathname } = useLocation();
+  const isHome = pathname === '/' || pathname === '';
+
+  if (isHome) return null;
+
+  return <LanguageToggle variant="fab" />;
+}
+
 export default function App() {
   const laPelosaPaths = getLaPelosaPaths();
   const privacyPaths = getPagePaths('privacy-policy');
@@ -78,8 +89,10 @@ export default function App() {
         <StructuredData />
         <TrackingRouteSync />
         <AppBootstrap />
+        <SkipToMain />
         <LenisScroll />
         <CustomCursor />
+        <MobileLangFab />
         <ScrollOnNavigate />
         <Suspense fallback={<RouteFallback />}>
           <Routes>

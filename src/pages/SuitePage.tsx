@@ -24,7 +24,7 @@ export function SuitePage() {
   const { pathname } = useLocation();
   const slug = paramSlug || getSuiteSlugFromPathname(pathname) || '';
   const suite = suites.find((s) => s.slug === slug);
-  const pageRef = useRef<HTMLElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
   useSuitePageAnimations(pageRef);
 
   useLayoutEffect(() => {
@@ -39,16 +39,16 @@ export function SuitePage() {
     return () => {
       cancelScroll();
       window.clearTimeout(refreshTimer);
-      ScrollTrigger.getAll().forEach((t) => t.kill());
+      ScrollTrigger.refresh();
     };
   }, [slug]);
 
   if (!suite) {
     return (
-      <main className="page-inner placeholder-page">
+      <div className="page-inner placeholder-page">
         <h1 className="display-title">{suitePage.notFound}</h1>
         <Link to="/#suites">{suitePage.backToSuites}</Link>
-      </main>
+      </div>
     );
   }
 
@@ -58,7 +58,7 @@ export function SuitePage() {
   const { line1: titleLine1, line2: titleLine2 } = splitSuiteTitle(suite.title);
 
   return (
-    <main
+    <div
       key={slug}
       className={`suite-page suite-page--${suite.theme}`}
       ref={pageRef}
@@ -213,6 +213,6 @@ export function SuitePage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

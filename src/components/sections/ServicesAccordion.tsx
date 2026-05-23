@@ -5,6 +5,44 @@ import { useSiteLocale } from '../../hooks/useSiteLocale';
 
 type AccordionCard = ReturnType<typeof useSiteLocale>['content']['residenceCardsMerged'][number];
 
+function PawIcon() {
+  return (
+    <svg
+      className="scroll-accordion__paw"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <circle cx="5.8" cy="9.2" r="2.35" />
+      <circle cx="10.2" cy="6.8" r="2.55" />
+      <circle cx="13.8" cy="6.8" r="2.55" />
+      <circle cx="18.2" cy="9.2" r="2.35" />
+      <path d="M12 12.2c-3.55 0-6.35 2.45-6.35 5.55 0 2.85 2.65 4.85 6.35 4.85s6.35-2 6.35-4.85c0-3.1-2.8-5.55-6.35-5.55z" />
+    </svg>
+  );
+}
+
+function AccordionHeading({ service }: { service: AccordionCard }) {
+  if (service.icon === 'pets') {
+    return (
+      <>
+        <i aria-hidden>●</i>
+        <span className="scroll-accordion__heading-label">
+          {service.title}
+          <PawIcon />
+        </span>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <i aria-hidden>●</i> {service.title}
+    </>
+  );
+}
+
 function AccordionMedia({ service }: { service: AccordionCard }) {
   if ('images' in service && service.images) {
     return (
@@ -60,9 +98,17 @@ export function ServicesAccordion({ showIntro = true, className = '' }: Services
           <article key={service.title} className="scroll-accordion__item">
             <div className="scroll-accordion__card">
               <h4 className="scroll-accordion__heading">
-                <i aria-hidden>●</i> {service.title}
+                <button
+                  type="button"
+                  className="scroll-accordion__trigger"
+                  aria-expanded="false"
+                  tabIndex={-1}
+                  aria-disabled="true"
+                >
+                  <AccordionHeading service={service} />
+                </button>
               </h4>
-              <div className="scroll-accordion__content" aria-expanded="false">
+              <div className="scroll-accordion__content">
                 <div className="scroll-accordion__copy">
                   <p>{service.description}</p>
                   {'routes' in service && service.routes && (

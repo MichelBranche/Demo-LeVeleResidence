@@ -60,6 +60,12 @@ export const de: LocaleCopy = {
         { alt: 'Luftaufnahme des Hafens Olbia', caption: 'Hafen Olbia' },
       ],
     },
+    {
+      title: 'Vierbeiner willkommen',
+      description:
+        'Im Residence Le Vele ist Ihr Hund willkommen: ruhige Studios in der Macchia, Veranden und Terrassen im Grünen, und die Küste von Stintino — Strände und Wege — nur wenige Minuten mit dem Auto entfernt. Bitte respektieren Sie andere Gäste und die örtlichen Strandregeln.',
+      imageAlt: 'Golden Retriever läuft fröhlich im flachen Meerwasser auf Sardinien',
+    },
   ],
   residenceAccordion: {
     eyebrow: 'Im Detail',
@@ -301,6 +307,8 @@ export const de: LocaleCopy = {
     explore: 'Entdecken',
     contacts: 'Kontakt',
     designBy: 'Design by',
+    starsAria: '3-Sterne-Klassifizierung',
+    instagramAria: 'Residence Le Vele auf Instagram',
   },
   pelosa: {
     hero: {

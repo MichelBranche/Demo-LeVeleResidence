@@ -60,6 +60,12 @@ export const en: LocaleCopy = {
         { alt: 'Aerial view of Olbia port', caption: 'Olbia Port' },
       ],
     },
+    {
+      title: 'Four-legged friends',
+      description:
+        'At Residence Le Vele your dog is welcome: quiet studios in the Mediterranean scrub, verandas and terraces to relax outdoors, and the Stintino coast — beaches and trails — just minutes away by car. We only ask you to respect other guests and local beach regulations.',
+      imageAlt: 'Golden retriever running happily in shallow sea water in Sardinia',
+    },
   ],
   residenceAccordion: {
     eyebrow: 'In detail',
@@ -301,6 +307,8 @@ export const en: LocaleCopy = {
     explore: 'Explore',
     contacts: 'Contact',
     designBy: 'Design by',
+    starsAria: '3-star rating',
+    instagramAria: 'Residence Le Vele on Instagram',
   },
   pelosa: {
     hero: {

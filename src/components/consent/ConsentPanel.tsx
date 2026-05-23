@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useConsent } from '../../hooks/useConsent';
 import type { ConsentPreferences } from '../../lib/consentTypes';
 
@@ -7,14 +7,17 @@ type ConsentPanelProps = {
   onSave: (prefs: ConsentPreferences) => void;
 };
 
-export function ConsentPanel({ onBack, onSave }: ConsentPanelProps) {
-  const { copy, panelPreferences, panelOpen } = useConsent();
-  const [prefs, setPrefs] = useState<ConsentPreferences>(panelPreferences);
+type ConsentPanelFormProps = ConsentPanelProps & {
+  initial: ConsentPreferences;
+};
 
-  useEffect(() => {
-    if (!panelOpen) return;
-    setPrefs(panelPreferences);
-  }, [panelOpen, panelPreferences]);
+function prefsKey(prefs: ConsentPreferences) {
+  return `${prefs.analytics}-${prefs.marketing}-${prefs.preferences}`;
+}
+
+function ConsentPanelForm({ initial, onBack, onSave }: ConsentPanelFormProps) {
+  const { copy } = useConsent();
+  const [prefs, setPrefs] = useState<ConsentPreferences>(initial);
 
   const toggle = (key: keyof ConsentPreferences) => {
     setPrefs((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -43,11 +46,7 @@ export function ConsentPanel({ onBack, onSave }: ConsentPanelProps) {
               <p>{copy.panel[key].description}</p>
             </div>
             <label className="consent-toggle">
-              <input
-                type="checkbox"
-                checked={prefs[key]}
-                onChange={() => toggle(key)}
-              />
+              <input type="checkbox" checked={prefs[key]} onChange={() => toggle(key)} />
               <span className="consent-toggle__track" aria-hidden />
             </label>
           </li>
@@ -67,5 +66,18 @@ export function ConsentPanel({ onBack, onSave }: ConsentPanelProps) {
         </button>
       </div>
     </div>
+  );
+}
+
+export function ConsentPanel({ onBack, onSave }: ConsentPanelProps) {
+  const { panelPreferences } = useConsent();
+
+  return (
+    <ConsentPanelForm
+      key={prefsKey(panelPreferences)}
+      initial={panelPreferences}
+      onBack={onBack}
+      onSave={onSave}
+    />
   );
 }

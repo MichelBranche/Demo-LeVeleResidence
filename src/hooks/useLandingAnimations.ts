@@ -8,12 +8,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 function revealHeroCopyStatic(): void {
   const taglineEl = document.querySelector<HTMLElement>('.hero-tagline');
-  const ledeEl = document.querySelector<HTMLElement>('.hero-lede');
-  for (const el of [taglineEl, ledeEl]) {
-    if (!el) continue;
-    gsap.set(el, { clearProps: 'opacity,transform,filter' });
-    el.style.opacity = '1';
-  }
+  if (!taglineEl) return;
+  gsap.set(taglineEl, { clearProps: 'opacity,transform,filter' });
+  taglineEl.style.opacity = '1';
 }
 
 type LandingAnimationOptions = {
@@ -42,9 +39,7 @@ export function useLandingAnimations(
     const splits: SplitType[] = [];
 
     const taglineEl = document.querySelector<HTMLElement>('.hero-tagline');
-    const ledeEl = document.querySelector<HTMLElement>('.hero-lede');
     let taglineSplit: SplitType | null = null;
-    let ledeSplit: SplitType | null = null;
 
     if (taglineEl) {
       taglineSplit = new SplitType(taglineEl, { types: 'words' });
@@ -53,15 +48,6 @@ export function useLandingAnimations(
         yPercent: light ? 40 : 60,
         opacity: 0,
         skewY: light ? 0 : 3,
-      });
-    }
-    if (ledeEl) {
-      ledeSplit = new SplitType(ledeEl, { types: 'words' });
-      splits.push(ledeSplit);
-      gsap.set(ledeSplit.words, {
-        y: light ? 8 : 14,
-        opacity: 0,
-        filter: light ? 'none' : 'blur(6px)',
       });
     }
 
@@ -75,17 +61,6 @@ export function useLandingAnimations(
           ease: 'power3.out',
           stagger: light ? 0.04 : 0.06,
           delay: 0.15,
-        });
-      }
-      if (ledeSplit) {
-        gsap.to(ledeSplit.words, {
-          y: 0,
-          opacity: 1,
-          filter: 'blur(0px)',
-          duration: light ? 0.75 : 1.1,
-          ease: 'power2.out',
-          stagger: { each: light ? 0.015 : 0.022, from: 'start' },
-          delay: light ? 0.35 : 0.6,
         });
       }
     };

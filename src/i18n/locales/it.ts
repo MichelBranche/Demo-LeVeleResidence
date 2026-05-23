@@ -60,6 +60,12 @@ export const it: LocaleCopy = {
         { alt: 'Vista aerea del porto di Olbia', caption: 'Porto di Olbia' },
       ],
     },
+    {
+      title: 'Amici a 4 zampe',
+      description:
+        'Al Residence Le Vele il vostro cane è il benvenuto: monolocali tranquilli immersi nella macchia, verande e terrazze per il relax all’aperto, e la costa di Stintino — con spiagge e sentieri — a pochi minuti in auto. Vi chiediamo solo di rispettare le altre famiglie e le regole vigenti nelle aree balneari.',
+      imageAlt: 'Cane golden retriever che corre felice nell’acqua bassa del mare in Sardegna',
+    },
   ],
   residenceAccordion: {
     eyebrow: 'In dettaglio',
@@ -301,6 +307,8 @@ export const it: LocaleCopy = {
     explore: 'Esplora',
     contacts: 'Contatti',
     designBy: 'Design by',
+    starsAria: 'Classificazione 3 stelle',
+    instagramAria: 'Residence Le Vele su Instagram',
   },
   pelosa: {
     hero: {

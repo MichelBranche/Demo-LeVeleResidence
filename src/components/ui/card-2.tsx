@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef } from 'react';
 import { Star } from 'lucide-react';
-import { motion, animate, useInView } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { prefersReducedMotion } from '@/lib/motion';
 
@@ -38,18 +38,35 @@ export function ReviewSummaryCard({
   className,
 }: ReviewSummaryCardProps) {
   const observeRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLAnchorElement | HTMLDivElement>(null);
+  const starsRef = useRef<HTMLDivElement>(null);
+  const scoreRef = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLParagraphElement>(null);
   const ratingRef = useRef<HTMLSpanElement>(null);
   const reviewCountRef = useRef<HTMLSpanElement>(null);
   const reduced = prefersReducedMotion();
   const hasAnimatedRef = useRef(false);
-
-  const isInView = useInView(observeRef, {
-    once: true,
-    amount: 0.45,
-    margin: '0px 0px -12% 0px',
-  });
+  const [inView, setInView] = useState(false);
 
   const baseDelay = reduced ? 0 : staggerIndex * STAGGER_STEP;
+
+  useEffect(() => {
+    const root = observeRef.current;
+    if (!root) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry?.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.45, rootMargin: '0px 0px -12% 0px' },
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const setFinalValues = () => {
@@ -64,7 +81,7 @@ export function ReviewSummaryCard({
       if (reviewCountRef.current) reviewCountRef.current.textContent = formatCount(0, locale);
     };
 
-    if (!isInView) {
+    if (!inView) {
       if (!hasAnimatedRef.current) setZeroValues();
       return;
     }
@@ -81,85 +98,128 @@ export function ReviewSummaryCard({
     setZeroValues();
 
     const delay = baseDelay + COUNT_DELAY;
-    const ratingControl = animate(0, rating, {
+    const ratingCounter = { value: 0 };
+    const countCounter = { value: 0 };
+
+    const ratingTween = gsap.to(ratingCounter, {
+      value: rating,
       delay,
       duration: 1.5,
-      ease: 'easeOut',
-      onUpdate(value) {
+      ease: 'power2.out',
+      onUpdate: () => {
         if (ratingRef.current) {
-          ratingRef.current.textContent = value.toFixed(1);
+          ratingRef.current.textContent = ratingCounter.value.toFixed(1);
         }
       },
     });
 
-    const reviewCountControl = animate(0, reviewCount, {
+    const countTween = gsap.to(countCounter, {
+      value: reviewCount,
       delay,
       duration: 1.5,
-      ease: 'easeOut',
-      onUpdate(value) {
+      ease: 'power2.out',
+      onUpdate: () => {
         if (reviewCountRef.current) {
-          reviewCountRef.current.textContent = formatCount(value, locale);
+          reviewCountRef.current.textContent = formatCount(countCounter.value, locale);
         }
       },
     });
 
     return () => {
-      ratingControl.stop();
-      reviewCountControl.stop();
+      ratingTween.kill();
+      countTween.kill();
     };
-  }, [isInView, reduced, rating, reviewCount, locale, baseDelay]);
+  }, [inView, reduced, rating, reviewCount, locale, baseDelay]);
 
-  const showMotion = isInView && !reduced;
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card || !inView) return;
+
+    if (reduced) {
+      gsap.set(card, { clearProps: 'opacity,transform' });
+      if (starsRef.current) gsap.set(starsRef.current.children, { clearProps: 'opacity,transform' });
+      if (scoreRef.current) gsap.set(scoreRef.current, { clearProps: 'opacity,transform' });
+      if (textRef.current) gsap.set(textRef.current, { clearProps: 'opacity' });
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        card,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          ease: 'power3.out',
+          delay: baseDelay,
+        },
+      );
+
+      if (starsRef.current) {
+        gsap.fromTo(
+          starsRef.current.children,
+          { opacity: 0, scale: 0.45 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.42,
+            ease: 'power3.out',
+            stagger: 0.09,
+            delay: baseDelay + 0.18,
+          },
+        );
+      }
+
+      if (scoreRef.current) {
+        gsap.fromTo(
+          scoreRef.current,
+          { opacity: 0, y: 10 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            ease: 'power2.out',
+            delay: baseDelay + 0.42,
+          },
+        );
+      }
+
+      if (textRef.current) {
+        gsap.fromTo(
+          textRef.current,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+            delay: baseDelay + 0.55,
+          },
+        );
+      }
+    }, card);
+
+    return () => ctx.revert();
+  }, [inView, reduced, baseDelay]);
 
   const ariaLabel =
     platformLabel != null
       ? `${platformLabel}: ${rating} su ${maxRating}, ${reviewCount} ${reviewCountLabel}. ${summaryText}`
       : `Valutazione ${rating} su ${maxRating}, ${reviewCount} ${reviewCountLabel}. ${summaryText}`;
 
-  const MotionTag = href ? motion.a : motion.div;
-  const linkProps = href
-    ? { href, target: '_blank' as const, rel: 'noopener noreferrer' }
-    : {};
+  const cardClass = cn('review-summary-card', href && 'review-summary-card--link');
+  const sharedProps = {
+    ref: cardRef,
+    className: cardClass,
+    'aria-label': ariaLabel,
+    style: reduced ? undefined : ({ opacity: 0, transform: 'translateY(28px)' } as const),
+  };
 
-  return (
-    <div ref={observeRef} className={cn('review-summary-card__wrap', className)}>
-    <MotionTag
-      className={cn('review-summary-card', href && 'review-summary-card--link')}
-      initial={reduced ? false : { opacity: 0, y: 28 }}
-      animate={
-        reduced
-          ? { opacity: 1, y: 0 }
-          : showMotion
-            ? { opacity: 1, y: 0 }
-            : { opacity: 0, y: 28 }
-      }
-      transition={{
-        duration: 0.55,
-        ease: [0.22, 1, 0.36, 1],
-        delay: baseDelay,
-      }}
-      aria-label={ariaLabel}
-      {...linkProps}
-    >
-      <div className="review-summary-card__stars" aria-hidden>
+  const inner = (
+    <>
+      <div ref={starsRef} className="review-summary-card__stars" aria-hidden>
         {Array.from({ length: maxRating }, (_, i) => (
-          <motion.span
-            key={i}
-            className="review-summary-card__star"
-            initial={reduced ? false : { opacity: 0, scale: 0.45 }}
-            animate={
-              reduced
-                ? { opacity: 1, scale: 1 }
-                : showMotion
-                  ? { opacity: 1, scale: 1 }
-                  : { opacity: 0, scale: 0.45 }
-            }
-            transition={{
-              duration: 0.42,
-              ease: [0.22, 1, 0.36, 1],
-              delay: baseDelay + 0.18 + i * 0.09,
-            }}
-          >
+          <span key={i} className="review-summary-card__star">
             <Star
               className={cn(
                 'review-summary-card__star-icon',
@@ -171,49 +231,39 @@ export function ReviewSummaryCard({
               strokeWidth={1.25}
               aria-hidden
             />
-          </motion.span>
+          </span>
         ))}
       </div>
 
-      <motion.p
-        className="review-summary-card__score"
-        initial={reduced ? false : { opacity: 0, y: 10 }}
-        animate={
-          reduced
-            ? { opacity: 1, y: 0 }
-            : showMotion
-              ? { opacity: 1, y: 0 }
-              : { opacity: 0, y: 10 }
-        }
-        transition={{
-          duration: 0.45,
-          ease: 'easeOut',
-          delay: baseDelay + 0.42,
-        }}
-      >
+      <p ref={scoreRef} className="review-summary-card__score">
         <span ref={ratingRef}>0.0</span>
         <span className="review-summary-card__count">
           {' '}
           (
           <span ref={reviewCountRef}>0</span> {reviewCountLabel})
         </span>
-      </motion.p>
+      </p>
 
-      <motion.p
-        className="review-summary-card__text"
-        initial={reduced ? false : { opacity: 0 }}
-        animate={
-          reduced ? { opacity: 1 } : showMotion ? { opacity: 1 } : { opacity: 0 }
-        }
-        transition={{
-          duration: 0.5,
-          ease: 'easeOut',
-          delay: baseDelay + 0.55,
-        }}
-      >
+      <p ref={textRef} className="review-summary-card__text">
         {summaryText}
-      </motion.p>
-    </MotionTag>
+      </p>
+    </>
+  );
+
+  return (
+    <div ref={observeRef} className={cn('review-summary-card__wrap', className)}>
+      {href ? (
+        <a
+          {...(sharedProps as ComponentPropsWithoutRef<'a'>)}
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {inner}
+        </a>
+      ) : (
+        <div {...(sharedProps as ComponentPropsWithoutRef<'div'>)}>{inner}</div>
+      )}
     </div>
   );
 }

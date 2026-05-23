@@ -53,67 +53,85 @@ export const headerUiCopy: Record<
     menuOpen: string;
     menuClosed: string;
     closeMenuBackdrop: string;
+    closeMenu: string;
+    mobileMenuEyebrow: string;
     menuLabelOpen: string;
     menuLabelClosed: string;
     book: string;
     bookAria: string;
     langMenu: string;
     langChoose: string;
+    skipToContent: string;
   }
 > = {
   it: {
     menuOpen: 'Chiudi menu',
     menuClosed: 'Apri menu',
     closeMenuBackdrop: 'Chiudi menu',
+    closeMenu: 'Chiudi',
+    mobileMenuEyebrow: 'Navigazione',
     menuLabelOpen: 'Chiudi',
     menuLabelClosed: 'Menu',
     book: 'Prenota',
     bookAria: 'Prenota — richiedi disponibilità via email',
     langMenu: 'Lingua',
     langChoose: 'Scegli lingua',
+    skipToContent: 'Vai al contenuto principale',
   },
   en: {
     menuOpen: 'Close menu',
     menuClosed: 'Open menu',
     closeMenuBackdrop: 'Close menu',
+    closeMenu: 'Close',
+    mobileMenuEyebrow: 'Explore',
     menuLabelOpen: 'Close',
     menuLabelClosed: 'Menu',
     book: 'Book',
     bookAria: 'Book — request availability by email',
     langMenu: 'Language',
     langChoose: 'Choose language',
+    skipToContent: 'Skip to main content',
   },
   de: {
     menuOpen: 'Menü schließen',
     menuClosed: 'Menü öffnen',
     closeMenuBackdrop: 'Menü schließen',
+    closeMenu: 'Schließen',
+    mobileMenuEyebrow: 'Navigation',
     menuLabelOpen: 'Schließen',
     menuLabelClosed: 'Menü',
     book: 'Buchen',
     bookAria: 'Buchen — Verfügbarkeit per E-Mail anfragen',
     langMenu: 'Sprache',
     langChoose: 'Sprache wählen',
+    skipToContent: 'Zum Hauptinhalt springen',
   },
   fr: {
     menuOpen: 'Fermer le menu',
     menuClosed: 'Ouvrir le menu',
     closeMenuBackdrop: 'Fermer le menu',
+    closeMenu: 'Fermer',
+    mobileMenuEyebrow: 'Navigation',
     menuLabelOpen: 'Fermer',
     menuLabelClosed: 'Menu',
     book: 'Réserver',
     bookAria: 'Réserver — demander la disponibilité par e-mail',
     langMenu: 'Langue',
     langChoose: 'Choisir la langue',
+    skipToContent: 'Aller au contenu principal',
   },
   es: {
     menuOpen: 'Cerrar menú',
     menuClosed: 'Abrir menú',
     closeMenuBackdrop: 'Cerrar menú',
+    closeMenu: 'Cerrar',
+    mobileMenuEyebrow: 'Navegación',
     menuLabelOpen: 'Cerrar',
     menuLabelClosed: 'Menú',
     book: 'Reservar',
     bookAria: 'Reservar — consultar disponibilidad por correo',
     langMenu: 'Idioma',
     langChoose: 'Elegir idioma',
+    skipToContent: 'Ir al contenido principal',
   },
 };

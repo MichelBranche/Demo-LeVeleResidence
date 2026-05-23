@@ -6,6 +6,7 @@ import { Header } from '../components/Header';
 import { HeroSection } from '../components/HeroSection';
 import { Preloader } from '../components/Preloader';
 import { useConsent } from '../hooks/useConsent';
+import { useHomeLangReveal } from '../hooks/useHomeLangReveal';
 import { useNetworkTier } from '../hooks/useNetworkTier';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { markIntroDone } from '../lib/intro';
@@ -90,35 +91,41 @@ export function HomePage() {
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
 
+  useHomeLangReveal(ready);
+
   useEffect(() => {
     if (!isReady) return;
 
-    if (readPreloaderDone()) {
-      setIntroPhase('complete');
-      return;
-    }
-
-    if (!hasConsent) {
-      setIntroPhase('pending-consent');
-      return;
-    }
-
-    if (bannerOpen) {
-      return;
-    }
-
-    if (networkTier === 'minimal') {
-      try {
-        sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
-      } catch {
-        /* ignore */
+    const frame = requestAnimationFrame(() => {
+      if (readPreloaderDone()) {
+        setIntroPhase('complete');
+        return;
       }
-      setIntroPhase('complete');
-      requestAnimationFrame(() => markIntroDone());
-      return;
-    }
 
-    setIntroPhase('preloader');
+      if (!hasConsent) {
+        setIntroPhase('pending-consent');
+        return;
+      }
+
+      if (bannerOpen) {
+        return;
+      }
+
+      if (networkTier === 'minimal') {
+        try {
+          sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
+        } catch {
+          /* ignore */
+        }
+        setIntroPhase('complete');
+        requestAnimationFrame(() => markIntroDone());
+        return;
+      }
+
+      setIntroPhase('preloader');
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [isReady, bannerOpen, hasConsent, networkTier]);
 
   useEffect(() => {
@@ -129,7 +136,7 @@ export function HomePage() {
       video.src = heroMedia.video;
     }
     video.preload = 'metadata';
-  }, [introPhase, lightPreloader]);
+  }, [introPhase, lightPreloader, heroMedia.video]);
 
   const handlePreloaderComplete = useCallback(() => {
     document.body.classList.remove('oh-preloader-active');
@@ -227,7 +234,7 @@ export function HomePage() {
     }
     const id = window.setTimeout(enable, 2500);
     return () => window.clearTimeout(id);
-  }, [ready, heroVideoSrc, posterOnlyHero]);
+  }, [ready, heroVideoSrc, posterOnlyHero, heroMedia.video]);
 
   const shellClass = [
     'home-hero-shell',
@@ -239,7 +246,7 @@ export function HomePage() {
 
   return (
     <>
-      <main className="home-page">
+      <main id="main-content" className="home-page">
         {ready && (
           <div className="home-page__sticky-header">
             <Header />

@@ -1,3 +1,26 @@
+/* Skip link */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: var(--z-skip-link);
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  background: var(--accent-primary);
+  color: var(--sabbia);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
 /* Scrollbar + cursore custom (palette Residence Le Vele) */
 
 html {
@@ -35,7 +58,7 @@ html {
   top: 0;
   left: 0;
   /* Sopra cookie (10000), header (10050) e menu mobile — portal su body */
-  z-index: 100060;
+  z-index: var(--z-cursor);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.35s ease;

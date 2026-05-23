@@ -60,6 +60,12 @@ export const es: LocaleCopy = {
         { alt: 'Vista aérea del puerto de Olbia', caption: 'Puerto de Olbia' },
       ],
     },
+    {
+      title: 'Amigos de cuatro patas',
+      description:
+        'En Residence Le Vele tu perro es bienvenido: monolocales tranquilos entre la macchia, porches y terrazas al aire libre, y la costa de Stintino — playas y senderos — a pocos minutos en coche. Solo pedimos respetar a las demás familias y la normativa de las playas.',
+      imageAlt: 'Golden retriever corriendo feliz en el agua poco profunda del mar en Cerdeña',
+    },
   ],
   residenceAccordion: {
     eyebrow: 'En detalle',
@@ -301,6 +307,8 @@ export const es: LocaleCopy = {
     explore: 'Explorar',
     contacts: 'Contacto',
     designBy: 'Design by',
+    starsAria: 'Clasificación de 3 estrellas',
+    instagramAria: 'Residence Le Vele en Instagram',
   },
   pelosa: {
     hero: {

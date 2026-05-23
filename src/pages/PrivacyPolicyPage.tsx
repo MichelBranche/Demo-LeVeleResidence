@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
-import { legalEntity, siteConfig } from '../i18n/siteMedia';
+import { DataControllerBlock } from '../components/legal/DataControllerBlock';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import type { SiteLocale } from '../lib/siteLocales';
 
@@ -13,18 +13,7 @@ const privacyByLang: Record<SiteLocale, LegalDoc> = {
     sections: [
       {
         h: '1. Titolare del trattamento',
-        body: (
-          <>
-            <p>
-              Il titolare del trattamento dei dati personali è <strong>{legalEntity.name}</strong>, con sede in{' '}
-              {legalEntity.address.street}, {legalEntity.address.city}, {legalEntity.address.country}.
-            </p>
-            <p>
-              Per richieste relative alla privacy: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> ·{' '}
-              <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`}>{siteConfig.phone}</a>
-            </p>
-          </>
-        ),
+        body: <DataControllerBlock locale="it" />,
       },
       {
         h: '2. Dati raccolti',
@@ -107,18 +96,7 @@ const privacyByLang: Record<SiteLocale, LegalDoc> = {
     sections: [
       {
         h: '1. Data controller',
-        body: (
-          <>
-            <p>
-              The data controller is <strong>{legalEntity.name}</strong>, {legalEntity.address.street},{' '}
-              {legalEntity.address.city}, {legalEntity.address.country}.
-            </p>
-            <p>
-              Privacy requests: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> ·{' '}
-              <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`}>{siteConfig.phone}</a>
-            </p>
-          </>
-        ),
+        body: <DataControllerBlock locale="en" />,
       },
       {
         h: '2. Data we collect',
@@ -196,18 +174,7 @@ const privacyByLang: Record<SiteLocale, LegalDoc> = {
     sections: [
       {
         h: '1. Verantwortlicher',
-        body: (
-          <>
-            <p>
-              Verantwortlich ist <strong>{legalEntity.name}</strong>, {legalEntity.address.street},{' '}
-              {legalEntity.address.city}, {legalEntity.address.country}.
-            </p>
-            <p>
-              Datenschutzanfragen: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> ·{' '}
-              <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`}>{siteConfig.phone}</a>
-            </p>
-          </>
-        ),
+        body: <DataControllerBlock locale="de" />,
       },
       {
         h: '2. Erhobene Daten',
@@ -284,18 +251,7 @@ const privacyByLang: Record<SiteLocale, LegalDoc> = {
     sections: [
       {
         h: '1. Responsable du traitement',
-        body: (
-          <>
-            <p>
-              Le responsable est <strong>{legalEntity.name}</strong>, {legalEntity.address.street},{' '}
-              {legalEntity.address.city}, {legalEntity.address.country}.
-            </p>
-            <p>
-              Demandes confidentialité : <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> ·{' '}
-              <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`}>{siteConfig.phone}</a>
-            </p>
-          </>
-        ),
+        body: <DataControllerBlock locale="fr" />,
       },
       {
         h: '2. Données collectées',
@@ -371,18 +327,7 @@ const privacyByLang: Record<SiteLocale, LegalDoc> = {
     sections: [
       {
         h: '1. Responsable del tratamiento',
-        body: (
-          <>
-            <p>
-              El responsable es <strong>{legalEntity.name}</strong>, {legalEntity.address.street},{' '}
-              {legalEntity.address.city}, {legalEntity.address.country}.
-            </p>
-            <p>
-              Consultas de privacidad: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a> ·{' '}
-              <a href={`tel:${siteConfig.phone.replace(/\s/g, '')}`}>{siteConfig.phone}</a>
-            </p>
-          </>
-        ),
+        body: <DataControllerBlock locale="es" />,
       },
       {
         h: '2. Datos recopilados',

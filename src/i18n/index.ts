@@ -1,10 +1,6 @@
 import type { SiteLocale } from '../lib/siteLocales';
 import { getNavLinks, headerUiCopy } from '../data/navCopy';
-import { de } from './locales/de';
-import { en } from './locales/en';
-import { es } from './locales/es';
-import { fr } from './locales/fr';
-import { it } from './locales/it';
+import { getLocaleCopyCached } from './localeLoader';
 import {
   galleryMedia,
   heroMedia,
@@ -15,17 +11,17 @@ import {
   reviewLinks,
   reviewSourceUrls,
   siteConfig,
+  siteLegal,
   siteMapCoords,
   suitesMedia,
 } from './siteMedia';
 import type { LocaleCopy, ReviewCopy } from './types';
 
 export type { LocaleCopy, ReviewCopy, SiteLocale };
-
-const localeCopy: Record<SiteLocale, LocaleCopy> = { it, en, de, fr, es };
+export { ensureLocaleLoaded, getLocaleCopyCached, isLocaleLoaded } from './localeLoader';
 
 export function getLocaleCopy(locale: SiteLocale): LocaleCopy {
-  return localeCopy[locale] ?? localeCopy.it;
+  return getLocaleCopyCached(locale);
 }
 
 export type MergedSuite = {
@@ -48,6 +44,7 @@ export type SiteContent = Omit<LocaleCopy, 'suites'> & {
   navLinks: ReturnType<typeof getNavLinks>;
   headerUi: (typeof headerUiCopy)[SiteLocale];
   config: typeof siteConfig;
+  siteLegal: typeof siteLegal;
   legalEntity: typeof legalEntity;
   logo: typeof logo;
   heroMedia: typeof heroMedia;
@@ -135,6 +132,7 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
     navLinks: getNavLinks(locale),
     headerUi: headerUiCopy[locale],
     config: siteConfig,
+    siteLegal,
     legalEntity,
     logo,
     heroMedia,

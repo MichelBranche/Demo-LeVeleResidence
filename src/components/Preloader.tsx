@@ -55,7 +55,10 @@ export function Preloader({
 }: PreloaderProps) {
   const [visible, setVisible] = useState(true);
   const onCompleteRef = useRef(onComplete);
-  onCompleteRef.current = onComplete;
+
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
   const preloaderRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
@@ -421,8 +424,15 @@ export function Preloader({
   if (!visible) return null;
 
   return (
-    <div className="oh-preloader" ref={preloaderRef} aria-hidden={false} aria-busy="true">
-      <div className="oh-preloader__reveal-media" ref={mediaRef} />
+    <div
+      className="oh-preloader"
+      ref={preloaderRef}
+      role="status"
+      aria-live="polite"
+      aria-busy="true"
+      aria-label={text}
+    >
+      <div className="oh-preloader__reveal-media" ref={mediaRef} aria-hidden />
       <div className="oh-preloader__text-container" ref={textContainerRef}>
         <span className="oh-preloader__text" ref={textRef} />
       </div>

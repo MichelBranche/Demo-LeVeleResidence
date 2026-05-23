@@ -1,9 +1,22 @@
 import type Lenis from 'lenis';
 
 let lenisInstance: Lenis | null = null;
+const scrollListeners = new Set<() => void>();
+
+function notifyScrollListeners(): void {
+  scrollListeners.forEach((listener) => listener());
+}
 
 export function setLenisInstance(instance: Lenis | null): void {
+  if (lenisInstance) {
+    lenisInstance.off('scroll', notifyScrollListeners);
+  }
+
   lenisInstance = instance;
+
+  if (lenisInstance) {
+    lenisInstance.on('scroll', notifyScrollListeners);
+  }
 }
 
 export function getLenisInstance(): Lenis | null {
@@ -67,14 +80,28 @@ export function scrollToHash(hash: string, immediate = false): void {
   target.scrollIntoView({ behavior: immediate ? 'instant' : 'smooth', block: 'start' });
 }
 
-/** Ascolta lo scroll (Lenis o nativo) — utile per accordion e logiche custom. */
+/** Retry hash scroll — annullabile su navigazione rapida. */
+export function scheduleHashScroll(hash: string): () => void {
+  const scroll = () => scrollToHash(hash);
+  const rafId = requestAnimationFrame(scroll);
+  const timers = [120, 400, 900, 1600, 2400].map((ms) => window.setTimeout(scroll, ms));
+
+  return () => {
+    cancelAnimationFrame(rafId);
+    timers.forEach((id) => window.clearTimeout(id));
+  };
+}
+
+/** Ascolta lo scroll (Lenis o nativo) — si riaggancia quando Lenis viene registrato. */
 export function subscribeScroll(listener: () => void): () => void {
-  const lenis = lenisInstance;
-  if (lenis) {
-    lenis.on('scroll', listener);
-    return () => lenis.off('scroll', listener);
+  scrollListeners.add(listener);
+
+  if (!lenisInstance) {
+    window.addEventListener('scroll', listener, { passive: true });
   }
 
-  window.addEventListener('scroll', listener, { passive: true });
-  return () => window.removeEventListener('scroll', listener);
+  return () => {
+    scrollListeners.delete(listener);
+    window.removeEventListener('scroll', listener);
+  };
 }

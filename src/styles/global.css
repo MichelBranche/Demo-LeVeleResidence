@@ -23,6 +23,19 @@
   --font-suite-giardino: var(--font-bigilla);
   --radius: 15px;
   --page-pad: clamp(15px, 4vw, 48px);
+
+  /* Stack UI (dal basso verso l'alto) */
+  --z-cookie: 10000;
+  --z-lang-fab: 10045;
+  --z-header: 10050;
+  --z-header-menu-controls: 10062;
+  --z-cursor: 100060;
+  --z-lang-popover: 100080;
+  --z-mobile-menu: 100090;
+  --z-skip-link: 100100;
+  --z-preloader: 100200;
+  --z-loading-screen: 10200;
+  --z-lightbox: 100000;
 }
 
 *,
@@ -217,14 +230,6 @@ button {
   font-size: clamp(1.25rem, 3vw, 2rem);
   font-style: normal;
   opacity: 0.92;
-}
-
-.hero-lede {
-  margin: 0;
-  max-width: 42ch;
-  font-size: 1.05rem;
-  line-height: 1.55;
-  color: rgb(250 248 245 / 88%);
 }
 
 .btn {
@@ -1102,6 +1107,24 @@ button {
   font-weight: 600;
   color: var(--panna);
   border-bottom: 1px solid rgb(250 248 245 / 8%);
+}
+
+.scroll-accordion__heading-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28em;
+  flex-wrap: wrap;
+}
+
+.scroll-accordion__paw {
+  flex-shrink: 0;
+  width: 1.65em;
+  height: 1.65em;
+  margin-left: 0.18em;
+  margin-top: -0.06em;
+  color: var(--accent-primary);
+  transform: rotate(14deg);
+  transform-origin: 42% 58%;
 }
 
 .scroll-accordion__content {
@@ -2052,6 +2075,7 @@ button {
 
 .site-footer__bar-block--meta {
   align-items: flex-start;
+  gap: 0.75rem;
 }
 
 @media (min-width: 768px) {
@@ -2059,6 +2083,41 @@ button {
     align-items: flex-end;
     text-align: right;
   }
+}
+
+.site-footer__stars {
+  letter-spacing: 0.14em;
+  color: var(--accent);
+}
+
+.site-footer__social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.65rem;
+  height: 2.65rem;
+  border-radius: 50%;
+  border: 1px solid rgb(250 248 245 / 22%);
+  color: rgb(250 248 245 / 88%);
+  background: rgb(250 248 245 / 4%);
+  transition:
+    color 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-footer__social svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.site-footer__social:hover,
+.site-footer__social:focus-visible {
+  color: var(--panna);
+  border-color: rgb(181 168 134 / 45%);
+  background: rgb(181 168 134 / 14%);
+  transform: translateY(-1px);
 }
 
 .site-footer__legal-name {
@@ -2116,7 +2175,7 @@ button {
 .oh-preloader {
   position: fixed;
   inset: 0;
-  z-index: 99999;
+  z-index: var(--z-preloader);
   display: flex;
   justify-content: center;
   align-items: center;

@@ -10,7 +10,7 @@ export function LaPelosaPage() {
   const { content } = useSiteLocale();
   const { pelosa, pelosaMedia } = content;
   const { hero, intro, gallery, ui } = pelosa;
-  const pageRef = useRef<HTMLElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const [isMuted, setIsMuted] = useState(true);
@@ -38,7 +38,7 @@ export function LaPelosaPage() {
   }, [heroVideoSrc]);
 
   return (
-    <main className="pelosa-page" ref={pageRef}>
+    <div className="pelosa-page" ref={pageRef}>
       <section className="pelosa-hero" aria-labelledby="pelosa-hero-title">
         <div className="pelosa-hero__media">
           <video
@@ -149,6 +149,6 @@ export function LaPelosaPage() {
           onClose={() => setLightbox(null)}
         />
       )}
-    </main>
+    </div>
   );
 }

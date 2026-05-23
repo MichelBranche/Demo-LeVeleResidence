@@ -12,7 +12,7 @@ export type PageSeoConfig = {
   noindex?: boolean;
 };
 
-export function getSeoForPath(pathname: string, search = '', locale: SiteLocale = 'it'): PageSeoConfig {
+export function getSeoForPath(pathname: string, locale: SiteLocale = 'it'): PageSeoConfig {
   const copy = getLocaleCopy(locale);
   const { seo } = copy;
   const canonicalPath = normalizePathname(pathname);
@@ -23,7 +23,7 @@ export function getSeoForPath(pathname: string, search = '', locale: SiteLocale 
     const localized = getSiteContent(locale).suites.find((s) => s.slug === slug);
     if (localized) {
       return {
-        path: `${canonicalPath}${search}`,
+        path: canonicalPath,
         title: `${localized.title} ${seo.suiteTitleSuffix}`,
         description: `${localized.description} ${seo.suiteDescriptionSuffix}`,
         keywords: seo.suiteKeywords,
@@ -40,11 +40,11 @@ export function getSeoForPath(pathname: string, search = '', locale: SiteLocale 
 
   const known = pages[path];
   if (known) {
-    return { ...known, path: `${canonicalPath}${search}` };
+    return { ...known, path: canonicalPath };
   }
 
   return {
-    path: `${canonicalPath}${search}`,
+    path: canonicalPath,
     title: `${siteConfig.name} ${seo.fallbackTitleSuffix}`,
     description: seo.default.description,
     keywords: seo.default.keywords,

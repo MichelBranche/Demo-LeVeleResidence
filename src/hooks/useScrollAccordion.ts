@@ -23,7 +23,7 @@ export function useScrollAccordion(
 
     if (mobile) {
       cards.forEach((card) => {
-        card.querySelector<HTMLElement>('.scroll-accordion__content')?.setAttribute('aria-expanded', 'true');
+        card.querySelector<HTMLElement>('.scroll-accordion__trigger')?.setAttribute('aria-expanded', 'true');
       });
       return;
     }
@@ -36,11 +36,11 @@ export function useScrollAccordion(
 
       for (const card of cards) {
         const rect = card.getBoundingClientRect();
-        const content = card.querySelector<HTMLElement>('.scroll-accordion__content');
+        const trigger = card.querySelector<HTMLElement>('.scroll-accordion__trigger');
 
         if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
           const distanceToTop = Math.abs(rect.top);
-          content?.setAttribute('aria-expanded', 'true');
+          trigger?.setAttribute('aria-expanded', 'true');
 
           if (distanceToTop < minDistance) {
             minDistance = distanceToTop;
@@ -49,7 +49,7 @@ export function useScrollAccordion(
         }
 
         if (rect.bottom >= window.innerHeight) {
-          content?.setAttribute('aria-expanded', 'false');
+          trigger?.setAttribute('aria-expanded', 'false');
         }
       }
 

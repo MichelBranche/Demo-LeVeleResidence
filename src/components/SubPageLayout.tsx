@@ -6,7 +6,9 @@ export function SubPageLayout() {
   return (
     <div className="page">
       <Header />
-      <Outlet />
+      <main id="main-content">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   );

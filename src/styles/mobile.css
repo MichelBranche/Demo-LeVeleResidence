@@ -54,27 +54,51 @@
   }
 
   .home-hero-shell .hero {
-    padding: 0 1rem clamp(2.75rem, 10vh, 4rem);
-    padding-bottom: calc(clamp(2.75rem, 10vh, 4rem) + env(safe-area-inset-bottom));
+    padding: 0 1rem clamp(2.25rem, 8vh, 3.25rem);
+    padding-bottom: calc(clamp(2.25rem, 8vh, 3.25rem) + env(safe-area-inset-bottom));
   }
 
-  .hero-title {
+  .home-hero-shell .hero-content {
+    width: 100%;
+    max-width: min(94vw, 28rem);
+  }
+
+  .home-hero-shell .hero-content .hero-kicker {
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    padding-inline: 0.35rem;
+  }
+
+  .home-hero-shell .hero-title {
     min-height: auto;
-    font-size: clamp(2.35rem, 11vw, 3.25rem);
+    margin-top: 0.7rem;
+    font-size: clamp(2.85rem, 13vw, 4.1rem);
+    line-height: 0.94;
   }
 
   .hero-title__line--together {
     white-space: normal;
   }
 
-  .hero-lede {
-    font-size: 0.95rem;
-    max-width: 34ch;
-    margin-inline: auto;
+  .home-hero-shell .hero-tagline {
+    margin-top: 0.65rem;
+    font-size: clamp(1.22rem, 4.5vw, 1.5rem);
+    line-height: 1.38;
   }
 
-  .hero-scroll-cue {
-    bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  .home-hero-shell .hero-scroll-cue {
+    margin-top: 0.85rem;
+    gap: 0.45rem;
+  }
+
+  .home-hero-shell .hero-scroll-mouse {
+    width: 24px;
+    height: 36px;
+  }
+
+  .home-hero-shell .hero-scroll-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
   }
 
   .mute-toggle {
@@ -324,8 +348,12 @@
 
 /* Telefoni compatti */
 @media (max-width: 390px) {
-  .hero-title {
-    font-size: 2.15rem;
+  .home-hero-shell .hero-title {
+    font-size: clamp(2.65rem, 14vw, 3.35rem);
+  }
+
+  .home-hero-shell .hero-tagline {
+    font-size: 1.18rem;
   }
 
   .scroll-accordion__heading {

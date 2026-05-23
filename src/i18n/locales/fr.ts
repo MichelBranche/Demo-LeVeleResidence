@@ -60,6 +60,12 @@ export const fr: LocaleCopy = {
         { alt: 'Vue aérienne du port d\'Olbia', caption: 'Port d\'Olbia' },
       ],
     },
+    {
+      title: 'Amis à quatre pattes',
+      description:
+        'Au Residence Le Vele, votre chien est le bienvenu : studios paisibles dans la maquis, vérandas et terrasses pour se détendre dehors, et la côte de Stintino — plages et sentiers — à quelques minutes en voiture. Merci de respecter les autres familles et la réglementation des plages.',
+      imageAlt: 'Golden retriever courant joyeusement dans l\'eau peu profonde en Sardaigne',
+    },
   ],
   residenceAccordion: {
     eyebrow: 'En détail',
@@ -301,6 +307,8 @@ export const fr: LocaleCopy = {
     explore: 'Explorer',
     contacts: 'Contact',
     designBy: 'Design by',
+    starsAria: 'Classement 3 étoiles',
+    instagramAria: 'Residence Le Vele sur Instagram',
   },
   pelosa: {
     hero: {

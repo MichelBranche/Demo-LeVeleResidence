@@ -6,12 +6,39 @@ import { GatedMap } from './maps/GatedMap';
 
 const PORTFOLIO_URL = 'https://www.michelbranche.it';
 
+function InstagramIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="5"
+        stroke="currentColor"
+        strokeWidth="1.5"
+      />
+      <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="17.25" cy="6.75" r="1.1" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function Footer() {
   const { locale, content } = useSiteLocale();
   const { openBanner } = useConsent();
   const consentLabels = consentCopy[locale].footer;
-  const { footer, navLinks, config: site, legalEntity, logo } = content;
-  const year = new Date().getFullYear();
+  const { footer, navLinks, config: site, siteLegal, logo } = content;
+
+  const formattedAddress = (
+    <>
+      {site.address.street}
+      <br />
+      {site.address.postalCode} {site.address.city}
+      <br />
+      ({site.address.region}) – {siteLegal.countryLabel}
+    </>
+  );
 
   return (
     <footer id="site-footer" className="site-footer">
@@ -54,11 +81,7 @@ export function Footer() {
               </li>
               <li>
                 <span className="site-footer__contact-label">{content.contactLabels.address}</span>
-                <address>
-                  {site.address.street}
-                  <br />
-                  {site.address.postalCode} {site.address.city}
-                </address>
+                <address>{formattedAddress}</address>
               </li>
             </ul>
           </div>
@@ -70,16 +93,28 @@ export function Footer() {
 
         <div className="site-footer__bar">
           <div className="site-footer__bar-block site-footer__bar-block--legal">
-            <p className="site-footer__legal-name">{legalEntity.name}</p>
-            <address className="site-footer__legal-address">
-              {legalEntity.address.street}, {legalEntity.address.city}
-            </address>
+            <p className="site-footer__legal-name">
+              {site.name}{' '}
+              <span className="site-footer__stars" aria-label={footer.starsAria}>
+                ***
+              </span>
+            </p>
+            <address className="site-footer__legal-address">{formattedAddress}</address>
             <p className="site-footer__copyright">
-              © {year} {site.name} · {site.tagline}
+              © {site.name} – Stintino | P.Iva {siteLegal.vatId} | CIN {siteLegal.cin}
             </p>
           </div>
 
           <div className="site-footer__bar-block site-footer__bar-block--meta">
+            <a
+              href={siteLegal.instagramUrl}
+              className="site-footer__social"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={footer.instagramAria}
+            >
+              <InstagramIcon />
+            </a>
             <nav className="site-footer__consent" aria-label="Privacy e cookie">
               <button type="button" onClick={() => openBanner({ panel: true })}>
                 {consentLabels.manage}

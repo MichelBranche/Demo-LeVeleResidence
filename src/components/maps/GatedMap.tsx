@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import { useConsent } from '../../hooks/useConsent';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 
@@ -8,18 +8,7 @@ export function GatedMap() {
   const mapEmbedSrc = `https://www.google.com/maps?q=${siteMapCoords.embedQuery}&output=embed`;
   const { consent, hasConsent, isReady, openBanner, persistPreferences, updatePreferences } =
     useConsent();
-  const [revealed, setRevealed] = useState(false);
-
   const mapAllowed = isReady && consent?.preferences === true;
-
-  useEffect(() => {
-    if (!mapAllowed) {
-      setRevealed(false);
-      return;
-    }
-    const id = requestAnimationFrame(() => setRevealed(true));
-    return () => cancelAnimationFrame(id);
-  }, [mapAllowed]);
 
   const handleEnableMap = useCallback(async () => {
     if (!hasConsent) {
@@ -34,7 +23,7 @@ export function GatedMap() {
 
   if (mapAllowed) {
     return (
-      <div className={`gated-map gated-map--live${revealed ? ' is-revealed' : ''}`}>
+      <div className="gated-map gated-map--live is-revealed">
         <div className="map-badge">{siteMap.badgeLabel}</div>
         <iframe
           title={siteMap.iframeTitle}

@@ -6,6 +6,7 @@ const CALA_LUPO = asset('/images/cala-lupo.png');
 const LA_PELOSA = asset('/images/la-pelosa-spiaggia.png');
 const ALGHERO_AIRPORT = asset('/images/alghero-aeroporto.png');
 const OLBIA_PORT = asset('/images/olbia-porto.png');
+const PETS = asset('/images/amici-4-zampe.png');
 const PELOSA_DIR = asset('/la-pelosa');
 
 export const siteConfig = {
@@ -23,6 +24,25 @@ export const siteConfig = {
   },
 } as const;
 
+export const legalEntity = {
+  name: 'Residence Le Vele',
+  vatId: '00277840104',
+  cin: 'IT090089A1000F2423',
+  address: {
+    street: 'Le Vele 10-12',
+    postalCode: '07040',
+    city: 'Stintino',
+    region: 'SS',
+  },
+} as const;
+
+export const siteLegal = {
+  vatId: legalEntity.vatId,
+  cin: legalEntity.cin,
+  countryLabel: 'ITALY',
+  instagramUrl: 'https://www.instagram.com/residencelevele_stintino/',
+} as const;
+
 export const siteMapCoords = {
   latitude: 40.96913,
   longitude: 8.21387,
@@ -30,15 +50,6 @@ export const siteMapCoords = {
   hasMapUrl:
     'https://www.google.com/maps/search/?api=1&query=Residence+Le+Vele+Via+Le+Vele+10-12+Stintino',
   placeholderImage: CALA_LUPO,
-} as const;
-
-export const legalEntity = {
-  name: 'Canessa Cantieri s.p.a.',
-  address: {
-    street: 'Piazza della Vittoria 6/6',
-    city: '16121 Genova',
-    country: 'Italia',
-  },
 } as const;
 
 export const logo = {
@@ -67,6 +78,10 @@ export const residenceCardMedia = [
       { src: ALGHERO_AIRPORT },
       { src: OLBIA_PORT },
     ],
+  },
+  {
+    icon: 'pets' as const,
+    image: PETS,
   },
 ] as const;
 

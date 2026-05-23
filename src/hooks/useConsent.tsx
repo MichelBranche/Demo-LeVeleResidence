@@ -186,6 +186,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
   return <ConsentContext.Provider value={value}>{children}</ConsentContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useConsent(): ConsentContextValue {
   const ctx = useContext(ConsentContext);
   if (!ctx) {

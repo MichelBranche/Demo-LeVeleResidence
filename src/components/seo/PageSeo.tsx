@@ -3,6 +3,17 @@ import { useLocation } from 'react-router-dom';
 import { getLocaleCopy } from '../../i18n';
 import { absoluteUrl, getSeoForPath } from '../../data/seo';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
+import { SITE_LOCALES, type SiteLocale } from '../../lib/siteLocales';
+
+const DEFAULT_OG_IMAGE = '/images/cala-lupo.png';
+
+const HREFLANG_TAGS: Record<SiteLocale, string> = {
+  it: 'it-IT',
+  en: 'en-GB',
+  de: 'de-DE',
+  fr: 'fr-FR',
+  es: 'es-ES',
+};
 
 function upsertMeta(name: string, content: string, property = false) {
   const attr = property ? 'property' : 'name';
@@ -15,24 +26,52 @@ function upsertMeta(name: string, content: string, property = false) {
   el.content = content;
 }
 
-function upsertLink(rel: string, href: string) {
-  let el = document.querySelector<HTMLLinkElement>(`link[rel="${rel}"]`);
+function upsertLink(rel: string, href: string, hreflang?: string) {
+  const selector =
+    hreflang !== undefined
+      ? `link[rel="${rel}"][hreflang="${hreflang}"]`
+      : `link[rel="${rel}"]:not([hreflang])`;
+  let el = document.querySelector<HTMLLinkElement>(selector);
   if (!el) {
     el = document.createElement('link');
     el.rel = rel;
+    if (hreflang) el.hreflang = hreflang;
     document.head.appendChild(el);
   }
   el.href = href;
 }
 
+function clearHreflangAlternates() {
+  document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((node) => node.remove());
+}
+
+function syncHreflang(canonicalPath: string) {
+  clearHreflangAlternates();
+
+  for (const loc of SITE_LOCALES) {
+    const link = document.createElement('link');
+    link.rel = 'alternate';
+    link.hreflang = HREFLANG_TAGS[loc];
+    link.href = absoluteUrl(canonicalPath);
+    document.head.appendChild(link);
+  }
+
+  const xDefault = document.createElement('link');
+  xDefault.rel = 'alternate';
+  xDefault.hreflang = 'x-default';
+  xDefault.href = absoluteUrl(canonicalPath);
+  document.head.appendChild(xDefault);
+}
+
 export function PageSeo() {
-  const { pathname, search } = useLocation();
+  const { pathname } = useLocation();
   const { locale } = useSiteLocale();
 
   useEffect(() => {
-    const seo = getSeoForPath(pathname, search, locale);
+    const seo = getSeoForPath(pathname, locale);
     const url = absoluteUrl(seo.path);
     const ogLocale = getLocaleCopy(locale).ogLocale;
+    const ogImage = absoluteUrl(DEFAULT_OG_IMAGE);
 
     document.title = seo.title;
     upsertMeta('description', seo.description);
@@ -45,11 +84,18 @@ export function PageSeo() {
     upsertMeta('og:type', 'website', true);
     upsertMeta('og:url', url, true);
     upsertMeta('og:locale', ogLocale, true);
+    upsertMeta('og:image', ogImage, true);
+    upsertMeta('og:image:alt', `${seo.title} — Residence Le Vele`, true);
 
     upsertMeta('twitter:card', 'summary_large_image');
     upsertMeta('twitter:title', seo.title);
     upsertMeta('twitter:description', seo.description);
-  }, [pathname, search, locale]);
+    upsertMeta('twitter:image', ogImage);
+
+    syncHreflang(seo.path);
+
+    return () => clearHreflangAlternates();
+  }, [pathname, locale]);
 
   return null;
 }
