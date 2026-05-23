@@ -2,7 +2,9 @@
 
 ![Hero Section](preview.png)
 
-![Preview](./preview.gif)
+<p align="center">
+  <img src="./preview.gif" alt="Project Preview" />
+</p>
 
 Sito ufficiale del Residence Le Vele con:
 
