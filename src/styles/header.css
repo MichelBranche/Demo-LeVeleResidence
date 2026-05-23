@@ -7,7 +7,7 @@
   color: var(--header-fg);
 
   /* Top: vetro leggero + testo oro */
-  --header-bar-bg: rgb(86 74 66 / 8%);
+  --header-bar-bg: rgb(129 110 98 / 8%);
   --header-bar-blur: blur(12px);
   --header-bar-border: rgb(181 168 134 / 8%);
   --header-fg: var(--accent-primary);
@@ -26,7 +26,7 @@
 .site-header--scrolled,
 .site-header--menu-open {
   /* Scroll / menu: barra scura, testo chiaro */
-  --header-bar-bg: rgb(86 74 66 / 88%);
+  --header-bar-bg: rgb(129 110 98 / 88%);
   --header-bar-border: rgb(181 168 134 / 12%);
   --header-fg: var(--text-main);
   --header-fg-muted: var(--text-muted);
