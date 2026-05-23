@@ -2,6 +2,8 @@
 
 ![Hero Section](preview.png)
 
+![Preview](./preview.gif)
+
 Sito ufficiale del Residence Le Vele con:
 
 - landing page animata e contenuti editoriali;
