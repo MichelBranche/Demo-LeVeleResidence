@@ -3,7 +3,7 @@
 ![Hero Section](preview.png)
 
 <p align="center">
-  <img src="./preview.gif" alt="Project Preview" />
+  <img src="./preview.gif" width="100%" />
 </p>
 
 Sito ufficiale del Residence Le Vele con:
