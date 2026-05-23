@@ -172,6 +172,7 @@ Deploy consigliato: Vercel.
 - Le API in `api/` vengono pubblicate come funzioni serverless.
 - `vercel.json` include rewrite SPA verso `index.html`.
 
-## Licenza
+## License
 
-Progetto privato (repository non destinato a uso pubblico salvo diversa indicazione del proprietario).
+This project is proprietary and protected by copyright.
+Unauthorized use, reproduction, or distribution is prohibited.
