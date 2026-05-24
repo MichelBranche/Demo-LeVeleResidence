@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { AppBootstrap } from './components/AppBootstrap';
@@ -115,6 +116,7 @@ export default function App() {
           </Routes>
         </Suspense>
         <Analytics />
+        <SpeedInsights />
       </CookieConsentRoot>
     </BrowserRouter>
   );
