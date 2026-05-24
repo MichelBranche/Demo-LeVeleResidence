@@ -36,6 +36,7 @@
   --z-preloader: 100200;
   --z-loading-screen: 10200;
   --z-lightbox: 100000;
+  --z-route-transition: 100150;
 }
 
 *,
@@ -783,27 +784,6 @@ button {
   }
 }
 
-.suites__index {
-  position: absolute;
-  top: clamp(1.5rem, 3vw, 2.5rem);
-  left: 0;
-  font-family: var(--font-display);
-  font-size: clamp(4rem, 12vw, 9rem);
-  line-height: 1;
-  font-weight: 400;
-  color: rgb(250 248 245 / 6%);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-}
-
-@media (min-width: 960px) {
-  .suites__item--reverse .suites__index {
-    left: auto;
-    right: 0;
-  }
-}
-
 .suites__media {
   position: relative;
   display: block;
@@ -870,6 +850,25 @@ button {
   }
 }
 
+.suites__meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: clamp(0.75rem, 2vw, 1.15rem);
+}
+
+.suites__index {
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3.15rem);
+  line-height: 1;
+  font-weight: 400;
+  color: rgb(250 248 245 / 22%);
+  letter-spacing: -0.03em;
+  pointer-events: none;
+  user-select: none;
+}
+
 .suites__label {
   margin: 0;
   font-size: 0.68rem;
@@ -877,6 +876,7 @@ button {
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--accent);
+  line-height: 1.45;
 }
 
 .suites__name {
@@ -955,15 +955,38 @@ button {
 
 .suites__cta-arrow {
   display: inline-block;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: suites-cta-arrow-nudge 1.35s ease-in-out infinite;
+}
+
+.suites__item:nth-child(2) .suites__cta-arrow {
+  animation-delay: 0.3s;
 }
 
 .suites__cta:hover .suites__cta-arrow,
 .suites__cta:focus-visible .suites__cta-arrow {
-  transform: translateX(6px);
+  animation: none;
+  transform: translateX(8px);
+}
+
+@keyframes suites-cta-arrow-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+    opacity: 0.75;
+  }
+
+  50% {
+    transform: translateX(6px);
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .suites__cta-arrow {
+    animation: none;
+    opacity: 1;
+  }
+
   .suites__marquee-track {
     animation: none;
   }

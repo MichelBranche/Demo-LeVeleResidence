@@ -2,9 +2,11 @@ import gsap from 'gsap';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useRouteTransitionNavigate } from '../context/RouteTransitionContext';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { prefersReducedMotion } from '../lib/motion';
+import { shouldAnimateRouteChange } from '../lib/routeTransition';
 import { scheduleHashScroll, subscribeScroll } from '../lib/scroll';
 import { LanguageToggle } from './LanguageToggle';
 
@@ -52,6 +54,7 @@ export function Header() {
   const { navLinks, headerUi: ui, config: site, logo } = content;
   const location = useLocation();
   const navigate = useNavigate();
+  const navigateWithTransition = useRouteTransitionNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -231,7 +234,7 @@ export function Header() {
       const { pathname, hash } = parseNavTarget(to);
 
       if (!hash) {
-        navigate(pathname);
+        navigateWithTransition(pathname);
         if (showMobileMenu) requestCloseMenu();
         else setMenuOpen(false);
         return;
@@ -239,17 +242,24 @@ export function Header() {
 
       const path = `${pathname}${hash}`;
       const samePlace = location.pathname === pathname && location.hash === hash;
+      const samePathDifferentHash = location.pathname === pathname && location.hash !== hash;
 
       if (!samePlace) {
-        navigate(path);
+        if (samePathDifferentHash) {
+          navigate(path);
+          hashScrollCleanupRef.current?.();
+          hashScrollCleanupRef.current = scheduleHashScroll(hash);
+        } else if (shouldAnimateRouteChange(location.pathname, pathname)) {
+          navigateWithTransition(path);
+        } else {
+          navigate(path);
+        }
       }
 
       if (showMobileMenu) requestCloseMenu();
       else setMenuOpen(false);
-      hashScrollCleanupRef.current?.();
-      hashScrollCleanupRef.current = scheduleHashScroll(hash);
     },
-    [location.hash, location.pathname, navigate, requestCloseMenu, showMobileMenu],
+    [location.hash, location.pathname, navigate, navigateWithTransition, requestCloseMenu, showMobileMenu],
   );
 
   const headerClass = [

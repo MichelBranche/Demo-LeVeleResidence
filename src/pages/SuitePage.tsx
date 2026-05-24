@@ -1,7 +1,8 @@
 import { useEffect, useLayoutEffect, useRef } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { formatCopy } from '../i18n';
+import { useRouteTransition } from '../context/RouteTransitionContext';
 import { getSuiteSlugFromPathname } from '../data/routes';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { useSuitePageAnimations } from '../hooks/useSuitePageAnimations';
@@ -19,7 +20,7 @@ function splitSuiteTitle(title: string) {
 export function SuitePage() {
   const { content } = useSiteLocale();
   const { suitePage, suites, config } = content;
-  const navigate = useNavigate();
+  const { stage } = useRouteTransition();
   const { slug: paramSlug = '' } = useParams();
   const { pathname } = useLocation();
   const slug = paramSlug || getSuiteSlugFromPathname(pathname) || '';
@@ -28,10 +29,13 @@ export function SuitePage() {
   useSuitePageAnimations(pageRef);
 
   useLayoutEffect(() => {
+    if (stage !== 'idle') return;
     scrollToTop(true);
-  }, [slug]);
+  }, [slug, stage]);
 
   useEffect(() => {
+    if (stage !== 'idle') return;
+
     const cancelScroll = scheduleScrollToSuiteHero();
     requestAnimationFrame(() => ScrollTrigger.refresh());
     const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 500);
@@ -41,7 +45,7 @@ export function SuitePage() {
       window.clearTimeout(refreshTimer);
       ScrollTrigger.refresh();
     };
-  }, [slug]);
+  }, [slug, stage]);
 
   if (!suite) {
     return (
@@ -119,13 +123,21 @@ export function SuitePage() {
         </div>
       </div>
 
-      <section id="suite-story" className="suite-story">
-        <div className="suite-story__grid">
-          <div className="suite-story__label-col" data-suite-reveal>
-            <span className="suite-story__index">{suite.index}</span>
-            <p className="suite-story__label">{suitePage.experience}</p>
-          </div>
-          <div className="suite-story__body" data-suite-reveal>
+      <section
+        id="suite-story"
+        className="suite-story"
+        aria-labelledby="suite-story-label"
+      >
+        <div className="suite-story__inner">
+          <header className="suite-story__meta" data-suite-reveal>
+            <span className="suite-story__index" aria-hidden>
+              {suite.index}
+            </span>
+            <p id="suite-story-label" className="suite-story__label">
+              {suitePage.experience}
+            </p>
+          </header>
+          <div className="suite-story__content" data-suite-reveal>
             <p className="suite-story__lead">{suite.description}</p>
             <p className="suite-story__note">{suitePage.storyNote}</p>
           </div>
@@ -192,11 +204,6 @@ export function SuitePage() {
                 to={`/camere/${otherSuite.slug}`}
                 className="suite-cta__sibling"
                 data-suite-reveal
-                onClick={(event) => {
-                  event.preventDefault();
-                  scrollToTop(true);
-                  navigate(`/camere/${otherSuite.slug}`);
-                }}
               >
                 <span className="suite-cta__sibling-text">
                   <span className="suite-cta__sibling-label">{suitePage.otherSuite}</span>

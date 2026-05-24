@@ -10,8 +10,10 @@ import { PageSeo } from './components/seo/PageSeo';
 import { StructuredData } from './components/seo/StructuredData';
 import { TrackingRouteSync } from './components/seo/TrackingRouteSync';
 import { LanguageToggle } from './components/LanguageToggle';
+import { RouteTransitionOverlay } from './components/RouteTransitionOverlay';
 import { SkipToMain } from './components/SkipToMain';
 import { SubPageLayout } from './components/SubPageLayout';
+import { RouteTransitionProvider, useRouteTransition } from './context/RouteTransitionContext';
 import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath } from './data/routes';
 import { scheduleScrollToSuiteHero, scrollToHash, scrollToTop } from './lib/scroll';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -30,9 +32,11 @@ const CookiePolicyPage = lazy(() =>
 
 function ScrollOnNavigate() {
   const location = useLocation();
+  const { stage } = useRouteTransition();
   const isSuite = isSuiteDetailPath(location.pathname);
 
   useLayoutEffect(() => {
+    if (stage !== 'idle') return;
     if (location.hash) return;
 
     if (isSuite) {
@@ -41,7 +45,7 @@ function ScrollOnNavigate() {
     }
 
     scrollToTop(true);
-  }, [location.pathname, location.hash, isSuite]);
+  }, [location.pathname, location.hash, isSuite, stage]);
 
   useEffect(() => {
     if (location.hash) {
@@ -86,6 +90,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <RouteTransitionProvider>
       <CookieConsentRoot>
         <PageSeo />
         <StructuredData />
@@ -96,6 +101,7 @@ export default function App() {
         <CustomCursor />
         <MobileLangFab />
         <ScrollOnNavigate />
+        <RouteTransitionOverlay />
         <Suspense fallback={<RouteFallback />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -118,6 +124,7 @@ export default function App() {
         <Analytics />
         <SpeedInsights />
       </CookieConsentRoot>
+      </RouteTransitionProvider>
     </BrowserRouter>
   );
 }

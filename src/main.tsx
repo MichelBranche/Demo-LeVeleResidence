@@ -15,6 +15,7 @@ import './styles/suite-detail.css';
 import './styles/consent.css';
 import './styles/mobile.css';
 import './styles/chrome.css';
+import './styles/route-transition.css';
 import './styles/error-fallback.css';
 
 const bootstrapLocale = readSiteLocale();
