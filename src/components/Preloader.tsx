@@ -23,7 +23,7 @@ function getSlotTarget(slot: HTMLElement) {
     left: rect.left,
     width: rect.width,
     height: rect.height,
-    borderRadius: 15,
+    borderRadius: 0,
   };
 }
 
