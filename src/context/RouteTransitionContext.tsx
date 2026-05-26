@@ -41,18 +41,20 @@ function lockScrollPosition() {
   document.body.style.width = '100%';
 }
 
-function unlockScrollPosition() {
-  const scrollY = Number(document.body.dataset.routeTransitionScrollY || 0);
+/** Sblocca il body e porta subito in cima (nuova route), senza ripristinare lo scroll precedente. */
+function releaseScrollToTop() {
   document.body.style.position = '';
   document.body.style.top = '';
   document.body.style.left = '';
   document.body.style.right = '';
   document.body.style.width = '';
   delete document.body.dataset.routeTransitionScrollY;
-  window.scrollTo(0, scrollY);
+
+  window.scrollTo(0, 0);
+
   const lenis = getLenisInstance();
   lenis?.start();
-  lenis?.scrollTo(scrollY, { immediate: true });
+  lenis?.scrollTo(0, { immediate: true });
 }
 
 function showInstantCover() {
@@ -75,7 +77,9 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
     setStage('idle');
     document.body.classList.remove('route-transition-active');
     hideInstantCover();
-    unlockScrollPosition();
+    if (document.body.style.position === 'fixed') {
+      releaseScrollToTop();
+    }
   }, []);
 
   const notifyRevealComplete = useCallback(() => {
@@ -123,6 +127,7 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
     const wait = Math.max(0, MIN_LOAD_MS - elapsed);
 
     const timer = window.setTimeout(() => {
+      releaseScrollToTop();
       setStage('revealing');
     }, wait);
 

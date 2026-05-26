@@ -16,6 +16,7 @@
 
 .home-page__sticky-header .site-header {
   pointer-events: auto;
+  will-change: transform, opacity;
 }
 
 .home-hero-shell {
@@ -37,10 +38,13 @@
   border-radius: 0;
   overflow: hidden;
   background: var(--crema);
-  opacity: 0.4;
-  transition:
-    opacity 0.45s ease,
-    background-color 0.35s ease;
+  opacity: 1;
+  transition: background-color 0.35s ease;
+}
+
+body.oh-preloader-active .home-hero-shell:not(.home-hero-shell--ready) .oh-video-bg {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .home-hero-shell--awaiting-consent .oh-video-bg {
@@ -96,8 +100,15 @@
 }
 
 .oh-reveal > .hero {
+  opacity: 1;
+  transform: none;
+}
+
+html:not([data-hero-copy-done]) .hero-kicker,
+html:not([data-hero-copy-done]) .hero-title__line,
+html:not([data-hero-copy-done]) .hero-tagline,
+html:not([data-hero-copy-done]) .hero-scroll-cue {
   opacity: 0;
-  transform: translateY(40px);
 }
 
 .home-hero-shell .hero {

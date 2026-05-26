@@ -223,8 +223,10 @@ export function Preloader({
       heroVideoEl.loop = true;
       heroVideoEl.muted = true;
       heroVideoEl.playsInline = true;
+      if (heroVideoEl.paused) {
+        void heroVideoEl.play().catch(() => {});
+      }
       gsap.set(heroVideoEl, { clearProps: 'transform,opacity,filter' });
-      gsap.set(revealMedia, { clearProps: 'all' });
     };
 
     const forceVideoExit = () => {
@@ -236,33 +238,40 @@ export function Preloader({
     safetyTimer = window.setTimeout(forceVideoExit, INTRO_VIDEO_MAX_MS);
 
     const handoffToHero = () => {
-      const exitTl = gsap.timeline({ onComplete: completeIntro });
+      if (introFinished) return;
+
+      returnVideoToSlot();
+      gsap.set(revealMedia, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
+
+      /* Hero shell → ready mentre il video è già nello slot (nessun fade sul video). */
+      onCompleteRef.current();
+
+      const exitTl = gsap.timeline({
+        onComplete: () => {
+          if (introFinished) return;
+          introFinished = true;
+          window.clearTimeout(safetyTimer);
+          window.clearTimeout(metadataTimer);
+          document.body.classList.remove('oh-preloader-active');
+          setVisible(false);
+        },
+      });
 
       exitTl
         .to([textContainer, ...wordElements], {
           opacity: 0,
-          duration: 0.28,
+          duration: 0.32,
           ease: 'power2.inOut',
         })
-        .to(
-          revealMedia,
-          {
-            opacity: 0,
-            duration: 0.4,
-            ease: 'power2.inOut',
-          },
-          '<0.05',
-        )
-        .add(returnVideoToSlot)
         .to(
           preloaderEl,
           {
             opacity: 0,
             backgroundColor: 'rgba(129, 110, 98, 0)',
-            duration: 0.45,
+            duration: 0.42,
             ease: 'power2.inOut',
           },
-          '<0.08',
+          '<0.06',
         );
     };
 
@@ -394,25 +403,25 @@ export function Preloader({
       completeIntro();
     };
 
-    const onMetadataReady = () => {
-      window.clearTimeout(metadataTimer);
-      onReady();
-    };
-
     heroVideoEl.addEventListener('error', onVideoError, { once: true });
 
     metadataTimer = window.setTimeout(onVideoError, INTRO_METADATA_MAX_MS);
 
-    if (heroVideoEl.readyState >= 1) {
-      void waitForFonts(1200).then(onMetadataReady);
-    } else {
-      heroVideoEl.addEventListener('loadedmetadata', onMetadataReady, { once: true });
+    const onCanPlay = () => {
+      window.clearTimeout(metadataTimer);
+      onReady();
+    };
+
+    heroVideoEl.addEventListener('canplay', onCanPlay, { once: true });
+
+    if (heroVideoEl.readyState >= 2) {
+      void waitForFonts(1200).then(onCanPlay);
     }
 
     return () => {
       window.clearTimeout(safetyTimer);
       window.clearTimeout(metadataTimer);
-      heroVideoEl.removeEventListener('loadedmetadata', onMetadataReady);
+      heroVideoEl.removeEventListener('canplay', onCanPlay);
       heroVideoEl.removeEventListener('error', onVideoError);
       mainTimeline?.kill();
       document.body.classList.remove('oh-preloader-active');

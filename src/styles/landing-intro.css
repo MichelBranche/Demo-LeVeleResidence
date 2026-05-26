@@ -151,8 +151,17 @@
   color: var(--cue-color);
   text-decoration: none;
   opacity: 0;
-  animation: hero-cue-appear 1.2s ease 1.8s forwards;
   transition: color 0.3s ease;
+}
+
+html[data-hero-copy-done] .hero-scroll-cue {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-cue {
+    opacity: 1;
+  }
 }
 
 .hero-scroll-cue:hover {

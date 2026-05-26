@@ -85,6 +85,7 @@ export function HomePage() {
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const introDoneEventSentRef = useRef(false);
+  const animateHeaderEntranceRef = useRef(!readPreloaderDone());
 
   const lightPreloader = !shouldRunVideoPreloader();
   const posterOnlyHero = shouldUsePosterOnlyHero();
@@ -135,11 +136,10 @@ export function HomePage() {
     if (!video.currentSrc) {
       video.src = heroMedia.video;
     }
-    video.preload = 'metadata';
+    video.preload = 'auto';
   }, [introPhase, lightPreloader, heroMedia.video]);
 
   const handlePreloaderComplete = useCallback(() => {
-    document.body.classList.remove('oh-preloader-active');
     try {
       sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
     } catch {
@@ -150,21 +150,6 @@ export function HomePage() {
 
   useEffect(() => {
     if (!ready) return undefined;
-
-    const revealItems = document.querySelectorAll('.oh-reveal > .hero');
-    if (revealItems.length) {
-      gsap.to(revealItems, {
-        opacity: 1,
-        y: 0,
-        duration: 0.85,
-        ease: 'power3.out',
-        stagger: 0.1,
-        delay: 0.05,
-        onComplete: () => {
-          gsap.set(revealItems, { clearProps: 'opacity,transform' });
-        },
-      });
-    }
 
     const video = videoRef.current;
     if (!video) return undefined;
@@ -249,7 +234,7 @@ export function HomePage() {
       <main id="main-content" className="home-page">
         {ready && (
           <div className="home-page__sticky-header">
-            <Header />
+            <Header animateEntrance={animateHeaderEntranceRef.current} />
           </div>
         )}
         <div className={shellClass}>
@@ -266,7 +251,7 @@ export function HomePage() {
               preload={
                 heroVideoSrc
                   ? showPreloader && !lightPreloader
-                    ? 'metadata'
+                    ? 'auto'
                     : ready
                       ? 'metadata'
                       : 'none'

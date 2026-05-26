@@ -8,7 +8,13 @@ import { useSiteLocale } from '../hooks/useSiteLocale';
 import { prefersReducedMotion } from '../lib/motion';
 import { shouldAnimateRouteChange } from '../lib/routeTransition';
 import { scheduleHashScroll, subscribeScroll } from '../lib/scroll';
+import { useHomeHeaderEntrance } from '../hooks/useHomeHeaderEntrance';
 import { LanguageToggle } from './LanguageToggle';
+
+type HeaderProps = {
+  /** Ingresso dall'alto sulla home dopo i testi hero (solo prima visita con preloader). */
+  animateEntrance?: boolean;
+};
 
 function getMobileMenuParts(nav: HTMLElement) {
   const top = nav.querySelector<HTMLElement>('.site-header__mobile-nav__top');
@@ -49,7 +55,7 @@ function isNavLinkActive(
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
-export function Header() {
+export function Header({ animateEntrance = false }: HeaderProps) {
   const { content } = useSiteLocale();
   const { navLinks, headerUi: ui, config: site, logo } = content;
   const location = useLocation();
@@ -59,9 +65,13 @@ export function Header() {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMobileNav, setIsMobileNav] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLButtonElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  const isHome = location.pathname === '/' || location.pathname === '';
+
+  useHomeHeaderEntrance(headerRef, { active: isHome, animateEntrance });
   const closingRef = useRef(false);
   const showMobileMenuRef = useRef(false);
   const hashScrollCleanupRef = useRef<(() => void) | null>(null);
@@ -379,7 +389,7 @@ export function Header() {
     );
 
   return (
-    <header className={headerClass}>
+    <header className={headerClass} ref={headerRef}>
       {mobileMenuPortal}
 
       <div className="site-header__bar">

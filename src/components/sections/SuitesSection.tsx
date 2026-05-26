@@ -48,7 +48,7 @@ export function SuitesSection() {
                 aria-label={suite.discoverAria}
               >
                 <div className="suites__media-inner">
-                  <img src={suite.image} alt={suite.title} loading="lazy" decoding="async" />
+                  <img src={suite.cardImage} alt={suite.title} loading="lazy" decoding="async" />
                 </div>
                 <span className="suites__media-tag">{suite.kicker}</span>
               </Link>

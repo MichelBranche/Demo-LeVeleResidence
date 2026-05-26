@@ -2,6 +2,7 @@ import { asset } from '../lib/assets';
 
 const GARDEN = asset('/Foto%202024%20camere%20Le%20Vele/vista%20giardino');
 const SEA = asset('/Foto%202024%20camere%20Le%20Vele/vista%20mare');
+const BATH = asset('/Foto%202024%20camere%20Le%20Vele/bagni');
 const CALA_LUPO = asset('/images/cala-lupo.png');
 const LA_PELOSA = asset('/images/la-pelosa-spiaggia.png');
 const ALGHERO_AIRPORT = asset('/images/alghero-aeroporto.png');
@@ -90,22 +91,32 @@ export const suitesMedia = [
     slug: 'vista-giardino' as const,
     index: '01',
     theme: 'giardino' as const,
+    cardImage: `${GARDEN}/vista%20giardino%201.jpg`,
     image: `${GARDEN}/vista%20giardino%201.jpg`,
     gallery: [
-      { src: `${GARDEN}/esterno%20giardino.jpg`, layout: 'wide' as const },
+      { src: `${GARDEN}/monolocale-giardino.png`, layout: 'wide' as const },
+      { src: `${GARDEN}/letto-castello-giardino.png`, layout: 'tall' as const },
       { src: `${GARDEN}/39.JPG`, layout: 'tall' as const },
+      { src: `${GARDEN}/esterno%20giardino.jpg`, layout: 'wide' as const },
       { src: `${GARDEN}/24.JPG`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-lavabo.png`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-doccia-ampia-1.png`, layout: 'wide' as const },
     ],
   },
   {
     slug: 'vista-mare' as const,
     index: '02',
     theme: 'mare' as const,
+    cardImage: `${SEA}/le_vele_residence_stintino_appartamenti_27.jpg`,
     image: `${SEA}/le_vele_residence_stintino_appartamenti_27.jpg`,
     gallery: [
-      { src: `${SEA}/14.JPG`, layout: 'wide' as const },
+      { src: `${SEA}/monolocale-mare-1.png`, layout: 'wide' as const },
+      { src: `${SEA}/letto-castello-mare.png`, layout: 'tall' as const },
       { src: `${SEA}/29.JPG`, layout: 'tall' as const },
+      { src: `${SEA}/14.JPG`, layout: 'wide' as const },
       { src: `${SEA}/40.JPG`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-lavabo.png`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-doccia-ampia-2.png`, layout: 'wide' as const },
     ],
   },
 ] as const;
