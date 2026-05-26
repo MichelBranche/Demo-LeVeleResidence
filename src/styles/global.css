@@ -2279,7 +2279,15 @@ button {
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
-  will-change: clip-path, opacity, top, left, width, height, border-radius;
+  will-change: clip-path, opacity, top, left, width, height, border-radius, transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+@media (max-width: 767px) {
+  .oh-preloader__reveal-media {
+    clip-path: none;
+  }
 }
 
 .oh-preloader__reveal-media .oh-preloader__poster,

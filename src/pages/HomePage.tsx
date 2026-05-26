@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -92,6 +92,7 @@ export function HomePage() {
   const posterOnlyHero = shouldUsePosterOnlyHero();
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
+  const [preloaderReady, setPreloaderReady] = useState(false);
 
   useHomeLangReveal(ready);
 
@@ -130,15 +131,46 @@ export function HomePage() {
     return () => cancelAnimationFrame(frame);
   }, [isReady, bannerOpen, hasConsent, networkTier]);
 
-  useEffect(() => {
-    if (introPhase !== 'preloader' || lightPreloader) return;
-    const video = videoRef.current;
-    if (!video) return;
-    if (!video.currentSrc) {
-      video.src = heroMedia.video;
+  useLayoutEffect(() => {
+    if (!showPreloader) {
+      setPreloaderReady(false);
+      return undefined;
     }
-    video.preload = 'auto';
-  }, [introPhase, lightPreloader, heroMedia.video]);
+
+    let cancelled = false;
+    let rafId = 0;
+
+    const prime = () => {
+      if (cancelled) return;
+
+      const video = videoRef.current;
+      const slot = videoSlotRef.current;
+      if (!video || !slot) {
+        rafId = requestAnimationFrame(prime);
+        return;
+      }
+
+      if (!lightPreloader) {
+        if (!video.currentSrc && !video.src) {
+          video.src = heroMedia.video;
+        }
+        video.preload = 'auto';
+        if (!heroVideoSrc) {
+          setHeroVideoSrc(heroMedia.video);
+        }
+        void video.load();
+      }
+
+      setPreloaderReady(true);
+    };
+
+    prime();
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(rafId);
+    };
+  }, [showPreloader, lightPreloader, heroMedia.video, heroVideoSrc]);
 
   const handlePreloaderComplete = useCallback(() => {
     try {
@@ -269,6 +301,7 @@ export function HomePage() {
           </div>
 
           {showPreloader &&
+            preloaderReady &&
             typeof document !== 'undefined' &&
             createPortal(
               <Preloader

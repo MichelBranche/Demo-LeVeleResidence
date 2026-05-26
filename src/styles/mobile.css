@@ -44,11 +44,9 @@
 
   .oh-preloader__text-container {
     max-width: min(94vw, 22rem);
-    white-space: normal;
   }
 
   .oh-preloader__text {
-    white-space: normal;
     text-align: center;
   }
 

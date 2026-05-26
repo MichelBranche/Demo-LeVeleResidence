@@ -6,6 +6,7 @@ import { scrollToTop } from '../lib/scroll';
 const INTRO_LIGHT_MAX_MS = 7000;
 const INTRO_VIDEO_MAX_MS = 14000;
 const INTRO_METADATA_MAX_MS = 6000;
+const INIT_MAX_FRAMES = 90;
 
 type PreloaderProps = {
   text: string;
@@ -27,6 +28,10 @@ function getSlotTarget(slot: HTMLElement) {
   };
 }
 
+function isMobilePreloader(): boolean {
+  return window.matchMedia('(max-width: 767px)').matches;
+}
+
 function waitForFonts(maxMs: number): Promise<void> {
   const fontsReady = document.fonts?.ready ?? Promise.resolve();
   return Promise.race([
@@ -45,6 +50,463 @@ function waitForLayout(): Promise<void> {
   });
 }
 
+function measureTextHeight(textEl: HTMLElement): number {
+  const rect = textEl.getBoundingClientRect().height;
+  if (rect >= 8) return rect;
+  const wrapper = textEl.querySelector<HTMLElement>('.oh-preloader__char-wrapper');
+  const line = wrapper?.getBoundingClientRect().height ?? 0;
+  if (line >= 8) return line;
+  return isMobilePreloader() ? 52 : 72;
+}
+
+type IntroDom = {
+  textEl: HTMLSpanElement;
+  textContainer: HTMLDivElement;
+  revealMedia: HTMLDivElement;
+  preloaderEl: HTMLDivElement;
+  text: string;
+  unlockScroll: () => void;
+  onComplete: () => void;
+  onDone: () => void;
+};
+
+function buildWordDom(textEl: HTMLSpanElement, text: string) {
+  const words = text.trim().split(/\s+/);
+  const wordElements: HTMLSpanElement[] = [];
+  const charElements: HTMLSpanElement[] = [];
+
+  textEl.innerHTML = '';
+  words.forEach((word, wordIndex) => {
+    const wordWrapper = document.createElement('span');
+    wordWrapper.className = 'oh-preloader__word';
+
+    word.split('').forEach((ch) => {
+      const cw = document.createElement('span');
+      cw.className = 'oh-preloader__char-wrapper';
+
+      const cs = document.createElement('span');
+      cs.className = 'oh-preloader__char';
+      cs.setAttribute('data-oh-word', String(wordIndex));
+      cs.textContent = ch;
+
+      cw.appendChild(cs);
+      wordWrapper.appendChild(cw);
+      charElements.push(cs);
+    });
+
+    textEl.appendChild(wordWrapper);
+    wordElements.push(wordWrapper);
+
+    if (wordIndex < words.length - 1) {
+      const space = document.createElement('span');
+      space.className = 'oh-preloader__word-space';
+      textEl.appendChild(space);
+    }
+  });
+
+  return { words, wordElements, charElements };
+}
+
+function setupLightIntro({
+  textEl,
+  textContainer,
+  revealMedia,
+  preloaderEl,
+  posterSrc,
+  text,
+  unlockScroll,
+  onComplete,
+  onDone,
+}: IntroDom & { posterSrc?: string }) {
+  const { words, wordElements, charElements } = buildWordDom(textEl, text);
+  gsap.set(charElements, { yPercent: 110 });
+  gsap.set(textContainer, { visibility: 'visible', opacity: 1 });
+  gsap.set(wordElements, { opacity: 1, x: 0 });
+
+  let introFinished = false;
+  let safetyTimer = 0;
+  let posterEl: HTMLImageElement | null = null;
+  let lightTimeline: gsap.core.Timeline | null = null;
+
+  const completeIntro = () => {
+    if (introFinished) return;
+    introFinished = true;
+    window.clearTimeout(safetyTimer);
+    unlockScroll();
+    onComplete();
+    onDone();
+  };
+
+  const forceLightExit = () => {
+    lightTimeline?.kill();
+    completeIntro();
+  };
+
+  safetyTimer = window.setTimeout(forceLightExit, INTRO_LIGHT_MAX_MS);
+  posterEl = document.createElement('img');
+  posterEl.className = 'oh-preloader__poster';
+  posterEl.src = posterSrc ?? '';
+  posterEl.alt = '';
+  posterEl.decoding = 'async';
+  revealMedia.appendChild(posterEl);
+  gsap.set(revealMedia, { opacity: 0, scale: 0.96 });
+
+  lightTimeline = gsap.timeline({
+    paused: true,
+    onComplete: completeIntro,
+  });
+
+  words.forEach((_w, i) => {
+    const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
+    lightTimeline!.to(
+      chars,
+      {
+        yPercent: 0,
+        duration: 0.38,
+        ease: 'power3.out',
+        stagger: 0.04,
+      },
+      i === 0 ? 0.15 : '<0.08',
+    );
+  });
+
+  lightTimeline
+    .to(revealMedia, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, '>+0.2')
+    .to(
+      [textContainer, ...wordElements, revealMedia],
+      { opacity: 0, duration: 0.35, ease: 'power2.inOut' },
+      '>+0.35',
+    )
+    .to(
+      preloaderEl,
+      {
+        opacity: 0,
+        backgroundColor: 'rgba(129, 110, 98, 0)',
+        duration: 0.4,
+        ease: 'power2.inOut',
+      },
+      '<0.06',
+    );
+
+  const playLight = () => {
+    if (introFinished) return;
+    lightTimeline?.play(0);
+  };
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(playLight);
+  });
+  void waitForFonts(400).then(playLight);
+
+  return () => {
+    window.clearTimeout(safetyTimer);
+    posterEl?.remove();
+    lightTimeline?.kill();
+    gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
+  };
+}
+
+function setupVideoIntro({
+  textEl,
+  textContainer,
+  revealMedia,
+  preloaderEl,
+  heroSlot,
+  heroVideo: heroVideoEl,
+  text,
+  unlockScroll,
+  onComplete,
+  onDone,
+}: IntroDom & { heroSlot: HTMLDivElement; heroVideo: HTMLVideoElement }) {
+  const staggerTime = 0.05;
+  const charDuration = 0.5;
+  const startDelay = 0.3;
+  const splitDelay = 0.6;
+  const splitDuration = 1.0;
+  const expandDuration = 1.0;
+  const textGap = 30;
+
+  const { words, wordElements, charElements } = buildWordDom(textEl, text);
+  gsap.set(charElements, { yPercent: 110 });
+  gsap.set(textContainer, { visibility: 'visible', opacity: 1 });
+  gsap.set(wordElements, { opacity: 1, x: 0 });
+
+  let introFinished = false;
+  let videoRevealStarted = false;
+  let textIntroStarted = false;
+  let safetyTimer = 0;
+  let metadataTimer = 0;
+  let mainTimeline: gsap.core.Timeline | null = null;
+
+  const completeIntro = () => {
+    if (introFinished) return;
+    introFinished = true;
+    window.clearTimeout(safetyTimer);
+    window.clearTimeout(metadataTimer);
+    unlockScroll();
+    onComplete();
+    onDone();
+  };
+
+  const returnVideoToSlot = () => {
+    if (heroVideoEl.parentElement !== heroSlot) {
+      heroSlot.appendChild(heroVideoEl);
+    }
+    heroVideoEl.classList.add('hero-bg-video');
+    heroVideoEl.loop = true;
+    heroVideoEl.muted = true;
+    heroVideoEl.playsInline = true;
+    if (heroVideoEl.paused) {
+      void heroVideoEl.play().catch(() => {});
+    }
+    gsap.set(heroVideoEl, { clearProps: 'transform,opacity,filter,scale' });
+  };
+
+  const forceVideoExit = () => {
+    mainTimeline?.kill();
+    returnVideoToSlot();
+    completeIntro();
+  };
+
+  safetyTimer = window.setTimeout(forceVideoExit, INTRO_VIDEO_MAX_MS);
+
+  const startTextIntro = () => {
+    if (introFinished || textIntroStarted) return;
+    textIntroStarted = true;
+
+    words.forEach((_w, i) => {
+      const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
+      gsap.to(chars, {
+        yPercent: 0,
+        duration: charDuration,
+        ease: 'power3.out',
+        stagger: staggerTime,
+        delay: i === 0 ? startDelay : 0,
+      });
+    });
+  };
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(startTextIntro);
+  });
+  void waitForFonts(350).then(startTextIntro);
+
+  const handoffToHero = () => {
+    if (introFinished) return;
+
+    returnVideoToSlot();
+    gsap.set(revealMedia, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
+    onComplete();
+
+    const exitTl = gsap.timeline({
+      onComplete: () => {
+        if (introFinished) return;
+        introFinished = true;
+        window.clearTimeout(safetyTimer);
+        window.clearTimeout(metadataTimer);
+        unlockScroll();
+        onDone();
+      },
+    });
+
+    exitTl
+      .to([textContainer, ...wordElements], {
+        opacity: 0,
+        duration: 0.32,
+        ease: 'power2.inOut',
+      })
+      .to(
+        preloaderEl,
+        {
+          opacity: 0,
+          backgroundColor: 'rgba(129, 110, 98, 0)',
+          duration: 0.42,
+          ease: 'power2.inOut',
+        },
+        '<0.06',
+      );
+  };
+
+  const playVideoReveal = () => {
+    if (introFinished || videoRevealStarted) return;
+    videoRevealStarted = true;
+
+    if (!textIntroStarted) {
+      startTextIntro();
+    }
+
+    const mobile = isMobilePreloader();
+    const textHeight = measureTextHeight(textEl);
+    const aspectRatio =
+      heroVideoEl.videoWidth > 0 && heroVideoEl.videoHeight > 0
+        ? heroVideoEl.videoWidth / heroVideoEl.videoHeight
+        : 16 / 9;
+    const mediaWidth = textHeight * aspectRatio;
+    const halfMedia = mediaWidth / 2 + textGap;
+
+    const textRect = textEl.getBoundingClientRect();
+    const slotSpace = textEl.querySelector<HTMLElement>('.oh-preloader__word-space');
+    const slotRect = slotSpace?.getBoundingClientRect();
+    const slotCenterX =
+      slotRect && slotRect.width > 0
+        ? slotRect.left + slotRect.width / 2
+        : window.innerWidth / 2;
+
+    if (heroVideoEl.parentElement === heroSlot) {
+      revealMedia.appendChild(heroVideoEl);
+    }
+    heroVideoEl.muted = true;
+    heroVideoEl.playsInline = true;
+    heroVideoEl.loop = true;
+    void heroVideoEl.play().catch(() => {});
+
+    if (mobile) {
+      gsap.set(revealMedia, {
+        position: 'fixed',
+        width: mediaWidth,
+        height: textHeight,
+        left: slotCenterX - mediaWidth / 2,
+        top: textRect.top > 0 ? textRect.top : (window.innerHeight - textHeight) / 2,
+        clipPath: 'none',
+        scale: 0.42,
+        opacity: 0,
+        transformOrigin: '50% 50%',
+      });
+    } else {
+      gsap.set(revealMedia, {
+        width: mediaWidth,
+        height: textHeight,
+        left: slotCenterX - mediaWidth / 2,
+        top: textRect.top > 0 ? textRect.top : (window.innerHeight - textHeight) / 2,
+        clipPath: 'inset(0 50% 0 50%)',
+        scale: 1,
+        opacity: 0,
+      });
+    }
+
+    mainTimeline = gsap.timeline();
+    const splitTargets = wordElements.filter(Boolean);
+
+    if (mobile) {
+      mainTimeline.to(
+        revealMedia,
+        {
+          opacity: 1,
+          scale: 1,
+          duration: splitDuration,
+          ease: 'power4.inOut',
+        },
+        splitDelay,
+      );
+    } else {
+      mainTimeline
+        .to(
+          revealMedia,
+          {
+            opacity: 1,
+            duration: splitDuration * 0.35,
+            ease: 'power2.out',
+          },
+          splitDelay,
+        )
+        .fromTo(
+          revealMedia,
+          { clipPath: 'inset(0 50% 0 50%)' },
+          { clipPath: 'inset(0 0% 0 0%)', duration: splitDuration, ease: 'power4.inOut' },
+          '<',
+        );
+    }
+
+    if (splitTargets[0]) {
+      mainTimeline.to(
+        splitTargets[0],
+        { x: -halfMedia, duration: splitDuration, ease: 'power4.inOut' },
+        mobile ? splitDelay : '<',
+      );
+    }
+    if (splitTargets[1]) {
+      mainTimeline.to(
+        splitTargets[1],
+        { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
+        '<',
+      );
+    }
+    if (splitTargets[2]) {
+      mainTimeline.to(
+        splitTargets[2],
+        { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
+        '<',
+      );
+    }
+
+    if (slotSpace) {
+      mainTimeline.to(slotSpace, { width: 0, duration: splitDuration, ease: 'power4.inOut' }, '<');
+    }
+
+    mainTimeline
+      .to(
+        revealMedia,
+        {
+          ...getSlotTarget(heroSlot),
+          duration: expandDuration,
+          ease: 'power3.inOut',
+          scale: 1,
+          clipPath: 'inset(0 0% 0 0%)',
+        },
+        '>+=0.3',
+      )
+      .call(handoffToHero);
+  };
+
+  const beginVideoReveal = () => {
+    if (introFinished || videoRevealStarted) return;
+    void waitForLayout().then(() => {
+      if (introFinished || videoRevealStarted) return;
+      playVideoReveal();
+    });
+  };
+
+  const onVideoError = () => {
+    if (introFinished) return;
+    window.clearTimeout(metadataTimer);
+    returnVideoToSlot();
+    completeIntro();
+  };
+
+  heroVideoEl.addEventListener('error', onVideoError, { once: true });
+  metadataTimer = window.setTimeout(onVideoError, INTRO_METADATA_MAX_MS);
+
+  let videoPrimed = false;
+  const primeVideo = () => {
+    if (videoPrimed || introFinished) return;
+    videoPrimed = true;
+    window.clearTimeout(metadataTimer);
+    beginVideoReveal();
+  };
+
+  heroVideoEl.addEventListener('canplay', primeVideo, { once: true });
+  heroVideoEl.addEventListener('loadeddata', primeVideo, { once: true });
+
+  if (heroVideoEl.readyState >= 2) {
+    primeVideo();
+  } else if (heroVideoEl.readyState >= 1) {
+    window.setTimeout(primeVideo, 120);
+  } else {
+    void heroVideoEl.load();
+  }
+
+  return () => {
+    window.clearTimeout(safetyTimer);
+    window.clearTimeout(metadataTimer);
+    heroVideoEl.removeEventListener('canplay', primeVideo);
+    heroVideoEl.removeEventListener('loadeddata', primeVideo);
+    heroVideoEl.removeEventListener('error', onVideoError);
+    mainTimeline?.kill();
+    gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
+    returnVideoToSlot();
+  };
+}
+
 export function Preloader({
   text,
   videoRef,
@@ -59,6 +521,7 @@ export function Preloader({
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
+
   const preloaderRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
@@ -69,384 +532,73 @@ export function Preloader({
       history.scrollRestoration = 'manual';
     }
     scrollToTop(true);
-    document.body.classList.add('oh-preloader-active');
 
-    const textEl = textRef.current;
-    const textContainer = textContainerRef.current;
-    const revealMedia = mediaRef.current;
-    const preloaderEl = preloaderRef.current;
-    const video = videoRef.current;
-    const heroSlot = videoSlotRef.current;
-    if (!textEl || !textContainer || !revealMedia || !preloaderEl || !heroSlot) return undefined;
-    if (!lightMode && !video) return undefined;
+    let cancelled = false;
+    let rafId = 0;
+    let bodyLockActive = false;
+    let teardown: (() => void) | undefined;
 
-    const heroVideo = video;
-
-    const words = text.trim().split(/\s+/);
-    const staggerTime = 0.05;
-    const charDuration = 0.5;
-    const startDelay = 0.3;
-    const splitDelay = 0.6;
-    const splitDuration = 1.0;
-    const expandDuration = 1.0;
-    const textGap = 30;
-
-    textEl.innerHTML = '';
-    const wordElements: HTMLSpanElement[] = [];
-    const charElements: HTMLSpanElement[] = [];
-
-    words.forEach((word, wordIndex) => {
-      const wordWrapper = document.createElement('span');
-      wordWrapper.className = 'oh-preloader__word';
-
-      word.split('').forEach((ch) => {
-        const cw = document.createElement('span');
-        cw.className = 'oh-preloader__char-wrapper';
-
-        const cs = document.createElement('span');
-        cs.className = 'oh-preloader__char';
-        cs.setAttribute('data-oh-word', String(wordIndex));
-        cs.textContent = ch;
-
-        cw.appendChild(cs);
-        wordWrapper.appendChild(cw);
-        charElements.push(cs);
-      });
-
-      textEl.appendChild(wordWrapper);
-      wordElements.push(wordWrapper);
-
-      if (wordIndex < words.length - 1) {
-        const space = document.createElement('span');
-        space.className = 'oh-preloader__word-space';
-        textEl.appendChild(space);
+    const lockScroll = () => {
+      if (!bodyLockActive) {
+        bodyLockActive = true;
+        document.body.classList.add('oh-preloader-active');
       }
-    });
-
-    gsap.set(charElements, { yPercent: 110 });
-    gsap.set(textContainer, { visibility: 'visible', opacity: 1 });
-    gsap.set(wordElements, { opacity: 1, x: 0 });
-
-    let introFinished = false;
-    let animationStarted = false;
-    let safetyTimer = 0;
-    let metadataTimer = 0;
-    let posterEl: HTMLImageElement | null = null;
-    let mainTimeline: gsap.core.Timeline | null = null;
-    let lightTimeline: gsap.core.Timeline | null = null;
-
-    const completeIntro = () => {
-      if (introFinished) return;
-      introFinished = true;
-      window.clearTimeout(safetyTimer);
-      window.clearTimeout(metadataTimer);
-      document.body.classList.remove('oh-preloader-active');
-      onCompleteRef.current();
-      setVisible(false);
     };
 
-    if (lightMode) {
-      const forceLightExit = () => {
-        lightTimeline?.kill();
-        completeIntro();
-      };
-
-      safetyTimer = window.setTimeout(forceLightExit, INTRO_LIGHT_MAX_MS);
-      posterEl = document.createElement('img');
-      posterEl.className = 'oh-preloader__poster';
-      posterEl.src = posterSrc ?? '';
-      posterEl.alt = '';
-      posterEl.decoding = 'async';
-      revealMedia.appendChild(posterEl);
-      gsap.set(revealMedia, { opacity: 0, scale: 0.96 });
-
-      lightTimeline = gsap.timeline({
-        paused: true,
-        onComplete: completeIntro,
-      });
-
-      words.forEach((_w, i) => {
-        const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
-        lightTimeline!.to(
-          chars,
-          {
-            yPercent: 0,
-            duration: 0.38,
-            ease: 'power3.out',
-            stagger: 0.04,
-          },
-          i === 0 ? 0.15 : '<0.08',
-        );
-      });
-
-      lightTimeline
-        .to(revealMedia, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, '>+0.2')
-        .to(
-          [textContainer, ...wordElements, revealMedia],
-          { opacity: 0, duration: 0.35, ease: 'power2.inOut' },
-          '>+0.35',
-        )
-        .to(
-          preloaderEl,
-          {
-            opacity: 0,
-            backgroundColor: 'rgba(129, 110, 98, 0)',
-            duration: 0.4,
-            ease: 'power2.inOut',
-          },
-          '<0.06',
-        );
-
-      void waitForFonts(800).then(() => {
-        if (introFinished) return;
-        lightTimeline?.play(0);
-      });
-
-      return () => {
-        window.clearTimeout(safetyTimer);
-        posterEl?.remove();
-        lightTimeline?.kill();
+    const unlockScroll = () => {
+      if (bodyLockActive) {
         document.body.classList.remove('oh-preloader-active');
-        gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
-      };
-    }
-
-    if (!heroVideo) return undefined;
-
-    const heroVideoEl = heroVideo;
-
-    const returnVideoToSlot = () => {
-      if (heroVideoEl.parentElement !== heroSlot) {
-        heroSlot.appendChild(heroVideoEl);
+        bodyLockActive = false;
       }
-      heroVideoEl.classList.add('hero-bg-video');
-      heroVideoEl.loop = true;
-      heroVideoEl.muted = true;
-      heroVideoEl.playsInline = true;
-      if (heroVideoEl.paused) {
-        void heroVideoEl.play().catch(() => {});
-      }
-      gsap.set(heroVideoEl, { clearProps: 'transform,opacity,filter' });
     };
 
-    const forceVideoExit = () => {
-      mainTimeline?.kill();
-      returnVideoToSlot();
-      completeIntro();
-    };
+    const hidePreloader = () => setVisible(false);
 
-    safetyTimer = window.setTimeout(forceVideoExit, INTRO_VIDEO_MAX_MS);
+    const tryInit = (frame: number) => {
+      if (cancelled) return;
 
-    const handoffToHero = () => {
-      if (introFinished) return;
+      const textEl = textRef.current;
+      const textContainer = textContainerRef.current;
+      const revealMedia = mediaRef.current;
+      const preloaderEl = preloaderRef.current;
+      const video = videoRef.current;
+      const heroSlot = videoSlotRef.current;
 
-      returnVideoToSlot();
-      gsap.set(revealMedia, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
-      onCompleteRef.current();
+      const refsReady =
+        textEl && textContainer && revealMedia && preloaderEl && heroSlot && (lightMode || video);
 
-      const exitTl = gsap.timeline({
-        onComplete: () => {
-          if (introFinished) return;
-          introFinished = true;
-          window.clearTimeout(safetyTimer);
-          window.clearTimeout(metadataTimer);
-          document.body.classList.remove('oh-preloader-active');
-          setVisible(false);
-        },
-      });
-
-      exitTl
-        .to([textContainer, ...wordElements], {
-          opacity: 0,
-          duration: 0.32,
-          ease: 'power2.inOut',
-        })
-        .to(
-          preloaderEl,
-          {
-            opacity: 0,
-            backgroundColor: 'rgba(129, 110, 98, 0)',
-            duration: 0.42,
-            ease: 'power2.inOut',
-          },
-          '<0.06',
-        );
-    };
-
-    const playRevealTimeline = () => {
-      const textRect = textEl.getBoundingClientRect();
-      const textHeight = textRect.height;
-
-      const aspectRatio =
-        heroVideoEl.videoWidth > 0 && heroVideoEl.videoHeight > 0
-          ? heroVideoEl.videoWidth / heroVideoEl.videoHeight
-          : 16 / 9;
-      const mediaWidth = textHeight * aspectRatio;
-      const halfMedia = mediaWidth / 2 + textGap;
-
-      const slotSpace = textEl.querySelector<HTMLElement>('.oh-preloader__word-space');
-      if (!slotSpace) {
-        returnVideoToSlot();
-        completeIntro();
+      if (!refsReady) {
+        if (frame < INIT_MAX_FRAMES) {
+          rafId = requestAnimationFrame(() => tryInit(frame + 1));
+        }
         return;
       }
 
-      const slotRect = slotSpace.getBoundingClientRect();
-      const slotCenterX = slotRect.left + slotRect.width / 2;
+      lockScroll();
 
-      gsap.set(revealMedia, {
-        width: mediaWidth,
-        height: textHeight,
-        left: slotCenterX - mediaWidth / 2,
-        top: textRect.top,
-        clipPath: 'inset(0 50% 0 50%)',
-        opacity: 0,
-      });
-
-      mainTimeline = gsap.timeline();
-
-      words.forEach((_w, i) => {
-        const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
-        mainTimeline!.to(
-          chars,
-          {
-            yPercent: 0,
-            duration: charDuration,
-            ease: 'power3.out',
-            stagger: staggerTime,
-          },
-          startDelay,
-        );
-      });
-
-      mainTimeline
-        .to(
-          revealMedia,
-          {
-            opacity: 1,
-            duration: splitDuration * 0.35,
-            ease: 'power2.out',
-          },
-          `>+${splitDelay}`,
-        )
-        .fromTo(
-          revealMedia,
-          { clipPath: 'inset(0 50% 0 50%)' },
-          { clipPath: 'inset(0 0% 0 0%)', duration: splitDuration, ease: 'power4.inOut' },
-          '<',
-        );
-
-      if (wordElements[0]) {
-        mainTimeline.to(
-          wordElements[0],
-          { x: -halfMedia, duration: splitDuration, ease: 'power4.inOut' },
-          '<',
-        );
-      }
-      if (wordElements[1]) {
-        mainTimeline.to(
-          wordElements[1],
-          { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
-          '<',
-        );
-      }
-      if (wordElements[2]) {
-        mainTimeline.to(
-          wordElements[2],
-          { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
-          '<',
-        );
-      }
-
-      mainTimeline
-        .to(slotSpace, { width: 0, duration: splitDuration, ease: 'power4.inOut' }, '<')
-        .to(
-          revealMedia,
-          {
-            ...getSlotTarget(heroSlot),
-            duration: expandDuration,
-            ease: 'power3.inOut',
-          },
-          '>+=0.3',
-        )
-        .call(handoffToHero);
-    };
-
-    const runAnimation = () => {
-      if (introFinished || animationStarted) return;
-
-      if (heroVideoEl.parentElement === heroSlot) {
-        revealMedia.appendChild(heroVideoEl);
-      }
-
-      heroVideoEl.muted = true;
-      heroVideoEl.playsInline = true;
-      heroVideoEl.loop = true;
-      void heroVideoEl.play().catch(() => {});
-
-      const minTextHeight = window.matchMedia('(max-width: 767px)').matches ? 36 : 8;
-
-      const tryStart = () => {
-        if (introFinished || animationStarted) return true;
-        if (textEl.getBoundingClientRect().height < minTextHeight) return false;
-        animationStarted = true;
-        playRevealTimeline();
-        return true;
+      const shared = {
+        textEl,
+        textContainer,
+        revealMedia,
+        preloaderEl,
+        text,
+        unlockScroll,
+        onComplete: () => onCompleteRef.current(),
+        onDone: hidePreloader,
       };
 
-      if (tryStart()) return;
-
-      window.setTimeout(() => {
-        if (!tryStart()) {
-          returnVideoToSlot();
-          completeIntro();
-        }
-      }, 320);
+      teardown = lightMode
+        ? setupLightIntro({ ...shared, posterSrc })
+        : setupVideoIntro({ ...shared, heroSlot, heroVideo: video! });
     };
 
-    const onReady = () => {
-      if (introFinished || animationStarted) return;
-      void waitForFonts(1400).then(() => waitForLayout().then(runAnimation));
-    };
-
-    const onVideoError = () => {
-      if (introFinished) return;
-      window.clearTimeout(metadataTimer);
-      returnVideoToSlot();
-      completeIntro();
-    };
-
-    heroVideoEl.addEventListener('error', onVideoError, { once: true });
-
-    metadataTimer = window.setTimeout(onVideoError, INTRO_METADATA_MAX_MS);
-
-    let videoPrimed = false;
-    const primeVideo = () => {
-      if (videoPrimed || introFinished) return;
-      videoPrimed = true;
-      window.clearTimeout(metadataTimer);
-      onReady();
-    };
-
-    heroVideoEl.addEventListener('canplay', primeVideo, { once: true });
-    heroVideoEl.addEventListener('loadeddata', primeVideo, { once: true });
-
-    if (heroVideoEl.readyState >= 2) {
-      primeVideo();
-    } else if (heroVideoEl.readyState >= 1) {
-      void waitForFonts(800).then(primeVideo);
-    }
+    tryInit(0);
 
     return () => {
-      window.clearTimeout(safetyTimer);
-      window.clearTimeout(metadataTimer);
-      heroVideoEl.removeEventListener('canplay', primeVideo);
-      heroVideoEl.removeEventListener('loadeddata', primeVideo);
-      heroVideoEl.removeEventListener('error', onVideoError);
-      mainTimeline?.kill();
-      document.body.classList.remove('oh-preloader-active');
-      gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
-      returnVideoToSlot();
+      cancelled = true;
+      cancelAnimationFrame(rafId);
+      teardown?.();
+      unlockScroll();
     };
   }, [text, videoRef, videoSlotRef, lightMode, posterSrc]);
 
