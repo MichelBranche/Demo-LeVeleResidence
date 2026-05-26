@@ -35,6 +35,7 @@ export function BookingPage() {
   const [form, setForm] = useState<BookingFormState>(initialState);
   const [status, setStatus] = useState<SubmitStatus>('idle');
   const [errorKey, setErrorKey] = useState<string | null>(null);
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   const isItalian = locale === 'it';
 
@@ -82,6 +83,18 @@ export function BookingPage() {
       errorNetwork: isItalian
         ? 'Connessione assente. Controlla la rete e riprova.'
         : 'No connection. Check your network and try again.',
+      errorResendDomain: isItalian
+        ? 'Il servizio email è in modalità test: su Resend va verificato il dominio rtalevele.com, oppure (solo per prove) imposta BOOKING_TO_EMAIL con l’email del tuo account Resend.'
+        : 'Email is in test mode: verify rtalevele.com on Resend, or (for testing only) set BOOKING_TO_EMAIL to your Resend account email.',
+      errorResendFrom: isItalian
+        ? 'Mittente non valido. Su Vercel imposta BOOKING_FROM_EMAIL a: Residence Le Vele <onboarding@resend.dev> (fino a verifica dominio).'
+        : 'Invalid sender. On Vercel set BOOKING_FROM_EMAIL to: Residence Le Vele <onboarding@resend.dev> (until domain is verified).',
+      errorService: isItalian
+        ? 'Servizio email non configurato. Contatta l’amministratore del sito.'
+        : 'Email service is not configured. Please contact the site administrator.',
+      errorLocalDev: isItalian
+        ? 'In locale con npm run dev l’API non è attiva. Usa npm run dev:vercel oppure prova sul sito pubblicato su Vercel.'
+        : 'Local npm run dev does not run the API. Use npm run dev:vercel or test on the deployed Vercel site.',
     }),
     [gardenSuite?.title, isItalian, seaSuite?.title],
   );
@@ -91,6 +104,7 @@ export function BookingPage() {
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
       if (status === 'success') setStatus('idle');
       setErrorKey(null);
+      setErrorDetail(null);
       setForm((prev) => ({ ...prev, [field]: event.target.value }));
     };
 
@@ -106,6 +120,7 @@ export function BookingPage() {
 
     setStatus('loading');
     setErrorKey(null);
+    setErrorDetail(null);
 
     const result = await submitBookingRequest({
       checkIn,
@@ -128,10 +143,17 @@ export function BookingPage() {
 
     setStatus('error');
     setErrorKey(result.error);
+    setErrorDetail(result.detail ?? null);
   };
 
-  const errorMessage =
-    errorKey === 'network' ? labels.errorNetwork : labels.errorGeneric;
+  const errorMessage = (() => {
+    if (errorKey === 'network') return labels.errorNetwork;
+    if (errorKey === 'resend_domain') return labels.errorResendDomain;
+    if (errorKey === 'resend_from') return labels.errorResendFrom;
+    if (errorKey === 'service_unavailable') return labels.errorService;
+    if (import.meta.env.DEV && errorKey === 'send_failed') return labels.errorLocalDev;
+    return labels.errorGeneric;
+  })();
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -167,6 +189,9 @@ export function BookingPage() {
             {status === 'error' && (
               <div className="booking-page__status booking-page__status--error" role="alert">
                 <p>{errorMessage}</p>
+                {errorDetail && import.meta.env.DEV && (
+                  <p className="booking-page__error-detail">{errorDetail}</p>
+                )}
               </div>
             )}
 

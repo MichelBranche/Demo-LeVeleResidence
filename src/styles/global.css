@@ -1877,21 +1877,27 @@ button {
   gap: clamp(2rem, 5vw, 3rem);
   padding-bottom: clamp(2rem, 5vw, 3rem);
   border-bottom: 1px solid rgb(250 248 245 / 10%);
+  justify-items: center;
+  text-align: center;
 }
 
 @media (min-width: 720px) {
   .site-footer__main {
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.85fr) minmax(0, 1fr);
-    gap: clamp(1.5rem, 4vw, 2.5rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2rem, 4vw, 3rem);
+    max-width: min(56rem, 100%);
+    margin-inline: auto;
   }
 }
 
 .site-footer__col {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
   min-width: 0;
+  width: 100%;
+  max-width: 22rem;
 }
 
 .site-footer__col--brand {
@@ -1910,7 +1916,7 @@ button {
 
 .site-footer__about {
   margin: 0;
-  max-width: 36ch;
+  max-width: 34ch;
   font-size: 0.92rem;
   line-height: 1.6;
   color: rgb(250 248 245 / 68%);
@@ -1932,6 +1938,7 @@ button {
   padding: 0;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.65rem;
   width: 100%;
 }
@@ -1951,6 +1958,7 @@ button {
 .site-footer__contact-list li {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.2rem;
 }
 

@@ -1,4 +1,5 @@
 import {
+  getBookingPaths,
   getLaPelosaPaths,
   isSuiteDetailPath,
   normalizePathname,
@@ -7,11 +8,15 @@ import {
 /** Pagine “esperienza” che usano la transizione cinematografica. */
 export function isExperienceRoute(pathname: string): boolean {
   const path = normalizePathname(pathname);
+  const lower = path.toLowerCase();
   if (path === '/') return true;
   if (isSuiteDetailPath(path)) return true;
 
   const pelosaPaths = getLaPelosaPaths().map((p) => normalizePathname(p).toLowerCase());
-  return pelosaPaths.includes(path.toLowerCase());
+  if (pelosaPaths.includes(lower)) return true;
+
+  const bookingPaths = getBookingPaths().map((p) => normalizePathname(p).toLowerCase());
+  return bookingPaths.includes(lower);
 }
 
 export function shouldAnimateRouteChange(fromPath: string, toPath: string): boolean {

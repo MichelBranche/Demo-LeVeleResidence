@@ -4,6 +4,11 @@ import type { SiteLocale } from '../lib/siteLocales';
 import { normalizePathname } from './routes';
 const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://www.rtalevele.com';
 
+/** Immagine anteprima social (Open Graph / WhatsApp / iMessage). */
+export const OG_IMAGE_PATH = '/images/og-share.png';
+
+export const SITE_DISPLAY_NAME = siteConfig.name;
+
 export type PageSeoConfig = {
   path: string;
   title: string;
@@ -33,6 +38,12 @@ export function getSeoForPath(pathname: string, locale: SiteLocale = 'it'): Page
 
   const pages: Record<string, PageSeoConfig> = {
     '/': { path: '/', ...seo.default },
+    '/prenota': {
+      path: '/prenota',
+      title: `${siteConfig.name} | ${locale === 'it' ? 'Richiedi disponibilità' : 'Request availability'}`,
+      description: seo.default.description,
+      keywords: seo.default.keywords,
+    },
     '/la-pelosa': { path: '/la-pelosa', ...seo.pelosa },
     '/privacy-policy': { path: '/privacy-policy', ...seo.privacy, noindex: true },
     '/cookie-policy': { path: '/cookie-policy', ...seo.cookie, noindex: true },

@@ -17,7 +17,7 @@ export type BookingRequestPayload = {
 
 export type BookingSubmitResult =
   | { ok: true }
-  | { ok: false; error: string };
+  | { ok: false; error: string; detail?: string };
 
 export async function submitBookingRequest(
   payload: BookingRequestPayload,
@@ -29,12 +29,16 @@ export async function submitBookingRequest(
       body: JSON.stringify(payload),
     });
 
-    const data = (await response.json().catch(() => ({}))) as { error?: string };
+    const data = (await response.json().catch(() => ({}))) as {
+      error?: string;
+      detail?: string;
+    };
 
     if (!response.ok) {
       return {
         ok: false,
         error: data.error ?? 'send_failed',
+        detail: data.detail,
       };
     }
 

@@ -61,6 +61,42 @@ function isValidDate(value: string): boolean {
   return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(`${value}T12:00:00`));
 }
 
+function resolveFromAddress(): string {
+  const raw = process.env.BOOKING_FROM_EMAIL?.trim();
+  if (!raw) return 'onboarding@resend.dev';
+  if (raw.includes('<') && raw.includes('>')) return raw;
+  if (EMAIL_RE.test(raw)) return `Residence Le Vele <${raw}>`;
+  return 'onboarding@resend.dev';
+}
+
+function resolveToAddress(): string {
+  const raw = process.env.BOOKING_TO_EMAIL?.trim();
+  if (raw && EMAIL_RE.test(raw)) return raw;
+  return 'info@rtalevele.com';
+}
+
+function resendErrorMessage(error: unknown): string {
+  if (error && typeof error === 'object' && 'message' in error) {
+    return String((error as { message: unknown }).message);
+  }
+  return 'Failed to send email';
+}
+
+function resendErrorCode(message: string): string {
+  const lower = message.toLowerCase();
+  if (
+    lower.includes('testing emails') ||
+    lower.includes('verify a domain') ||
+    lower.includes('not verified')
+  ) {
+    return 'resend_domain';
+  }
+  if (lower.includes('from') && (lower.includes('invalid') || lower.includes('domain'))) {
+    return 'resend_from';
+  }
+  return 'send_failed';
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -70,7 +106,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error('RESEND_API_KEY is not configured');
-    return res.status(503).json({ error: 'Email service unavailable' });
+    return res.status(503).json({ error: 'service_unavailable' });
   }
 
   const body = parseBody(req);
@@ -112,9 +148,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Valid email is required' });
   }
 
-  const to = process.env.BOOKING_TO_EMAIL ?? 'info@rtalevele.com';
-  const from =
-    process.env.BOOKING_FROM_EMAIL ?? 'Residence Le Vele <onboarding@resend.dev>';
+  const to = resolveToAddress();
+  const from = resolveFromAddress();
 
   const dateLabel = `${checkIn} → ${checkOut}`;
   const subjectPrefix = locale === 'it' ? 'Prenotazione' : 'Booking';
@@ -185,8 +220,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     if (error) {
+      const message = resendErrorMessage(error);
       console.error('Resend error:', error);
-      return res.status(502).json({ error: 'Failed to send email' });
+      return res.status(502).json({
+        error: resendErrorCode(message),
+        detail: message,
+      });
     }
 
     return res.status(200).json({ ok: true });

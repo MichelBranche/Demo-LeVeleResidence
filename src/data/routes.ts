@@ -40,6 +40,10 @@ export function getLaPelosaPaths(): string[] {
   return [page.path, ...(page.aliases ?? [])];
 }
 
+export function getBookingPaths(): string[] {
+  return getPagePaths('booking');
+}
+
 export function getPagePaths(id: RoutePageId): string[] {
   const page = routes.pages.find((p) => p.id === id);
   if (!page) return [];
