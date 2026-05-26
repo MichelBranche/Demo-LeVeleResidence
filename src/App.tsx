@@ -18,6 +18,9 @@ import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath
 import { scheduleScrollToSuiteHero, scrollToHash, scrollToTop } from './lib/scroll';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
+const BookingPage = lazy(() =>
+  import('./pages/BookingPage').then((m) => ({ default: m.BookingPage })),
+);
 
 const LaPelosaPage = lazy(() =>
   import('./pages/LaPelosaPage').then((m) => ({ default: m.LaPelosaPage })),
@@ -84,6 +87,7 @@ function MobileLangFab() {
 
 export default function App() {
   const laPelosaPaths = getLaPelosaPaths();
+  const bookingPaths = getPagePaths('booking');
   const privacyPaths = getPagePaths('privacy-policy');
   const cookiePaths = getPagePaths('cookie-policy');
   const suiteRoutes = getSuiteRouteEntries();
@@ -106,6 +110,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route element={<SubPageLayout />}>
+              {bookingPaths.map((path) => (
+                <Route key={path} path={path} element={<BookingPage />} />
+              ))}
               {laPelosaPaths.map((path) => (
                 <Route key={path} path={path} element={<LaPelosaPage />} />
               ))}

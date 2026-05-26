@@ -13,6 +13,7 @@ import './styles/oh-layout.css';
 import './styles/pelosa.css';
 import './styles/suite-detail.css';
 import './styles/consent.css';
+import './styles/booking-page.css';
 import './styles/mobile.css';
 import './styles/chrome.css';
 import './styles/route-transition.css';

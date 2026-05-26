@@ -6,6 +6,11 @@
       "path": "/"
     },
     {
+      "id": "booking",
+      "path": "/prenota",
+      "aliases": ["/booking", "/prenotazioni"]
+    },
+    {
       "id": "la-pelosa",
       "path": "/la-pelosa",
       "aliases": ["/pelosa", "/la_pelosa", "/spiaggia-la-pelosa"]

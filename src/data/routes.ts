@@ -2,6 +2,7 @@ import routesManifest from './routes.json';
 
 export type RoutePageId =
   | 'home'
+  | 'booking'
   | 'la-pelosa'
   | 'privacy-policy'
   | 'cookie-policy';

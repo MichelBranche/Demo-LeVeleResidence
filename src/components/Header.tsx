@@ -371,17 +371,16 @@ export function Header({ animateEntrance = false }: HeaderProps) {
           <div className="site-header__mobile-nav__body">{renderNavLinks('mobile')}</div>
 
           <div className="site-header__mobile-nav__foot">
-            <a
+            <Link
+              to="/prenota"
               className="site-header__mobile-book"
-              href={`mailto:${site.email}`}
-              rel="noreferrer"
               onClick={requestCloseMenu}
             >
               <span className="site-header__mobile-book-kicker">{ui.book}</span>
               <span className="site-header__mobile-book-arrow" aria-hidden>
                 →
               </span>
-            </a>
+            </Link>
           </div>
         </nav>
       </div>,
@@ -431,12 +430,7 @@ export function Header({ animateEntrance = false }: HeaderProps) {
 
         <div className="site-header__aside">
           <LanguageToggle variant="header" />
-          <a
-            className="site-header__cta"
-            href={`mailto:${site.email}`}
-            rel="noreferrer"
-            aria-label={ui.bookAria}
-          >
+          <Link className="site-header__cta" to="/prenota" aria-label={ui.bookAria}>
             <span className="site-header__cta-icon" aria-hidden>
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="3" y="4.5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.5" />
@@ -455,7 +449,7 @@ export function Header({ animateEntrance = false }: HeaderProps) {
             <span className="site-header__cta-arrow" aria-hidden>
               →
             </span>
-          </a>
+          </Link>
         </div>
       </div>
     </header>
