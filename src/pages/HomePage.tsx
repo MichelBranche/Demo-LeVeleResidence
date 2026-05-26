@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Footer } from '../components/Footer';
@@ -267,16 +268,19 @@ export function HomePage() {
             {ready && <HeroSection />}
           </div>
 
-          {showPreloader && (
-            <Preloader
-              text={preloaderText}
-              videoRef={videoRef}
-              videoSlotRef={videoSlotRef}
-              onComplete={handlePreloaderComplete}
-              lightMode={lightPreloader}
-              posterSrc={heroMedia.poster}
-            />
-          )}
+          {showPreloader &&
+            typeof document !== 'undefined' &&
+            createPortal(
+              <Preloader
+                text={preloaderText}
+                videoRef={videoRef}
+                videoSlotRef={videoSlotRef}
+                onComplete={handlePreloaderComplete}
+                lightMode={lightPreloader}
+                posterSrc={heroMedia.poster}
+              />,
+              document.body,
+            )}
         </div>
 
         {ready && (

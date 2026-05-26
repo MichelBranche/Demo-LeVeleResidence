@@ -242,8 +242,6 @@ export function Preloader({
 
       returnVideoToSlot();
       gsap.set(revealMedia, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
-
-      /* Hero shell → ready mentre il video è già nello slot (nessun fade sul video). */
       onCompleteRef.current();
 
       const exitTl = gsap.timeline({
@@ -275,26 +273,9 @@ export function Preloader({
         );
     };
 
-    const runAnimation = () => {
-      if (introFinished || animationStarted) return;
-      animationStarted = true;
-
-      if (heroVideoEl.parentElement === heroSlot) {
-        revealMedia.appendChild(heroVideoEl);
-      }
-
-      heroVideoEl.muted = true;
-      heroVideoEl.playsInline = true;
-      heroVideoEl.loop = true;
-      void heroVideoEl.play().catch(() => {});
-
+    const playRevealTimeline = () => {
       const textRect = textEl.getBoundingClientRect();
       const textHeight = textRect.height;
-      if (textHeight < 8) {
-        returnVideoToSlot();
-        completeIntro();
-        return;
-      }
 
       const aspectRatio =
         heroVideoEl.videoWidth > 0 && heroVideoEl.videoHeight > 0
@@ -391,9 +372,41 @@ export function Preloader({
         .call(handoffToHero);
     };
 
+    const runAnimation = () => {
+      if (introFinished || animationStarted) return;
+
+      if (heroVideoEl.parentElement === heroSlot) {
+        revealMedia.appendChild(heroVideoEl);
+      }
+
+      heroVideoEl.muted = true;
+      heroVideoEl.playsInline = true;
+      heroVideoEl.loop = true;
+      void heroVideoEl.play().catch(() => {});
+
+      const minTextHeight = window.matchMedia('(max-width: 767px)').matches ? 36 : 8;
+
+      const tryStart = () => {
+        if (introFinished || animationStarted) return true;
+        if (textEl.getBoundingClientRect().height < minTextHeight) return false;
+        animationStarted = true;
+        playRevealTimeline();
+        return true;
+      };
+
+      if (tryStart()) return;
+
+      window.setTimeout(() => {
+        if (!tryStart()) {
+          returnVideoToSlot();
+          completeIntro();
+        }
+      }, 320);
+    };
+
     const onReady = () => {
       if (introFinished || animationStarted) return;
-      void waitForLayout().then(runAnimation);
+      void waitForFonts(1400).then(() => waitForLayout().then(runAnimation));
     };
 
     const onVideoError = () => {
@@ -407,21 +420,28 @@ export function Preloader({
 
     metadataTimer = window.setTimeout(onVideoError, INTRO_METADATA_MAX_MS);
 
-    const onCanPlay = () => {
+    let videoPrimed = false;
+    const primeVideo = () => {
+      if (videoPrimed || introFinished) return;
+      videoPrimed = true;
       window.clearTimeout(metadataTimer);
       onReady();
     };
 
-    heroVideoEl.addEventListener('canplay', onCanPlay, { once: true });
+    heroVideoEl.addEventListener('canplay', primeVideo, { once: true });
+    heroVideoEl.addEventListener('loadeddata', primeVideo, { once: true });
 
     if (heroVideoEl.readyState >= 2) {
-      void waitForFonts(1200).then(onCanPlay);
+      primeVideo();
+    } else if (heroVideoEl.readyState >= 1) {
+      void waitForFonts(800).then(primeVideo);
     }
 
     return () => {
       window.clearTimeout(safetyTimer);
       window.clearTimeout(metadataTimer);
-      heroVideoEl.removeEventListener('canplay', onCanPlay);
+      heroVideoEl.removeEventListener('canplay', primeVideo);
+      heroVideoEl.removeEventListener('loadeddata', primeVideo);
       heroVideoEl.removeEventListener('error', onVideoError);
       mainTimeline?.kill();
       document.body.classList.remove('oh-preloader-active');

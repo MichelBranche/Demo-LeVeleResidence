@@ -33,6 +33,39 @@
     overflow: hidden;
   }
 
+  /* Preloader in portal (body) — safe area + testo leggibile */
+  .oh-preloader {
+    padding:
+      env(safe-area-inset-top)
+      env(safe-area-inset-right)
+      env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+  }
+
+  .oh-preloader__text-container {
+    max-width: min(94vw, 22rem);
+    white-space: normal;
+  }
+
+  .oh-preloader__text {
+    white-space: normal;
+    text-align: center;
+  }
+
+  .oh-preloader__char-wrapper {
+    font-size: clamp(2rem, 11vw, 3.25rem);
+  }
+
+  .oh-preloader__word-space {
+    font-size: clamp(2rem, 11vw, 3.25rem);
+    width: 0.35em;
+  }
+
+  .oh-preloader__reveal-media {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
   /* —— Hero home —— */
   .home-hero-shell {
     --oh-pad: 0;

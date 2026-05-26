@@ -2220,6 +2220,8 @@ button {
   background-color: var(--crema);
   overflow: hidden;
   will-change: opacity, background-color;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
 }
 
 .oh-preloader__text-container {
