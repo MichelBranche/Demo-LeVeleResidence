@@ -11,7 +11,7 @@ import { useHomeLangReveal } from '../hooks/useHomeLangReveal';
 import { useNetworkTier } from '../hooks/useNetworkTier';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { revealHeroCopyStatic } from '../lib/homeIntroEntrance';
-import { resetIntroState } from '../lib/intro';
+import { isHeroCopyDone, resetIntroState } from '../lib/intro';
 import {
   shouldAutoplayHeroVideoImmediately,
   shouldDeferHeroVideoLoad,
@@ -134,6 +134,10 @@ export function HomePage() {
     const frame = requestAnimationFrame(() => {
       if (readPreloaderDone()) {
         setIntroPhase('complete');
+        setShellReady(true);
+        requestAnimationFrame(() => {
+          if (!isHeroCopyDone()) revealHeroCopyStatic();
+        });
         return;
       }
 

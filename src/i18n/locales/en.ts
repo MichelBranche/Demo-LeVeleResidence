@@ -211,11 +211,11 @@ export const en: LocaleCopy = {
           'Stay for 4 guests with a reduced rate for weekly bookings and dedicated support for excursions.',
       },
       {
-        title: 'Stay Longer',
-        period: 'From 7 nights',
-        badge: 'Best Value',
+        title: 'Best price guaranteed',
+        period: 'Direct booking',
+        badge: 'Direct guarantee',
         description:
-          'Progressive discount on additional nights to enjoy Stintino with more time and without rushing.',
+          'Book through our website or email to get the best rate, with no third-party fees.',
       },
     ],
   },

@@ -173,12 +173,6 @@ html:not([data-hero-copy-done]) .hero-reveal-line__inner {
   display: block;
 }
 
-html:not([data-hero-copy-done]) .hero-scroll-cue__inner {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-}
-
 .home-hero-shell .hero {
   position: relative;
   flex: 1;

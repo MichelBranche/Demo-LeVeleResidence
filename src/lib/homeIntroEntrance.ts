@@ -3,7 +3,9 @@ import { markHeroCopyDone, markIntroDone } from './intro';
 import { prefersReducedMotion } from './motion';
 
 function getHeroRevealLines(): HTMLElement[] {
-  return gsap.utils.toArray<HTMLElement>('.hero-reveal-line__inner');
+  return gsap.utils.toArray<HTMLElement>(
+    '.hero-reveal-line__inner:not(.hero-scroll-cue__inner)',
+  );
 }
 
 export function prepareHeroRevealLines(): HTMLElement[] {

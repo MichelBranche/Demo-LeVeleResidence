@@ -211,11 +211,11 @@ export const it: LocaleCopy = {
           'Soggiorno in formula 4 ospiti con tariffa agevolata per permanenze settimanali e supporto dedicato per escursioni.',
       },
       {
-        title: 'Stay Longer',
-        period: 'Da 7 notti',
-        badge: 'Best Value',
+        title: 'Miglior prezzo garantito',
+        period: 'Prenotazione diretta',
+        badge: 'Garanzia diretta',
         description:
-          'Sconto progressivo sulle notti aggiuntive per vivere Stintino con più tempo e senza fretta.',
+          'Prenota sul sito o via email per ottenere la tariffa più vantaggiosa, senza commissioni di intermediari.',
       },
     ],
   },

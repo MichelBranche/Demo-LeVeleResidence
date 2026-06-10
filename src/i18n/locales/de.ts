@@ -211,11 +211,11 @@ export const de: LocaleCopy = {
           'Aufenthalt für 4 Gäste mit ermäßigtem Tarif bei Wochenbuchungen und persönlicher Unterstützung bei Ausflügen.',
       },
       {
-        title: 'Stay Longer',
-        period: 'Ab 7 Nächten',
-        badge: 'Best Value',
+        title: 'Bester Preis garantiert',
+        period: 'Direktbuchung',
+        badge: 'Direktgarantie',
         description:
-          'Progressiver Rabatt auf zusätzliche Nächte, um Stintino mit mehr Zeit und ohne Eile zu genießen.',
+          'Buchen Sie über unsere Website oder per E-Mail und erhalten Sie den besten Tarif — ohne Zwischenhändlergebühren.',
       },
     ],
   },

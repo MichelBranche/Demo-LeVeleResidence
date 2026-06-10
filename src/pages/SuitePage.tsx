@@ -7,6 +7,8 @@ import { useRouteTransition } from '../context/RouteTransitionContext';
 import { getSuiteSlugFromPathname } from '../data/routes';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { useSuitePageAnimations } from '../hooks/useSuitePageAnimations';
+import { SuiteFeatureIcon } from '../components/SuiteFeatureIcon';
+import { getSuiteFeatureIcon } from '../lib/suiteFeatureIcons';
 
 function splitSuiteTitle(title: string) {
   const parts = title.trim().split(/\s+/);
@@ -162,8 +164,16 @@ export function SuitePage() {
         <ul className="suite-amenities__list" role="list">
           {suite.features.map((feature, i) => (
             <li key={feature} className="suite-amenities__item">
-              <span className="suite-amenities__num">{String(i + 1).padStart(2, '0')}</span>
-              <span className="suite-amenities__name">{feature}</span>
+              <div className="suite-amenities__icon-wrap" aria-hidden>
+                <SuiteFeatureIcon
+                  id={getSuiteFeatureIcon(suite.slug, i)}
+                  className="suite-amenities__icon"
+                />
+              </div>
+              <div className="suite-amenities__body">
+                <span className="suite-amenities__num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="suite-amenities__name">{feature}</span>
+              </div>
             </li>
           ))}
         </ul>

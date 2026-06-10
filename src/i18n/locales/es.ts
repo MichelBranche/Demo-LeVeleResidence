@@ -211,11 +211,11 @@ export const es: LocaleCopy = {
           'Estancia para 4 huéspedes con tarifa reducida para reservas semanales y asistencia dedicada para excursiones.',
       },
       {
-        title: 'Stay Longer',
-        period: 'Desde 7 noches',
-        badge: 'Best Value',
+        title: 'Mejor precio garantizado',
+        period: 'Reserva directa',
+        badge: 'Garantía directa',
         description:
-          'Descuento progresivo en noches adicionales para disfrutar de Stintino con más tiempo y sin prisas.',
+          'Reserva en nuestra web o por correo para obtener la mejor tarifa, sin comisiones de intermediarios.',
       },
     ],
   },

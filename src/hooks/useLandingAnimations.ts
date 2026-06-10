@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { playHeroRevealLines, revealHeroCopyStatic } from '../lib/homeIntroEntrance';
-import { isIntroDone, onIntroDone } from '../lib/intro';
+import { isHeroCopyDone, isIntroDone, onIntroDone } from '../lib/intro';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +26,10 @@ export function useLandingAnimations(
     }
 
     if (orchestrated) {
+      return;
+    }
+
+    if (isHeroCopyDone()) {
       return;
     }
 

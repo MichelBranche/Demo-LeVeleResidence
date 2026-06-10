@@ -142,7 +142,7 @@
 }
 
 .site-header__menu-label {
-  font-size: 0.62rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -164,7 +164,7 @@
   align-items: baseline;
   gap: 0.4rem;
   padding: 0.45rem 0;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -187,7 +187,7 @@
 }
 
 .site-header__link-index {
-  font-size: 0.58rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--header-index);
@@ -384,7 +384,7 @@
 }
 
 .site-header__lang-option-label {
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -416,7 +416,7 @@
   border: 1px solid var(--header-cta-border);
   background: var(--header-cta-bg);
   color: var(--header-cta-fg);
-  font-size: 0.65rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.18em;
@@ -660,7 +660,7 @@
 
   .site-header__mobile-nav__eyebrow {
     margin: 0;
-    font-size: 0.68rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     letter-spacing: 0.28em;
     text-transform: uppercase;
@@ -783,7 +783,7 @@
 
   .site-header__links--mobile .site-header__link-index {
     font-family: var(--font-body);
-    font-size: 0.7rem;
+    font-size: var(--text-xs);
     font-weight: 700;
     letter-spacing: 0.22em;
     color: var(--carbone);

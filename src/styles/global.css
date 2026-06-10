@@ -39,6 +39,12 @@
   --radius: 15px;
   --page-pad: clamp(15px, 4vw, 48px);
 
+  /* Tipografia secondaria — minimo leggibile (~13.5–17px @ 18px root) */
+  --text-2xs: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1rem;
+
   /* Stack UI (dal basso verso l'alto) */
   --z-cookie: 10000;
   --z-lang-fab: 10045;
@@ -101,6 +107,7 @@ html.lenis body {
 }
 
 html {
+  font-size: 18px;
   scroll-behavior: auto;
   overflow-x: clip;
 }
@@ -109,9 +116,9 @@ body {
   margin: 0;
   overflow-x: clip;
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--ink);
   background: var(--crema);
 }
@@ -230,7 +237,7 @@ button {
   margin: 0 0 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   color: var(--eyebrow);
 }
@@ -272,7 +279,7 @@ button {
   overflow: hidden;
   background: var(--terra);
   color: var(--panna);
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -298,7 +305,7 @@ button {
   margin: 0 0 12px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   color: var(--eyebrow);
 }
@@ -384,7 +391,7 @@ button {
 
 .residence__eyebrow {
   margin: 0 0 1rem;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -451,7 +458,7 @@ button {
 }
 
 .residence__stat-label {
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -541,7 +548,7 @@ button {
 
 .residence__metric dt {
   margin: 0 0 0.35rem;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -659,7 +666,7 @@ button {
 
 .suites__eyebrow {
   margin: 0 0 1rem;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -711,7 +718,7 @@ button {
 }
 
 .suites__stat-label {
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -837,7 +844,7 @@ button {
   border-radius: 999px;
   background: rgb(26 21 18 / 68%);
   backdrop-filter: blur(8px);
-  font-size: 0.62rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -875,7 +882,7 @@ button {
 
 .suites__label {
   margin: 0;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -919,7 +926,7 @@ button {
   gap: 0.45rem;
   min-width: 0;
   font-family: var(--font-body);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -945,7 +952,7 @@ button {
   margin-top: auto;
   padding: 0.35rem 0 0.15rem;
   font-family: var(--font-body);
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1086,7 +1093,7 @@ button {
 .offer-card__badge {
   display: inline-block;
   margin-bottom: 0.75rem;
-  font-size: 0.65rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1103,7 +1110,7 @@ button {
 
 .offer-card__period {
   margin: 0 0 0.85rem;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   letter-spacing: 0.04em;
   color: rgb(154 90 70 / 88%);
@@ -1214,7 +1221,7 @@ button {
 
 .scroll-accordion__link {
   display: inline-block;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1246,7 +1253,7 @@ button {
 
 .scroll-accordion__route-distance {
   font-weight: 700;
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--eyebrow);
@@ -1292,7 +1299,7 @@ button {
   bottom: 0;
   margin: 0;
   padding: 0.55rem 0.75rem;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1424,7 +1431,7 @@ button {
 
 .reviews__eyebrow {
   margin: 0 0 0.55rem;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -1481,7 +1488,7 @@ button {
 }
 
 .reviews__platform-label {
-  font-size: 0.62rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1512,7 +1519,7 @@ button {
 }
 
 .reviews__platform-count {
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   color: var(--review-ink-muted);
 }
@@ -1551,7 +1558,7 @@ button {
 
 .contact-section__eyebrow {
   margin: 0 0 0.85rem;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
@@ -1606,7 +1613,7 @@ button {
 
 .contact-section__address-label {
   margin: 0;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1704,7 +1711,7 @@ button {
 }
 
 .contact-section__channel-label {
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1793,7 +1800,7 @@ button {
 
 .site-footer__heading {
   margin: 0;
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -1813,7 +1820,7 @@ button {
 }
 
 .site-footer__nav-list a {
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
   font-weight: 500;
   letter-spacing: 0.04em;
   color: rgb(250 248 245 / 90%);
@@ -1832,7 +1839,7 @@ button {
 }
 
 .site-footer__contact-label {
-  font-size: 0.65rem;
+  font-size: var(--text-2xs);
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1907,7 +1914,7 @@ button {
 
 .gated-map__hint {
   margin: 0 0 1rem;
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
   line-height: 1.55;
   color: rgb(250 248 245 / 92%);
 }
@@ -1918,7 +1925,7 @@ button {
   padding: 0.65rem 1.35rem;
   background: rgb(250 248 245 / 10%);
   color: var(--panna);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1956,7 +1963,7 @@ button {
   padding: 8px 14px;
   border-radius: 999px;
   background: rgb(26 21 18 / 75%);
-  font-size: 0.75rem;
+  font-size: var(--text-2xs);
   letter-spacing: 0.08em;
   color: var(--panna);
 }
@@ -2037,27 +2044,27 @@ button {
 
 .site-footer__legal-name {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   color: rgb(250 248 245 / 82%);
 }
 
 .site-footer__legal-address {
   font-style: normal;
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
   line-height: 1.5;
   color: rgb(250 248 245 / 52%);
 }
 
 .site-footer__copyright {
   margin: 0.35rem 0 0;
-  font-size: 0.8rem;
+  font-size: var(--text-sm);
   color: rgb(250 248 245 / 48%);
 }
 
 .site-footer__credit {
   margin: 0.85rem 0 0;
-  font-size: 0.78rem;
+  font-size: var(--text-sm);
   letter-spacing: 0.04em;
   color: rgb(250 248 245 / 45%);
 }

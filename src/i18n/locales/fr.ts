@@ -211,11 +211,11 @@ export const fr: LocaleCopy = {
           'Séjour pour 4 personnes avec tarif réduit pour les réservations hebdomadaires et accompagnement dédié pour les excursions.',
       },
       {
-        title: 'Stay Longer',
-        period: 'À partir de 7 nuits',
-        badge: 'Best Value',
+        title: 'Meilleur prix garanti',
+        period: 'Réservation directe',
+        badge: 'Garantie directe',
         description:
-          'Réduction progressive sur les nuits supplémentaires pour vivre Stintino avec plus de temps et sans précipitation.',
+          'Réservez sur notre site ou par e-mail pour bénéficier du meilleur tarif, sans frais d’intermédiaires.',
       },
     ],
   },

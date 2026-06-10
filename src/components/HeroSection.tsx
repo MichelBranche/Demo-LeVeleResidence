@@ -31,14 +31,10 @@ export function HeroSection() {
           <HeroRevealLine>{hero.tagline}</HeroRevealLine>
         </p>
         <a href="#residence" className="hero-scroll-cue" aria-label={hero.scrollAria}>
-          <span className="hero-reveal-line hero-reveal-line--inline">
-            <span className="hero-reveal-line__inner hero-scroll-cue__inner">
-              <span className="hero-scroll-mouse" aria-hidden>
-                <span className="hero-scroll-wheel" />
-              </span>
-              <span className="hero-scroll-label">{hero.scrollLabel}</span>
-            </span>
+          <span className="hero-scroll-mouse" aria-hidden>
+            <span className="hero-scroll-wheel" />
           </span>
+          <span className="hero-scroll-label">{hero.scrollLabel}</span>
         </a>
       </div>
     </section>
