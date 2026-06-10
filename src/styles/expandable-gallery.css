@@ -41,7 +41,7 @@
 }
 
 .expandable-gallery__item:focus-visible {
-  outline: 2px solid rgb(178 205 250 / 85%);
+  outline: 2px solid rgb(87 144 241 / 85%);
   outline-offset: 2px;
 }
 
@@ -109,7 +109,7 @@
 .expandable-gallery__lightbox-btn:hover,
 .expandable-gallery__lightbox-btn:focus-visible {
   background: rgb(26 21 18 / 78%);
-  border-color: rgb(178 205 250 / 55%);
+  border-color: rgb(87 144 241 / 55%);
   color: #fff;
   outline: none;
 }

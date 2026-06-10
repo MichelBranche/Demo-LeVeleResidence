@@ -228,8 +228,16 @@
   }
 
   .suites__media-inner {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 5 / 3;
     max-height: none;
+  }
+
+  .suites__item--mare .suites__media-inner img {
+    object-position: center 44%;
+  }
+
+  .suites__item--giardino .suites__media-inner img {
+    object-position: center 50%;
   }
 
   .suites__features {
@@ -315,7 +323,7 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1600px) {
   .site-header__backdrop {
     display: none !important;
   }

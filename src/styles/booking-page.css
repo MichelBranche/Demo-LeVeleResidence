@@ -205,7 +205,7 @@
 .booking-page__field textarea:focus-visible {
   outline: none;
   border-color: color-mix(in srgb, var(--eyebrow) 65%, var(--border-on-light));
-  box-shadow: 0 0 0 3px rgb(178 205 250 / 22%);
+  box-shadow: 0 0 0 3px rgb(87 144 241 / 22%);
   background: var(--crema);
 }
 
@@ -242,7 +242,7 @@
 
 .booking-page__submit:hover {
   background: var(--scrollbar-thumb-hover);
-  box-shadow: 0 10px 28px rgb(178 205 250 / 38%);
+  box-shadow: 0 10px 28px rgb(87 144 241 / 38%);
   transform: translateY(-2px);
 }
 

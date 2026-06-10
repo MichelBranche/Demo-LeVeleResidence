@@ -29,7 +29,8 @@ function mobileMenuTargets(nav: HTMLElement, backdrop: HTMLElement) {
   return [nav, backdrop, top, foot, ...items].filter(Boolean) as gsap.TweenTarget[];
 }
 
-const MOBILE_NAV_MQ = '(max-width: 1023px)';
+/** Hamburger fino a ~laptop: i 5 link desktop non entrano in una riga sotto ~1600px. */
+const MOBILE_NAV_MQ = '(max-width: 1599px)';
 
 function parseNavTarget(to: string): { pathname: string; hash: string } {
   const hashIndex = to.indexOf('#');

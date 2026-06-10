@@ -52,7 +52,6 @@ export function SuitesSection() {
                     alt={suite.title}
                     loading="lazy"
                     decoding="async"
-                    style={{ objectPosition: suite.cardImagePosition }}
                   />
                 </div>
                 <span className="suites__media-tag">{suite.kicker}</span>

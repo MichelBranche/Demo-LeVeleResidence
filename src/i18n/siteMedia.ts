@@ -2,8 +2,6 @@ import { asset } from '../lib/assets';
 
 const GARDEN = asset('/Foto%202024%20camere%20Le%20Vele/vista%20giardino');
 const SEA = asset('/Foto%202024%20camere%20Le%20Vele/vista%20mare');
-const VISTA_MARE_HERO = `${SEA}/le_vele_residence_stintino_appartamenti_26.png`;
-const VISTA_GIARDINO_CARD = `${GARDEN}/vista_giardino_1.png`;
 const BATH = asset('/Foto%202024%20camere%20Le%20Vele/bagni');
 const CALA_LUPO = asset('/images/cala-lupo.png');
 const ZONA_COMUNE = asset('/images/zona-comune.png');
@@ -95,9 +93,9 @@ export const suitesMedia = [
     slug: 'vista-mare' as const,
     index: '01',
     theme: 'mare' as const,
-    cardImage: VISTA_MARE_HERO,
-    cardImagePosition: 'center 38%',
-    image: VISTA_MARE_HERO,
+    cardImage: `${SEA}/monolocale-mare-1.png`,
+    cardImagePosition: 'center 40%',
+    image: `${SEA}/monolocale-mare-1.png`,
     gallery: [
       { src: `${SEA}/monolocale-mare-1.png`, layout: 'wide' as const },
       { src: `${SEA}/letto-castello-mare.png`, layout: 'tall' as const },
@@ -112,9 +110,9 @@ export const suitesMedia = [
     slug: 'vista-giardino' as const,
     index: '02',
     theme: 'giardino' as const,
-    cardImage: VISTA_GIARDINO_CARD,
-    cardImagePosition: 'center 52%',
-    image: `${GARDEN}/vista%20giardino%201.jpg`,
+    cardImage: `${GARDEN}/monolocale-giardino.png`,
+    cardImagePosition: 'center 46%',
+    image: `${GARDEN}/esterno%20giardino.jpg`,
     gallery: [
       { src: `${GARDEN}/monolocale-giardino.png`, layout: 'wide' as const },
       { src: `${GARDEN}/letto-castello-giardino.png`, layout: 'tall' as const },

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { subscribeScroll } from '../lib/scroll';
 
-const MOBILE_LANG_MQ = '(max-width: 1023px)';
+const MOBILE_LANG_MQ = '(max-width: 1599px)';
 
 function getHeroHalfThreshold(): number {
   const shell = document.querySelector<HTMLElement>('.home-hero-shell');

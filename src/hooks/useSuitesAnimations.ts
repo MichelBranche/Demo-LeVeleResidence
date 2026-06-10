@@ -56,7 +56,7 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
           if (img && allowScrollScrub()) {
             gsap.fromTo(
               img,
-              { scale: 1.18 },
+              { scale: 1.08 },
               {
                 scale: 1,
                 ease: 'none',

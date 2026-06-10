@@ -1,6 +1,6 @@
 :root {
   /* Gerarchia palette */
-  --crema: #fdfdf5;
+  --crema: #f0ede4;
   --suites-bg: #f0ede4;
   --suites-card-bg: #fdfdf5;
   --carbone: #816e62;
@@ -13,14 +13,14 @@
   --accent-secondary: #b6a6ca;
   --header-accent: var(--eyebrow);
   --accent: var(--accent-secondary);
-  --eyebrow: #b2cdfa;
+  --eyebrow: #5790f1;
   --scrollbar-track: var(--crema);
   --scrollbar-thumb: var(--eyebrow);
-  --scrollbar-thumb-hover: #9ab8f0;
-  --cursor-dot: #9ab8f0;
+  --scrollbar-thumb-hover: #4b81e7;
+  --cursor-dot: #4b81e7;
   --cursor-ring: rgb(58 52 48 / 22%);
   --cursor-hover-ring: var(--eyebrow);
-  --cursor-hover-fill: rgb(178 205 250 / 18%);
+  --cursor-hover-fill: rgb(87 144 241 / 18%);
   --cursor-pressed-ring: var(--accent-secondary);
   --cursor-pressed-fill: rgb(182 166 202 / 20%);
   --panna: #f4eee8;
@@ -363,7 +363,7 @@ button {
   position: relative;
   overflow-x: clip;
   padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(3rem, 6vh, 4.5rem);
-  background: var(--crema);
+  background: var(--suites-bg);
   color: var(--ink);
   border-top: 1px solid var(--border-on-light);
 }
@@ -419,7 +419,7 @@ button {
 }
 
 .residence__title-accent {
-  color: rgb(178 205 250);
+  color: rgb(87 144 241);
 }
 
 .residence__intro-aside {
@@ -638,7 +638,7 @@ button {
   position: relative;
   overflow-x: clip;
   padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(3rem, 6vh, 4.5rem);
-  background: var(--suites-bg);
+  background: var(--crema);
   color: var(--ink);
   border-top: 1px solid var(--border-on-light);
 }
@@ -811,15 +811,15 @@ button {
 }
 
 .suites__media-inner {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 5 / 3;
   overflow: hidden;
   background: rgb(58 52 48 / 8%);
 }
 
 @media (min-width: 960px) {
   .suites__media-inner {
-    aspect-ratio: 16 / 10;
-    max-height: min(34vh, 340px);
+    aspect-ratio: 5 / 3;
+    max-height: min(36vh, 360px);
   }
 }
 
@@ -833,7 +833,15 @@ button {
 
 .suites__media:hover .suites__media-inner img,
 .suites__media:focus-visible .suites__media-inner img {
-  transform: scale(1.05);
+  transform: scale(1.04);
+}
+
+.suites__item--mare .suites__media-inner img {
+  object-position: center 40%;
+}
+
+.suites__item--giardino .suites__media-inner img {
+  object-position: center 46%;
 }
 
 .suites__media-tag {
@@ -942,7 +950,7 @@ button {
   flex-shrink: 0;
   width: 0.95rem;
   height: 0.95rem;
-  color: rgb(178 205 250);
+  color: rgb(87 144 241);
 }
 
 .suites__cta {

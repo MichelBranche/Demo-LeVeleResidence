@@ -20,7 +20,7 @@
   bottom: 0;
   left: calc(50% - 50svw);
   width: 100svw;
-  background: var(--crema);
+  background: var(--suites-bg);
 }
 
 .residence-crisp__header {
@@ -165,7 +165,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgb(253 253 245 / 92%);
+  color: rgb(240 237 228 / 92%);
   background: linear-gradient(180deg, transparent, rgb(26 21 18 / 62%));
   pointer-events: none;
 }
@@ -341,7 +341,7 @@
 
 .residence-crisp__thumb.is--current {
   border-color: var(--eyebrow);
-  background: rgb(178 205 250 / 18%);
+  background: rgb(87 144 241 / 18%);
 }
 
 .residence-crisp__thumb.is--current > img,
@@ -476,7 +476,7 @@
 
 .residence-services__group--free {
   background:
-    linear-gradient(165deg, rgb(255 255 255 / 72%), rgb(253 253 245 / 92%)),
+    linear-gradient(165deg, rgb(255 255 255 / 72%), rgb(240 237 228 / 92%)),
     var(--crema);
 }
 
@@ -486,8 +486,8 @@
 
 .residence-services__group--activities {
   background:
-    linear-gradient(165deg, rgb(255 255 255 / 68%), rgb(248 244 238 / 94%)),
-    var(--suites-bg);
+    linear-gradient(165deg, rgb(255 255 255 / 72%), rgb(240 237 228 / 92%)),
+    var(--crema);
 }
 
 .residence-services__group-head {
@@ -519,7 +519,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink);
-  background: rgb(178 205 250 / 28%);
+  background: rgb(87 144 241 / 28%);
 }
 
 .residence-services__list {
@@ -558,7 +558,7 @@
   height: 2.35rem;
   border-radius: 999px;
   color: var(--eyebrow);
-  background: rgb(178 205 250 / 16%);
+  background: rgb(87 144 241 / 16%);
 }
 
 .residence-services__label {

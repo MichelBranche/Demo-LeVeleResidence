@@ -20,11 +20,11 @@
   --suite-accent-soft: color-mix(in srgb, var(--eyebrow) 18%, var(--crema));
   --suite-cta-panel-bg: var(--crema);
   --suite-cta-panel-glow:
-    radial-gradient(ellipse 72% 58% at 100% 0%, rgb(178 205 250 / 18%), transparent 55%),
-    radial-gradient(ellipse 50% 42% at 0% 100%, rgb(178 205 250 / 10%), transparent 52%);
+    radial-gradient(ellipse 72% 58% at 100% 0%, rgb(87 144 241 / 18%), transparent 55%),
+    radial-gradient(ellipse 50% 42% at 0% 100%, rgb(87 144 241 / 10%), transparent 52%);
   --suite-cta-btn: var(--eyebrow);
   --suite-cta-btn-hover: var(--scrollbar-thumb-hover);
-  --suite-cta-btn-shadow: rgb(178 205 250 / 38%);
+  --suite-cta-btn-shadow: rgb(87 144 241 / 38%);
   --suite-cta-home: var(--carbone);
   --suite-cta-sibling-arrow-hover: color-mix(in srgb, var(--eyebrow) 28%, var(--crema));
 }
@@ -72,9 +72,13 @@
   display: block;
 }
 
+.suite-page--mare .suite-hero__img {
+  object-position: center 55%;
+}
+
 /* Stesso hero layout per entrambe le suite (giardino / mare) */
 .suite-page--giardino .suite-hero__img {
-  object-position: center 42%;
+  object-position: center 48%;
 }
 
 .suite-page--mare .suite-story__index,
@@ -85,10 +89,6 @@
 .suite-page--mare .suite-story__label,
 .suite-page--giardino .suite-story__label {
   color: var(--suite-accent);
-}
-
-.suite-page--mare .suite-hero__img {
-  object-position: center 38%;
 }
 
 .suite-hero__overlay {
@@ -771,7 +771,25 @@
   }
 }
 
+@media (min-width: 768px) {
+  .suite-page--mare .suite-hero__img {
+    object-position: center 42%;
+  }
+
+  .suite-page--giardino .suite-hero__img {
+    object-position: center 40%;
+  }
+}
+
 @media (max-width: 767px) {
+  .suite-page--mare .suite-hero__img {
+    object-position: center 58%;
+  }
+
+  .suite-page--giardino .suite-hero__img {
+    object-position: center 52%;
+  }
+
   .suite-hero__inner {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr auto;
