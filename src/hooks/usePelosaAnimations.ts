@@ -51,17 +51,18 @@ export function usePelosaAnimations(pageRef: RefObject<HTMLElement | null>) {
         });
       });
 
-      const galleryItems = gsap.utils.toArray<HTMLElement>('.pelosa-gallery__item', page);
+      const galleryItems = gsap.utils.toArray<HTMLElement>('[data-pelosa-gallery-item]', page);
       galleryItems.forEach((item, index) => {
         gsap.from(item, {
-          y: 40,
+          y: 56,
           opacity: 0,
-          duration: 0.85,
+          scale: 0.97,
+          duration: 0.9,
           ease: 'power3.out',
-          delay: (index % 3) * 0.06,
+          delay: index * 0.08,
           scrollTrigger: {
-            trigger: item,
-            start: 'top 88%',
+            trigger: '.pelosa-gallery__mosaic',
+            start: 'top 82%',
             toggleActions: 'play none none none',
           },
         });

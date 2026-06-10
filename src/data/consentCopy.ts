@@ -30,6 +30,7 @@ type ConsentCopy = {
     dialog: string;
     panel: string;
     localeSwitch: string;
+    legalNav: string;
   };
 };
 
@@ -80,6 +81,7 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       dialog: 'Consenso cookie',
       panel: 'Pannello preferenze cookie',
       localeSwitch: 'Cambia lingua',
+      legalNav: 'Privacy e cookie',
     },
   },
   en: {
@@ -128,6 +130,7 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       dialog: 'Cookie consent',
       panel: 'Cookie preferences panel',
       localeSwitch: 'Change language',
+      legalNav: 'Privacy and cookies',
     },
   },
   de: {
@@ -168,7 +171,12 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: 'Zurück',
     },
     footer: { manage: 'Cookies verwalten', privacy: 'Datenschutz', cookies: 'Cookies' },
-    aria: { dialog: 'Cookie-Einwilligung', panel: 'Cookie-Einstellungen', localeSwitch: 'Sprache ändern' },
+    aria: {
+      dialog: 'Cookie-Einwilligung',
+      panel: 'Cookie-Einstellungen',
+      localeSwitch: 'Sprache ändern',
+      legalNav: 'Datenschutz und Cookies',
+    },
   },
   fr: {
     banner: {
@@ -208,7 +216,12 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: 'Retour',
     },
     footer: { manage: 'Gérer les cookies', privacy: 'Confidentialité', cookies: 'Cookies' },
-    aria: { dialog: 'Consentement cookies', panel: 'Préférences cookies', localeSwitch: 'Changer de langue' },
+    aria: {
+      dialog: 'Consentement cookies',
+      panel: 'Préférences cookies',
+      localeSwitch: 'Changer de langue',
+      legalNav: 'Confidentialité et cookies',
+    },
   },
   es: {
     banner: {
@@ -248,6 +261,11 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: 'Atrás',
     },
     footer: { manage: 'Gestionar cookies', privacy: 'Privacidad', cookies: 'Cookies' },
-    aria: { dialog: 'Consentimiento de cookies', panel: 'Preferencias de cookies', localeSwitch: 'Cambiar idioma' },
+    aria: {
+      dialog: 'Consentimiento de cookies',
+      panel: 'Preferencias de cookies',
+      localeSwitch: 'Cambiar idioma',
+      legalNav: 'Privacidad y cookies',
+    },
   },
 };

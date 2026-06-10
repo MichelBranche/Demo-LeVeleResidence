@@ -1,4 +1,5 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import '../styles/suite-detail.css';
+import { useEffect, useRef } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { formatCopy } from '../i18n';
@@ -6,7 +7,6 @@ import { useRouteTransition } from '../context/RouteTransitionContext';
 import { getSuiteSlugFromPathname } from '../data/routes';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { useSuitePageAnimations } from '../hooks/useSuitePageAnimations';
-import { scheduleScrollToSuiteHero, scrollToTop } from '../lib/scroll';
 
 function splitSuiteTitle(title: string) {
   const parts = title.trim().split(/\s+/);
@@ -28,22 +28,14 @@ export function SuitePage() {
   const pageRef = useRef<HTMLDivElement>(null);
   useSuitePageAnimations(pageRef);
 
-  useLayoutEffect(() => {
-    if (stage !== 'idle') return;
-    scrollToTop(true);
-  }, [slug, stage]);
-
   useEffect(() => {
     if (stage !== 'idle') return;
 
-    const cancelScroll = scheduleScrollToSuiteHero();
     requestAnimationFrame(() => ScrollTrigger.refresh());
-    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 500);
+    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 400);
 
     return () => {
-      cancelScroll();
       window.clearTimeout(refreshTimer);
-      ScrollTrigger.refresh();
     };
   }, [slug, stage]);
 

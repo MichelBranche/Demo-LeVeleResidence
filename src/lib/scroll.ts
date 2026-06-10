@@ -50,20 +50,59 @@ export function scrollToSuiteHero(immediate = true): void {
   hero.scrollIntoView({ behavior: immediate ? 'instant' : 'smooth', block: 'start' });
 }
 
-/** Retry scroll — utile dopo lazy route, Lenis e layout immagini. */
+const USER_SCROLL_ABORT_PX = 64;
+
+function readScrollY(): number {
+  return lenisInstance?.scroll ?? window.scrollY;
+}
+
+/** Retry scroll — utile dopo lazy route, Lenis e layout immagini. Si ferma se l'utente scrolla. */
 export function scheduleScrollToSuiteHero(): () => void {
-  scrollToSuiteHero(true);
+  let cancelled = false;
+  let userScrolled = false;
 
-  const rafIds: number[] = [];
-  const run = () => scrollToSuiteHero(true);
-  rafIds.push(requestAnimationFrame(run));
-  rafIds.push(requestAnimationFrame(() => requestAnimationFrame(run)));
+  const abortForUser = () => {
+    userScrolled = true;
+  };
 
-  const timers = [50, 150, 400, 900, 1600].map((ms) => window.setTimeout(run, ms));
+  const onUserScroll = () => {
+    if (readScrollY() > USER_SCROLL_ABORT_PX) {
+      abortForUser();
+    }
+  };
+
+  const run = () => {
+    if (cancelled || userScrolled) return;
+    scrollToSuiteHero(true);
+  };
+
+  run();
+  const rafIds = [
+    requestAnimationFrame(run),
+    requestAnimationFrame(() => requestAnimationFrame(run)),
+  ];
+  const timers = [80, 200].map((ms) => window.setTimeout(run, ms));
+  const unsubscribe = subscribeScroll(onUserScroll);
+  const intentOpts: AddEventListenerOptions = { passive: true };
+  window.addEventListener('scroll', onUserScroll, intentOpts);
+  window.addEventListener('wheel', abortForUser, intentOpts);
+  window.addEventListener('touchstart', abortForUser, intentOpts);
+  const onKeyIntent = (event: KeyboardEvent) => {
+    if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Home', 'End', ' '].includes(event.key)) {
+      abortForUser();
+    }
+  };
+  window.addEventListener('keydown', onKeyIntent);
 
   return () => {
+    cancelled = true;
     rafIds.forEach((id) => cancelAnimationFrame(id));
     timers.forEach((id) => window.clearTimeout(id));
+    unsubscribe();
+    window.removeEventListener('scroll', onUserScroll, intentOpts);
+    window.removeEventListener('wheel', abortForUser, intentOpts);
+    window.removeEventListener('touchstart', abortForUser, intentOpts);
+    window.removeEventListener('keydown', onKeyIntent);
   };
 }
 

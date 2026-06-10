@@ -15,14 +15,13 @@
 .suite-page {
   overflow-x: clip;
   background: var(--crema);
-  color: var(--panna);
+  color: var(--ink);
   --suite-accent: var(--accent);
   --suite-accent-soft: rgb(182 166 202 / 28%);
   --suite-cta-panel-bg: linear-gradient(152deg, #5e5249 0%, #4a4039 45%, #3a312b 100%);
   --suite-cta-panel-glow:
     radial-gradient(ellipse 72% 58% at 100% 0%, rgb(182 166 202 / 22%), transparent 55%),
     radial-gradient(ellipse 50% 42% at 0% 100%, rgb(182 166 202 / 12%), transparent 52%);
-  --suite-cta-eyebrow: var(--accent);
   --suite-cta-btn: var(--accent);
   --suite-cta-btn-hover: #c5b8d6;
   --suite-cta-btn-shadow: rgb(182 166 202 / 38%);
@@ -33,7 +32,6 @@
 .suite-page--mare {
   --suite-accent: color-mix(in srgb, #7796cb 72%, var(--mirto) 28%);
   --suite-accent-soft: rgb(119 150 203 / 28%);
-  --suite-cta-eyebrow: color-mix(in srgb, #7796cb 62%, var(--mirto));
   --suite-cta-btn: color-mix(in srgb, #7796cb 78%, var(--mirto));
   --suite-cta-btn-hover: color-mix(in srgb, #7796cb 68%, var(--panna));
   --suite-cta-btn-shadow: rgb(119 150 203 / 38%);
@@ -44,7 +42,6 @@
 .suite-page--giardino {
   --suite-accent: color-mix(in srgb, var(--mirto) 72%, var(--accent-primary) 28%);
   --suite-accent-soft: rgb(129 178 154 / 28%);
-  --suite-cta-eyebrow: var(--mirto);
   --suite-cta-btn: var(--mirto);
   --suite-cta-btn-hover: color-mix(in srgb, var(--mirto) 78%, var(--panna));
   --suite-cta-btn-shadow: rgb(129 178 154 / 38%);
@@ -87,7 +84,7 @@
 
 .suite-page--mare .suite-story__label,
 .suite-page--giardino .suite-story__label {
-  color: rgb(250 248 245 / 58%);
+  color: var(--suite-accent);
 }
 
 .suite-page--mare .suite-hero__img {
@@ -318,7 +315,7 @@
   align-items: baseline;
   gap: clamp(1rem, 2.5vw, 1.5rem);
   padding-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
-  border-bottom: 1px solid rgb(250 248 245 / 12%);
+  border-bottom: 1px solid var(--border-on-light);
 }
 
 @media (min-width: 900px) {
@@ -371,7 +368,7 @@
   font-size: clamp(1.45rem, 3.4vw, 2.25rem);
   line-height: 1.32;
   font-weight: 400;
-  color: var(--panna);
+  color: var(--ink);
   letter-spacing: -0.02em;
   text-wrap: pretty;
   max-width: 36em;
@@ -381,10 +378,10 @@
   margin: 0;
   font-size: clamp(0.95rem, 1.5vw, 1.05rem);
   line-height: 1.7;
-  color: rgb(250 248 245 / 68%);
+  color: var(--ink-muted);
   max-width: 42ch;
   padding-left: clamp(1.25rem, 3vw, 2rem);
-  border-left: 1px solid rgb(250 248 245 / 16%);
+  border-left: 1px solid var(--border-on-light);
 }
 
 /* Gallery */
@@ -460,7 +457,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--suite-accent);
+  color: var(--eyebrow);
 }
 
 .suite-amenities__title {
@@ -565,7 +562,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--suite-cta-eyebrow);
+  color: var(--eyebrow);
 }
 
 .suite-cta__title {

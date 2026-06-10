@@ -1,3 +1,4 @@
+import { Mail, MapPin, Phone, Smartphone } from 'lucide-react';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 
 export function ContactSection() {
@@ -5,28 +6,44 @@ export function ContactSection() {
   const { contactIntro, contactLabels, config: site } = content;
 
   const channels = [
-    { label: contactLabels.phone, href: `tel:${site.phone.replace(/\s/g, '')}`, value: site.phone },
-    { label: contactLabels.mobile, href: `tel:${site.mobile.replace(/\s/g, '')}`, value: site.mobile },
-    { label: contactLabels.email, href: `mailto:${site.email}`, value: site.email },
+    {
+      label: contactLabels.phone,
+      href: `tel:${site.phone.replace(/\s/g, '')}`,
+      value: site.phone,
+      icon: Phone,
+    },
+    {
+      label: contactLabels.mobile,
+      href: `tel:${site.mobile.replace(/\s/g, '')}`,
+      value: site.mobile,
+      icon: Smartphone,
+    },
+    {
+      label: contactLabels.email,
+      href: `mailto:${site.email}`,
+      value: site.email,
+      icon: Mail,
+    },
   ] as const;
 
   return (
     <section id="contatti" className="contact-section" aria-labelledby="contatti-title">
       <div className="contact-section__inner">
         <header className="contact-section__header">
-          <div className="contact-section__heading-row">
-            <span className="contact-section__rule" aria-hidden />
-            <p className="contact-section__eyebrow">{contactIntro.eyebrow}</p>
-          </div>
+          <p className="contact-section__eyebrow">{contactIntro.eyebrow}</p>
           <h2 id="contatti-title" className="contact-section__title">
             {contactIntro.title}
           </h2>
-          <p className="contact-section__kicker">{contactIntro.kicker}</p>
+          <p className="contact-section__lead">{contactIntro.kicker}</p>
         </header>
 
-        <article className="contact-section__panel">
-          <div className="contact-section__residence">
-            <h3 className="contact-section__panel-title">{site.name}</h3>
+        <div className="contact-section__grid">
+          <article className="contact-section__address-card">
+            <div className="contact-section__address-head">
+              <MapPin size={18} strokeWidth={1.75} aria-hidden />
+              <h3 className="contact-section__address-label">{contactLabels.address}</h3>
+            </div>
+            <p className="contact-section__residence-name">{site.name}</p>
             <address className="contact-section__address">
               {site.address.street}
               <br />
@@ -34,17 +51,27 @@ export function ContactSection() {
               <br />
               {content.addressCountry}
             </address>
-          </div>
+          </article>
 
           <ul className="contact-section__channels" role="list">
-            {channels.map((ch) => (
-              <li key={ch.label}>
-                <span className="contact-section__channel-label">{ch.label}</span>
-                <a href={ch.href}>{ch.value}</a>
-              </li>
-            ))}
+            {channels.map((ch) => {
+              const Icon = ch.icon;
+              return (
+                <li key={ch.label}>
+                  <a className="contact-section__channel" href={ch.href}>
+                    <span className="contact-section__channel-icon" aria-hidden>
+                      <Icon size={18} strokeWidth={1.75} />
+                    </span>
+                    <span className="contact-section__channel-copy">
+                      <span className="contact-section__channel-label">{ch.label}</span>
+                      <span className="contact-section__channel-value">{ch.value}</span>
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
-        </article>
+        </div>
       </div>
     </section>
   );

@@ -17,7 +17,7 @@ const cookiePrefsCopy: Record<SiteLocale, { title: string; button: string }> = {
 const cookieByLang: Record<SiteLocale, LegalDoc> = {
   it: {
     title: 'Cookie Policy',
-    updated: 'Ultimo aggiornamento: maggio 2026',
+    updated: 'Ultimo aggiornamento: giugno 2026',
     sections: [
       {
         h: '1. Cosa sono i cookie',
@@ -39,7 +39,11 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
             <li>
               <strong>lv_consent</strong> (localStorage) — copia locale con gli stessi dati per ripristino rapido.
             </li>
-            <li>Cookie di sessione e sicurezza del browser/hosting, indispensabili alla navigazione.</li>
+            <li>
+              <strong>lv-site-locale</strong> (localStorage) — lingua dell’interfaccia scelta dall’utente. Durata:
+              fino a cancellazione manuale.
+            </li>
+            <li>Cookie di sessione e sicurezza del browser/hosting (Vercel), indispensabili alla navigazione.</li>
           </ul>
         ),
       },
@@ -48,8 +52,8 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
         body: (
           <p>
             Attivati solo se accetti la categoria <em>Analitici</em>. Possono includere Google Analytics (statistiche
-            aggregate su visite e pagine). ID configurabile tramite variabile d’ambiente{' '}
-            <code>VITE_GA_MEASUREMENT_ID</code>. Nessuno script analytics viene caricato prima del consenso.
+            aggregate su visite e pagine, ID <code>VITE_GA_MEASUREMENT_ID</code>) e strumenti Vercel Analytics / Speed
+            Insights (metriche di utilizzo e performance). Nessuno script analytics viene caricato prima del consenso.
           </p>
         ),
       },
@@ -67,8 +71,8 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
         body: (
           <p>
             Memorizzano scelte di interfaccia o contenuti personalizzati quando autorizzi la categoria{' '}
-            <em>Preferenze</em>. Attualmente utilizzati in modo limitato; eventuali servizi futuri rispetteranno la stessa
-            logica di consenso.
+            <em>Preferenze</em>. Include l’embed di Google Maps nel footer (cookie di terze parti di Google). Senza
+            consenso viene mostrata solo un’anteprima statica.
           </p>
         ),
       },
@@ -95,7 +99,7 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
   },
   en: {
     title: 'Cookie Policy',
-    updated: 'Last updated: May 2026',
+    updated: 'Last updated: June 2026',
     sections: [
       {
         h: '1. What are cookies',
@@ -117,7 +121,10 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
             <li>
               <strong>lv_consent</strong> (localStorage) — local copy with the same data for fast restore.
             </li>
-            <li>Session and security cookies from browser/hosting required for navigation.</li>
+            <li>
+              <strong>lv-site-locale</strong> (localStorage) — interface language chosen by the user until cleared.
+            </li>
+            <li>Session and security cookies from browser/hosting (Vercel) required for navigation.</li>
           </ul>
         ),
       },
@@ -125,8 +132,8 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
         h: '3. Analytics cookies',
         body: (
           <p>
-            Enabled only if you accept <em>Analytics</em>. May include Google Analytics (aggregated visit statistics). No
-            analytics scripts load before consent.
+            Enabled only if you accept <em>Analytics</em>. May include Google Analytics and Vercel Analytics / Speed
+            Insights (usage and performance metrics). No analytics scripts load before consent.
           </p>
         ),
       },
@@ -143,8 +150,8 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
         h: '5. Preference cookies',
         body: (
           <p>
-            Store interface or content choices when you allow <em>Preferences</em>. Limited use today; any future service
-            will follow the same consent model.
+            Store interface or content choices when you allow <em>Preferences</em>. Includes the Google Maps embed in
+            the footer (third-party Google cookies). Without consent, only a static map preview is shown.
           </p>
         ),
       },

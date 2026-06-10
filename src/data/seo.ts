@@ -6,6 +6,8 @@ const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://www.rtalevele.com';
 
 /** Immagine anteprima social (Open Graph / WhatsApp / iMessage). */
 export const OG_IMAGE_PATH = '/images/og-share.png';
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;
 
 export const SITE_DISPLAY_NAME = siteConfig.name;
 
@@ -38,12 +40,7 @@ export function getSeoForPath(pathname: string, locale: SiteLocale = 'it'): Page
 
   const pages: Record<string, PageSeoConfig> = {
     '/': { path: '/', ...seo.default },
-    '/prenota': {
-      path: '/prenota',
-      title: `${siteConfig.name} | ${locale === 'it' ? 'Richiedi disponibilità' : 'Request availability'}`,
-      description: seo.default.description,
-      keywords: seo.default.keywords,
-    },
+    '/prenota': { path: '/prenota', ...seo.booking },
     '/la-pelosa': { path: '/la-pelosa', ...seo.pelosa },
     '/privacy-policy': { path: '/privacy-policy', ...seo.privacy, noindex: true },
     '/cookie-policy': { path: '/cookie-policy', ...seo.cookie, noindex: true },
@@ -81,7 +78,7 @@ export function buildLodgingSchema(locale: SiteLocale = 'it') {
     url: absoluteUrl('/'),
     email: siteConfig.email,
     telephone: [siteConfig.phone, siteConfig.mobile],
-    image: absoluteUrl('/logo_le_vele_stintino_white.svg'),
+    image: absoluteUrl(OG_IMAGE_PATH),
     priceRange: '€€',
     address: {
       '@type': 'PostalAddress',
@@ -121,6 +118,97 @@ export function buildLodgingSchema(locale: SiteLocale = 'it') {
     checkinTime: '15:00',
     checkoutTime: '10:00',
   };
+}
+
+export function buildWebSiteSchema(locale: SiteLocale = 'it') {
+  const copy = getLocaleCopy(locale);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${absoluteUrl('/')}#website`,
+    name: siteConfig.name,
+    description: copy.seo.schemaDescription,
+    url: absoluteUrl('/'),
+    inLanguage: locale,
+    publisher: {
+      '@type': 'LodgingBusiness',
+      '@id': `${absoluteUrl('/')}#lodging`,
+    },
+  };
+}
+
+function breadcrumbLabelForPath(path: string, locale: SiteLocale): string | null {
+  const copy = getLocaleCopy(locale);
+  const { seo } = copy;
+
+  if (path === '/') return null;
+  if (path === '/prenota') return seo.booking.breadcrumb;
+  if (path === '/la-pelosa') return copy.pelosa.hero.title;
+
+  if (path.startsWith('/camere/')) {
+    const slug = path.replace('/camere/', '');
+    const suite = getSiteContent(locale).suites.find((s) => s.slug === slug);
+    return suite?.title ?? null;
+  }
+
+  return null;
+}
+
+export function buildBreadcrumbSchema(pathname: string, locale: SiteLocale = 'it') {
+  const path = normalizePathname(pathname).toLowerCase();
+  const pageLabel = breadcrumbLabelForPath(path, locale);
+  if (!pageLabel) return null;
+
+  const copy = getLocaleCopy(locale);
+
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: copy.seo.breadcrumbHome,
+        item: absoluteUrl('/'),
+      },
+      ...(path.startsWith('/camere/')
+        ? [
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: copy.suitesIntro.title,
+              item: `${absoluteUrl('/')}#suites`,
+            },
+            {
+              '@type': 'ListItem',
+              position: 3,
+              name: pageLabel,
+              item: absoluteUrl(path),
+            },
+          ]
+        : [
+            {
+              '@type': 'ListItem',
+              position: 2,
+              name: pageLabel,
+              item: absoluteUrl(path),
+            },
+          ]),
+    ],
+  };
+}
+
+export function buildPageSchemas(pathname: string, locale: SiteLocale = 'it') {
+  const schemas: Record<string, unknown>[] = [
+    buildLodgingSchema(locale),
+    buildWebSiteSchema(locale),
+  ];
+
+  const breadcrumb = buildBreadcrumbSchema(pathname, locale);
+  if (breadcrumb) schemas.push(breadcrumb);
+
+  return schemas;
 }
 
 export const lodgingSchema = buildLodgingSchema('it');

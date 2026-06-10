@@ -54,7 +54,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(250, 248, 245, 0.55);
+  color: var(--eyebrow);
 }
 
 .cookie-consent__title {
@@ -311,7 +311,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(250, 248, 245, 0.55);
+  color: var(--eyebrow);
 }
 
 .legal-page__title {

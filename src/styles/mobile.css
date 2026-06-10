@@ -23,7 +23,6 @@
   }
 
   /* Niente sticky GSAP/CSS su touch — evita scroll che “tiene” il dito */
-  .stacking-card,
   .scroll-accordion__item {
     position: relative !important;
     top: auto !important;
@@ -43,20 +42,15 @@
   }
 
   .oh-preloader__text-container {
-    max-width: min(94vw, 22rem);
+    max-width: min(94vw, 100%);
   }
 
-  .oh-preloader__text {
-    text-align: center;
+  .oh-preloader__h1 {
+    font-size: clamp(2rem, 11vw, 3.25rem);
   }
 
   .oh-preloader__char-wrapper {
-    font-size: clamp(2rem, 11vw, 3.25rem);
-  }
-
-  .oh-preloader__word-space {
-    font-size: clamp(2rem, 11vw, 3.25rem);
-    width: 0.35em;
+    font-size: inherit;
   }
 
   .oh-preloader__reveal-media {
@@ -177,17 +171,6 @@
     font-size: 1.05rem;
   }
 
-  .residence__accordion.section--services-accordion {
-    margin-inline: calc(-1 * var(--page-pad));
-    width: calc(100% + 2 * var(--page-pad));
-    padding-inline: var(--page-pad);
-  }
-
-  .residence__accordion.section--services-accordion::before {
-    left: calc(50% - 50svw);
-    width: 100svw;
-  }
-
   .section--services-accordion {
     grid-template-columns: 1fr;
     gap: 1.5rem;
@@ -233,55 +216,31 @@
     align-items: flex-start;
   }
 
-  .suites__grid {
+  .suites__list {
     gap: 1.25rem;
   }
 
-  /* Gallery — stack statico su mobile */
-  .stacking-cards {
-    gap: 1.25rem;
-    padding-bottom: 2rem;
+  .suites__media-inner {
+    aspect-ratio: 16 / 10;
+    max-height: none;
   }
 
-  .stacking-card {
-    --stacking-radius: 14px;
-    --stacking-inset: 5px;
-    position: relative !important;
-    top: auto !important;
-    height: min(56vh, 420px);
+  .suites__features {
+    grid-template-columns: 1fr;
+  }
+
+  .suites__item:hover {
+    transform: none;
+  }
+
+  .suites__desc {
+    -webkit-line-clamp: 4;
   }
 
   /* Offers */
-  .section--offers {
-    margin: var(--page-pad);
-    padding: clamp(2rem, 8vw, 2.75rem) var(--page-pad);
-  }
-
   .offers-grid {
     grid-template-columns: 1fr;
     gap: 14px;
-  }
-
-  /* Reviews */
-  .reviews__marquee-mask {
-    mask-image: linear-gradient(
-      90deg,
-      transparent 0,
-      #000 1rem,
-      #000 calc(100% - 1rem),
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      90deg,
-      transparent 0,
-      #000 1rem,
-      #000 calc(100% - 1rem),
-      transparent 100%
-    );
-  }
-
-  .reviews__marquee-strip .review-card {
-    width: min(18.5rem, 86vw);
   }
 
   /* Contact */
@@ -289,16 +248,8 @@
     padding-block: clamp(3.5rem, 12vw, 5rem);
   }
 
-  .contact-section__inner {
-    gap: 2rem;
-  }
-
-  .contact-section__panel {
-    padding: 1.5rem 1.35rem;
-  }
-
-  .contact-section__channels li {
-    min-height: 0;
+  .contact-section__channels {
+    grid-template-columns: 1fr;
   }
 
   /* Footer */
@@ -373,8 +324,10 @@
     font-size: clamp(2.5rem, 12vw, 3.5rem);
   }
 
-  .pelosa-gallery__grid {
-    grid-template-columns: 1fr;
+  .pelosa-gallery__item--wide,
+  .pelosa-gallery__item--tall {
+    aspect-ratio: 16 / 11;
+    min-height: 0;
   }
 }
 

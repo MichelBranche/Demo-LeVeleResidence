@@ -1,13 +1,16 @@
 import { useEffect } from 'react';
-import { buildLodgingSchema } from '../../data/seo';
+import { useLocation } from 'react-router-dom';
+import { buildPageSchemas } from '../../data/seo';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 
-const SCRIPT_ID = 'ld-lodging-business';
+const SCRIPT_ID = 'ld-structured-data';
 
 export function StructuredData() {
+  const { pathname } = useLocation();
   const { locale } = useSiteLocale();
 
   useEffect(() => {
+    const schemas = buildPageSchemas(pathname, locale);
     let script = document.getElementById(SCRIPT_ID) as HTMLScriptElement | null;
     if (!script) {
       script = document.createElement('script');
@@ -15,12 +18,12 @@ export function StructuredData() {
       script.type = 'application/ld+json';
       document.head.appendChild(script);
     }
-    script.textContent = JSON.stringify(buildLodgingSchema(locale));
+    script.textContent = JSON.stringify(schemas.length === 1 ? schemas[0] : schemas);
 
     return () => {
       document.getElementById(SCRIPT_ID)?.remove();
     };
-  }, [locale]);
+  }, [pathname, locale]);
 
   return null;
 }

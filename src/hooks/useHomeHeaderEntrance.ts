@@ -5,7 +5,6 @@ import { prefersReducedMotion } from '../lib/motion';
 
 type Options = {
   active: boolean;
-  /** Prima visita con preloader video — ingresso dall'alto. */
   animateEntrance: boolean;
 };
 
@@ -20,7 +19,7 @@ export function useHomeHeaderEntrance(
     const header = headerRef.current;
     if (!header) return;
 
-    gsap.set(header, { yPercent: -100, opacity: 0 });
+    gsap.set(header, { yPercent: -100, autoAlpha: 1 });
   }, [active, animateEntrance, headerRef]);
 
   useLayoutEffect(() => {
@@ -34,13 +33,9 @@ export function useHomeHeaderEntrance(
 
       gsap.to(headerRef.current, {
         yPercent: 0,
-        opacity: 1,
-        duration: 0.88,
-        ease: 'power3.out',
+        duration: 0.78,
+        ease: 'expo.out',
         clearProps: 'transform',
-        onComplete: () => {
-          gsap.set(headerRef.current, { clearProps: 'opacity,transform' });
-        },
       });
     };
 

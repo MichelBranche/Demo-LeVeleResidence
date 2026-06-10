@@ -65,6 +65,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
     persistConsent(next);
     setConsentState(next);
     revokeAllTracking();
+    applyTrackingIfConsented(next);
     return next;
   }, []);
 

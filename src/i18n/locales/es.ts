@@ -16,7 +16,8 @@ export const es: LocaleCopy = {
   residenceIntro: {
     eyebrow: 'La residence',
     titleLine: 'Bienvenido a',
-    titleBrand: 'Residence Le Vele',
+    titleBrandBefore: 'Residence',
+    titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: 'Bahía · Stintino',
     kicker: 'Entre Cala Lupo y el mar del norte de Cerdeña, a pocos minutos de Stintino y La Pelosa.',
@@ -48,7 +49,7 @@ export const es: LocaleCopy = {
       title: 'Cómo llegar',
       description:
         'La Residence es fácilmente accesible por las principales vías de acceso del norte de Cerdeña — en coche, avión o ferry.',
-      imageAlt: '',
+      imageAlt: 'Conexiones con Stintino — aeropuertos y puertos del norte de Cerdeña',
       routes: [
         { distance: '~50 km', label: 'Aeropuerto de Alghero' },
         { distance: '~30 km', label: 'Puerto de Porto Torres' },
@@ -69,12 +70,52 @@ export const es: LocaleCopy = {
   ],
   residenceAccordion: {
     eyebrow: 'En detalle',
-    title: 'Ubicación y servicios',
+    showcaseTitle: 'Ubicación y alrededores',
+    title: 'Servicios y actividades',
+    subtitle: 'Todo lo que hace tu estancia en Residence Le Vele cómoda, relajada y cerca del mar.',
     discoverMore: 'Descubrir más',
+    navHint: 'Desliza la foto o selecciona una vista previa',
+  },
+  residenceServices: {
+    groups: [
+      {
+        id: 'free',
+        title: 'Servicios gratuitos',
+        badge: 'Incluidos',
+        items: [
+          { icon: 'luggage', label: 'Depósito de equipaje' },
+          { icon: 'tv', label: 'TV LCD' },
+          { icon: 'courtesy-kit', label: 'Kit de cortesía' },
+          { icon: 'ac', label: 'Aire acondicionado' },
+          { icon: 'wifi', label: 'Conexión a internet Wi-Fi' },
+        ],
+      },
+      {
+        id: 'paid',
+        title: 'Servicios de pago',
+        items: [
+          { icon: 'extra-cleaning', label: 'Limpieza extra de la habitación' },
+          { icon: 'laundry', label: 'Lavandería' },
+          { icon: 'transport', label: 'Servicios de transporte' },
+        ],
+      },
+      {
+        id: 'activities',
+        title: 'Actividades de pago',
+        items: [
+          { icon: 'tennis', label: 'Pista de tenis' },
+          { icon: 'bike-rental', label: 'Alquiler de bicicletas' },
+          { icon: 'boat-rental', label: 'Alquiler de barcos y neumáticas' },
+          { icon: 'diving', label: 'Cursos de submarinismo' },
+          { icon: 'asinara', label: 'Excursiones a la isla de Asinara' },
+          { icon: 'guided-tours', label: 'Visitas guiadas' },
+        ],
+      },
+    ],
   },
   suitesIntro: {
     eyebrow: 'Alojamientos',
-    title: 'Las Suites',
+    title: 'Los estudios',
     count: '18',
     countLabel: 'estudios',
     kicker: 'Dos ambientes — mar y jardín — para vivir Stintino con la privacidad de una residence.',
@@ -143,7 +184,13 @@ export const es: LocaleCopy = {
       'Estudio con vista mar — Residence Le Vele, Stintino',
       'Zona verde y veranda — apartamentos de vacaciones Cerdeña',
       'Terraza con vista mar en la Residence Le Vele, Stintino',
+      'Interior de estudio con vista mar y balcón al mar — Le Vele, Stintino',
+      'Zona común exterior con terraza, mobiliario y vista al mar — Residence Le Vele',
     ],
+    closeLabel: 'Cerrar galería',
+    prevLabel: 'Imagen anterior',
+    nextLabel: 'Imagen siguiente',
+    counterLabel: '{current} / {total}',
   },
   offers: {
     sectionEyebrow: 'Paquetes',
@@ -174,7 +221,7 @@ export const es: LocaleCopy = {
   },
   infoServices: {
     eyebrow: 'Información',
-    title: 'Info y Servicios',
+    title: 'Info y condiciones',
     kicker: 'Llegadas / Salidas',
     checkInTitle: 'Check-in',
     checkInTime: 'de 15:30 a 19:00',
@@ -184,6 +231,24 @@ export const es: LocaleCopy = {
       'En caso de check-in después de las 20:00, rogamos avisar con al menos 48 horas de antelación por teléfono o correo electrónico.',
     noteSupplement:
       'La dirección se reserva el derecho de aplicar un suplemento de 30,00 € por llegadas tardías sin comunicación previa.',
+    noteDeposit:
+      'En el check-in se solicitará una fianza en concepto de garantía, devuelta en el check-out salvo cargos aplicables.',
+    noteCleaningPenalty:
+      'Si el alojamiento no se deja limpio en el check-out, la dirección se reserva el derecho de aplicar una penalización por limpieza extra.',
+    conditionsTitle: 'Condiciones',
+    conditions: [
+      'Un niño menor de 2 años paga 5 EUR por persona y noche por cuna.',
+      'El número máximo de cunas por habitación es 1.',
+      'Cualquier cama adicional, cuna o trona está sujeta a disponibilidad y debe ser confirmada por la dirección previa solicitud.',
+      'Los suplementos no se calculan automáticamente en el importe total y deberán abonarse por separado durante la estancia.',
+      'La cancelación es gratuita para reservas estándar hasta 7 días antes de la fecha de llegada. En caso de cancelación tardía o no presentación, se cargará el importe total de la reserva.',
+      'La cancelación no es gratuita para reservas no reembolsables y conlleva una penalización igual al coste total de la reserva y la estancia.',
+      'La limpieza final y el suministro de ropa de cama y toallas a la llegada están incluidos en el precio. El cambio de ropa de cama es semanal para estancias superiores a 8 noches.',
+      'El repaso diario, el cambio extra de ropa de cama y la limpieza de la cocina son costes suplementarios opcionales.',
+      'Las tarifas no incluyen ninguna comida.',
+      'Se admiten mascotas (perros/gatos).',
+      'Aparcamiento interior disponible para los huéspedes.',
+    ],
   },
   reviews: {
     eyebrow: 'Reseñas',
@@ -191,6 +256,8 @@ export const es: LocaleCopy = {
     subtitleBefore: 'Extractos de',
     subtitleAfter: '.',
     marqueeAria: 'Reseñas de huéspedes',
+    prevAria: 'Reseña anterior',
+    nextAria: 'Reseña siguiente',
     ratingAria: 'Valoración {rating} de 5',
     openOn: 'Abrir en {platform} →',
     summary: {
@@ -331,6 +398,8 @@ export const es: LocaleCopy = {
     designBy: 'Design by',
     starsAria: 'Clasificación de 3 estrellas',
     instagramAria: 'Residence Le Vele en Instagram',
+    footerNavAria: 'Navegación del pie de página',
+    legalNavAria: 'Privacidad y cookies',
   },
   pelosa: {
     hero: {
@@ -352,7 +421,10 @@ export const es: LocaleCopy = {
       statLabel: 'De la Residence Le Vele',
     },
     gallery: {
+      eyebrow: 'Galería',
       title: 'Colores del norte de Cerdeña',
+      lead: 'Vistas aéreas, costa y agua turquesa: cuatro perspectivas de la playa más icónica de Stintino.',
+      viewLabel: 'Ampliar',
       imageAlts: [
         'Vista aérea de la playa La Pelosa, mar turquesa y Torre della Pelosa',
         'La Pelosa desde arriba: costa, sombrillas y torre',
@@ -374,7 +446,7 @@ export const es: LocaleCopy = {
   suitePage: {
     notFound: 'Suite no encontrada',
     backToSuites: '← Volver a las suites',
-    backLink: '← Las Suites',
+    backLink: '← Los estudios',
     specsAria: 'Información de la suite',
     guests: '2–4',
     guestsLabel: 'huéspedes',
@@ -412,6 +484,14 @@ export const es: LocaleCopy = {
       keywords:
         'residence stintino, apartamentos vacaciones cerdeña, estancia junto al mar, la pelosa, cala lupo, estudios stintino',
     },
+    booking: {
+      title: 'Residence Le Vele | Solicitar disponibilidad',
+      description:
+        'Solicite disponibilidad para su estancia en Residence Le Vele en Stintino: fechas, tipo de estudio y número de huéspedes. Respuesta personalizada por correo.',
+      keywords:
+        'reservar residence stintino, solicitud disponibilidad, estudios stintino, apartamentos vacaciones cerdeña',
+      breadcrumb: 'Solicitar disponibilidad',
+    },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Playa y mar',
       description:
@@ -430,6 +510,8 @@ export const es: LocaleCopy = {
     suiteDescriptionSuffix: 'Reserve el estudio en Stintino, cerca de La Pelosa.',
     suiteKeywords: 'estudio stintino, apartamentos vacaciones cerdeña, residence le vele',
     fallbackTitleSuffix: '| Stintino, Cerdeña',
+    ogImageAlt: 'Residence Le Vele — estudios en Stintino, cerca de La Pelosa',
+    breadcrumbHome: 'Inicio',
     schemaDescription:
       'Residence Le Vele en Stintino: estudios con vista mar y jardín, estancias cerca de La Pelosa.',
     schemaAmenities: [

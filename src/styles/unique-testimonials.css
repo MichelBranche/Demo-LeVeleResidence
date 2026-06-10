@@ -1,0 +1,125 @@
+.unique-testimonial {
+  --ut-ink: var(--ink);
+  --ut-ink-muted: var(--ink-muted);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.unique-testimonial__body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.unique-testimonial__measure {
+  position: absolute;
+  width: 100%;
+  visibility: hidden;
+  pointer-events: none;
+  overflow: hidden;
+  height: 0;
+}
+
+.unique-testimonial__content {
+  width: 100%;
+  text-align: center;
+}
+
+.unique-testimonial__content--measure {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.unique-testimonial__quote {
+  margin: 0;
+}
+
+.unique-testimonial__quote p {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.45vw, 1.05rem);
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.65;
+  color: var(--ut-ink);
+}
+
+.unique-testimonial__attribution {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.unique-testimonial__author {
+  font-size: 0.82rem;
+  font-weight: 600;
+  font-style: normal;
+  color: var(--ut-ink);
+}
+
+.unique-testimonial__role {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: var(--ut-ink-muted);
+}
+
+.unique-testimonial__source-link {
+  flex-basis: 100%;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--eyebrow);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.unique-testimonial__source-link:hover {
+  opacity: 0.7;
+}
+
+.unique-testimonial__dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+}
+
+.unique-testimonial__dot {
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 50%;
+  background: rgb(58 52 48 / 18%);
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.unique-testimonial__dot--active {
+  transform: scale(1.35);
+  background: var(--eyebrow);
+}
+
+.unique-testimonial--minimal .unique-testimonial__body {
+  min-height: 9rem;
+}
+
+.unique-testimonial--minimal .unique-testimonial__quote p {
+  max-width: 36ch;
+  margin-inline: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unique-testimonial__dot {
+    transition: none;
+  }
+}

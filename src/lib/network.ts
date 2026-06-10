@@ -55,7 +55,7 @@ export function getNetworkTier(): NetworkTier {
   return 'fast';
 }
 
-/** Preloader cinematico con video (~11 MB). */
+/** Preloader cinematico con video (~4 MB). */
 export function shouldRunVideoPreloader(): boolean {
   return getNetworkTier() !== 'minimal';
 }

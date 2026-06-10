@@ -4,6 +4,13 @@ export function InfoServicesSection() {
   const { content } = useSiteLocale();
   const info = content.infoServices;
 
+  const arrivalNotes = [
+    info.noteLateCheckIn,
+    info.noteSupplement,
+    info.noteDeposit,
+    info.noteCleaningPenalty,
+  ];
+
   return (
     <section id="info-servizi" className="section section--info" aria-labelledby="info-servizi-title">
       <div className="section--info__inner">
@@ -25,8 +32,18 @@ export function InfoServicesSection() {
         </div>
 
         <div className="info-notes body-text">
-          <p>{info.noteLateCheckIn}</p>
-          <p>{info.noteSupplement}</p>
+          {arrivalNotes.map((note) => (
+            <p key={note}>{note}</p>
+          ))}
+        </div>
+
+        <div className="info-conditions">
+          <h3 className="info-conditions__title">{info.conditionsTitle}</h3>
+          <ul className="info-conditions__list body-text" role="list">
+            {info.conditions.map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

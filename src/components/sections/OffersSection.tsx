@@ -15,7 +15,7 @@ export function OffersSection() {
           {(offers.items ?? []).map((offer) => (
             <article key={offer.title} className="offer-card">
               <span className="offer-card__badge">{offer.badge}</span>
-              <h3 className="offer-card__title">{offer.title}</h3>
+              <h3 className="offer-card__title display-serif">{offer.title}</h3>
               <p className="offer-card__period">{offer.period}</p>
               <p className="offer-card__desc">{offer.description}</p>
             </article>

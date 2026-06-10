@@ -1,31 +1,39 @@
 import gsap from 'gsap';
 import { useLayoutEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouteTransition } from '../context/RouteTransitionContext';
 import { siteConfig } from '../i18n/siteMedia';
 import { prefersReducedMotion } from '../lib/motion';
 
+function getOverlayParts(root: HTMLDivElement) {
+  return {
+    panels: Array.from(root.querySelectorAll<HTMLElement>('.route-transition__panel')),
+    chars: Array.from(root.querySelectorAll<HTMLElement>('.route-transition__char')),
+    line: root.querySelector<HTMLElement>('.route-transition__line'),
+    content: root.querySelector<HTMLElement>('.route-transition__content'),
+  };
+}
+
 export function RouteTransitionOverlay() {
   const { stage, notifyCoverComplete, notifyRevealComplete } = useRouteTransition();
   const rootRef = useRef<HTMLDivElement>(null);
-  const veilRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const brandRef = useRef<HTMLParagraphElement>(null);
-  const loaderRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (stage !== 'covering') return;
 
     const root = rootRef.current;
-    const veil = veilRef.current;
-    const content = contentRef.current;
-    const brand = brandRef.current;
-    const loader = loaderRef.current;
-    if (!root || !veil || !content || !brand || !loader) return;
+    if (!root) return;
+    const { panels, chars, line, content } = getOverlayParts(root);
+    if (panels.length === 0 || !line || !content) return;
 
-    gsap.killTweensOf([root, veil, content, brand, loader]);
+    gsap.killTweensOf([root, ...panels, ...chars, line, content]);
 
     if (prefersReducedMotion()) {
       gsap.set(root, { autoAlpha: 1, pointerEvents: 'auto' });
+      gsap.set(panels, { yPercent: 0 });
+      gsap.set(chars, { yPercent: 0 });
+      gsap.set(line, { scaleX: 1, opacity: 1 });
+      gsap.set(content, { opacity: 1 });
       notifyCoverComplete();
       return;
     }
@@ -33,21 +41,30 @@ export function RouteTransitionOverlay() {
     document.documentElement.classList.remove('route-transition-snapshot');
 
     gsap.set(root, { autoAlpha: 1, pointerEvents: 'auto' });
-    gsap.set(veil, { clipPath: 'circle(0% at 50% 50%)' });
-    gsap.set(content, { opacity: 0, y: 18 });
-    gsap.set(brand, { opacity: 0, y: 10 });
-    gsap.set(loader, { opacity: 0, scale: 0.88 });
+    gsap.set(panels, { yPercent: 102 });
+    gsap.set(chars, { yPercent: 112 });
+    gsap.set(line, { scaleX: 0, opacity: 1 });
+    gsap.set(content, { opacity: 1 });
 
     const tl = gsap.timeline({ onComplete: notifyCoverComplete });
 
-    tl.to(veil, {
-      clipPath: 'circle(150% at 50% 50%)',
-      duration: 0.82,
-      ease: 'power3.inOut',
+    tl.to(panels, {
+      yPercent: 0,
+      duration: 0.58,
+      ease: 'power4.inOut',
+      stagger: 0.065,
     })
-      .to(content, { opacity: 1, y: 0, duration: 0.42, ease: 'power2.out' }, 0.22)
-      .to(brand, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.3)
-      .to(loader, { opacity: 1, scale: 1, duration: 0.48, ease: 'power2.out' }, 0.38);
+      .to(
+        chars,
+        {
+          yPercent: 0,
+          duration: 0.46,
+          ease: 'expo.out',
+          stagger: 0.017,
+        },
+        '-=0.22',
+      )
+      .to(line, { scaleX: 1, duration: 0.4, ease: 'power3.out' }, '<0.1');
 
     return () => {
       tl.kill();
@@ -58,13 +75,11 @@ export function RouteTransitionOverlay() {
     if (stage !== 'revealing') return;
 
     const root = rootRef.current;
-    const veil = veilRef.current;
-    const content = contentRef.current;
-    const brand = brandRef.current;
-    const loader = loaderRef.current;
-    if (!root || !veil || !content) return;
+    if (!root) return;
+    const { panels, chars, line, content } = getOverlayParts(root);
+    if (panels.length === 0 || !line || !content) return;
 
-    gsap.killTweensOf([root, veil, content, brand, loader]);
+    gsap.killTweensOf([root, ...panels, ...chars, line, content]);
 
     if (prefersReducedMotion()) {
       gsap.set(root, { autoAlpha: 0, pointerEvents: 'none' });
@@ -74,19 +89,28 @@ export function RouteTransitionOverlay() {
 
     const tl = gsap.timeline({ onComplete: notifyRevealComplete });
 
-    tl.to([brand, loader], { opacity: 0, duration: 0.22, ease: 'power2.in' }, 0)
-      .to(content, { opacity: 0, y: -10, duration: 0.28, ease: 'power2.in' }, 0.04)
+    tl.to(
+      chars,
+      {
+        yPercent: -112,
+        duration: 0.3,
+        ease: 'power2.in',
+        stagger: 0.011,
+      },
+      0,
+    )
+      .to(line, { scaleX: 0, opacity: 0, duration: 0.22, ease: 'power2.in' }, 0)
       .to(
-        veil,
+        panels,
         {
-          clipPath: 'circle(0% at 50% 50%)',
-          duration: 0.72,
-          ease: 'power3.inOut',
+          yPercent: -102,
+          duration: 0.62,
+          ease: 'power4.inOut',
+          stagger: { each: 0.065, from: 'end' },
         },
-        0.1,
+        0.12,
       )
-      .to(root, { autoAlpha: 0, duration: 0.2, ease: 'power2.in' }, 0.62)
-      .set(root, { pointerEvents: 'none' });
+      .set(root, { autoAlpha: 0, pointerEvents: 'none' });
 
     return () => {
       tl.kill();
@@ -95,7 +119,7 @@ export function RouteTransitionOverlay() {
 
   const visible = stage !== 'idle';
 
-  return (
+  const overlay = (
     <div
       ref={rootRef}
       className="route-transition"
@@ -105,17 +129,27 @@ export function RouteTransitionOverlay() {
       aria-hidden={!visible}
       aria-label={siteConfig.name}
     >
-      <div ref={veilRef} className="route-transition__veil" aria-hidden />
-      <div ref={contentRef} className="route-transition__content">
-        <p ref={brandRef} className="route-transition__brand display-serif">
-          {siteConfig.name}
+      <div className="route-transition__panel route-transition__panel--sand" aria-hidden />
+      <div className="route-transition__panel route-transition__panel--surface" aria-hidden />
+      <div className="route-transition__panel route-transition__panel--ink" aria-hidden />
+      <div className="route-transition__content">
+        <p className="route-transition__brand display-serif">
+          {siteConfig.name.split(' ').map((word, wi) => (
+            <span className="route-transition__word" key={`${word}-${wi}`}>
+              {word.split('').map((ch, ci) => (
+                <span className="route-transition__char-mask" key={ci}>
+                  <span className="route-transition__char">{ch}</span>
+                </span>
+              ))}
+            </span>
+          ))}
         </p>
-        <div ref={loaderRef} className="route-transition__loader" aria-hidden>
-          <span className="route-transition__ring route-transition__ring--outer" />
-          <span className="route-transition__ring route-transition__ring--mid" />
-          <span className="route-transition__ring route-transition__ring--core" />
-        </div>
+        <span className="route-transition__line" aria-hidden />
       </div>
     </div>
   );
+
+  if (typeof document === 'undefined') return overlay;
+
+  return createPortal(overlay, document.body);
 }

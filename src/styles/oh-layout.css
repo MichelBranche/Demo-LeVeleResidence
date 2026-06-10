@@ -4,6 +4,40 @@
   --oh-pad: 0;
 }
 
+body.oh-preloader-active .home-page {
+  position: relative;
+}
+
+body.oh-preloader-active .oh-preloader {
+  z-index: var(--z-preloader);
+  pointer-events: none;
+}
+
+body.oh-preloader-active:not(.oh-preloader-hero-phase) .home-hero-shell--intro .oh-reveal {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.oh-preloader-active:not(.oh-preloader-header-phase) .home-page__sticky-header,
+body.oh-preloader-active:not(.oh-preloader-header-phase) .home-page__sticky-header .site-header {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+body.oh-preloader-active.oh-preloader-hero-phase .home-hero-shell--intro .oh-reveal {
+  visibility: visible;
+  opacity: 1;
+  z-index: calc(var(--z-preloader) + 2);
+  pointer-events: none;
+}
+
+body.oh-preloader-active.oh-preloader-header-phase .home-page__sticky-header {
+  visibility: visible;
+  z-index: calc(var(--z-preloader) + 3);
+}
+
 /* Fixed: evita salti da sticky + margin negativo e da GSAP translateY */
 .home-page__sticky-header {
   position: fixed;
@@ -42,9 +76,23 @@
   transition: background-color 0.35s ease;
 }
 
+body.oh-preloader-active .home-hero-shell .oh-video-bg {
+  transition: none;
+}
+
 body.oh-preloader-active .home-hero-shell:not(.home-hero-shell--ready) .oh-video-bg {
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
+}
+
+body.oh-preloader-active .home-hero-shell.home-hero-shell--ready .oh-video-bg {
+  visibility: visible;
+}
+
+body.oh-preloader-active .home-hero-shell.home-hero-shell--ready .oh-video-bg {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .home-hero-shell--awaiting-consent .oh-video-bg {
@@ -91,6 +139,14 @@ body.oh-preloader-active .home-hero-shell:not(.home-hero-shell--ready) .oh-video
   pointer-events: none;
 }
 
+.home-hero-shell--intro .oh-reveal {
+  z-index: 6;
+}
+
+body.oh-preloader-active .home-hero-shell--intro .oh-reveal > .hero {
+  opacity: 1;
+}
+
 .oh-reveal > * {
   pointer-events: auto;
 }
@@ -104,11 +160,23 @@ body.oh-preloader-active .home-hero-shell:not(.home-hero-shell--ready) .oh-video
   transform: none;
 }
 
-html:not([data-hero-copy-done]) .hero-kicker,
-html:not([data-hero-copy-done]) .hero-title__line,
-html:not([data-hero-copy-done]) .hero-tagline,
-html:not([data-hero-copy-done]) .hero-scroll-cue {
-  opacity: 0;
+html:not([data-hero-copy-done]) .hero-reveal-line {
+  display: block;
+  overflow: hidden;
+}
+
+html:not([data-hero-copy-done]) .hero-reveal-line--inline {
+  display: inline-block;
+}
+
+html:not([data-hero-copy-done]) .hero-reveal-line__inner {
+  display: block;
+}
+
+html:not([data-hero-copy-done]) .hero-scroll-cue__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
 }
 
 .home-hero-shell .hero {

@@ -1,4 +1,5 @@
 import type { SiteLocale } from '../lib/siteLocales';
+import type { ResidenceServiceIconId } from '../lib/residenceServiceIcons';
 
 export type { SiteLocale };
 
@@ -26,7 +27,8 @@ export type LocaleCopy = {
   residenceIntro: {
     eyebrow: string;
     titleLine: string;
-    titleBrand: string;
+    titleBrandBefore: string;
+    titleBrandAccent: string;
     location: string;
     locationLabel: string;
     kicker: string;
@@ -45,8 +47,19 @@ export type LocaleCopy = {
   }[];
   residenceAccordion: {
     eyebrow: string;
+    showcaseTitle: string;
     title: string;
+    subtitle?: string;
     discoverMore: string;
+    navHint: string;
+  };
+  residenceServices: {
+    groups: readonly {
+      id: 'free' | 'paid' | 'activities';
+      title: string;
+      badge?: string;
+      items: readonly { icon: ResidenceServiceIconId; label: string }[];
+    }[];
   };
   suitesIntro: {
     eyebrow: string;
@@ -70,7 +83,14 @@ export type LocaleCopy = {
       exploreCta: string;
     }
   >;
-  gallery: { title: string; imageAlts: readonly string[] };
+  gallery: {
+    title: string;
+    imageAlts: readonly string[];
+    closeLabel: string;
+    prevLabel: string;
+    nextLabel: string;
+    counterLabel: string;
+  };
   offers: {
     sectionEyebrow: string;
     sectionTitle: string;
@@ -86,6 +106,10 @@ export type LocaleCopy = {
     checkOutTime: string;
     noteLateCheckIn: string;
     noteSupplement: string;
+    noteDeposit: string;
+    noteCleaningPenalty: string;
+    conditionsTitle: string;
+    conditions: readonly string[];
   };
   reviews: {
     eyebrow: string;
@@ -93,6 +117,8 @@ export type LocaleCopy = {
     subtitleBefore: string;
     subtitleAfter: string;
     marqueeAria: string;
+    prevAria: string;
+    nextAria: string;
     ratingAria: string;
     openOn: string;
     summary: {
@@ -130,6 +156,8 @@ export type LocaleCopy = {
     designBy: string;
     starsAria: string;
     instagramAria: string;
+    footerNavAria: string;
+    legalNavAria: string;
   };
   pelosa: {
     hero: {
@@ -147,7 +175,13 @@ export type LocaleCopy = {
       statValue: string;
       statLabel: string;
     };
-    gallery: { title: string; imageAlts: readonly string[] };
+    gallery: {
+      eyebrow: string;
+      title: string;
+      lead: string;
+      viewLabel: string;
+      imageAlts: readonly string[];
+    };
     ui: {
       back: string;
       scrollAria: string;
@@ -192,9 +226,12 @@ export type LocaleCopy = {
   };
   seo: {
     default: { title: string; description: string; keywords: string };
+    booking: { title: string; description: string; keywords: string; breadcrumb: string };
     pelosa: { title: string; description: string; keywords: string };
     privacy: { title: string; description: string };
     cookie: { title: string; description: string };
+    ogImageAlt: string;
+    breadcrumbHome: string;
     suiteTitleSuffix: string;
     suiteDescriptionSuffix: string;
     suiteKeywords: string;

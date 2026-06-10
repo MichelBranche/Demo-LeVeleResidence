@@ -1,6 +1,7 @@
+import '../styles/pelosa.css';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PelosaLightbox } from '../components/PelosaLightbox';
+import { PelosaGallery } from '../components/PelosaGallery';
 import { formatCopy } from '../i18n';
 import { usePelosaAnimations } from '../hooks/usePelosaAnimations';
 import { useSiteLocale } from '../hooks/useSiteLocale';
@@ -8,11 +9,10 @@ import { shouldUsePosterOnlyHero } from '../lib/network';
 
 export function LaPelosaPage() {
   const { content } = useSiteLocale();
-  const { pelosa, pelosaMedia } = content;
+  const { pelosa, pelosaMedia, gallery: galleryUi } = content;
   const { hero, intro, gallery, ui } = pelosa;
   const pageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   const posterOnlyHero = shouldUsePosterOnlyHero();
   const heroVideoSrc = posterOnlyHero ? undefined : pelosaMedia.video;
@@ -116,39 +116,24 @@ export function LaPelosaPage() {
         </div>
       </section>
 
-      <section className="pelosa-gallery" aria-labelledby="pelosa-gallery-title">
-        <div className="pelosa-gallery__inner">
-          <h2 id="pelosa-gallery-title" className="pelosa-gallery__title display-serif" data-pelosa-reveal>
-            {gallery.title}
-          </h2>
-          <div className="pelosa-gallery__grid">
-            {galleryItems.map((item) => (
-              <button
-                key={item.src}
-                type="button"
-                className={`pelosa-gallery__item pelosa-gallery__item--${item.layout}`}
-                onClick={() => setLightbox({ src: item.src, alt: item.alt })}
-                aria-label={formatCopy(ui.openImage, { alt: item.alt })}
-              >
-                <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-                <span className="pelosa-gallery__zoom" aria-hidden>
-                  +
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {lightbox && (
-        <PelosaLightbox
-          src={lightbox.src}
-          alt={lightbox.alt}
-          closeLabel={ui.closeLightbox}
-          closeGalleryLabel={ui.closeGallery}
-          onClose={() => setLightbox(null)}
-        />
-      )}
+      <PelosaGallery
+        eyebrow={gallery.eyebrow}
+        title={gallery.title}
+        lead={gallery.lead}
+        viewLabel={gallery.viewLabel}
+        items={galleryItems}
+        openImageLabel={(alt) => formatCopy(ui.openImage, { alt })}
+        lightbox={{
+          closeLabel: ui.closeLightbox,
+          closeGalleryLabel: ui.closeGallery,
+          prevLabel: galleryUi.prevLabel,
+          nextLabel: galleryUi.nextLabel,
+          counterLabel: (current, total) =>
+            galleryUi.counterLabel
+              .replace('{current}', String(current))
+              .replace('{total}', String(total)),
+        }}
+      />
     </div>
   );
 }

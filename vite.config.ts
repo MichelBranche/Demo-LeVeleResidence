@@ -58,7 +58,7 @@ export default defineConfig(({ mode }) => {
           manualChunks(id) {
             if (id.includes('node_modules/gsap')) return 'gsap'
             if (id.includes('node_modules/lenis')) return 'lenis'
-            if (id.includes('node_modules/split-type')) return 'split-type'
+            if (id.includes('node_modules/framer-motion')) return 'motion'
             if (id.includes('node_modules/react-router')) return 'router'
             if (id.includes('node_modules/lucide-react')) return 'lucide'
           },

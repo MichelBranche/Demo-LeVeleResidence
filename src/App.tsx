@@ -1,11 +1,10 @@
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { AppBootstrap } from './components/AppBootstrap';
 import { CustomCursor } from './components/CustomCursor';
 import { CookieConsentRoot } from './components/consent/CookieConsentRoot';
 import { LenisScroll } from './components/LenisScroll';
+import { ConsentGatedAnalytics } from './components/seo/ConsentGatedAnalytics';
 import { PageSeo } from './components/seo/PageSeo';
 import { StructuredData } from './components/seo/StructuredData';
 import { TrackingRouteSync } from './components/seo/TrackingRouteSync';
@@ -41,16 +40,15 @@ function ScrollOnNavigate() {
   useLayoutEffect(() => {
     if (stage !== 'idle') return;
     if (location.hash) return;
-
-    if (isSuite) {
-      scrollToTop(true);
-      return;
-    }
+    // Suite: scheduleScrollToSuiteHero gestisce il reset (evita doppio scrollToTop).
+    if (isSuite) return;
 
     scrollToTop(true);
   }, [location.pathname, location.hash, isSuite, stage]);
 
   useEffect(() => {
+    if (stage !== 'idle') return;
+
     if (location.hash) {
       const scroll = () => {
         scrollToHash(location.hash);
@@ -67,7 +65,7 @@ function ScrollOnNavigate() {
     }
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
-  }, [location.pathname, location.hash, isSuite]);
+  }, [location.pathname, location.hash, isSuite, stage]);
 
   return null;
 }
@@ -128,8 +126,7 @@ export default function App() {
             </Route>
           </Routes>
         </Suspense>
-        <Analytics />
-        <SpeedInsights />
+        <ConsentGatedAnalytics />
       </CookieConsentRoot>
       </RouteTransitionProvider>
     </BrowserRouter>

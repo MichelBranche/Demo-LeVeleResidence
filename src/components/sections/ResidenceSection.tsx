@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useResidenceAnimations } from '../../hooks/useResidenceAnimations';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
-import { ServicesAccordion } from './ServicesAccordion';
+import { ResidenceCrispShowcase } from '../ui/ResidenceCrispShowcase';
 
 export function ResidenceSection() {
   const { content } = useSiteLocale();
@@ -17,7 +17,10 @@ export function ResidenceSection() {
             <p className="residence__eyebrow">{residenceIntro.eyebrow}</p>
             <h2 id="residence-title" className="residence__title display-serif">
               <span className="residence__title-line">{residenceIntro.titleLine}</span>
-              <span className="residence__title-brand">{residenceIntro.titleBrand}</span>
+              <span className="residence__title-brand">
+                {residenceIntro.titleBrandBefore}{' '}
+                <span className="residence__title-accent">{residenceIntro.titleBrandAccent}</span>
+              </span>
             </h2>
           </div>
           <div className="residence__intro-aside">
@@ -48,7 +51,7 @@ export function ResidenceSection() {
           ))}
         </dl>
 
-        <ServicesAccordion className="residence__accordion" />
+        <ResidenceCrispShowcase />
       </div>
     </section>
   );

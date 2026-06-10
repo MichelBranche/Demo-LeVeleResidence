@@ -1,7 +1,9 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { SuiteFeatureIcon } from '../SuiteFeatureIcon';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 import { useSuitesAnimations } from '../../hooks/useSuitesAnimations';
+import { getSuiteFeatureIcon } from '../../lib/suiteFeatureIcons';
 
 export function SuitesSection() {
   const { content } = useSiteLocale();
@@ -37,18 +39,21 @@ export function SuitesSection() {
         </div>
 
         <div className="suites__list">
-          {suites.map((suite, index) => (
-            <article
-              key={suite.slug}
-              className={`suites__item${index % 2 === 1 ? ' suites__item--reverse' : ''}`}
-            >
+          {suites.map((suite) => (
+            <article key={suite.slug} className={`suites__item suites__item--${suite.theme}`}>
               <Link
                 to={`/camere/${suite.slug}`}
                 className="suites__media"
                 aria-label={suite.discoverAria}
               >
                 <div className="suites__media-inner">
-                  <img src={suite.cardImage} alt={suite.title} loading="lazy" decoding="async" />
+                  <img
+                    src={suite.cardImage}
+                    alt={suite.title}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ objectPosition: suite.cardImagePosition }}
+                  />
                 </div>
                 <span className="suites__media-tag">{suite.kicker}</span>
               </Link>
@@ -56,15 +61,21 @@ export function SuitesSection() {
               <div className="suites__content">
                 <div className="suites__meta">
                   <span className="suites__index" aria-hidden>
-                    {String(index + 1).padStart(2, '0')}
+                    {suite.index}
                   </span>
                   <p className="suites__label">{suite.listLabel}</p>
                 </div>
                 <h3 className="suites__name display-serif">{suite.title}</h3>
                 <p className="suites__desc">{suite.description}</p>
                 <ul className="suites__features" role="list">
-                  {suite.features.map((feature) => (
-                    <li key={feature}>{feature}</li>
+                  {suite.features.slice(0, 4).map((feature, featureIndex) => (
+                    <li key={feature}>
+                      <SuiteFeatureIcon
+                        id={getSuiteFeatureIcon(suite.slug, featureIndex)}
+                        className="suites__feature-icon"
+                      />
+                      <span>{feature}</span>
+                    </li>
                   ))}
                 </ul>
                 <Link

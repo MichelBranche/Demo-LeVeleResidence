@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { getLaPelosaPaths, isSuiteDetailPath, normalizePathname } from '../data/routes';
 import { useRouteTransitionNavigate } from '../context/RouteTransitionContext';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useSiteLocale } from '../hooks/useSiteLocale';
@@ -86,6 +87,21 @@ export function Header({ animateEntrance = false }: HeaderProps) {
     update();
     mq.addEventListener('change', update);
     return () => mq.removeEventListener('change', update);
+  }, []);
+
+  const forceCloseMenuSync = useCallback(() => {
+    if (!showMobileMenuRef.current) return;
+
+    const nav = navRef.current;
+    const backdrop = backdropRef.current;
+
+    if (nav && backdrop) {
+      gsap.killTweensOf(mobileMenuTargets(nav, backdrop));
+    }
+
+    closingRef.current = false;
+    setMenuOpen(false);
+    setShowMobileMenu(false);
   }, []);
 
   const requestCloseMenu = useCallback(() => {
@@ -242,11 +258,13 @@ export function Header({ animateEntrance = false }: HeaderProps) {
   const navigateTo = useCallback(
     (to: string) => {
       const { pathname, hash } = parseNavTarget(to);
+      const menuWasOpen = showMobileMenuRef.current;
+
+      if (menuWasOpen) forceCloseMenuSync();
 
       if (!hash) {
         navigateWithTransition(pathname);
-        if (showMobileMenu) requestCloseMenu();
-        else setMenuOpen(false);
+        if (!menuWasOpen) setMenuOpen(false);
         return;
       }
 
@@ -266,14 +284,21 @@ export function Header({ animateEntrance = false }: HeaderProps) {
         }
       }
 
-      if (showMobileMenu) requestCloseMenu();
-      else setMenuOpen(false);
+      if (!menuWasOpen) setMenuOpen(false);
     },
-    [location.hash, location.pathname, navigate, navigateWithTransition, requestCloseMenu, showMobileMenu],
+    [forceCloseMenuSync, location.hash, location.pathname, navigate, navigateWithTransition],
   );
+
+  const normalizedPath = normalizePathname(location.pathname);
+  const isPelosaPage = getLaPelosaPaths().some(
+    (path) => normalizePathname(path) === normalizedPath,
+  );
+  const isHeroOverlayPage = isHome || isPelosaPage || isSuiteDetailPath(location.pathname);
+  const isHeroHeader = isHeroOverlayPage && !scrolled && !showMobileMenu;
 
   const headerClass = [
     'site-header',
+    isHeroHeader ? 'site-header--hero' : '',
     scrolled ? 'site-header--scrolled' : '',
     showMobileMenu ? 'site-header--menu-open' : '',
   ]
@@ -419,7 +444,7 @@ export function Header({ animateEntrance = false }: HeaderProps) {
           onClick={() => (showMobileMenu ? requestCloseMenu() : setMenuOpen(false))}
         >
           <img
-            src={logo.header}
+            src={isHeroHeader ? logo.header : logo.headerOnLight}
             alt={`${site.name} — ${site.tagline}`}
             width={180}
             height={80}

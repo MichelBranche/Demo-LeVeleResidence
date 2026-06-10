@@ -16,7 +16,8 @@ export const fr: LocaleCopy = {
   residenceIntro: {
     eyebrow: 'La residence',
     titleLine: 'Bienvenue à la',
-    titleBrand: 'Residence Le Vele',
+    titleBrandBefore: 'Residence',
+    titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: 'Baie · Stintino',
     kicker: 'Entre Cala Lupo et la mer du Nord de la Sardaigne, à quelques minutes de Stintino et de La Pelosa.',
@@ -48,7 +49,7 @@ export const fr: LocaleCopy = {
       title: 'Accès',
       description:
         'La Residence est facilement accessible via les principales voies d\'accès du Nord de la Sardaigne — en voiture, en avion ou en ferry.',
-      imageAlt: '',
+      imageAlt: 'Accès à Stintino — aéroports et ports du nord de la Sardaigne',
       routes: [
         { distance: '~50 km', label: 'Aéroport d\'Alghero' },
         { distance: '~30 km', label: 'Port de Porto Torres' },
@@ -69,12 +70,52 @@ export const fr: LocaleCopy = {
   ],
   residenceAccordion: {
     eyebrow: 'En détail',
-    title: 'Emplacement & services',
+    showcaseTitle: 'Emplacement & environs',
+    title: 'Services & activités',
+    subtitle: 'Tout ce qui rend votre séjour à la Residence Le Vele confortable, détendu et proche de la mer.',
     discoverMore: 'En savoir plus',
+    navHint: 'Faites glisser la photo ou choisissez un aperçu',
+  },
+  residenceServices: {
+    groups: [
+      {
+        id: 'free',
+        title: 'Services gratuits',
+        badge: 'Inclus',
+        items: [
+          { icon: 'luggage', label: 'Consigne à bagages' },
+          { icon: 'tv', label: 'TV LCD' },
+          { icon: 'courtesy-kit', label: 'Kit de courtoisie' },
+          { icon: 'ac', label: 'Climatisation' },
+          { icon: 'wifi', label: 'Connexion internet Wi-Fi' },
+        ],
+      },
+      {
+        id: 'paid',
+        title: 'Services payants',
+        items: [
+          { icon: 'extra-cleaning', label: 'Ménage supplémentaire de la chambre' },
+          { icon: 'laundry', label: 'Blanchisserie' },
+          { icon: 'transport', label: 'Services de transport' },
+        ],
+      },
+      {
+        id: 'activities',
+        title: 'Activités payantes',
+        items: [
+          { icon: 'tennis', label: 'Court de tennis' },
+          { icon: 'bike-rental', label: 'Location de vélos' },
+          { icon: 'boat-rental', label: 'Location de bateaux et gommons' },
+          { icon: 'diving', label: 'Cours de plongée' },
+          { icon: 'asinara', label: "Excursions sur l'île de l'Asinara" },
+          { icon: 'guided-tours', label: 'Visites guidées' },
+        ],
+      },
+    ],
   },
   suitesIntro: {
     eyebrow: 'Hébergements',
-    title: 'Les Suites',
+    title: 'Les studios',
     count: '18',
     countLabel: 'studios',
     kicker: 'Deux atmosphères — mer et jardin — pour vivre Stintino avec l\'intimité d\'une residence.',
@@ -143,7 +184,13 @@ export const fr: LocaleCopy = {
       'Studio vue mer — Residence Le Vele, Stintino',
       'Espace vert et véranda — appartements de vacances Sardaigne',
       'Terrasse avec vue mer à la Residence Le Vele, Stintino',
+      'Intérieur studio vue mer avec balcon sur la mer — Le Vele, Stintino',
+      'Espace commun extérieur avec terrasse, mobilier et vue mer — Residence Le Vele',
     ],
+    closeLabel: 'Fermer la galerie',
+    prevLabel: 'Image précédente',
+    nextLabel: 'Image suivante',
+    counterLabel: '{current} / {total}',
   },
   offers: {
     sectionEyebrow: 'Forfaits',
@@ -174,7 +221,7 @@ export const fr: LocaleCopy = {
   },
   infoServices: {
     eyebrow: 'Informations',
-    title: 'Info & Services',
+    title: 'Info & conditions',
     kicker: 'Arrivées / Départs',
     checkInTitle: 'Check-in',
     checkInTime: 'de 15 h 30 à 19 h 00',
@@ -184,6 +231,24 @@ export const fr: LocaleCopy = {
       'En cas de check-in après 20 h 00, merci de nous prévenir au moins 48 heures à l\'avance par téléphone ou e-mail.',
     noteSupplement:
       'La direction se réserve le droit d\'appliquer un supplément de 30,00 € pour les arrivées tardives sans notification préalable.',
+    noteDeposit:
+      'Une caution sera demandée au check-in et restituée au check-out, sauf retenues éventuelles.',
+    noteCleaningPenalty:
+      'En cas de logement non nettoyé au check-out, la direction se réserve le droit d\'appliquer une pénalité pour ménage supplémentaire.',
+    conditionsTitle: 'Conditions',
+    conditions: [
+      'Un enfant de moins de 2 ans paie 5 EUR par personne et par nuit pour un lit bébé.',
+      'Le nombre maximum de lits bébé par chambre est de 1.',
+      'Tout lit supplémentaire, lit bébé ou chaise haute est soumis à disponibilité et doit être confirmé par la direction sur demande.',
+      'Les suppléments ne sont pas calculés automatiquement dans le montant total et doivent être réglés séparément pendant votre séjour.',
+      'L\'annulation est gratuite pour les réservations standard jusqu\'à 7 jours avant la date d\'arrivée. En cas d\'annulation tardive ou de non-présentation, le montant total de la réservation sera facturé.',
+      'L\'annulation n\'est pas gratuite pour les réservations non remboursables et entraîne une pénalité égale au coût total de la réservation et du séjour.',
+      'Le ménage final et la fourniture de linge de lit et de serviettes à l\'arrivée sont inclus dans le prix. Le changement de linge est hebdomadaire pour les séjours de plus de 8 nuits.',
+      'Le ménage quotidien, le changement de linge supplémentaire et le nettoyage du coin cuisine sont des coûts supplémentaires optionnels.',
+      'Les tarifs n\'incluent aucun repas.',
+      'Les animaux domestiques (chiens/chats) sont les bienvenus.',
+      'Parking intérieur disponible pour les clients.',
+    ],
   },
   reviews: {
     eyebrow: 'Avis',
@@ -191,6 +256,8 @@ export const fr: LocaleCopy = {
     subtitleBefore: 'Extraits de',
     subtitleAfter: '.',
     marqueeAria: 'Avis des hôtes',
+    prevAria: 'Avis précédent',
+    nextAria: 'Avis suivant',
     ratingAria: 'Note {rating} sur 5',
     openOn: 'Ouvrir sur {platform} →',
     summary: {
@@ -331,6 +398,8 @@ export const fr: LocaleCopy = {
     designBy: 'Design by',
     starsAria: 'Classement 3 étoiles',
     instagramAria: 'Residence Le Vele sur Instagram',
+    footerNavAria: 'Navigation du pied de page',
+    legalNavAria: 'Confidentialité et cookies',
   },
   pelosa: {
     hero: {
@@ -352,7 +421,10 @@ export const fr: LocaleCopy = {
       statLabel: 'De la Residence Le Vele',
     },
     gallery: {
+      eyebrow: 'Galerie',
       title: 'Couleurs du Nord de la Sardaigne',
+      lead: 'Vues aériennes, côte et eau turquoise : quatre regards sur la plage la plus emblématique de Stintino.',
+      viewLabel: 'Agrandir',
       imageAlts: [
         'Vue aérienne de la plage La Pelosa, mer turquoise et Torre della Pelosa',
         'La Pelosa vue du ciel : côte, parasols et tour',
@@ -374,7 +446,7 @@ export const fr: LocaleCopy = {
   suitePage: {
     notFound: 'Suite introuvable',
     backToSuites: '← Retour aux suites',
-    backLink: '← Les Suites',
+    backLink: '← Les studios',
     specsAria: 'Informations sur la suite',
     guests: '2–4',
     guestsLabel: 'hôtes',
@@ -412,6 +484,14 @@ export const fr: LocaleCopy = {
       keywords:
         'residence stintino, appartements vacances sardaigne, séjour bord de mer, la pelosa, cala lupo, studios stintino',
     },
+    booking: {
+      title: 'Residence Le Vele | Demander la disponibilité',
+      description:
+        'Demandez la disponibilité pour votre séjour à la Residence Le Vele à Stintino : dates, type de studio et nombre de voyageurs. Réponse personnalisée par e-mail.',
+      keywords:
+        'réserver residence stintino, demande disponibilité, studios stintino, appartements vacances sardaigne',
+      breadcrumb: 'Demander la disponibilité',
+    },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Plage et mer',
       description:
@@ -430,6 +510,8 @@ export const fr: LocaleCopy = {
     suiteDescriptionSuffix: 'Réservez le studio à Stintino, près de La Pelosa.',
     suiteKeywords: 'studio stintino, appartements vacances sardaigne, residence le vele',
     fallbackTitleSuffix: '| Stintino, Sardaigne',
+    ogImageAlt: 'Residence Le Vele — studios à Stintino, près de La Pelosa',
+    breadcrumbHome: 'Accueil',
     schemaDescription:
       'Residence Le Vele à Stintino : studios vue mer et jardin, séjours près de La Pelosa.',
     schemaAmenities: [

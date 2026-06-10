@@ -216,7 +216,7 @@ export function CookieBanner() {
                 </button>
               </div>
 
-              <nav className="cookie-consent__legal" aria-label="Legal">
+              <nav className="cookie-consent__legal" aria-label={copy.aria.legalNav}>
                 <Link to="/privacy-policy">{copy.banner.privacyLink}</Link>
                 <span aria-hidden>·</span>
                 <Link to="/cookie-policy">{copy.banner.cookieLink}</Link>

@@ -1,5 +1,7 @@
+import '../styles/booking-page.css';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { submitBookingRequest, type BookingAccommodation } from '../lib/booking';
 
@@ -37,67 +39,229 @@ export function BookingPage() {
   const [errorKey, setErrorKey] = useState<string | null>(null);
   const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
-  const isItalian = locale === 'it';
-
   const gardenSuite = suites.find((s) => s.slug === 'vista-giardino');
   const seaSuite = suites.find((s) => s.slug === 'vista-mare');
 
-  const labels = useMemo(
-    () => ({
-      eyebrow: isItalian ? 'Prenotazioni' : 'Bookings',
-      title: isItalian ? 'Richiedi disponibilità' : 'Request availability',
-      intro: isItalian
-        ? 'Indica le date del soggiorno, la tipologia di alloggio e il numero di ospiti. Ti risponderemo via email con una proposta personalizzata.'
-        : 'Share your stay dates, accommodation preference and number of guests. We will reply by email with a tailored proposal.',
-      groupStay: isItalian ? 'Soggiorno' : 'Your stay',
-      groupGuests: isItalian ? 'Alloggio e ospiti' : 'Accommodation & guests',
-      groupContact: isItalian ? 'I tuoi dati' : 'Your details',
-      groupMessage: isItalian ? 'Messaggio' : 'Message',
-      checkIn: isItalian ? 'Arrivo' : 'Arrival',
-      checkOut: isItalian ? 'Partenza' : 'Departure',
-      accommodation: isItalian ? 'Tipologia di alloggio' : 'Accommodation type',
-      accommodationAny: isItalian ? 'Nessuna preferenza' : 'No preference',
-      accommodationGarden: gardenSuite?.title ?? (isItalian ? 'Vista giardino' : 'Garden view'),
-      accommodationSea: seaSuite?.title ?? (isItalian ? 'Vista mare' : 'Sea view'),
-      guests: isItalian ? 'Numero di ospiti' : 'Number of guests',
-      firstName: isItalian ? 'Nome' : 'First name',
-      lastName: isItalian ? 'Cognome' : 'Last name',
-      email: isItalian ? 'Email' : 'Email',
-      message: isItalian ? 'Richiesta' : 'Request',
-      messagePlaceholder: isItalian
-        ? 'Es. orario di arrivo, esigenze particolari, animali…'
-        : 'E.g. arrival time, special requests, pets…',
-      submit: isItalian ? 'Invia richiesta' : 'Send request',
-      submitting: isItalian ? 'Invio in corso…' : 'Sending…',
-      requiredHint: isItalian ? 'Campi obbligatori *' : 'Required fields *',
-      emailNote: isItalian
-        ? 'La richiesta viene inviata in modo sicuro. Riceverai risposta all’indirizzo indicato.'
-        : 'Your request is sent securely. We will reply to the email address provided.',
-      successTitle: isItalian ? 'Richiesta inviata' : 'Request sent',
-      successBody: isItalian
-        ? 'Grazie! Abbiamo ricevuto la tua richiesta e ti risponderemo al più presto via email.'
-        : 'Thank you! We have received your request and will reply by email as soon as possible.',
-      errorGeneric: isItalian
-        ? 'Non è stato possibile inviare la richiesta. Riprova tra qualche minuto o contattaci telefonicamente.'
-        : 'We could not send your request. Please try again in a few minutes or call us.',
-      errorNetwork: isItalian
-        ? 'Connessione assente. Controlla la rete e riprova.'
-        : 'No connection. Check your network and try again.',
-      errorResendDomain: isItalian
-        ? 'Il servizio email è in modalità test: su Resend va verificato il dominio rtalevele.com, oppure (solo per prove) imposta BOOKING_TO_EMAIL con l’email del tuo account Resend.'
-        : 'Email is in test mode: verify rtalevele.com on Resend, or (for testing only) set BOOKING_TO_EMAIL to your Resend account email.',
-      errorResendFrom: isItalian
-        ? 'Mittente non valido. Su Vercel imposta BOOKING_FROM_EMAIL a: Residence Le Vele <onboarding@resend.dev> (fino a verifica dominio).'
-        : 'Invalid sender. On Vercel set BOOKING_FROM_EMAIL to: Residence Le Vele <onboarding@resend.dev> (until domain is verified).',
-      errorService: isItalian
-        ? 'Servizio email non configurato. Contatta l’amministratore del sito.'
-        : 'Email service is not configured. Please contact the site administrator.',
-      errorLocalDev: isItalian
-        ? 'In locale con npm run dev l’API non è attiva. Usa npm run dev:vercel oppure prova sul sito pubblicato su Vercel.'
-        : 'Local npm run dev does not run the API. Use npm run dev:vercel or test on the deployed Vercel site.',
-    }),
-    [gardenSuite?.title, isItalian, seaSuite?.title],
-  );
+  const labels = useMemo(() => {
+    const copyByLocale = {
+      it: {
+        eyebrow: 'Prenotazioni',
+        title: 'Richiedi disponibilità',
+        intro:
+          'Indica le date del soggiorno, la tipologia di alloggio e il numero di ospiti. Ti risponderemo via email con una proposta personalizzata.',
+        groupStay: 'Soggiorno',
+        groupGuests: 'Alloggio e ospiti',
+        groupContact: 'I tuoi dati',
+        groupMessage: 'Messaggio',
+        checkIn: 'Arrivo',
+        checkOut: 'Partenza',
+        accommodation: 'Tipologia di alloggio',
+        accommodationAny: 'Nessuna preferenza',
+        guests: 'Numero di ospiti',
+        firstName: 'Nome',
+        lastName: 'Cognome',
+        message: 'Richiesta',
+        messagePlaceholder: 'Es. orario di arrivo, esigenze particolari, animali…',
+        submit: 'Invia richiesta',
+        submitting: 'Invio in corso…',
+        requiredHint: 'Campi obbligatori *',
+        emailNote:
+          'La richiesta viene inviata in modo sicuro. Riceverai risposta all’indirizzo indicato.',
+        privacyBefore: 'I dati inseriti sono trattati per gestire la richiesta di disponibilità. Consulta la ',
+        privacyLink: 'Privacy Policy',
+        privacyAfter: ' per finalità, base giuridica e diritti.',
+        successTitle: 'Richiesta inviata',
+        successBody:
+          'Grazie! Abbiamo ricevuto la tua richiesta e ti risponderemo al più presto via email.',
+        anotherRequest: 'Invia un’altra richiesta',
+        errorGeneric:
+          'Non è stato possibile inviare la richiesta. Riprova tra qualche minuto o contattaci telefonicamente.',
+        errorNetwork: 'Connessione assente. Controlla la rete e riprova.',
+        errorResendDomain:
+          'Il servizio email è in modalità test: su Resend va verificato il dominio rtalevele.com, oppure (solo per prove) imposta BOOKING_TO_EMAIL con l’email del tuo account Resend.',
+        errorResendFrom:
+          'Mittente non valido. Su Vercel imposta BOOKING_FROM_EMAIL a: Residence Le Vele <onboarding@resend.dev> (fino a verifica dominio).',
+        errorService: 'Servizio email non configurato. Contatta l’amministratore del sito.',
+        errorLocalDev:
+          'In locale con npm run dev l’API non è attiva. Usa npm run dev:vercel oppure prova sul sito pubblicato su Vercel.',
+      },
+      en: {
+        eyebrow: 'Bookings',
+        title: 'Request availability',
+        intro:
+          'Share your stay dates, accommodation preference and number of guests. We will reply by email with a tailored proposal.',
+        groupStay: 'Your stay',
+        groupGuests: 'Accommodation & guests',
+        groupContact: 'Your details',
+        groupMessage: 'Message',
+        checkIn: 'Arrival',
+        checkOut: 'Departure',
+        accommodation: 'Accommodation type',
+        accommodationAny: 'No preference',
+        guests: 'Number of guests',
+        firstName: 'First name',
+        lastName: 'Last name',
+        message: 'Request',
+        messagePlaceholder: 'E.g. arrival time, special requests, pets…',
+        submit: 'Send request',
+        submitting: 'Sending…',
+        requiredHint: 'Required fields *',
+        emailNote: 'Your request is sent securely. We will reply to the email address provided.',
+        privacyBefore: 'The data you provide is processed to handle your availability request. See our ',
+        privacyLink: 'Privacy Policy',
+        privacyAfter: ' for purposes, legal basis and your rights.',
+        successTitle: 'Request sent',
+        successBody:
+          'Thank you! We have received your request and will reply by email as soon as possible.',
+        anotherRequest: 'Send another request',
+        errorGeneric:
+          'We could not send your request. Please try again in a few minutes or call us.',
+        errorNetwork: 'No connection. Check your network and try again.',
+        errorResendDomain:
+          'Email is in test mode: verify rtalevele.com on Resend, or (for testing only) set BOOKING_TO_EMAIL to your Resend account email.',
+        errorResendFrom:
+          'Invalid sender. On Vercel set BOOKING_FROM_EMAIL to: Residence Le Vele <onboarding@resend.dev> (until domain is verified).',
+        errorService: 'Email service is not configured. Please contact the site administrator.',
+        errorLocalDev:
+          'Local npm run dev does not run the API. Use npm run dev:vercel or test on the deployed Vercel site.',
+      },
+      de: {
+        eyebrow: 'Buchungen',
+        title: 'Verfügbarkeit anfragen',
+        intro:
+          'Teilen Sie uns Reisedaten, Unterkunftstyp und Gästezahl mit. Wir antworten per E-Mail mit einem individuellen Angebot.',
+        groupStay: 'Aufenthalt',
+        groupGuests: 'Unterkunft & Gäste',
+        groupContact: 'Ihre Daten',
+        groupMessage: 'Nachricht',
+        checkIn: 'Anreise',
+        checkOut: 'Abreise',
+        accommodation: 'Unterkunftstyp',
+        accommodationAny: 'Keine Präferenz',
+        guests: 'Anzahl der Gäste',
+        firstName: 'Vorname',
+        lastName: 'Nachname',
+        message: 'Anfrage',
+        messagePlaceholder: 'z. B. Ankunftszeit, besondere Wünsche, Haustiere…',
+        submit: 'Anfrage senden',
+        submitting: 'Wird gesendet…',
+        requiredHint: 'Pflichtfelder *',
+        emailNote:
+          'Ihre Anfrage wird sicher übermittelt. Wir antworten an die angegebene E-Mail-Adresse.',
+        privacyBefore:
+          'Die angegebenen Daten werden zur Bearbeitung Ihrer Verfügbarkeitsanfrage verarbeitet. Siehe ',
+        privacyLink: 'Datenschutzerklärung',
+        privacyAfter: ' zu Zweck, Rechtsgrundlage und Ihren Rechten.',
+        successTitle: 'Anfrage gesendet',
+        successBody:
+          'Vielen Dank! Wir haben Ihre Anfrage erhalten und antworten so bald wie möglich per E-Mail.',
+        anotherRequest: 'Weitere Anfrage senden',
+        errorGeneric:
+          'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es später erneut oder rufen Sie uns an.',
+        errorNetwork: 'Keine Verbindung. Prüfen Sie das Netzwerk und versuchen Sie es erneut.',
+        errorResendDomain:
+          'E-Mail im Testmodus: Domain rtalevele.com bei Resend verifizieren oder BOOKING_TO_EMAIL für Tests setzen.',
+        errorResendFrom:
+          'Ungültiger Absender. Auf Vercel BOOKING_FROM_EMAIL setzen: Residence Le Vele <onboarding@resend.dev>.',
+        errorService: 'E-Mail-Dienst nicht konfiguriert. Bitte den Administrator kontaktieren.',
+        errorLocalDev:
+          'Lokal mit npm run dev ist die API nicht aktiv. Nutzen Sie npm run dev:vercel oder die Vercel-Deployment-URL.',
+      },
+      fr: {
+        eyebrow: 'Réservations',
+        title: 'Demander la disponibilité',
+        intro:
+          'Indiquez les dates, le type de logement et le nombre de voyageurs. Nous répondrons par e-mail avec une proposition personnalisée.',
+        groupStay: 'Séjour',
+        groupGuests: 'Logement & voyageurs',
+        groupContact: 'Vos coordonnées',
+        groupMessage: 'Message',
+        checkIn: 'Arrivée',
+        checkOut: 'Départ',
+        accommodation: 'Type de logement',
+        accommodationAny: 'Sans préférence',
+        guests: 'Nombre de voyageurs',
+        firstName: 'Prénom',
+        lastName: 'Nom',
+        message: 'Demande',
+        messagePlaceholder: 'Ex. heure d’arrivée, demandes particulières, animaux…',
+        submit: 'Envoyer la demande',
+        submitting: 'Envoi en cours…',
+        requiredHint: 'Champs obligatoires *',
+        emailNote:
+          'Votre demande est envoyée de manière sécurisée. Nous répondrons à l’adresse e-mail indiquée.',
+        privacyBefore:
+          'Les données saisies sont traitées pour gérer votre demande de disponibilité. Consultez la ',
+        privacyLink: 'politique de confidentialité',
+        privacyAfter: ' pour les finalités, la base juridique et vos droits.',
+        successTitle: 'Demande envoyée',
+        successBody:
+          'Merci ! Nous avons bien reçu votre demande et vous répondrons par e-mail dès que possible.',
+        anotherRequest: 'Envoyer une autre demande',
+        errorGeneric:
+          'Impossible d’envoyer la demande. Réessayez dans quelques minutes ou contactez-nous par téléphone.',
+        errorNetwork: 'Pas de connexion. Vérifiez le réseau et réessayez.',
+        errorResendDomain:
+          'E-mail en mode test : vérifiez le domaine rtalevele.com sur Resend ou définissez BOOKING_TO_EMAIL pour les tests.',
+        errorResendFrom:
+          'Expéditeur invalide. Sur Vercel, définissez BOOKING_FROM_EMAIL : Residence Le Vele <onboarding@resend.dev>.',
+        errorService: 'Service e-mail non configuré. Contactez l’administrateur du site.',
+        errorLocalDev:
+          'En local avec npm run dev, l’API n’est pas active. Utilisez npm run dev:vercel ou le site déployé sur Vercel.',
+      },
+      es: {
+        eyebrow: 'Reservas',
+        title: 'Solicitar disponibilidad',
+        intro:
+          'Indique las fechas, el tipo de alojamiento y el número de huéspedes. Responderemos por correo con una propuesta personalizada.',
+        groupStay: 'Estancia',
+        groupGuests: 'Alojamiento y huéspedes',
+        groupContact: 'Sus datos',
+        groupMessage: 'Mensaje',
+        checkIn: 'Llegada',
+        checkOut: 'Salida',
+        accommodation: 'Tipo de alojamiento',
+        accommodationAny: 'Sin preferencia',
+        guests: 'Número de huéspedes',
+        firstName: 'Nombre',
+        lastName: 'Apellidos',
+        message: 'Solicitud',
+        messagePlaceholder: 'Ej. hora de llegada, peticiones especiales, mascotas…',
+        submit: 'Enviar solicitud',
+        submitting: 'Enviando…',
+        requiredHint: 'Campos obligatorios *',
+        emailNote:
+          'Su solicitud se envía de forma segura. Responderemos al correo indicado.',
+        privacyBefore:
+          'Los datos facilitados se tratan para gestionar su solicitud de disponibilidad. Consulte la ',
+        privacyLink: 'política de privacidad',
+        privacyAfter: ' para finalidades, base jurídica y derechos.',
+        successTitle: 'Solicitud enviada',
+        successBody:
+          '¡Gracias! Hemos recibido su solicitud y responderemos por correo lo antes posible.',
+        anotherRequest: 'Enviar otra solicitud',
+        errorGeneric:
+          'No se pudo enviar la solicitud. Inténtelo de nuevo en unos minutos o llámenos.',
+        errorNetwork: 'Sin conexión. Compruebe la red e inténtelo de nuevo.',
+        errorResendDomain:
+          'Correo en modo prueba: verifique el dominio rtalevele.com en Resend o configure BOOKING_TO_EMAIL para pruebas.',
+        errorResendFrom:
+          'Remitente no válido. En Vercel configure BOOKING_FROM_EMAIL: Residence Le Vele <onboarding@resend.dev>.',
+        errorService: 'Servicio de correo no configurado. Contacte al administrador del sitio.',
+        errorLocalDev:
+          'En local con npm run dev la API no está activa. Use npm run dev:vercel o el sitio desplegado en Vercel.',
+      },
+    } as const;
+
+    const copy = copyByLocale[locale];
+
+    return {
+      ...copy,
+      email: 'Email',
+      accommodationGarden: gardenSuite?.title ?? copy.accommodationAny,
+      accommodationSea: seaSuite?.title ?? copy.accommodationAny,
+    };
+  }, [gardenSuite?.title, locale, seaSuite?.title]);
 
   const handleChange =
     (field: keyof BookingFormState) =>
@@ -181,7 +345,7 @@ export function BookingPage() {
               className="booking-page__submit"
               onClick={() => setStatus('idle')}
             >
-              <span>{isItalian ? 'Invia un’altra richiesta' : 'Send another request'}</span>
+              <span>{labels.anotherRequest}</span>
             </button>
           </div>
         ) : (
@@ -355,6 +519,11 @@ export function BookingPage() {
                 )}
               </button>
               <p className="booking-page__note">{labels.emailNote}</p>
+              <p className="booking-page__note booking-page__privacy">
+                {labels.privacyBefore}
+                <Link to="/privacy-policy">{labels.privacyLink}</Link>
+                {labels.privacyAfter}
+              </p>
             </div>
           </form>
         )}

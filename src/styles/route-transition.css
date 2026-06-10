@@ -1,7 +1,14 @@
-/* Transizione full-screen tra pagine esperienza */
+/* Transizione full-screen — cascata di vele su palette attuale (crema / carbone / ink + eyebrow) */
 
 body.route-transition-active {
   overflow: hidden;
+}
+
+/* Menu mobile (portal su body) — nascondi subito sotto la transizione */
+body.route-transition-active .site-header__mobile-layer {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 /* Copertura sincrona al click — evita flash hero prima di GSAP */
@@ -12,8 +19,8 @@ html.route-transition-snapshot::before {
   z-index: calc(var(--z-route-transition) - 1);
   pointer-events: all;
   background:
-    radial-gradient(circle at 50% 42%, rgb(181 168 134 / 14%), transparent 52%),
-    linear-gradient(165deg, #4a4039 0%, #62544b 48%, #4a4039 100%);
+    radial-gradient(ellipse at 50% 28%, color-mix(in srgb, var(--eyebrow) 14%, transparent), transparent 56%),
+    linear-gradient(168deg, var(--ink) 0%, var(--hero-dark) 100%);
 }
 
 .route-transition {
@@ -22,6 +29,7 @@ html.route-transition-snapshot::before {
   z-index: var(--z-route-transition);
   display: grid;
   place-items: center;
+  overflow: hidden;
   pointer-events: none;
   visibility: hidden;
   opacity: 0;
@@ -36,110 +44,121 @@ html.route-transition-snapshot::before {
   pointer-events: none;
 }
 
-.route-transition__veil {
+/* Pannelli a tutta pagina con bordo curvo (arco di vela) sopra e sotto.
+   I transform sono gestiti SOLO da GSAP (yPercent). */
+.route-transition__panel {
   position: absolute;
-  inset: 0;
+  left: -6vw;
+  top: -15dvh;
+  width: 112vw;
+  height: 130dvh;
+  border-radius: 50% 50% 50% 50% / 6.5dvh 6.5dvh 6.5dvh 6.5dvh;
+  will-change: transform;
+}
+
+/* 1 — luce crema (come sfondo pagine chiare) */
+.route-transition__panel--sand {
+  z-index: 1;
+  background: linear-gradient(176deg, var(--crema) 0%, var(--suites-bg) 100%);
+}
+
+/* 2 — caldo carbone / surface (ponte verso il scuro) */
+.route-transition__panel--surface {
+  z-index: 2;
+  background: linear-gradient(
+    176deg,
+    var(--carbone) 0%,
+    var(--surface) 52%,
+    color-mix(in srgb, var(--ink) 88%, var(--surface)) 100%
+  );
+}
+
+/* 3 — ink profondo con bagliore eyebrow (come hero / chrome scuro) */
+.route-transition__panel--ink {
+  z-index: 3;
   background:
-    radial-gradient(circle at 50% 42%, rgb(181 168 134 / 14%), transparent 52%),
-    radial-gradient(circle at 18% 88%, rgb(129 178 154 / 10%), transparent 40%),
-    linear-gradient(165deg, #4a4039 0%, #62544b 48%, #4a4039 100%);
-  clip-path: circle(0% at 50% 50%);
-  will-change: clip-path;
+    radial-gradient(ellipse at 50% 28%, color-mix(in srgb, var(--eyebrow) 16%, transparent), transparent 56%),
+    radial-gradient(ellipse at 18% 92%, color-mix(in srgb, var(--accent-primary) 10%, transparent), transparent 42%),
+    linear-gradient(168deg, var(--ink) 0%, var(--hero-dark) 100%);
 }
 
 .route-transition__content {
   position: relative;
-  z-index: 1;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(1.35rem, 3.5vw, 1.85rem);
+  gap: clamp(1.1rem, 3vw, 1.6rem);
   padding: 2rem;
   text-align: center;
   pointer-events: none;
 }
 
 .route-transition__brand {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.42em;
   margin: 0;
-  font-size: clamp(1.55rem, 4.8vw, 2.35rem);
+  font-size: clamp(1.7rem, 5.4vw, 2.7rem);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--panna);
-  text-shadow: 0 8px 28px rgb(0 0 0 / 28%);
+  color: var(--crema);
+  line-height: 1.15;
 }
 
-.route-transition__loader {
+.route-transition__word {
+  display: inline-flex;
+}
+
+.route-transition__char-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.route-transition__char {
+  display: inline-block;
+  will-change: transform;
+}
+
+.route-transition__line {
   position: relative;
-  width: 3.25rem;
-  height: 3.25rem;
+  width: clamp(110px, 16vw, 200px);
+  height: 1px;
+  background: var(--eyebrow);
+  transform-origin: center;
+  will-change: transform;
 }
 
-.route-transition__ring {
+/* Bagliore in attesa caricamento — eyebrow, come navbar e cursor */
+.route-transition__line::after {
+  content: '';
   position: absolute;
-  inset: 0;
-  margin: auto;
-  border-radius: 50%;
-  border: 1px solid rgb(181 168 134 / 0.55);
-  box-shadow:
-    0 0 0 1px rgb(244 238 232 / 0.06) inset,
-    0 0 24px rgb(181 168 134 / 0.22);
+  inset: -3px 0;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--eyebrow) 58%, transparent),
+    transparent 72%
+  );
+  animation: route-transition-glow 1.35s ease-in-out infinite;
 }
 
-.route-transition__ring--outer {
-  width: 100%;
-  height: 100%;
-  animation: route-transition-radiate 2.4s ease-in-out infinite;
-}
-
-.route-transition__ring--mid {
-  width: 68%;
-  height: 68%;
-  border-color: rgb(181 168 134 / 0.72);
-  animation: route-transition-radiate 2.4s ease-in-out infinite 0.35s;
-}
-
-.route-transition__ring--core {
-  width: 34%;
-  height: 34%;
-  border-width: 1.5px;
-  border-color: var(--accent-primary);
-  background: radial-gradient(circle, rgb(181 168 134 / 0.35) 0%, transparent 70%);
-  box-shadow: 0 0 18px rgb(181 168 134 / 0.45);
-  animation: route-transition-core 1.8s ease-in-out infinite;
-}
-
-@keyframes route-transition-radiate {
+@keyframes route-transition-glow {
   0%,
   100% {
-    transform: scale(0.92);
-    opacity: 0.45;
+    opacity: 0.25;
   }
 
   50% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes route-transition-core {
-  0%,
-  100% {
-    transform: scale(0.88);
-    opacity: 0.65;
-  }
-
-  50% {
-    transform: scale(1.06);
     opacity: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .route-transition__ring--outer,
-  .route-transition__ring--mid,
-  .route-transition__ring--core {
+  .route-transition__line::after {
     animation: none;
-    opacity: 0.85;
+    opacity: 0.6;
   }
 }

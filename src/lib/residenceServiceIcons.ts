@@ -1,0 +1,15 @@
+export type ResidenceServiceIconId =
+  | 'luggage'
+  | 'tv'
+  | 'courtesy-kit'
+  | 'ac'
+  | 'wifi'
+  | 'extra-cleaning'
+  | 'laundry'
+  | 'transport'
+  | 'tennis'
+  | 'bike-rental'
+  | 'boat-rental'
+  | 'diving'
+  | 'asinara'
+  | 'guided-tours';

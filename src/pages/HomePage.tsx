@@ -10,7 +10,7 @@ import { useConsent } from '../hooks/useConsent';
 import { useHomeLangReveal } from '../hooks/useHomeLangReveal';
 import { useNetworkTier } from '../hooks/useNetworkTier';
 import { useSiteLocale } from '../hooks/useSiteLocale';
-import { markIntroDone } from '../lib/intro';
+import { markIntroDone, resetIntroState } from '../lib/intro';
 import {
   shouldAutoplayHeroVideoImmediately,
   shouldDeferHeroVideoLoad,
@@ -49,8 +49,14 @@ const PRELOADER_DONE_KEY = 'lv-preloader-done';
 
 type IntroPhase = 'pending-consent' | 'preloader' | 'complete';
 
+function wantsReplayIntro(): boolean {
+  if (typeof window === 'undefined') return false;
+  return new URLSearchParams(window.location.search).has('replay-intro');
+}
+
 function readPreloaderDone(): boolean {
   if (typeof window === 'undefined') return false;
+  if (wantsReplayIntro()) return false;
   try {
     return sessionStorage.getItem(PRELOADER_DONE_KEY) === '1';
   } catch {
@@ -65,8 +71,8 @@ function BelowFoldSections() {
       <SuitesSection />
       <GallerySection />
       <OffersSection />
-      <InfoServicesSection />
       <ReviewsSection />
+      <InfoServicesSection />
       <ContactSection />
     </Suspense>
   );
@@ -85,16 +91,35 @@ export function HomePage() {
   );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const introDoneEventSentRef = useRef(false);
-  const animateHeaderEntranceRef = useRef(!readPreloaderDone());
+  const skippedPreloaderOnMount = useRef(readPreloaderDone());
+  const preloaderOrchestratedRef = useRef(false);
 
   const lightPreloader = !shouldRunVideoPreloader();
   const posterOnlyHero = shouldUsePosterOnlyHero();
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
+  const heroMounted = introPhase !== 'pending-consent';
   const [preloaderReady, setPreloaderReady] = useState(false);
+  const [shellReady, setShellReady] = useState(() => readPreloaderDone());
 
   useHomeLangReveal(ready);
+
+  useLayoutEffect(() => {
+    if (!wantsReplayIntro()) return;
+    try {
+      sessionStorage.removeItem(PRELOADER_DONE_KEY);
+    } catch {
+      /* ignore */
+    }
+    resetIntroState();
+  }, []);
+
+  if (showPreloader) {
+    preloaderOrchestratedRef.current = true;
+  }
+
+  const headerAnimateEntrance =
+    !skippedPreloaderOnMount.current && !preloaderOrchestratedRef.current;
 
   useEffect(() => {
     if (!isReady) return;
@@ -184,61 +209,19 @@ export function HomePage() {
   useEffect(() => {
     if (!ready) return undefined;
 
-    const video = videoRef.current;
-    if (!video) return undefined;
-
-    let cancelled = false;
-
-    const finishIntro = () => {
-      if (cancelled || introDoneEventSentRef.current) return;
-      introDoneEventSentRef.current = true;
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          markIntroDone();
-          ScrollTrigger.refresh();
-        });
-      });
-    };
-
-    const run = async () => {
-      if (cancelled) return;
-
-      if (!video || !heroVideoSrc) {
-        finishIntro();
-        return;
-      }
-
-      video.muted = true;
-      try {
-        await video.play();
-      } catch {
-        /* autoplay bloccato o video non pronto — poster resta visibile */
-      }
-
-      finishIntro();
-    };
-
-    const id = requestAnimationFrame(() => {
-      void run();
-    });
-
-    return () => {
-      cancelled = true;
-      cancelAnimationFrame(id);
-    };
-  }, [ready, heroVideoSrc]);
-
-  useEffect(() => {
-    if (!ready) return;
     const refresh = () => ScrollTrigger.refresh();
     const id = requestAnimationFrame(() => {
       requestAnimationFrame(refresh);
     });
+
+    return () => cancelAnimationFrame(id);
+  }, [ready]);
+
+  useEffect(() => {
+    if (!ready) return;
+    const refresh = () => ScrollTrigger.refresh();
     const t = window.setTimeout(refresh, 600);
-    return () => {
-      cancelAnimationFrame(id);
-      window.clearTimeout(t);
-    };
+    return () => window.clearTimeout(t);
   }, [ready]);
 
   useEffect(() => {
@@ -256,7 +239,8 @@ export function HomePage() {
 
   const shellClass = [
     'home-hero-shell',
-    ready ? 'home-hero-shell--ready' : '',
+    shellReady ? 'home-hero-shell--ready' : '',
+    showPreloader ? 'home-hero-shell--intro' : '',
     introPhase === 'pending-consent' ? 'home-hero-shell--awaiting-consent' : '',
   ]
     .filter(Boolean)
@@ -265,9 +249,9 @@ export function HomePage() {
   return (
     <>
       <main id="main-content" className="home-page">
-        {ready && (
+        {heroMounted && (
           <div className="home-page__sticky-header">
-            <Header animateEntrance={animateHeaderEntranceRef.current} />
+            <Header animateEntrance={headerAnimateEntrance} />
           </div>
         )}
         <div className={shellClass}>
@@ -297,7 +281,7 @@ export function HomePage() {
           </div>
 
           <div className="oh-reveal">
-            {ready && <HeroSection />}
+            {heroMounted && <HeroSection />}
           </div>
 
           {showPreloader &&
@@ -309,6 +293,8 @@ export function HomePage() {
                 videoRef={videoRef}
                 videoSlotRef={videoSlotRef}
                 onComplete={handlePreloaderComplete}
+                onShellReady={() => setShellReady(true)}
+                animateHeader
                 lightMode={lightPreloader}
                 posterSrc={heroMedia.poster}
               />,
@@ -316,14 +302,13 @@ export function HomePage() {
             )}
         </div>
 
-        {ready && (
-          <>
-            <Suspense fallback={null}>
-              <HomeHeroAnimations />
-            </Suspense>
-            <BelowFoldSections />
-          </>
+        {heroMounted && (
+          <Suspense fallback={null}>
+            <HomeHeroAnimations orchestrated={showPreloader} />
+          </Suspense>
         )}
+
+        {ready && <BelowFoldSections />}
       </main>
       {ready && <Footer />}
     </>

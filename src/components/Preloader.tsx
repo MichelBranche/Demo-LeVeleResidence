@@ -1,10 +1,29 @@
 import type { RefObject } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import {
+  playHeaderReveal,
+  playHeroRevealLines,
+  prepareHeaderReveal,
+  prepareHeroRevealLines,
+} from '../lib/homeIntroEntrance';
+import { markIntroDone, resetIntroState } from '../lib/intro';
 import { scrollToTop } from '../lib/scroll';
 
-const INTRO_LIGHT_MAX_MS = 7000;
-const INTRO_VIDEO_MAX_MS = 14000;
+/* Willem loading pattern — Osmo [https://osmo.supply/] */
+const WILLEM = {
+  ease: 'expo.inOut',
+  letterDuration: 0.85,
+  letterStagger: 0.018,
+  slotDuration: 0.9,
+  expandDuration: 2,
+  heroLead: 0.45,
+  textFade: 0.25,
+  splitEm: 0.05,
+} as const;
+
+const INTRO_LIGHT_MAX_MS = 9000;
+const INTRO_VIDEO_MAX_MS = 16000;
 const INTRO_METADATA_MAX_MS = 6000;
 const INIT_MAX_FRAMES = 90;
 
@@ -13,19 +32,56 @@ type PreloaderProps = {
   videoRef: RefObject<HTMLVideoElement | null>;
   videoSlotRef: RefObject<HTMLDivElement | null>;
   onComplete: () => void;
+  onShellReady?: () => void;
+  animateHeader?: boolean;
   lightMode?: boolean;
   posterSrc?: string;
 };
 
-function getSlotTarget(slot: HTMLElement) {
-  const rect = slot.getBoundingClientRect();
-  return {
-    top: rect.top,
-    left: rect.left,
-    width: rect.width,
-    height: rect.height,
-    borderRadius: 0,
-  };
+function waitForHeroLinesThen(run: () => void, framesLeft = INIT_MAX_FRAMES) {
+  const lines = prepareHeroRevealLines();
+  if (lines.length === 0 && framesLeft > 0) {
+    requestAnimationFrame(() => waitForHeroLinesThen(run, framesLeft - 1));
+    return;
+  }
+  run();
+}
+
+function scheduleHeroCopyReveal({
+  light,
+  onComplete,
+}: {
+  light: boolean;
+  onComplete?: () => void;
+}) {
+  waitForHeroLinesThen(() => {
+    markPreloaderHeroPhase();
+    const tween = playHeroRevealLines({ light, onComplete });
+    if (!tween) {
+      onComplete?.();
+    }
+  });
+}
+
+function scheduleHeaderReveal({
+  light,
+  animateHeader,
+  onComplete,
+}: {
+  light: boolean;
+  animateHeader: boolean;
+  onComplete?: () => void;
+}) {
+  if (!animateHeader) {
+    onComplete?.();
+    return;
+  }
+
+  markPreloaderHeaderPhase();
+  const tween = playHeaderReveal({ light, onComplete });
+  if (!tween) {
+    onComplete?.();
+  }
 }
 
 function isMobilePreloader(): boolean {
@@ -50,78 +106,397 @@ function waitForLayout(): Promise<void> {
   });
 }
 
-function measureTextHeight(textEl: HTMLElement): number {
-  const rect = textEl.getBoundingClientRect().height;
+function measureTextHeight(h1El: HTMLElement): number {
+  const rect = h1El.getBoundingClientRect().height;
   if (rect >= 8) return rect;
-  const wrapper = textEl.querySelector<HTMLElement>('.oh-preloader__char-wrapper');
+  const wrapper = h1El.querySelector<HTMLElement>('.oh-preloader__char-wrapper');
   const line = wrapper?.getBoundingClientRect().height ?? 0;
   if (line >= 8) return line;
   return isMobilePreloader() ? 52 : 72;
 }
 
 type IntroDom = {
-  textEl: HTMLSpanElement;
+  h1El: HTMLDivElement;
   textContainer: HTMLDivElement;
   revealMedia: HTMLDivElement;
+  slotEl: HTMLDivElement;
   preloaderEl: HTMLDivElement;
   text: string;
   unlockScroll: () => void;
   onComplete: () => void;
+  onShellReady?: () => void;
   onDone: () => void;
+  animateHeader?: boolean;
+  lightMode?: boolean;
 };
 
-function buildWordDom(textEl: HTMLSpanElement, text: string) {
+type WillemDom = {
+  charElements: HTMLElement[];
+  startEl: HTMLDivElement;
+  endEl: HTMLDivElement;
+};
+
+function appendLetters(container: HTMLElement, word: string, charElements: HTMLElement[]) {
+  word.split('').forEach((ch) => {
+    const cw = document.createElement('span');
+    cw.className = 'oh-preloader__char-wrapper';
+
+    const cs = document.createElement('span');
+    cs.className = 'oh-preloader__char';
+    cs.textContent = ch;
+
+    cw.appendChild(cs);
+    container.appendChild(cw);
+    charElements.push(cs);
+  });
+}
+
+function buildWillemDom(
+  h1El: HTMLDivElement,
+  slotEl: HTMLDivElement,
+  revealMedia: HTMLDivElement,
+  text: string,
+): WillemDom {
   const words = text.trim().split(/\s+/);
-  const wordElements: HTMLSpanElement[] = [];
-  const charElements: HTMLSpanElement[] = [];
+  const startText = words[0] ?? '';
+  const endText = words.slice(1).join(' ');
 
-  textEl.innerHTML = '';
-  words.forEach((word, wordIndex) => {
-    const wordWrapper = document.createElement('span');
-    wordWrapper.className = 'oh-preloader__word';
+  const charElements: HTMLElement[] = [];
 
-    word.split('').forEach((ch) => {
-      const cw = document.createElement('span');
-      cw.className = 'oh-preloader__char-wrapper';
-
-      const cs = document.createElement('span');
-      cs.className = 'oh-preloader__char';
-      cs.setAttribute('data-oh-word', String(wordIndex));
-      cs.textContent = ch;
-
-      cw.appendChild(cs);
-      wordWrapper.appendChild(cw);
-      charElements.push(cs);
-    });
-
-    textEl.appendChild(wordWrapper);
-    wordElements.push(wordWrapper);
-
-    if (wordIndex < words.length - 1) {
-      const space = document.createElement('span');
-      space.className = 'oh-preloader__word-space';
-      textEl.appendChild(space);
-    }
+  h1El.querySelectorAll('.oh-preloader__h1-start, .oh-preloader__h1-end').forEach((node) => {
+    node.remove();
   });
 
-  return { words, wordElements, charElements };
+  if (!slotEl.contains(revealMedia)) {
+    slotEl.appendChild(revealMedia);
+  }
+  if (slotEl.parentElement !== h1El) {
+    h1El.appendChild(slotEl);
+  }
+
+  const startEl = document.createElement('div');
+  startEl.className = 'oh-preloader__h1-start';
+
+  const endEl = document.createElement('div');
+  endEl.className = 'oh-preloader__h1-end';
+
+  appendLetters(startEl, startText, charElements);
+  if (endText) {
+    appendLetters(endEl, ` ${endText}`, charElements);
+  }
+
+  h1El.insertBefore(startEl, slotEl);
+  if (endText) {
+    h1El.appendChild(endEl);
+  }
+
+  return { charElements, startEl, endEl };
+}
+
+function lockHeadingWidths(h1El: HTMLElement, startEl: HTMLElement, endEl: HTMLElement) {
+  const fontSize = parseFloat(getComputedStyle(h1El).fontSize) || 48;
+
+  [startEl, endEl].forEach((el) => {
+    if (el.childElementCount === 0) return;
+    gsap.set(el, { width: 'auto', minWidth: 0 });
+    const width = el.scrollWidth;
+    if (width > 1) {
+      gsap.set(el, { width: `${width / fontSize}em` });
+    }
+  });
+}
+
+function prepareSlotReveal(
+  slotEl: HTMLDivElement,
+  revealMedia: HTMLDivElement,
+  layout: SlotLayout,
+) {
+  gsap.set(slotEl, {
+    width: 0,
+    height: layout.textHeight,
+    overflow: 'hidden',
+    flexShrink: 0,
+  });
+  gsap.set(revealMedia, {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    opacity: 1,
+    zIndex: 1,
+    margin: 0,
+    clearProps: 'top,left,transform,xPercent,yPercent',
+  });
+}
+
+function pinRevealMediaForExpand(revealMedia: HTMLDivElement, preloaderEl: HTMLDivElement) {
+  const rect = revealMedia.getBoundingClientRect();
+  preloaderEl.appendChild(revealMedia);
+  gsap.set(revealMedia, {
+    position: 'fixed',
+    top: rect.top,
+    left: rect.left,
+    width: Math.max(rect.width, 1),
+    height: Math.max(rect.height, 1),
+    margin: 0,
+    xPercent: 0,
+    yPercent: 0,
+    zIndex: 2,
+    opacity: 1,
+    overflow: 'hidden',
+    pointerEvents: 'none',
+  });
+}
+
+function markPreloaderHeroPhase() {
+  document.body.classList.add('oh-preloader-hero-phase');
+}
+
+function markPreloaderHeaderPhase() {
+  document.body.classList.add('oh-preloader-header-phase');
+}
+
+type SlotLayout = {
+  textRect: DOMRect;
+  slotCenterX: number;
+  mediaWidth: number;
+  textHeight: number;
+};
+
+function measureSlotLayout(h1El: HTMLDivElement, slotEl: HTMLDivElement, aspectRatio: number): SlotLayout {
+  const textHeight = measureTextHeight(h1El);
+  const mediaWidth = textHeight * aspectRatio;
+  const textRect = h1El.getBoundingClientRect();
+  const slotRect = slotEl.getBoundingClientRect();
+  const slotCenterX =
+    slotRect.width > 0 ? slotRect.left + slotRect.width / 2 : window.innerWidth / 2;
+
+  return { textRect, slotCenterX, mediaWidth, textHeight };
+}
+
+function addWillemTimeline({
+  timeline,
+  charElements,
+  startEl,
+  endEl,
+  slotEl,
+  revealMedia,
+  layout,
+  preloaderEl,
+  textContainer,
+  onHandoffReady,
+  lightMode = false,
+  animateHeader = true,
+}: {
+  timeline: gsap.core.Timeline;
+  charElements: HTMLElement[];
+  startEl: HTMLElement;
+  endEl: HTMLElement;
+  slotEl: HTMLElement;
+  revealMedia: HTMLElement;
+  layout: SlotLayout;
+  preloaderEl: HTMLElement;
+  textContainer: HTMLElement;
+  onHandoffReady: () => void;
+  lightMode?: boolean;
+  animateHeader?: boolean;
+}) {
+  const slotLabel = `< ${WILLEM.letterDuration}`;
+
+  timeline.fromTo(
+    charElements,
+    { yPercent: 100 },
+    {
+      yPercent: 0,
+      duration: WILLEM.letterDuration,
+      stagger: WILLEM.letterStagger,
+    },
+  );
+
+  timeline.fromTo(
+    slotEl,
+    { width: 0 },
+    { width: layout.mediaWidth, duration: WILLEM.slotDuration },
+    slotLabel,
+  );
+
+  timeline.fromTo(
+    startEl,
+    { x: '0em' },
+    { x: `-${WILLEM.splitEm}em`, duration: WILLEM.slotDuration },
+    slotLabel,
+  );
+
+  if (endEl.childElementCount > 0) {
+    timeline.fromTo(
+      endEl,
+      { x: '0em' },
+      { x: `${WILLEM.splitEm}em`, duration: WILLEM.slotDuration },
+      slotLabel,
+    );
+  }
+
+  const chromeLight = lightMode || isMobilePreloader();
+
+  // Dopo lo slot: pin + expand fullscreen (resta nel layer preloader, sopra il fondo crema)
+  timeline.call(
+    () => {
+      pinRevealMediaForExpand(revealMedia as HTMLDivElement, preloaderEl as HTMLDivElement);
+    },
+    undefined,
+    '>',
+  );
+
+  timeline.to(
+    revealMedia,
+    {
+      width: '100vw',
+      height: '100dvh',
+      left: '50%',
+      top: '50%',
+      xPercent: -50,
+      yPercent: -50,
+      duration: WILLEM.expandDuration,
+      ease: WILLEM.ease,
+      onComplete: () => {
+        scheduleHeaderReveal({
+          light: chromeLight,
+          animateHeader,
+        });
+        onHandoffReady();
+      },
+    },
+    '<',
+  );
+
+  timeline.to(
+    textContainer,
+    {
+      autoAlpha: 0,
+      visibility: 'hidden',
+      duration: WILLEM.textFade,
+      ease: 'power2.in',
+    },
+    '<',
+  );
+
+  timeline.call(
+    () => {
+      scheduleHeroCopyReveal({
+        light: chromeLight,
+      });
+    },
+    undefined,
+    `< ${WILLEM.heroLead}`,
+  );
+}
+
+function markHeroShellReadySync(heroSlot: HTMLDivElement) {
+  heroSlot.closest('.home-hero-shell')?.classList.add('home-hero-shell--ready');
+}
+
+function mountVideoInHeroSlot(heroVideoEl: HTMLVideoElement, heroSlot: HTMLDivElement) {
+  if (heroVideoEl.parentElement !== heroSlot) {
+    heroSlot.appendChild(heroVideoEl);
+  }
+  heroVideoEl.classList.add('hero-bg-video');
+  heroVideoEl.loop = true;
+  heroVideoEl.muted = true;
+  heroVideoEl.playsInline = true;
+  if (heroVideoEl.paused) {
+    void heroVideoEl.play().catch(() => {});
+  }
+  gsap.set(heroVideoEl, { clearProps: 'transform,opacity,filter,scale' });
+}
+
+/** Still-frame del video corrente: copre il drop di frame da reparenting del <video>. */
+function createVideoSnapshot(heroVideoEl: HTMLVideoElement): HTMLCanvasElement | null {
+  if (heroVideoEl.videoWidth === 0 || heroVideoEl.videoHeight === 0) return null;
+  const snap = document.createElement('canvas');
+  snap.width = heroVideoEl.videoWidth;
+  snap.height = heroVideoEl.videoHeight;
+  try {
+    snap.getContext('2d')?.drawImage(heroVideoEl, 0, 0, snap.width, snap.height);
+  } catch {
+    return null;
+  }
+  Object.assign(snap.style, {
+    position: 'absolute',
+    inset: '0',
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    pointerEvents: 'none',
+  });
+  return snap;
+}
+
+function seamlessVideoHandoff({
+  revealMedia,
+  preloaderEl,
+  heroVideoEl,
+  heroSlot,
+  onShellReady,
+  onComplete,
+  unlockScroll,
+  onDone,
+}: {
+  revealMedia: HTMLDivElement;
+  preloaderEl: HTMLDivElement;
+  heroVideoEl: HTMLVideoElement;
+  heroSlot: HTMLDivElement;
+  onShellReady?: () => void;
+  onComplete: () => void;
+  unlockScroll: () => void;
+  onDone: () => void;
+}) {
+  // 1. Congela il frame corrente dentro revealMedia (sopra il punto in cui era il video).
+  const snap = createVideoSnapshot(heroVideoEl);
+  if (snap) {
+    revealMedia.appendChild(snap);
+  }
+
+  // 2. Stesso paint: shell hero visibile + video live già fullscreen nello slot, sotto il preloader.
+  markHeroShellReadySync(heroSlot);
+  mountVideoInHeroSlot(heroVideoEl, heroSlot);
+  onShellReady?.();
+
+  // 3. Crossfade: lo still-frame (e il fondo crema) sfumano sul video live già in posizione.
+  gsap.to(preloaderEl, {
+    autoAlpha: 0,
+    duration: 0.32,
+    ease: 'power1.inOut',
+    onComplete: () => {
+      snap?.remove();
+      gsap.set(revealMedia, { autoAlpha: 0, visibility: 'hidden' });
+      document.body.classList.remove('oh-preloader-hero-phase', 'oh-preloader-header-phase');
+      unlockScroll();
+      onComplete();
+      onDone();
+    },
+  });
 }
 
 function setupLightIntro({
-  textEl,
+  h1El,
   textContainer,
   revealMedia,
+  slotEl,
   preloaderEl,
   posterSrc,
   text,
   unlockScroll,
   onComplete,
+  onShellReady,
   onDone,
-}: IntroDom & { posterSrc?: string }) {
-  const { words, wordElements, charElements } = buildWordDom(textEl, text);
-  gsap.set(charElements, { yPercent: 110 });
-  gsap.set(textContainer, { visibility: 'visible', opacity: 1 });
-  gsap.set(wordElements, { opacity: 1, x: 0 });
+  animateHeader = true,
+  lightMode = true,
+}: IntroDom & { posterSrc?: string; animateHeader?: boolean; lightMode?: boolean }) {
+  const { charElements, startEl, endEl } = buildWillemDom(h1El, slotEl, revealMedia, text);
+  gsap.set(charElements, { yPercent: 100 });
+  gsap.set(textContainer, { visibility: 'visible', autoAlpha: 1 });
+  gsap.set([startEl, endEl], { x: 0 });
 
   let introFinished = false;
   let safetyTimer = 0;
@@ -139,101 +514,99 @@ function setupLightIntro({
 
   const forceLightExit = () => {
     lightTimeline?.kill();
+    markIntroDone();
     completeIntro();
   };
 
   safetyTimer = window.setTimeout(forceLightExit, INTRO_LIGHT_MAX_MS);
+
   posterEl = document.createElement('img');
   posterEl.className = 'oh-preloader__poster';
   posterEl.src = posterSrc ?? '';
   posterEl.alt = '';
   posterEl.decoding = 'async';
   revealMedia.appendChild(posterEl);
-  gsap.set(revealMedia, { opacity: 0, scale: 0.96 });
-
-  lightTimeline = gsap.timeline({
-    paused: true,
-    onComplete: completeIntro,
-  });
-
-  words.forEach((_w, i) => {
-    const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
-    lightTimeline!.to(
-      chars,
-      {
-        yPercent: 0,
-        duration: 0.38,
-        ease: 'power3.out',
-        stagger: 0.04,
-      },
-      i === 0 ? 0.15 : '<0.08',
-    );
-  });
-
-  lightTimeline
-    .to(revealMedia, { opacity: 1, scale: 1, duration: 0.45, ease: 'power2.out' }, '>+0.2')
-    .to(
-      [textContainer, ...wordElements, revealMedia],
-      { opacity: 0, duration: 0.35, ease: 'power2.inOut' },
-      '>+0.35',
-    )
-    .to(
-      preloaderEl,
-      {
-        opacity: 0,
-        backgroundColor: 'rgba(129, 110, 98, 0)',
-        duration: 0.4,
-        ease: 'power2.inOut',
-      },
-      '<0.06',
-    );
 
   const playLight = () => {
     if (introFinished) return;
-    lightTimeline?.play(0);
+
+    lightTimeline?.kill();
+    gsap.set(charElements, { yPercent: 100 });
+    gsap.set([startEl, endEl], { x: 0 });
+
+    const layout = measureSlotLayout(h1El, slotEl, 16 / 9);
+    prepareSlotReveal(slotEl, revealMedia, layout);
+    lockHeadingWidths(h1El, startEl, endEl);
+
+    lightTimeline = gsap.timeline({
+      defaults: { ease: WILLEM.ease },
+    });
+
+    addWillemTimeline({
+      timeline: lightTimeline,
+      charElements,
+      startEl,
+      endEl,
+      slotEl,
+      revealMedia,
+      layout,
+      preloaderEl,
+      textContainer,
+      lightMode,
+      animateHeader,
+      onHandoffReady: () => {
+        onShellReady?.();
+        gsap.set(preloaderEl, { autoAlpha: 0 });
+        completeIntro();
+      },
+    });
   };
 
   requestAnimationFrame(() => {
     requestAnimationFrame(playLight);
   });
-  void waitForFonts(400).then(playLight);
+  void waitForFonts(500).then(playLight);
 
   return () => {
     window.clearTimeout(safetyTimer);
     posterEl?.remove();
     lightTimeline?.kill();
-    gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
+    gsap.killTweensOf([revealMedia, textContainer, h1El, preloaderEl, slotEl, startEl, endEl, ...charElements]);
+    if (revealMedia.parentElement !== slotEl) {
+      slotEl.appendChild(revealMedia);
+      gsap.set(revealMedia, { clearProps: 'all' });
+    }
   };
 }
 
 function setupVideoIntro({
-  textEl,
+  h1El,
   textContainer,
   revealMedia,
+  slotEl,
   preloaderEl,
   heroSlot,
   heroVideo: heroVideoEl,
   text,
   unlockScroll,
   onComplete,
+  onShellReady,
   onDone,
-}: IntroDom & { heroSlot: HTMLDivElement; heroVideo: HTMLVideoElement }) {
-  const staggerTime = 0.05;
-  const charDuration = 0.5;
-  const startDelay = 0.3;
-  const splitDelay = 0.6;
-  const splitDuration = 1.0;
-  const expandDuration = 1.0;
-  const textGap = 30;
-
-  const { words, wordElements, charElements } = buildWordDom(textEl, text);
-  gsap.set(charElements, { yPercent: 110 });
-  gsap.set(textContainer, { visibility: 'visible', opacity: 1 });
-  gsap.set(wordElements, { opacity: 1, x: 0 });
+  animateHeader = true,
+  lightMode = false,
+}: IntroDom & {
+  heroSlot: HTMLDivElement;
+  heroVideo: HTMLVideoElement;
+  animateHeader?: boolean;
+  lightMode?: boolean;
+}) {
+  const { charElements, startEl, endEl } = buildWillemDom(h1El, slotEl, revealMedia, text);
+  gsap.set(charElements, { yPercent: 100 });
+  gsap.set(textContainer, { visibility: 'visible', autoAlpha: 1 });
+  gsap.set([startEl, endEl], { x: 0 });
 
   let introFinished = false;
   let videoRevealStarted = false;
-  let textIntroStarted = false;
   let safetyTimer = 0;
   let metadataTimer = 0;
   let mainTimeline: gsap.core.Timeline | null = null;
@@ -248,109 +621,46 @@ function setupVideoIntro({
     onDone();
   };
 
-  const returnVideoToSlot = () => {
+  const forceVideoExit = () => {
+    mainTimeline?.kill();
+    markIntroDone();
+    document.body.classList.remove('oh-preloader-hero-phase', 'oh-preloader-header-phase');
     if (heroVideoEl.parentElement !== heroSlot) {
       heroSlot.appendChild(heroVideoEl);
     }
-    heroVideoEl.classList.add('hero-bg-video');
-    heroVideoEl.loop = true;
-    heroVideoEl.muted = true;
-    heroVideoEl.playsInline = true;
-    if (heroVideoEl.paused) {
-      void heroVideoEl.play().catch(() => {});
-    }
-    gsap.set(heroVideoEl, { clearProps: 'transform,opacity,filter,scale' });
-  };
-
-  const forceVideoExit = () => {
-    mainTimeline?.kill();
-    returnVideoToSlot();
     completeIntro();
   };
 
   safetyTimer = window.setTimeout(forceVideoExit, INTRO_VIDEO_MAX_MS);
 
-  const startTextIntro = () => {
-    if (introFinished || textIntroStarted) return;
-    textIntroStarted = true;
-
-    words.forEach((_w, i) => {
-      const chars = textEl.querySelectorAll<HTMLElement>(`.oh-preloader__char[data-oh-word="${i}"]`);
-      gsap.to(chars, {
-        yPercent: 0,
-        duration: charDuration,
-        ease: 'power3.out',
-        stagger: staggerTime,
-        delay: i === 0 ? startDelay : 0,
-      });
-    });
-  };
-
-  requestAnimationFrame(() => {
-    requestAnimationFrame(startTextIntro);
-  });
-  void waitForFonts(350).then(startTextIntro);
-
   const handoffToHero = () => {
     if (introFinished) return;
+    introFinished = true;
+    window.clearTimeout(safetyTimer);
+    window.clearTimeout(metadataTimer);
 
-    returnVideoToSlot();
-    gsap.set(revealMedia, { opacity: 0, visibility: 'hidden', pointerEvents: 'none' });
-    onComplete();
-
-    const exitTl = gsap.timeline({
-      onComplete: () => {
-        if (introFinished) return;
-        introFinished = true;
-        window.clearTimeout(safetyTimer);
-        window.clearTimeout(metadataTimer);
-        unlockScroll();
-        onDone();
-      },
+    seamlessVideoHandoff({
+      revealMedia,
+      preloaderEl,
+      heroVideoEl,
+      heroSlot,
+      onShellReady,
+      onComplete,
+      unlockScroll,
+      onDone,
     });
-
-    exitTl
-      .to([textContainer, ...wordElements], {
-        opacity: 0,
-        duration: 0.32,
-        ease: 'power2.inOut',
-      })
-      .to(
-        preloaderEl,
-        {
-          opacity: 0,
-          backgroundColor: 'rgba(129, 110, 98, 0)',
-          duration: 0.42,
-          ease: 'power2.inOut',
-        },
-        '<0.06',
-      );
   };
 
   const playVideoReveal = () => {
     if (introFinished || videoRevealStarted) return;
     videoRevealStarted = true;
 
-    if (!textIntroStarted) {
-      startTextIntro();
-    }
-
-    const mobile = isMobilePreloader();
-    const textHeight = measureTextHeight(textEl);
     const aspectRatio =
       heroVideoEl.videoWidth > 0 && heroVideoEl.videoHeight > 0
         ? heroVideoEl.videoWidth / heroVideoEl.videoHeight
         : 16 / 9;
-    const mediaWidth = textHeight * aspectRatio;
-    const halfMedia = mediaWidth / 2 + textGap;
 
-    const textRect = textEl.getBoundingClientRect();
-    const slotSpace = textEl.querySelector<HTMLElement>('.oh-preloader__word-space');
-    const slotRect = slotSpace?.getBoundingClientRect();
-    const slotCenterX =
-      slotRect && slotRect.width > 0
-        ? slotRect.left + slotRect.width / 2
-        : window.innerWidth / 2;
+    const layout = measureSlotLayout(h1El, slotEl, aspectRatio);
 
     if (heroVideoEl.parentElement === heroSlot) {
       revealMedia.appendChild(heroVideoEl);
@@ -360,116 +670,47 @@ function setupVideoIntro({
     heroVideoEl.loop = true;
     void heroVideoEl.play().catch(() => {});
 
-    if (mobile) {
-      gsap.set(revealMedia, {
-        position: 'fixed',
-        width: mediaWidth,
-        height: textHeight,
-        left: slotCenterX - mediaWidth / 2,
-        top: textRect.top > 0 ? textRect.top : (window.innerHeight - textHeight) / 2,
-        clipPath: 'none',
-        scale: 0.42,
-        opacity: 0,
-        transformOrigin: '50% 50%',
-      });
-    } else {
-      gsap.set(revealMedia, {
-        width: mediaWidth,
-        height: textHeight,
-        left: slotCenterX - mediaWidth / 2,
-        top: textRect.top > 0 ? textRect.top : (window.innerHeight - textHeight) / 2,
-        clipPath: 'inset(0 50% 0 50%)',
-        scale: 1,
-        opacity: 0,
-      });
-    }
+    prepareSlotReveal(slotEl, revealMedia, layout);
+    lockHeadingWidths(h1El, startEl, endEl);
 
-    mainTimeline = gsap.timeline();
-    const splitTargets = wordElements.filter(Boolean);
+    mainTimeline = gsap.timeline({
+      defaults: { ease: WILLEM.ease },
+    });
 
-    if (mobile) {
-      mainTimeline.to(
-        revealMedia,
-        {
-          opacity: 1,
-          scale: 1,
-          duration: splitDuration,
-          ease: 'power4.inOut',
-        },
-        splitDelay,
-      );
-    } else {
-      mainTimeline
-        .to(
-          revealMedia,
-          {
-            opacity: 1,
-            duration: splitDuration * 0.35,
-            ease: 'power2.out',
-          },
-          splitDelay,
-        )
-        .fromTo(
-          revealMedia,
-          { clipPath: 'inset(0 50% 0 50%)' },
-          { clipPath: 'inset(0 0% 0 0%)', duration: splitDuration, ease: 'power4.inOut' },
-          '<',
-        );
-    }
-
-    if (splitTargets[0]) {
-      mainTimeline.to(
-        splitTargets[0],
-        { x: -halfMedia, duration: splitDuration, ease: 'power4.inOut' },
-        mobile ? splitDelay : '<',
-      );
-    }
-    if (splitTargets[1]) {
-      mainTimeline.to(
-        splitTargets[1],
-        { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
-        '<',
-      );
-    }
-    if (splitTargets[2]) {
-      mainTimeline.to(
-        splitTargets[2],
-        { x: halfMedia, duration: splitDuration, ease: 'power4.inOut' },
-        '<',
-      );
-    }
-
-    if (slotSpace) {
-      mainTimeline.to(slotSpace, { width: 0, duration: splitDuration, ease: 'power4.inOut' }, '<');
-    }
-
-    mainTimeline
-      .to(
-        revealMedia,
-        {
-          ...getSlotTarget(heroSlot),
-          duration: expandDuration,
-          ease: 'power3.inOut',
-          scale: 1,
-          clipPath: 'inset(0 0% 0 0%)',
-        },
-        '>+=0.3',
-      )
-      .call(handoffToHero);
+    addWillemTimeline({
+      timeline: mainTimeline,
+      charElements,
+      startEl,
+      endEl,
+      slotEl,
+      revealMedia,
+      layout,
+      preloaderEl,
+      textContainer,
+      lightMode,
+      animateHeader,
+      onHandoffReady: handoffToHero,
+    });
   };
 
   const beginVideoReveal = () => {
     if (introFinished || videoRevealStarted) return;
-    void waitForLayout().then(() => {
+    void waitForFonts(800).then(() => {
       if (introFinished || videoRevealStarted) return;
-      playVideoReveal();
+      void waitForLayout().then(() => {
+        if (introFinished || videoRevealStarted) return;
+        playVideoReveal();
+      });
     });
   };
 
   const onVideoError = () => {
     if (introFinished) return;
     window.clearTimeout(metadataTimer);
-    returnVideoToSlot();
+    markIntroDone();
+    if (heroVideoEl.parentElement !== heroSlot) {
+      heroSlot.appendChild(heroVideoEl);
+    }
     completeIntro();
   };
 
@@ -502,8 +743,25 @@ function setupVideoIntro({
     heroVideoEl.removeEventListener('loadeddata', primeVideo);
     heroVideoEl.removeEventListener('error', onVideoError);
     mainTimeline?.kill();
-    gsap.killTweensOf([revealMedia, textContainer, textEl, preloaderEl, ...wordElements, ...charElements]);
-    returnVideoToSlot();
+    document.body.classList.remove('oh-preloader-hero-phase', 'oh-preloader-header-phase');
+    gsap.killTweensOf([
+      revealMedia,
+      textContainer,
+      h1El,
+      preloaderEl,
+      slotEl,
+      heroSlot,
+      startEl,
+      endEl,
+      ...charElements,
+    ]);
+    if (revealMedia.parentElement !== slotEl) {
+      slotEl.appendChild(revealMedia);
+      gsap.set(revealMedia, { clearProps: 'all' });
+    }
+    if (heroVideoEl.parentElement !== heroSlot) {
+      heroSlot.appendChild(heroVideoEl);
+    }
   };
 }
 
@@ -512,18 +770,26 @@ export function Preloader({
   videoRef,
   videoSlotRef,
   onComplete,
+  onShellReady,
+  animateHeader = true,
   lightMode = false,
   posterSrc,
 }: PreloaderProps) {
   const [visible, setVisible] = useState(true);
   const onCompleteRef = useRef(onComplete);
+  const onShellReadyRef = useRef(onShellReady);
 
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
+  useEffect(() => {
+    onShellReadyRef.current = onShellReady;
+  }, [onShellReady]);
+
   const preloaderRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLSpanElement>(null);
+  const h1Ref = useRef<HTMLDivElement>(null);
+  const slotRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
 
@@ -547,7 +813,11 @@ export function Preloader({
 
     const unlockScroll = () => {
       if (bodyLockActive) {
-        document.body.classList.remove('oh-preloader-active');
+        document.body.classList.remove(
+          'oh-preloader-active',
+          'oh-preloader-hero-phase',
+          'oh-preloader-header-phase',
+        );
         bodyLockActive = false;
       }
     };
@@ -557,15 +827,22 @@ export function Preloader({
     const tryInit = (frame: number) => {
       if (cancelled) return;
 
-      const textEl = textRef.current;
+      const h1El = h1Ref.current;
       const textContainer = textContainerRef.current;
       const revealMedia = mediaRef.current;
+      const slotEl = slotRef.current;
       const preloaderEl = preloaderRef.current;
       const video = videoRef.current;
       const heroSlot = videoSlotRef.current;
 
       const refsReady =
-        textEl && textContainer && revealMedia && preloaderEl && heroSlot && (lightMode || video);
+        h1El &&
+        textContainer &&
+        revealMedia &&
+        slotEl &&
+        preloaderEl &&
+        heroSlot &&
+        (lightMode || video);
 
       if (!refsReady) {
         if (frame < INIT_MAX_FRAMES) {
@@ -575,16 +852,25 @@ export function Preloader({
       }
 
       lockScroll();
+      resetIntroState();
+      prepareHeroRevealLines();
+      if (animateHeader) {
+        prepareHeaderReveal();
+      }
 
       const shared = {
-        textEl,
+        h1El,
         textContainer,
         revealMedia,
+        slotEl,
         preloaderEl,
         text,
         unlockScroll,
         onComplete: () => onCompleteRef.current(),
+        onShellReady: () => onShellReadyRef.current?.(),
         onDone: hidePreloader,
+        animateHeader,
+        lightMode,
       };
 
       teardown = lightMode
@@ -600,7 +886,7 @@ export function Preloader({
       teardown?.();
       unlockScroll();
     };
-  }, [text, videoRef, videoSlotRef, lightMode, posterSrc]);
+  }, [text, videoRef, videoSlotRef, lightMode, posterSrc, animateHeader]);
 
   if (!visible) return null;
 
@@ -613,9 +899,12 @@ export function Preloader({
       aria-busy="true"
       aria-label={text}
     >
-      <div className="oh-preloader__reveal-media" ref={mediaRef} aria-hidden />
       <div className="oh-preloader__text-container" ref={textContainerRef}>
-        <span className="oh-preloader__text" ref={textRef} />
+        <div className="oh-preloader__h1" ref={h1Ref}>
+          <div className="oh-preloader__slot" ref={slotRef}>
+            <div className="oh-preloader__reveal-media" ref={mediaRef} aria-hidden />
+          </div>
+        </div>
       </div>
     </div>
   );

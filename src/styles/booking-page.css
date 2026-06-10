@@ -1,9 +1,9 @@
-/* Pagina prenotazioni — allineata a contact-section / suite-cta */
+/* Pagina prenotazioni — palette chiara (contact-section / info) */
 .booking-page {
   padding: clamp(5.5rem, 12vh, 7.5rem) var(--page-pad) clamp(5rem, 10vh, 7rem);
-  background: var(--sabbia);
-  border-top: 1px solid rgb(250 248 245 / 8%);
-  color: var(--panna);
+  background: linear-gradient(180deg, var(--crema) 0%, var(--suites-bg) 100%);
+  border-top: 1px solid var(--border-on-light);
+  color: var(--ink);
 }
 
 .booking-page__inner {
@@ -30,7 +30,7 @@
   width: 2px;
   height: 1.85rem;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--accent), var(--mirto));
+  background: linear-gradient(180deg, var(--eyebrow), var(--accent-secondary));
   flex-shrink: 0;
 }
 
@@ -40,7 +40,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--eyebrow);
 }
 
 .booking-page__title {
@@ -50,7 +50,7 @@
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -0.02em;
-  color: var(--panna);
+  color: var(--ink);
 }
 
 .booking-page__intro {
@@ -58,23 +58,23 @@
   max-width: min(42ch, 100%);
   font-size: clamp(0.95rem, 1.6vw, 1.08rem);
   line-height: 1.65;
-  color: rgb(250 248 245 / 72%);
+  color: var(--ink-muted);
 }
 
 .booking-page__hint {
   margin: 0;
   font-size: 0.78rem;
   letter-spacing: 0.04em;
-  color: rgb(250 248 245 / 48%);
+  color: rgb(58 52 48 / 48%);
 }
 
 /* Form panel */
 .booking-page__form {
   padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem);
   border-radius: clamp(16px, 3vw, 22px);
-  border: 1px solid rgb(250 248 245 / 10%);
-  background: var(--surface);
-  box-shadow: 0 20px 56px rgb(0 0 0 / 28%);
+  border: 1px solid var(--border-on-light);
+  background: var(--crema);
+  box-shadow: 0 14px 40px rgb(58 52 48 / 6%);
   display: grid;
   gap: clamp(1.75rem, 3.5vw, 2.25rem);
 }
@@ -98,7 +98,7 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   text-align: center;
-  color: var(--accent);
+  color: var(--eyebrow);
 }
 
 .booking-page__grid {
@@ -129,14 +129,14 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgb(250 248 245 / 78%);
+  color: var(--ink);
 }
 
 .booking-page__field label span {
   font-weight: 400;
   letter-spacing: 0;
   text-transform: none;
-  color: rgb(250 248 245 / 45%);
+  color: var(--ink-muted);
 }
 
 .booking-page__field input,
@@ -146,9 +146,9 @@
   min-height: 3rem;
   padding: 0.75rem 1rem;
   border-radius: 12px;
-  border: 1px solid rgb(250 248 245 / 14%);
-  background: rgb(26 21 18 / 35%);
-  color: var(--panna);
+  border: 1px solid var(--border-on-light);
+  background: var(--suites-bg);
+  color: var(--ink);
   font-family: var(--font-body);
   font-size: 1rem;
   line-height: 1.4;
@@ -162,7 +162,7 @@
 
 .booking-page__field select {
   padding-right: 2.5rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23f4eee8' stroke-opacity='0.65' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%233a3430' stroke-opacity='0.55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   cursor: pointer;
@@ -170,7 +170,7 @@
 
 .booking-page__field input[type='date'] {
   min-height: 3rem;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 .booking-page__field input[type='number'] {
@@ -190,23 +190,23 @@
 
 .booking-page__field input::placeholder,
 .booking-page__field textarea::placeholder {
-  color: rgb(250 248 245 / 38%);
+  color: rgb(58 52 48 / 38%);
 }
 
 .booking-page__field input:hover,
 .booking-page__field select:hover,
 .booking-page__field textarea:hover {
-  border-color: rgb(250 248 245 / 22%);
-  background: rgb(26 21 18 / 48%);
+  border-color: color-mix(in srgb, var(--eyebrow) 35%, var(--border-on-light));
+  background: color-mix(in srgb, var(--suites-bg) 70%, var(--crema));
 }
 
 .booking-page__field input:focus-visible,
 .booking-page__field select:focus-visible,
 .booking-page__field textarea:focus-visible {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgb(182 166 202 / 22%);
-  background: rgb(26 21 18 / 55%);
+  border-color: color-mix(in srgb, var(--eyebrow) 65%, var(--border-on-light));
+  box-shadow: 0 0 0 3px rgb(178 205 250 / 22%);
+  background: var(--crema);
 }
 
 .booking-page__actions {
@@ -227,8 +227,8 @@
   padding: 1rem 1.75rem;
   border-radius: 999px;
   border: none;
-  background: var(--accent-secondary);
-  color: rgb(42 36 32);
+  background: var(--eyebrow);
+  color: var(--ink);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -241,13 +241,13 @@
 }
 
 .booking-page__submit:hover {
-  background: color-mix(in srgb, var(--accent-secondary) 82%, var(--panna));
-  box-shadow: 0 10px 28px rgb(182 166 202 / 38%);
+  background: var(--scrollbar-thumb-hover);
+  box-shadow: 0 10px 28px rgb(178 205 250 / 38%);
   transform: translateY(-2px);
 }
 
 .booking-page__submit:focus-visible {
-  outline: 2px solid var(--panna);
+  outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
 
@@ -266,7 +266,18 @@
   text-align: center;
   font-size: 0.8rem;
   line-height: 1.5;
-  color: rgb(250 248 245 / 48%);
+  color: var(--ink-muted);
+}
+
+.booking-page__privacy a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.booking-page__privacy a:hover,
+.booking-page__privacy a:focus-visible {
+  color: var(--carbone);
 }
 
 .booking-page__hp {
@@ -284,7 +295,8 @@
 .booking-page__status {
   padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1.5rem, 4vw, 2.5rem);
   border-radius: clamp(16px, 3vw, 22px);
-  border: 1px solid rgb(250 248 245 / 10%);
+  border: 1px solid var(--border-on-light);
+  background: var(--crema);
   text-align: center;
   display: grid;
   gap: 0.85rem;
@@ -292,13 +304,13 @@
 }
 
 .booking-page__status--success {
-  background: rgb(129 178 154 / 12%);
-  border-color: rgb(129 178 154 / 35%);
+  background: color-mix(in srgb, var(--mirto) 10%, var(--crema));
+  border-color: color-mix(in srgb, var(--mirto) 35%, var(--border-on-light));
 }
 
 .booking-page__status--error {
-  background: rgb(224 122 95 / 10%);
-  border-color: rgb(224 122 95 / 35%);
+  background: color-mix(in srgb, var(--terra) 8%, var(--crema));
+  border-color: color-mix(in srgb, var(--terra) 30%, var(--border-on-light));
   margin-bottom: 0;
 }
 
@@ -306,7 +318,7 @@
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(1.65rem, 4vw, 2.1rem);
-  color: var(--panna);
+  color: var(--ink);
 }
 
 .booking-page__status-text {
@@ -314,14 +326,14 @@
   max-width: 36ch;
   font-size: 0.95rem;
   line-height: 1.6;
-  color: rgb(250 248 245 / 78%);
+  color: var(--ink-muted);
 }
 
 .booking-page__status--error p {
   margin: 0;
   font-size: 0.9rem;
   line-height: 1.55;
-  color: rgb(250 248 245 / 88%);
+  color: var(--ink);
 }
 
 .booking-page__error-detail {

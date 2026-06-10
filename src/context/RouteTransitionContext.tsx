@@ -28,7 +28,7 @@ type RouteTransitionContextValue = {
 
 const RouteTransitionContext = createContext<RouteTransitionContextValue | null>(null);
 
-const MIN_LOAD_MS = 520;
+const MIN_LOAD_MS = 380;
 
 function lockScrollPosition() {
   const scrollY = window.scrollY;

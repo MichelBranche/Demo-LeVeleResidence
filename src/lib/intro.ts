@@ -4,6 +4,14 @@ const HERO_COPY_DONE_EVENT = 'intro:hero-copy-done';
 let introDone = false;
 let heroCopyDone = false;
 
+/** Resetta lo stato intro (nuova esecuzione preloader nella stessa sessione). */
+export function resetIntroState(): void {
+  introDone = false;
+  heroCopyDone = false;
+  delete document.documentElement.dataset.introDone;
+  delete document.documentElement.dataset.heroCopyDone;
+}
+
 /** True dopo il primo intro completato (anche se il listener si attacca in ritardo). */
 export function isIntroDone(): boolean {
   return introDone;

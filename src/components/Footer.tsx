@@ -53,7 +53,7 @@ export function Footer() {
 
           <div className="site-footer__col">
             <h3 className="site-footer__heading">{footer.explore}</h3>
-            <nav className="site-footer__nav" aria-label="Navigazione footer">
+            <nav className="site-footer__nav" aria-label={footer.footerNavAria}>
               <ul className="site-footer__nav-list" role="list">
                 {navLinks.map((link) => (
                   <li key={link.to}>
@@ -115,7 +115,7 @@ export function Footer() {
             >
               <InstagramIcon />
             </a>
-            <nav className="site-footer__consent" aria-label="Privacy e cookie">
+            <nav className="site-footer__consent" aria-label={footer.legalNavAria}>
               <button type="button" onClick={() => openBanner({ panel: true })}>
                 {consentLabels.manage}
               </button>

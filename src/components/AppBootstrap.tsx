@@ -23,7 +23,11 @@ export function AppBootstrap() {
 
     document.body.style.overflow = '';
     document.body.style.pointerEvents = '';
-    document.body.classList.remove('oh-preloader-active');
+    document.body.classList.remove(
+      'oh-preloader-active',
+      'oh-preloader-hero-phase',
+      'oh-preloader-header-phase',
+    );
 
     const stuck = document.querySelector('.cookie-consent:not(.cookie-consent--visible)');
     if (stuck) {
