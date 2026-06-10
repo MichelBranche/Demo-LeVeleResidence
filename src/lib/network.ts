@@ -55,18 +55,19 @@ export function getNetworkTier(): NetworkTier {
   return 'fast';
 }
 
-/** Preloader cinematico con video (~4 MB). */
+/** Preloader cinematico con video (~4 MB) — solo desktop con buona connessione. */
 export function shouldRunVideoPreloader(): boolean {
-  return getNetworkTier() !== 'minimal';
+  return getNetworkTier() === 'fast';
 }
 
-/** Carica il video hero subito (non solo poster). */
+/** Carica il video hero subito (non solo poster) — solo tier fast. */
 export function shouldAutoplayHeroVideoImmediately(): boolean {
-  return getNetworkTier() !== 'minimal';
+  return getNetworkTier() === 'fast';
 }
 
+/** Su mobile/rete media: poster prima, video dopo il primo paint. */
 export function shouldDeferHeroVideoLoad(): boolean {
-  return false;
+  return getNetworkTier() !== 'fast';
 }
 
 /** Solo poster: 2G / risparmio dati / downlink molto basso. */

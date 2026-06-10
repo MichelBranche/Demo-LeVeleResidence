@@ -96,7 +96,7 @@ body.oh-preloader-active .home-hero-shell.home-hero-shell--ready .oh-video-bg {
 }
 
 .home-hero-shell--awaiting-consent .oh-video-bg {
-  opacity: 0.55;
+  opacity: 1;
 }
 
 .home-hero-shell--awaiting-consent .oh-video-bg video {

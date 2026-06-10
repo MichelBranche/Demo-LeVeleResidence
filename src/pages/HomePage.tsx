@@ -10,7 +10,8 @@ import { useConsent } from '../hooks/useConsent';
 import { useHomeLangReveal } from '../hooks/useHomeLangReveal';
 import { useNetworkTier } from '../hooks/useNetworkTier';
 import { useSiteLocale } from '../hooks/useSiteLocale';
-import { markIntroDone, resetIntroState } from '../lib/intro';
+import { revealHeroCopyStatic } from '../lib/homeIntroEntrance';
+import { resetIntroState } from '../lib/intro';
 import {
   shouldAutoplayHeroVideoImmediately,
   shouldDeferHeroVideoLoad,
@@ -98,11 +99,17 @@ export function HomePage() {
   const posterOnlyHero = shouldUsePosterOnlyHero();
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
-  const heroMounted = introPhase !== 'pending-consent';
+  const heroMounted = isReady;
   const [preloaderReady, setPreloaderReady] = useState(false);
-  const [shellReady, setShellReady] = useState(() => readPreloaderDone());
+  const [shellReady, setShellReady] = useState(
+    () => readPreloaderDone() || !shouldRunVideoPreloader(),
+  );
 
   useHomeLangReveal(ready);
+
+  useLayoutEffect(() => {
+    document.getElementById('initial-hero-poster')?.remove();
+  }, []);
 
   useLayoutEffect(() => {
     if (!wantsReplayIntro()) return;
@@ -139,14 +146,17 @@ export function HomePage() {
         return;
       }
 
-      if (networkTier === 'minimal') {
+      if (networkTier !== 'fast') {
         try {
           sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
         } catch {
           /* ignore */
         }
         setIntroPhase('complete');
-        requestAnimationFrame(() => markIntroDone());
+        setShellReady(true);
+        requestAnimationFrame(() => {
+          revealHeroCopyStatic();
+        });
         return;
       }
 
@@ -233,7 +243,7 @@ export function HomePage() {
       const id = requestIdleCallback(enable, { timeout: 5000 });
       return () => cancelIdleCallback(id);
     }
-    const id = window.setTimeout(enable, 2500);
+    const id = window.setTimeout(enable, 4500);
     return () => window.clearTimeout(id);
   }, [ready, heroVideoSrc, posterOnlyHero, heroMedia.video]);
 

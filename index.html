@@ -35,6 +35,17 @@
     <meta name="twitter:image" content="%OG_IMAGE%" />
   </head>
   <body>
+    <!-- Poster istantaneo pre-React: migliora LCP mobile (rimosso da HomePage al mount) -->
+    <div id="initial-hero-poster" aria-hidden="true">
+      <img
+        src="/images/cala-lupo.png"
+        alt=""
+        width="1920"
+        height="1080"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </div>
     <script>
       try {
         var locale = localStorage.getItem('lv-site-locale');

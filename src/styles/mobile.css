@@ -73,6 +73,13 @@
     border-radius: 0;
   }
 
+  /* LCP: poster hero visibile subito, anche durante intro leggera */
+  body.oh-preloader-active .home-hero-shell:not(.home-hero-shell--ready) .oh-video-bg {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+  }
+
   .oh-reveal {
     min-height: 100dvh;
     min-height: 100svh;
