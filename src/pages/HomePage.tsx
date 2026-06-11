@@ -12,6 +12,7 @@ import { useNetworkTier } from '../hooks/useNetworkTier';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { revealHeroCopyStatic } from '../lib/homeIntroEntrance';
 import { isHeroCopyDone, resetIntroState } from '../lib/intro';
+import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
   shouldAutoplayHeroVideoImmediately,
   shouldDeferHeroVideoLoad,
@@ -92,6 +93,7 @@ export function HomePage() {
   );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  useHeroVideoSource(videoRef, heroVideoSrc);
   const skippedPreloaderOnMount = useRef(readPreloaderDone());
   const preloaderOrchestratedRef = useRef(false);
 
@@ -190,14 +192,10 @@ export function HomePage() {
       }
 
       if (!lightPreloader) {
-        if (!video.currentSrc && !video.src) {
-          video.src = heroMedia.video;
-        }
         video.preload = 'auto';
         if (!heroVideoSrc) {
           setHeroVideoSrc(heroMedia.video);
         }
-        void video.load();
       }
 
       setPreloaderReady(true);
@@ -272,9 +270,9 @@ export function HomePage() {
           <div className="oh-video-bg" ref={videoSlotRef}>
             <video
               ref={videoRef}
-              {...(heroVideoSrc ? { src: heroVideoSrc } : {})}
               poster={heroMedia.poster}
               className="hero-bg-video"
+              crossOrigin="anonymous"
               autoPlay={ready && !!heroVideoSrc}
               muted
               loop

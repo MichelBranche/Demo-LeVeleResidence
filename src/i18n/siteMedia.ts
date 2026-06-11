@@ -1,4 +1,5 @@
 import { asset } from '../lib/assets';
+import { getHeroVideoUrl } from '../lib/heroVideo';
 
 const GARDEN = asset('/Foto%202024%20camere%20Le%20Vele/vista%20giardino');
 const SEA = asset('/Foto%202024%20camere%20Le%20Vele/vista%20mare');
@@ -61,7 +62,7 @@ export const logo = {
 } as const;
 
 export const heroMedia = {
-  video: asset('/Hero-Video.mp4?v=5'),
+  video: getHeroVideoUrl(),
   poster: CALA_LUPO,
 } as const;
 
