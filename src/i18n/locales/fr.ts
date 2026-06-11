@@ -125,7 +125,7 @@ export const fr: LocaleCopy = {
     'vista-giardino': {
       title: 'Vue Jardin',
       kicker: 'Studio pour 2 ou 4 personnes',
-      tagline: 'Véranda, jardin privé et quiétude du maquis.',
+      tagline: 'Véranda, jardin privé et quiétude du maquis méditerranéen.',
       description:
         'Studio avec véranda couverte et jardin privé : lit double et lit superposé jusqu\'à 4 personnes. Salles de bain rénovées — douche walk-in plus grande ou douche compacte avec bidet selon le logement.',
       features: [
@@ -137,6 +137,8 @@ export const fr: LocaleCopy = {
         'Wi-Fi gratuit',
       ],
       galleryAlts: [
+        'Véranda couverte, patio et jardin privé — monolocale vue jardin Le Vele',
+        'Terrasse avec mobilier, jardin et vue mer — Residence Le Vele, Stintino',
         'Intérieur du studio vue jardin avec coin repas et patio — Le Vele',
         'Lit superposé dans le studio vue jardin — jusqu\'à 4 personnes',
         'Intérieur du studio avec coin cuisine — Residence Le Vele',
@@ -148,6 +150,8 @@ export const fr: LocaleCopy = {
       listLabel: 'Jardin',
       discoverAria: 'Découvrir Vue Jardin',
       exploreCta: 'Explorer la suite',
+      galleryKicker: 'Le monolocale · vue jardin',
+      galleryTitle: 'Immersion totale',
     },
     'vista-mare': {
       title: 'Vue Mer',
@@ -157,13 +161,16 @@ export const fr: LocaleCopy = {
         'Studio avec terrasse privée sur la baie : lit double et lit superposé jusqu\'à 4 personnes, lumière du Nord de la Sardaigne et couchers vers La Pelosa. Salles de bain rénovées — grande douche sans bidet ou douche compacte avec bidet selon le logement.',
       features: [
         'Terrasse privée',
-        'Vue mer',
+        'Plaque de cuisson équipée',
         'Lit superposé',
         'Salle de bain rénovée',
         'Climatisation',
         'Wi-Fi gratuit',
       ],
       galleryAlts: [
+        'Table à manger et terrasse avec vue mer — studio Le Vele',
+        'Coin cuisine et accès à la terrasse vue mer — Residence Le Vele',
+        'Chambre avec lit double et vue mer depuis la terrasse — Le Vele',
         'Studio vue mer avec terrasse et lumière sur la baie — Residence Le Vele',
         'Lit superposé avec vue mer — studio Stintino',
         'Panorama depuis la suite vue mer — Stintino, Sardaigne',
@@ -175,6 +182,8 @@ export const fr: LocaleCopy = {
       listLabel: 'Mer',
       discoverAria: 'Découvrir Vue Mer',
       exploreCta: 'Explorer la suite',
+      galleryKicker: 'Le monolocale · vue mer',
+      galleryTitle: 'Immersion totale',
     },
   },
   gallery: {

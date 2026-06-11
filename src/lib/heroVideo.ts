@@ -22,3 +22,10 @@ export function isHlsVideoUrl(url: string): boolean {
 export function canPlayNativeHls(video: HTMLVideoElement): boolean {
   return video.canPlayType('application/vnd.apple.mpegurl') !== '';
 }
+
+/** Il preloader può partire senza attendere `canplay` (Mux HLS è spesso lento). */
+export const HERO_VIDEO_PRIME_EVENT = 'hero-video:prime';
+
+export function notifyHeroVideoPrime(video: HTMLVideoElement): void {
+  video.dispatchEvent(new CustomEvent(HERO_VIDEO_PRIME_EVENT, { bubbles: true }));
+}

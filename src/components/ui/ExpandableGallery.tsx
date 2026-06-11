@@ -10,6 +10,9 @@ export type ExpandableGalleryImage = {
 
 type ExpandableGalleryProps = {
   images: ExpandableGalleryImage[];
+  leadImage?: ExpandableGalleryImage;
+  /** `above` = hero sopra la track; `track` = prima cella nella track espandibile */
+  leadPlacement?: 'above' | 'track';
   className?: string;
   closeLabel: string;
   prevLabel: string;
@@ -19,6 +22,8 @@ type ExpandableGalleryProps = {
 
 export function ExpandableGallery({
   images,
+  leadImage,
+  leadPlacement = 'above',
   className = '',
   closeLabel,
   prevLabel,
@@ -28,6 +33,10 @@ export function ExpandableGallery({
   const reduceMotion = useReducedMotion();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const allImages = leadImage ? [leadImage, ...images] : images;
+  const leadInTrack = Boolean(leadImage && leadPlacement === 'track');
+  const trackImages = leadInTrack ? allImages : images;
+  const trackOffset = leadImage && !leadInTrack ? 1 : 0;
 
   const openImage = (index: number) => {
     setSelectedIndex(index);
@@ -41,20 +50,20 @@ export function ExpandableGallery({
     (e?: MouseEvent) => {
       e?.stopPropagation();
       setSelectedIndex((current) =>
-        current === null ? null : (current + 1) % images.length,
+        current === null ? null : (current + 1) % allImages.length,
       );
     },
-    [images.length],
+    [allImages.length],
   );
 
   const goToPrev = useCallback(
     (e?: MouseEvent) => {
       e?.stopPropagation();
       setSelectedIndex((current) =>
-        current === null ? null : (current - 1 + images.length) % images.length,
+        current === null ? null : (current - 1 + allImages.length) % allImages.length,
       );
     },
-    [images.length],
+    [allImages.length],
   );
 
   useEffect(() => {
@@ -77,24 +86,49 @@ export function ExpandableGallery({
   }, [selectedIndex, closeImage, goToNext, goToPrev]);
 
   const getFlexValue = (index: number) => {
+    const isLeadCell = leadInTrack && index === 0;
     if (reduceMotion || hoveredIndex === null) {
-      return 1;
+      return isLeadCell ? 2 : 1;
     }
     return hoveredIndex === index ? 2 : 0.5;
   };
 
-  if (images.length === 0) {
+  if (allImages.length === 0) {
     return null;
   }
 
   return (
-    <div className={`expandable-gallery ${className}`.trim()}>
+    <div
+      className={`expandable-gallery${
+        leadImage && !leadInTrack ? ' expandable-gallery--with-lead' : ''
+      }${leadInTrack ? ' expandable-gallery--lead-in-track' : ''} ${className}`.trim()}
+    >
+      {leadImage && !leadInTrack && (
+        <button
+          type="button"
+          className="expandable-gallery__lead"
+          onClick={() => openImage(0)}
+          aria-label={leadImage.alt}
+        >
+          <img
+            src={leadImage.src}
+            alt=""
+            className="expandable-gallery__lead-img"
+            loading="lazy"
+            decoding="async"
+          />
+        </button>
+      )}
+
+      {trackImages.length > 0 && (
       <div className="expandable-gallery__track">
-        {images.map((image, index) => (
+        {trackImages.map((image, index) => (
           <motion.button
             key={image.src}
             type="button"
-            className="expandable-gallery__item"
+            className={`expandable-gallery__item${
+              leadInTrack && index === 0 ? ' expandable-gallery__item--lead' : ''
+            }`}
             style={{ flex: 1 }}
             animate={{ flex: getFlexValue(index) }}
             transition={{ duration: reduceMotion ? 0 : 0.5, ease: 'easeInOut' }}
@@ -102,7 +136,7 @@ export function ExpandableGallery({
             onMouseLeave={() => setHoveredIndex(null)}
             onFocus={() => setHoveredIndex(index)}
             onBlur={() => setHoveredIndex(null)}
-            onClick={() => openImage(index)}
+            onClick={() => openImage(index + trackOffset)}
             aria-label={image.alt}
           >
             <img src={image.src} alt="" className="expandable-gallery__img" loading="lazy" decoding="async" />
@@ -116,6 +150,7 @@ export function ExpandableGallery({
           </motion.button>
         ))}
       </div>
+      )}
 
       {typeof document !== 'undefined' &&
         createPortal(
@@ -125,7 +160,7 @@ export function ExpandableGallery({
                 className="expandable-gallery__lightbox"
                 role="dialog"
                 aria-modal="true"
-                aria-label={images[selectedIndex]?.alt}
+                aria-label={allImages[selectedIndex]?.alt}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -140,7 +175,7 @@ export function ExpandableGallery({
                   <X size={28} strokeWidth={1.75} aria-hidden />
                 </button>
 
-                {images.length > 1 && (
+                {allImages.length > 1 && (
                   <button
                     type="button"
                     className="expandable-gallery__lightbox-btn expandable-gallery__lightbox-btn--prev"
@@ -161,13 +196,13 @@ export function ExpandableGallery({
                   transition={{ duration: reduceMotion ? 0 : 0.3 }}
                 >
                   <img
-                    src={images[selectedIndex].src}
-                    alt={images[selectedIndex].alt}
+                    src={allImages[selectedIndex].src}
+                    alt={allImages[selectedIndex].alt}
                     className="expandable-gallery__lightbox-img"
                   />
                 </motion.figure>
 
-                {images.length > 1 && (
+                {allImages.length > 1 && (
                   <button
                     type="button"
                     className="expandable-gallery__lightbox-btn expandable-gallery__lightbox-btn--next"
@@ -179,7 +214,7 @@ export function ExpandableGallery({
                 )}
 
                 <p className="expandable-gallery__counter" aria-live="polite">
-                  {counterLabel(selectedIndex + 1, images.length)}
+                  {counterLabel(selectedIndex + 1, allImages.length)}
                 </p>
               </motion.div>
             )}

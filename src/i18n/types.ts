@@ -81,6 +81,8 @@ export type LocaleCopy = {
       listLabel: string;
       discoverAria: string;
       exploreCta: string;
+      galleryKicker: string;
+      galleryTitle: string;
     }
   >;
   gallery: {

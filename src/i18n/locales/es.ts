@@ -125,7 +125,7 @@ export const es: LocaleCopy = {
     'vista-giardino': {
       title: 'Con Vista Jardín',
       kicker: 'Estudio para 2 o 4 personas',
-      tagline: 'Veranda, jardín privado y la calma de la macchia.',
+      tagline: 'Veranda, jardín privado y la calma de la macchia mediterránea.',
       description:
         'Estudio con veranda cubierta y jardín privado: cama doble y litera para hasta 4 personas. Baños reformados — ducha walk-in amplia o ducha compacta con bidé según el alojamiento.',
       features: [
@@ -137,6 +137,8 @@ export const es: LocaleCopy = {
         'Wi-Fi gratuito',
       ],
       galleryAlts: [
+        'Veranda cubierta, patio y jardín privado — estudio vista jardín Le Vele',
+        'Terraza con mobiliario, jardín y vista al mar — Residence Le Vele, Stintino',
         'Interior del estudio con vista jardín y zona de comedor — Le Vele',
         'Litera en el estudio con vista jardín — hasta 4 personas',
         'Interior del estudio con rincón cocina — Residence Le Vele',
@@ -148,6 +150,8 @@ export const es: LocaleCopy = {
       listLabel: 'Jardín',
       discoverAria: 'Descubrir Con Vista Jardín',
       exploreCta: 'Explorar la suite',
+      galleryKicker: 'El estudio · vista jardín',
+      galleryTitle: 'Inmersión total',
     },
     'vista-mare': {
       title: 'Con Vista Mar',
@@ -157,13 +161,16 @@ export const es: LocaleCopy = {
         'Estudio con terraza privada sobre la bahía: cama doble y litera para hasta 4 personas, luz del norte de Cerdeña y atardeceres hacia La Pelosa. Baños reformados — ducha amplia sin bidé o ducha compacta con bidé según el alojamiento.',
       features: [
         'Terraza privada',
-        'Vista mar',
+        'Cocina equipada',
         'Litera',
         'Baño reformado',
         'Aire acondicionado',
         'Wi-Fi gratuito',
       ],
       galleryAlts: [
+        'Mesa de comedor y terraza con vista al mar — estudio Le Vele',
+        'Cocina americana y acceso a terraza con vista mar — Residence Le Vele',
+        'Dormitorio con cama doble y vista al mar desde la terraza — Le Vele',
         'Estudio con vista mar y terraza sobre la bahía — Residence Le Vele',
         'Litera con vistas al mar — estudio Stintino',
         'Panorama desde la suite con vista mar — Stintino, Cerdeña',
@@ -175,6 +182,8 @@ export const es: LocaleCopy = {
       listLabel: 'Mar',
       discoverAria: 'Descubrir Con Vista Mar',
       exploreCta: 'Explorar la suite',
+      galleryKicker: 'El estudio · vista mar',
+      galleryTitle: 'Inmersión total',
     },
   },
   gallery: {

@@ -125,7 +125,7 @@ export const it: LocaleCopy = {
     'vista-giardino': {
       title: 'Con Vista Giardino',
       kicker: 'Monolocale per 2 o 4 persone',
-      tagline: 'Veranda, giardino privato e quiete della macchia.',
+      tagline: 'Veranda, giardino privato e quiete della macchia mediterranea.',
       description:
         'Monolocale con veranda coperta e accesso al giardino privato: letto matrimoniale e letto a castello per fino a 4 ospiti. Bagni ristrutturati — in base all’alloggio, doccia walk-in più ampia oppure doccia compatta con bidet.',
       features: [
@@ -137,6 +137,8 @@ export const it: LocaleCopy = {
         'Wi-Fi gratuito',
       ],
       galleryAlts: [
+        'Veranda coperta, patio e giardino privato — monolocale vista giardino Le Vele',
+        'Terrazza con arredi, giardino e vista mare — Residence Le Vele, Stintino',
         'Interno monolocale vista giardino con zona pranzo e patio — Le Vele',
         'Letto a castello nel monolocale vista giardino — fino a 4 ospiti',
         'Interno monolocale con angolo cucina — Residence Le Vele',
@@ -148,6 +150,8 @@ export const it: LocaleCopy = {
       listLabel: 'Giardino',
       discoverAria: 'Scopri Con Vista Giardino',
       exploreCta: 'Esplora la suite',
+      galleryKicker: 'Il monolocale · vista giardino',
+      galleryTitle: 'Full immersion',
     },
     'vista-mare': {
       title: 'Con Vista Mare',
@@ -157,13 +161,16 @@ export const it: LocaleCopy = {
         'Monolocale con terrazza privata sulla baia: letto matrimoniale e letto a castello per fino a 4 ospiti, luce del Nord Sardegna e tramonti verso La Pelosa. Bagni ristrutturati — doccia ampia senza bidet oppure doccia compatta con bidet, a seconda dell’alloggio.',
       features: [
         'Terrazza privata',
-        'Vista mare',
+        'Piano cucina attrezzato',
         'Letto a castello',
         'Bagno ristrutturato',
         'Aria condizionata',
         'Wi-Fi gratuito',
       ],
       galleryAlts: [
+        'Tavolo da pranzo e terrazza con vista sul mare — monolocale Le Vele',
+        'Angolo cucina e accesso alla terrazza vista mare — Residence Le Vele',
+        'Camera con letto matrimoniale e vista mare dalla terrazza — Le Vele',
         'Monolocale vista mare con terrazza e luce sulla baia — Residence Le Vele',
         'Letto a castello con vista sul mare — monolocale Stintino',
         'Panorama dalla suite vista mare — Stintino, Sardegna',
@@ -175,6 +182,8 @@ export const it: LocaleCopy = {
       listLabel: 'Mare',
       discoverAria: 'Scopri Con Vista Mare',
       exploreCta: 'Esplora la suite',
+      galleryKicker: 'Il monolocale · vista mare',
+      galleryTitle: 'Full immersion',
     },
   },
   gallery: {

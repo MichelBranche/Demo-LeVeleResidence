@@ -11,7 +11,7 @@ export type SuiteFeatureIconId =
 
 /** Icone allineate all’ordine delle feature in i18n (prime 4 in card home). */
 export const SUITE_FEATURE_ICONS: Record<string, readonly SuiteFeatureIconId[]> = {
-  'vista-mare': ['terrace', 'sea', 'bunk', 'bath', 'ac', 'wifi'],
+  'vista-mare': ['terrace', 'kitchen', 'bunk', 'bath', 'ac', 'wifi'],
   'vista-giardino': ['veranda', 'garden', 'bunk', 'bath', 'kitchen', 'wifi'],
 };
 

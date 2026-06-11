@@ -7,6 +7,7 @@ import {
   prepareHeaderReveal,
   prepareHeroRevealLines,
 } from '../lib/homeIntroEntrance';
+import { HERO_VIDEO_PRIME_EVENT } from '../lib/heroVideo';
 import { markIntroDone, resetIntroState } from '../lib/intro';
 import { scrollToTop } from '../lib/scroll';
 
@@ -24,7 +25,9 @@ const WILLEM = {
 
 const INTRO_LIGHT_MAX_MS = 9000;
 const INTRO_VIDEO_MAX_MS = 16000;
-const INTRO_METADATA_MAX_MS = 6000;
+/** Non bloccare l'intro oltre questo limite se Mux/HLS non ha ancora `canplay`. */
+const INTRO_METADATA_MAX_MS = 2200;
+const INTRO_EARLY_PRIME_MS = 380;
 const INIT_MAX_FRAMES = 90;
 
 type PreloaderProps = {
@@ -609,6 +612,7 @@ function setupVideoIntro({
   let videoRevealStarted = false;
   let safetyTimer = 0;
   let metadataTimer = 0;
+  let earlyPrimeTimer = 0;
   let mainTimeline: gsap.core.Timeline | null = null;
 
   const completeIntro = () => {
@@ -704,9 +708,23 @@ function setupVideoIntro({
     });
   };
 
+  let videoPrimed = false;
+  const primeVideo = () => {
+    if (videoPrimed || introFinished) return;
+    videoPrimed = true;
+    window.clearTimeout(metadataTimer);
+    window.clearTimeout(earlyPrimeTimer);
+    beginVideoReveal();
+  };
+
   const onVideoError = () => {
     if (introFinished) return;
     window.clearTimeout(metadataTimer);
+    window.clearTimeout(earlyPrimeTimer);
+    if (!videoPrimed) {
+      primeVideo();
+      return;
+    }
     markIntroDone();
     if (heroVideoEl.parentElement !== heroSlot) {
       heroSlot.appendChild(heroVideoEl);
@@ -714,33 +732,35 @@ function setupVideoIntro({
     completeIntro();
   };
 
-  heroVideoEl.addEventListener('error', onVideoError, { once: true });
-  metadataTimer = window.setTimeout(onVideoError, INTRO_METADATA_MAX_MS);
-
-  let videoPrimed = false;
-  const primeVideo = () => {
-    if (videoPrimed || introFinished) return;
-    videoPrimed = true;
-    window.clearTimeout(metadataTimer);
-    beginVideoReveal();
+  const onMetadataTimeout = () => {
+    if (!videoPrimed && !introFinished) {
+      primeVideo();
+    }
   };
 
+  heroVideoEl.addEventListener('error', onVideoError, { once: true });
   heroVideoEl.addEventListener('canplay', primeVideo, { once: true });
   heroVideoEl.addEventListener('loadeddata', primeVideo, { once: true });
+  heroVideoEl.addEventListener('loadedmetadata', primeVideo, { once: true });
+  heroVideoEl.addEventListener(HERO_VIDEO_PRIME_EVENT, primeVideo, { once: true });
+
+  metadataTimer = window.setTimeout(onMetadataTimeout, INTRO_METADATA_MAX_MS);
+  earlyPrimeTimer = window.setTimeout(onMetadataTimeout, INTRO_EARLY_PRIME_MS);
 
   if (heroVideoEl.readyState >= 2) {
     primeVideo();
   } else if (heroVideoEl.readyState >= 1) {
     window.setTimeout(primeVideo, 120);
-  } else {
-    void heroVideoEl.load();
   }
 
   return () => {
     window.clearTimeout(safetyTimer);
     window.clearTimeout(metadataTimer);
+    window.clearTimeout(earlyPrimeTimer);
     heroVideoEl.removeEventListener('canplay', primeVideo);
     heroVideoEl.removeEventListener('loadeddata', primeVideo);
+    heroVideoEl.removeEventListener('loadedmetadata', primeVideo);
+    heroVideoEl.removeEventListener(HERO_VIDEO_PRIME_EVENT, primeVideo);
     heroVideoEl.removeEventListener('error', onVideoError);
     mainTimeline?.kill();
     document.body.classList.remove('oh-preloader-hero-phase', 'oh-preloader-header-phase');

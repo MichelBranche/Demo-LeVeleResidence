@@ -125,7 +125,7 @@ export const en: LocaleCopy = {
     'vista-giardino': {
       title: 'Garden View',
       kicker: 'Studio for 2 or 4 guests',
-      tagline: 'Veranda, private garden and the quiet of the scrubland.',
+      tagline: 'Veranda, private garden and the quiet of the Mediterranean scrubland.',
       description:
         'Studio with covered veranda and private garden access: double bed and bunk bed for up to 4 guests. Renovated bathrooms — either a larger walk-in shower or a compact shower with bidet, depending on the unit.',
       features: [
@@ -137,6 +137,8 @@ export const en: LocaleCopy = {
         'Free Wi-Fi',
       ],
       galleryAlts: [
+        'Covered veranda, patio and private garden — garden-view studio Le Vele',
+        'Terrace with outdoor seating, garden and sea view — Residence Le Vele, Stintino',
         'Garden-view studio interior with dining area and patio — Le Vele',
         'Bunk bed in the garden-view studio — up to 4 guests',
         'Studio interior with kitchenette — Residence Le Vele',
@@ -148,6 +150,8 @@ export const en: LocaleCopy = {
       listLabel: 'Garden',
       discoverAria: 'Discover Garden View',
       exploreCta: 'Explore the suite',
+      galleryKicker: 'The studio · garden view',
+      galleryTitle: 'Full immersion',
     },
     'vista-mare': {
       title: 'Sea View',
@@ -157,13 +161,16 @@ export const en: LocaleCopy = {
         'Studio with private terrace over the bay: double bed and bunk bed for up to 4 guests, North Sardinia light and sunsets towards La Pelosa. Renovated bathrooms — larger shower without bidet or compact shower with bidet, depending on the unit.',
       features: [
         'Private terrace',
-        'Sea view',
+        'Equipped kitchen hob',
         'Bunk bed',
         'Renovated bathroom',
         'Air conditioning',
         'Free Wi-Fi',
       ],
       galleryAlts: [
+        'Dining table and terrace with sea view — Le Vele studio',
+        'Kitchenette and terrace access with sea view — Residence Le Vele',
+        'Bedroom with double bed and sea view from the terrace — Le Vele',
         'Sea-view studio with terrace and bay light — Residence Le Vele',
         'Bunk bed with sea view — Stintino studio',
         'Panorama from the sea-view suite — Stintino, Sardinia',
@@ -175,6 +182,8 @@ export const en: LocaleCopy = {
       listLabel: 'Sea',
       discoverAria: 'Discover Sea View',
       exploreCta: 'Explore the suite',
+      galleryKicker: 'The studio · sea view',
+      galleryTitle: 'Full immersion',
     },
   },
   gallery: {

@@ -2,12 +2,12 @@ import '../styles/suite-detail.css';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { formatCopy } from '../i18n';
 import { useRouteTransition } from '../context/RouteTransitionContext';
 import { getSuiteSlugFromPathname } from '../data/routes';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { useSuitePageAnimations } from '../hooks/useSuitePageAnimations';
 import { SuiteFeatureIcon } from '../components/SuiteFeatureIcon';
+import { ExpandableGallery } from '../components/ui/ExpandableGallery';
 import { getSuiteFeatureIcon } from '../lib/suiteFeatureIcons';
 
 function splitSuiteTitle(title: string) {
@@ -21,7 +21,7 @@ function splitSuiteTitle(title: string) {
 
 export function SuitePage() {
   const { content } = useSiteLocale();
-  const { suitePage, suites, config } = content;
+  const { suitePage, suites, config, gallery } = content;
   const { stage } = useRouteTransition();
   const { slug: paramSlug = '' } = useParams();
   const { pathname } = useLocation();
@@ -139,18 +139,33 @@ export function SuitePage() {
       </section>
 
       <section
-        className="suite-gallery"
-        aria-label={formatCopy(suitePage.galleryAria, { title: suite.title })}
+        className="section section--gallery suite-gallery"
+        aria-labelledby="suite-gallery-title"
       >
-        <div className="suite-gallery__grid">
-          {suite.gallery.map((item) => (
-            <figure
-              key={item.src}
-              className={`suite-gallery__cell suite-gallery__cell--${item.layout}`}
-            >
-              <img src={item.src} alt={item.alt} loading="lazy" decoding="async" />
-            </figure>
-          ))}
+        <div className="section--gallery__inner" data-suite-reveal>
+          <header className="suite-gallery__head">
+            <p className="suite-gallery__eyebrow">{suite.galleryKicker}</p>
+            <h2 id="suite-gallery-title" className="section-title display-serif suite-gallery__title">
+              {suite.galleryTitle}
+            </h2>
+          </header>
+          <ExpandableGallery
+            className="expandable-gallery--suite"
+            leadPlacement="above"
+            leadImage={{
+              src: suite.gallery[0].src,
+              alt: suite.gallery[0].alt,
+            }}
+            images={suite.gallery.slice(1).map(({ src, alt }) => ({ src, alt }))}
+            closeLabel={gallery.closeLabel}
+            prevLabel={gallery.prevLabel}
+            nextLabel={gallery.nextLabel}
+            counterLabel={(current, total) =>
+              gallery.counterLabel
+                .replace('{current}', String(current))
+                .replace('{total}', String(total))
+            }
+          />
         </div>
       </section>
 

@@ -84,23 +84,6 @@ export function useSuitePageAnimations(pageRef: RefObject<HTMLElement | null>) {
         });
       });
 
-      const galleryItems = gsap.utils.toArray<HTMLElement>('.suite-gallery__cell', page);
-      galleryItems.forEach((cell, index) => {
-        gsap.from(cell, {
-          y: 40,
-          opacity: 0,
-          scale: 0.98,
-          duration: 0.9,
-          ease: 'power3.out',
-          delay: index * 0.08,
-          clearProps: 'opacity,transform',
-          scrollTrigger: {
-            trigger: cell,
-            start: 'top 88%',
-            toggleActions: 'play none none none',
-          },
-        });
-      });
     },
     { scope: pageRef, dependencies: [] },
   );

@@ -125,7 +125,7 @@ export const de: LocaleCopy = {
     'vista-giardino': {
       title: 'Mit Gartenblick',
       kicker: 'Studio für 2 oder 4 Personen',
-      tagline: 'Veranda, privater Garten und die Ruhe der Macchia.',
+      tagline: 'Veranda, privater Garten und die Ruhe der mediterranen Macchia.',
       description:
         'Studio mit überdachter Veranda und privatem Garten: Doppelbett und Etagenbett für bis zu 4 Gäste. Renovierte Bäder — je nach Wohnung große Walk-in-Dusche oder kompakte Dusche mit Bidet.',
       features: [
@@ -137,6 +137,8 @@ export const de: LocaleCopy = {
         'Kostenloses WLAN',
       ],
       galleryAlts: [
+        'Überdachte Veranda, Patio und privater Garten — Studio mit Gartenblick Le Vele',
+        'Terrasse mit Gartenmöbeln, Garten und Meerblick — Residence Le Vele, Stintino',
         'Innenraum Studio mit Gartenblick und Essbereich — Le Vele',
         'Etagenbett im Studio mit Gartenblick — bis zu 4 Gäste',
         'Studio-Innenraum mit Küchenzeile — Residence Le Vele',
@@ -148,6 +150,8 @@ export const de: LocaleCopy = {
       listLabel: 'Garten',
       discoverAria: 'Mit Gartenblick entdecken',
       exploreCta: 'Suite erkunden',
+      galleryKicker: 'Das Monolokal · Gartenblick',
+      galleryTitle: 'Full immersion',
     },
     'vista-mare': {
       title: 'Mit Meerblick',
@@ -157,13 +161,16 @@ export const de: LocaleCopy = {
         'Studio mit privater Terrasse über der Bucht: Doppelbett und Etagenbett für bis zu 4 Gäste, Licht Nord-Sardiniens und Sonnenuntergänge Richtung La Pelosa. Renovierte Bäder — große Dusche ohne Bidet oder kompakte Dusche mit Bidet, je nach Wohnung.',
       features: [
         'Private Terrasse',
-        'Meerblick',
+        'Ausgestattete Küchenzeile',
         'Etagenbett',
         'Renoviertes Bad',
         'Klimaanlage',
         'Kostenloses WLAN',
       ],
       galleryAlts: [
+        'Esstisch und Terrasse mit Meerblick — Le Vele Studio',
+        'Küchenzeile und Zugang zur Terrasse mit Meerblick — Residence Le Vele',
+        'Schlafzimmer mit Doppelbett und Meerblick von der Terrasse — Le Vele',
         'Studio mit Meerblick und Terrasse — Residence Le Vele',
         'Etagenbett mit Meerblick — Stintino Studio',
         'Panorama von der Suite mit Meerblick — Stintino, Sardinien',
@@ -175,6 +182,8 @@ export const de: LocaleCopy = {
       listLabel: 'Meer',
       discoverAria: 'Mit Meerblick entdecken',
       exploreCta: 'Suite erkunden',
+      galleryKicker: 'Das Monolokal · Meerblick',
+      galleryTitle: 'Full immersion',
     },
   },
   gallery: {

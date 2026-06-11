@@ -11,7 +11,7 @@ import { useHomeLangReveal } from '../hooks/useHomeLangReveal';
 import { useNetworkTier } from '../hooks/useNetworkTier';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { revealHeroCopyStatic } from '../lib/homeIntroEntrance';
-import { isHeroCopyDone, resetIntroState } from '../lib/intro';
+import { isHeroCopyDone, onHeroCopyDone, resetIntroState } from '../lib/intro';
 import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
   shouldAutoplayHeroVideoImmediately,
@@ -102,6 +102,7 @@ export function HomePage() {
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
   const heroMounted = isReady;
+  const showHeroCopy = isReady;
   const [preloaderReady, setPreloaderReady] = useState(false);
   const [shellReady, setShellReady] = useState(
     () => readPreloaderDone() || !shouldRunVideoPreloader(),
@@ -110,7 +111,12 @@ export function HomePage() {
   useHomeLangReveal(ready);
 
   useLayoutEffect(() => {
-    document.getElementById('initial-hero-poster')?.remove();
+    const removePoster = () => document.getElementById('initial-hero-poster')?.remove();
+    if (isHeroCopyDone()) {
+      removePoster();
+      return undefined;
+    }
+    return onHeroCopyDone(removePoster);
   }, []);
 
   useLayoutEffect(() => {
@@ -293,7 +299,7 @@ export function HomePage() {
           </div>
 
           <div className="oh-reveal">
-            {heroMounted && <HeroSection />}
+            {showHeroCopy && <HeroSection />}
           </div>
 
           {showPreloader &&

@@ -39,6 +39,8 @@ export type MergedSuite = {
   listLabel: string;
   discoverAria: string;
   exploreCta: string;
+  galleryKicker: string;
+  galleryTitle: string;
   gallery: { src: string; alt: string; layout: 'wide' | 'tall' }[];
 };
 
@@ -89,6 +91,8 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
       listLabel: text.listLabel,
       discoverAria: text.discoverAria,
       exploreCta: text.exploreCta,
+      galleryKicker: text.galleryKicker,
+      galleryTitle: text.galleryTitle,
       gallery: (media.gallery ?? []).map((item, i) => ({
         src: item.src,
         layout: item.layout,
