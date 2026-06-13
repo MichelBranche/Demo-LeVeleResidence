@@ -4,12 +4,14 @@ import { getHeroVideoUrl } from '../lib/heroVideo';
 const GARDEN = asset('/Foto%202024%20camere%20Le%20Vele/vista%20giardino');
 const SEA = asset('/Foto%202024%20camere%20Le%20Vele/vista%20mare');
 const BATH = asset('/Foto%202024%20camere%20Le%20Vele/bagni');
-const CALA_LUPO = asset('/images/cala-lupo.png');
-const ZONA_COMUNE = asset('/images/zona-comune.png');
-const LA_PELOSA = asset('/images/la-pelosa-spiaggia.png');
-const ALGHERO_AIRPORT = asset('/images/alghero-aeroporto.png');
-const OLBIA_PORT = asset('/images/olbia-porto.png');
-const PETS = asset('/images/amici-4-zampe.png');
+const CALA_LUPO = asset('/images/cala-lupo.webp');
+const ZONA_COMUNE = asset('/images/zona-comune.webp');
+const LA_PELOSA = asset('/images/la-pelosa-spiaggia.webp');
+const ALGHERO_AIRPORT = asset('/images/alghero-aeroporto.webp');
+const OLBIA_PORT = asset('/images/olbia-porto.webp');
+const PETS = asset('/images/amici-4-zampe.webp');
+const ATMOSFERA = asset('/images/atmosfera');
+const CONTATTI = asset('/images/contatti');
 const PELOSA_DIR = asset('/la-pelosa');
 
 export const siteConfig = {
@@ -68,13 +70,13 @@ export const heroMedia = {
 
 export const residenceCardMedia = [
   {
-    icon: 'bay' as const,
-    image: CALA_LUPO,
-  },
-  {
     icon: 'pelosa' as const,
     image: LA_PELOSA,
     link: '/la-pelosa',
+  },
+  {
+    icon: 'bay' as const,
+    image: CALA_LUPO,
   },
   {
     icon: 'routes' as const,
@@ -94,60 +96,81 @@ export const suitesMedia = [
     slug: 'vista-mare' as const,
     index: '01',
     theme: 'mare' as const,
-    cardImage: `${SEA}/le_vele_residence_stintino_appartamenti_26.png`,
+    cardImage: `${SEA}/le_vele_residence_stintino_appartamenti_26.webp`,
     cardImagePosition: 'center 38%',
-    image: `${SEA}/monolocale-mare-1.png`,
+    image: `${SEA}/vista-mare-hero.webp`,
     gallery: [
-      { src: `${SEA}/le_vele_residence_stintino_appartamenti_26.png`, layout: 'wide' as const },
-      { src: `${SEA}/le_vele_residence_stintino_appartamenti_27.png`, layout: 'tall' as const },
-      { src: `${SEA}/le_vele_residence_stintino_appartamenti_08.png`, layout: 'tall' as const },
-      { src: `${SEA}/monolocale-mare-1.png`, layout: 'wide' as const },
-      { src: `${SEA}/letto-castello-mare.png`, layout: 'tall' as const },
-      { src: `${SEA}/29.JPG`, layout: 'tall' as const },
-      { src: `${SEA}/14.JPG`, layout: 'wide' as const },
-      { src: `${SEA}/40.JPG`, layout: 'tall' as const },
-      { src: `${BATH}/bagno-lavabo.png`, layout: 'tall' as const },
-      { src: `${BATH}/bagno-doccia-ampia-2.png`, layout: 'wide' as const },
+      { src: `${SEA}/le_vele_residence_stintino_appartamenti_26.webp`, layout: 'wide' as const },
+      { src: `${SEA}/le_vele_residence_stintino_appartamenti_27.webp`, layout: 'tall' as const },
+      { src: `${SEA}/le_vele_residence_stintino_appartamenti_08.webp`, layout: 'tall' as const },
+      { src: `${SEA}/dettaglio-vista-mare-interno.webp`, layout: 'wide' as const },
+      { src: `${SEA}/monolocale-mare-1.webp`, layout: 'wide' as const },
+      { src: `${SEA}/vista-mare-terrazza.webp`, layout: 'wide' as const },
+      { src: `${SEA}/dettaglio-vista-mare-moka.webp`, layout: 'wide' as const },
+      { src: `${SEA}/letto-vista-mare.webp`, layout: 'tall' as const },
+      { src: `${SEA}/dettagli-vista-mare.webp`, layout: 'tall' as const },
+      { src: `${SEA}/angolo-cucina-vista-mare.webp`, layout: 'wide' as const },
+      { src: `${SEA}/letto-castello-mare.webp`, layout: 'tall' as const },
+      { src: `${SEA}/29.webp`, layout: 'tall' as const },
+      { src: `${SEA}/14.webp`, layout: 'wide' as const },
+      { src: `${SEA}/40.webp`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-lavabo.webp`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-doccia-ampia-2.webp`, layout: 'wide' as const },
     ],
   },
   {
     slug: 'vista-giardino' as const,
     index: '02',
     theme: 'giardino' as const,
-    cardImage: `${GARDEN}/vista_giardino_1.png`,
+    cardImage: `${GARDEN}/vista_giardino_1.webp`,
     cardImagePosition: 'center 48%',
-    image: `${GARDEN}/esterno%20giardino.jpg`,
+    image: `${GARDEN}/giardino-hero.webp`,
     gallery: [
-      { src: `${GARDEN}/vista_giardino_1.png`, layout: 'wide' as const },
-      { src: `${GARDEN}/terrazza-giardino-vista-mare.png`, layout: 'wide' as const },
-      { src: `${GARDEN}/monolocale-giardino.png`, layout: 'wide' as const },
-      { src: `${GARDEN}/letto-castello-giardino.png`, layout: 'tall' as const },
-      { src: `${GARDEN}/39.JPG`, layout: 'tall' as const },
-      { src: `${GARDEN}/esterno%20giardino.jpg`, layout: 'wide' as const },
-      { src: `${GARDEN}/24.JPG`, layout: 'tall' as const },
-      { src: `${BATH}/bagno-lavabo.png`, layout: 'tall' as const },
-      { src: `${BATH}/bagno-doccia-ampia-1.png`, layout: 'wide' as const },
+      { src: `${GARDEN}/giardino-privato-lead.webp`, layout: 'wide' as const },
+      { src: `${GARDEN}/terrazza-giardino-vista-mare.webp`, layout: 'wide' as const },
+      { src: `${GARDEN}/monolocale-giardino.webp`, layout: 'wide' as const },
+      { src: `${GARDEN}/veranda-giardino-tavolo.webp`, layout: 'wide' as const },
+      { src: `${GARDEN}/colazione-giardino-moka.webp`, layout: 'wide' as const },
+      { src: `${GARDEN}/camera-giardino-bagno.webp`, layout: 'wide' as const },
+      { src: `${GARDEN}/dettaglio-letto-giardino.webp`, layout: 'tall' as const },
+      { src: `${GARDEN}/letto-castello-giardino.webp`, layout: 'tall' as const },
+      { src: `${GARDEN}/39.webp`, layout: 'tall' as const },
+      { src: `${GARDEN}/esterno%20giardino.webp`, layout: 'wide' as const },
+      { src: `${GARDEN}/24.webp`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-lavabo.webp`, layout: 'tall' as const },
+      { src: `${BATH}/bagno-doccia-ampia-1.webp`, layout: 'wide' as const },
     ],
   },
 ] as const;
 
 export const galleryMedia = [
-  { src: `${GARDEN}/esterno%20giardino.jpg` },
-  { src: `${SEA}/14.JPG` },
-  { src: `${GARDEN}/39.JPG` },
-  { src: `${SEA}/le_vele_residence_stintino_appartamenti_27.jpg` },
-  { src: `${SEA}/le_vele_residence_stintino_appartamenti_08.png` },
+  { src: `${ATMOSFERA}/drone-residence.webp` },
+  { src: `${ATMOSFERA}/dettaglio-vista-mare.webp` },
+  { src: `${GARDEN}/esterno%20giardino.webp` },
+  { src: `${ATMOSFERA}/vista-mare.webp` },
+  { src: `${SEA}/14.webp` },
+  { src: `${ATMOSFERA}/dettaglio-giardino.webp` },
+  { src: `${SEA}/le_vele_residence_stintino_appartamenti_27.webp` },
+  { src: `${GARDEN}/39.webp` },
+  { src: `${ATMOSFERA}/dettaglio-vista-giardino.webp` },
+  { src: `${SEA}/le_vele_residence_stintino_appartamenti_08.webp` },
   { src: ZONA_COMUNE },
+] as const;
+
+export const contactMedia = [
+  { src: `${CONTATTI}/contatti-drone-costa.webp` },
+  { src: `${CONTATTI}/contatti-drone-tramonto.webp` },
+  { src: `${CONTATTI}/contatti-drone-residence.webp` },
 ] as const;
 
 export const pelosaMedia = {
   video: asset('/videos/La-Pelosa-Hero.mp4'),
   poster: LA_PELOSA,
   gallery: [
-    { src: `${PELOSA_DIR}/la-pelosa-drone.png`, layout: 'wide' as const },
-    { src: `${PELOSA_DIR}/la-pelosa-aerial-road.png`, layout: 'tall' as const },
-    { src: `${PELOSA_DIR}/la-pelosa-lagoon.png`, layout: 'tall' as const },
-    { src: `${PELOSA_DIR}/la-pelosa-water-level.png`, layout: 'wide' as const },
+    { src: `${PELOSA_DIR}/la-pelosa-drone.webp`, layout: 'wide' as const },
+    { src: `${PELOSA_DIR}/la-pelosa-aerial-road.webp`, layout: 'tall' as const },
+    { src: `${PELOSA_DIR}/la-pelosa-lagoon.webp`, layout: 'tall' as const },
+    { src: `${PELOSA_DIR}/la-pelosa-water-level.webp`, layout: 'wide' as const },
   ],
 } as const;
 

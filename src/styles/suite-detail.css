@@ -73,12 +73,12 @@
 }
 
 .suite-page--mare .suite-hero__img {
-  object-position: center 55%;
+  object-position: center 38%;
 }
 
 /* Stesso hero layout per entrambe le suite (giardino / mare) */
 .suite-page--giardino .suite-hero__img {
-  object-position: center 48%;
+  object-position: center 42%;
 }
 
 .suite-page--mare .suite-story__index,

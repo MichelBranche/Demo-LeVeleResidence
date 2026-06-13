@@ -1,12 +1,14 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useCallback, useEffect, useState, type MouseEvent } from 'react';
+import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
 
 export type ExpandableGalleryImage = {
   src: string;
   alt: string;
 };
+
+const AUTOPLAY_DELAY_MS = 3500;
 
 type ExpandableGalleryProps = {
   images: ExpandableGalleryImage[];
@@ -18,6 +20,7 @@ type ExpandableGalleryProps = {
   prevLabel: string;
   nextLabel: string;
   counterLabel: (current: number, total: number) => string;
+  autoplayLabel: string;
 };
 
 export function ExpandableGallery({
@@ -29,10 +32,14 @@ export function ExpandableGallery({
   prevLabel,
   nextLabel,
   counterLabel,
+  autoplayLabel,
 }: ExpandableGalleryProps) {
   const reduceMotion = useReducedMotion();
+  const autoplayRunRef = useRef(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [isAutoplaying, setIsAutoplaying] = useState(false);
+  const [autoplayIndex, setAutoplayIndex] = useState<number | null>(null);
   const allImages = leadImage ? [leadImage, ...images] : images;
   const leadInTrack = Boolean(leadImage && leadPlacement === 'track');
   const trackImages = leadInTrack ? allImages : images;
@@ -85,12 +92,54 @@ export function ExpandableGallery({
     };
   }, [selectedIndex, closeImage, goToNext, goToPrev]);
 
+  const startAutoplay = () => {
+    setHoveredIndex(null);
+    autoplayRunRef.current += 1;
+    setIsAutoplaying(true);
+    setAutoplayIndex(0);
+  };
+
+  useEffect(() => {
+    if (!isAutoplaying || autoplayIndex === null) return undefined;
+
+    const runId = autoplayRunRef.current;
+    const timeout = window.setTimeout(() => {
+      if (runId !== autoplayRunRef.current) return;
+
+      if (autoplayIndex >= allImages.length - 1) {
+        setIsAutoplaying(false);
+        setAutoplayIndex(null);
+        return;
+      }
+
+      setAutoplayIndex(autoplayIndex + 1);
+    }, AUTOPLAY_DELAY_MS);
+
+    return () => window.clearTimeout(timeout);
+  }, [isAutoplaying, autoplayIndex, allImages.length]);
+
+  const getTrackHighlightIndex = (): number | null => {
+    if (isAutoplaying && autoplayIndex !== null) {
+      if (leadImage && !leadInTrack) {
+        if (autoplayIndex === 0) return null;
+        return autoplayIndex - 1;
+      }
+      return autoplayIndex;
+    }
+    return hoveredIndex;
+  };
+
+  const trackHighlightIndex = getTrackHighlightIndex();
+  const isLeadActive =
+    isAutoplaying && autoplayIndex === 0 && Boolean(leadImage && !leadInTrack);
+  const canAutoplay = allImages.length > 1 && !reduceMotion;
+
   const getFlexValue = (index: number) => {
     const isLeadCell = leadInTrack && index === 0;
-    if (reduceMotion || hoveredIndex === null) {
+    if (reduceMotion || trackHighlightIndex === null) {
       return isLeadCell ? 2 : 1;
     }
-    return hoveredIndex === index ? 2 : 0.5;
+    return trackHighlightIndex === index ? 4 : 0.28;
   };
 
   if (allImages.length === 0) {
@@ -106,7 +155,9 @@ export function ExpandableGallery({
       {leadImage && !leadInTrack && (
         <button
           type="button"
-          className="expandable-gallery__lead"
+          className={`expandable-gallery__lead${
+            isLeadActive ? ' expandable-gallery__lead--active' : ''
+          }`}
           onClick={() => openImage(0)}
           aria-label={leadImage.alt}
         >
@@ -132,10 +183,18 @@ export function ExpandableGallery({
             style={{ flex: 1 }}
             animate={{ flex: getFlexValue(index) }}
             transition={{ duration: reduceMotion ? 0 : 0.5, ease: 'easeInOut' }}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            onFocus={() => setHoveredIndex(index)}
-            onBlur={() => setHoveredIndex(null)}
+            onMouseEnter={() => {
+              if (!isAutoplaying) setHoveredIndex(index);
+            }}
+            onMouseLeave={() => {
+              if (!isAutoplaying) setHoveredIndex(null);
+            }}
+            onFocus={() => {
+              if (!isAutoplaying) setHoveredIndex(index);
+            }}
+            onBlur={() => {
+              if (!isAutoplaying) setHoveredIndex(null);
+            }}
             onClick={() => openImage(index + trackOffset)}
             aria-label={image.alt}
           >
@@ -144,12 +203,27 @@ export function ExpandableGallery({
               className="expandable-gallery__shade"
               aria-hidden
               initial={false}
-              animate={{ opacity: hoveredIndex === index ? 0 : 0.28 }}
+              animate={{ opacity: trackHighlightIndex === index ? 0 : 0.28 }}
               transition={{ duration: reduceMotion ? 0 : 0.3 }}
             />
           </motion.button>
         ))}
       </div>
+      )}
+
+      {canAutoplay && (
+        <div className="expandable-gallery__controls">
+          <button
+            type="button"
+            className="expandable-gallery__autoplay"
+            onClick={startAutoplay}
+            disabled={isAutoplaying}
+            aria-busy={isAutoplaying}
+          >
+            <Play size={16} strokeWidth={2.25} aria-hidden />
+            {autoplayLabel}
+          </button>
+        </div>
       )}
 
       {typeof document !== 'undefined' &&

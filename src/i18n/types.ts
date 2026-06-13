@@ -92,6 +92,7 @@ export type LocaleCopy = {
     prevLabel: string;
     nextLabel: string;
     counterLabel: string;
+    autoplayLabel: string;
   };
   offers: {
     sectionEyebrow: string;
@@ -142,6 +143,7 @@ export type LocaleCopy = {
   };
   contactIntro: { eyebrow: string; title: string; kicker: string };
   contactLabels: { phone: string; mobile: string; email: string; address: string };
+  contactPhotoAlts: readonly string[];
   siteMap: {
     placeholderAlt: string;
     badgeLabel: string;

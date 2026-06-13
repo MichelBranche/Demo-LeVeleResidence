@@ -33,17 +33,17 @@ export const it: LocaleCopy = {
   ],
   residenceCards: [
     {
-      title: 'Baia di Cala Lupo',
-      description:
-        'Il Residence sorge nella baia di Cala Lupo, in una zona tranquilla a circa 2 km dal centro di Stintino, tra macchia mediterranea e mare del Nord Sardegna.',
-      imageAlt: 'Baia di Cala Lupo — spiaggia e mare turchese vicino al Residence',
-    },
-    {
       title: 'La Pelosa',
       description:
         'A pochi minuti dal Residence, La Pelosa è una delle spiagge più celebri del Mediterraneo: sabbia bianca finissima, acqua turchese trasparente e la storica Torre aragonese che emerge dal mare.',
       imageAlt: 'La Pelosa — spiaggia e Torre della Pelosa, Stintino',
       linkLabel: 'Scopri La Pelosa',
+    },
+    {
+      title: 'Baia di Cala Lupo',
+      description:
+        'Il Residence sorge nella baia di Cala Lupo, in una zona tranquilla a circa 2 km dal centro di Stintino, tra macchia mediterranea e mare del Nord Sardegna.',
+      imageAlt: 'Baia di Cala Lupo — spiaggia e mare turchese vicino al Residence',
     },
     {
       title: 'Collegamenti',
@@ -140,6 +140,10 @@ export const it: LocaleCopy = {
         'Veranda coperta, patio e giardino privato — monolocale vista giardino Le Vele',
         'Terrazza con arredi, giardino e vista mare — Residence Le Vele, Stintino',
         'Interno monolocale vista giardino con zona pranzo e patio — Le Vele',
+        'Set da pranzo in veranda con moka e vista sul giardino — monolocale vista giardino Le Vele',
+        'Colazione in veranda con moka, fiori bianchi e giardino — Residence Le Vele, Stintino',
+        'Camera con letto matrimoniale e bagno privato — monolocale vista giardino Le Vele',
+        'Dettaglio letto con asciugamani e ibisco, vista sul patio — monolocale vista giardino Le Vele',
         'Letto a castello nel monolocale vista giardino — fino a 4 ospiti',
         'Interno monolocale con angolo cucina — Residence Le Vele',
         'Giardino privato e veranda coperta — Residence Le Vele, Stintino',
@@ -171,7 +175,13 @@ export const it: LocaleCopy = {
         'Tavolo da pranzo e terrazza con vista sul mare — monolocale Le Vele',
         'Angolo cucina e accesso alla terrazza vista mare — Residence Le Vele',
         'Camera con letto matrimoniale e vista mare dalla terrazza — Le Vele',
+        'Terrazza arredata con vista sul monolocale e sul mare — Le Vele',
         'Monolocale vista mare con terrazza e luce sulla baia — Residence Le Vele',
+        'Terrazza coperta con tavolo, moka e vista mare — monolocale Le Vele',
+        'Colazione in terrazza con moka e oleandro — vista mare Stintino',
+        'Camera matrimoniale con ibisco e arredi in legno — monolocale vista mare',
+        'Dettaglio accoglienza con asciugamani e ibisco rosso — Le Vele',
+        'Angolo cucina attrezzato e zona pranzo — monolocale vista mare',
         'Letto a castello con vista sul mare — monolocale Stintino',
         'Panorama dalla suite vista mare — Stintino, Sardegna',
         'Terrazza con vista mare — monolocale Residence Le Vele, Stintino',
@@ -189,10 +199,15 @@ export const it: LocaleCopy = {
   gallery: {
     title: 'Atmosfera Le Vele',
     imageAlts: [
+      'Vista aerea del Residence Le Vele sulla costa di Stintino — Sardegna',
+      'Terrazza vista mare con moka e oleandro — Atmosfera Le Vele, Stintino',
       'Giardino del Residence Le Vele a Stintino con macchia mediterranea',
+      'Vista sul mare dal residence con barca e macchia mediterranea — Stintino',
       'Monolocale vista mare — Residence Le Vele, Stintino',
+      'Veranda con arredi da giardino e moka — monolocale vista giardino Le Vele',
+      'Angolo cucina e accesso alla terrazza vista mare — Residence Le Vele',
       'Area verde e veranda — appartamenti vacanze Sardegna',
-      'Terrazza con vista mare al Residence Le Vele, Stintino',
+      'Dettaglio camera con ibisco bianco e veranda sul giardino — Le Vele',
       'Interno monolocale vista mare con balcone sul mare — Le Vele, Stintino',
       'Zona comune esterna con terrazza, arredi e vista mare — Residence Le Vele',
     ],
@@ -200,6 +215,7 @@ export const it: LocaleCopy = {
     prevLabel: 'Immagine precedente',
     nextLabel: 'Immagine successiva',
     counterLabel: '{current} / {total}',
+    autoplayLabel: 'Scorri le foto',
   },
   offers: {
     sectionEyebrow: 'Pacchetti',
@@ -389,6 +405,11 @@ export const it: LocaleCopy = {
     email: 'Email',
     address: 'Indirizzo',
   },
+  contactPhotoAlts: [
+    'Vista aerea della costa di Stintino con piscina e baie — Residence Le Vele',
+    'Tramonto sul promontorio del Residence Le Vele — Stintino, Sardegna',
+    'Vista aerea del Residence Le Vele con appartamenti e mare — Stintino, Sardegna',
+  ],
   siteMap: {
     placeholderAlt: 'Baia di Cala Lupo — zona del Residence Le Vele a Stintino',
     badgeLabel: 'Residence Le Vele — Stintino',

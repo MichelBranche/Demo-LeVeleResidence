@@ -3,7 +3,7 @@ import { useSiteLocale } from '../../hooks/useSiteLocale';
 
 export function ContactSection() {
   const { content } = useSiteLocale();
-  const { contactIntro, contactLabels, config: site } = content;
+  const { contactIntro, contactLabels, contactPhotos, config: site } = content;
 
   const channels = [
     {
@@ -72,6 +72,24 @@ export function ContactSection() {
             })}
           </ul>
         </div>
+
+        {contactPhotos.length > 0 && (
+          <ul className="contact-section__photos" role="list" aria-label={contactIntro.title}>
+            {contactPhotos.map((photo) => (
+              <li key={photo.src} className="contact-section__photo-item">
+                <figure className="contact-section__photo">
+                  <img
+                    src={photo.src}
+                    alt={photo.alt}
+                    className="contact-section__photo-img"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );

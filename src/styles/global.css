@@ -234,7 +234,7 @@ button {
 }
 
 .hero-kicker {
-  margin: 0 0 0.5rem;
+  margin: 0.65rem 0 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: var(--text-xs);
@@ -245,7 +245,7 @@ button {
 .hero-title {
   display: flex;
   flex-direction: column;
-  margin: 0 0 0.75rem;
+  margin: 0 0 0;
   font-family: var(--font-display);
   font-size: clamp(3rem, 10vw, 6.5rem);
   font-style: normal;
@@ -1737,6 +1737,44 @@ button {
 .contact-section__channel:hover .contact-section__channel-value,
 .contact-section__channel:focus-visible .contact-section__channel-value {
   color: var(--carbone);
+}
+
+.contact-section__photos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.75rem, 1.6vw, 1rem);
+  margin: clamp(2rem, 4vw, 2.75rem) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .contact-section__photos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.contact-section__photo-item {
+  margin: 0;
+  min-width: 0;
+}
+
+.contact-section__photo {
+  margin: 0;
+  height: 100%;
+  border-radius: clamp(12px, 1.4vw, 18px);
+  overflow: hidden;
+  background: rgb(58 52 48 / 8%);
+  box-shadow: 0 14px 40px rgb(58 52 48 / 8%);
+}
+
+.contact-section__photo-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Footer */

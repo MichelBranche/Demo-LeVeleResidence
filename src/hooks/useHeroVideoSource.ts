@@ -1,5 +1,6 @@
 import { useEffect, type RefObject } from 'react';
 import {
+  bindHeroVideoLoopOffset,
   canPlayNativeHls,
   isHlsVideoUrl,
   notifyHeroVideoPrime,
@@ -15,6 +16,7 @@ export function useHeroVideoSource(
     if (!video || !url) return undefined;
 
     video.crossOrigin = 'anonymous';
+    const unbindLoopOffset = bindHeroVideoLoopOffset(video);
 
     const onMetadata = () => notifyHeroVideoPrime(video);
 
@@ -24,7 +26,10 @@ export function useHeroVideoSource(
         video.src = url;
         void video.load();
       }
-      return () => video.removeEventListener('loadedmetadata', onMetadata);
+      return () => {
+        video.removeEventListener('loadedmetadata', onMetadata);
+        unbindLoopOffset();
+      };
     }
 
     if (canPlayNativeHls(video)) {
@@ -33,7 +38,10 @@ export function useHeroVideoSource(
         video.src = url;
         void video.load();
       }
-      return () => video.removeEventListener('loadedmetadata', onMetadata);
+      return () => {
+        video.removeEventListener('loadedmetadata', onMetadata);
+        unbindLoopOffset();
+      };
     }
 
     let cancelled = false;
@@ -59,6 +67,7 @@ export function useHeroVideoSource(
     return () => {
       cancelled = true;
       video.removeEventListener('loadedmetadata', onMetadata);
+      unbindLoopOffset();
       hls?.destroy();
     };
   }, [videoRef, url]);

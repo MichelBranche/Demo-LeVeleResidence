@@ -5,7 +5,7 @@ import { normalizePathname } from './routes';
 const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://www.rtalevele.com';
 
 /** Immagine anteprima social (Open Graph / WhatsApp / iMessage). */
-export const OG_IMAGE_PATH = '/images/og-share.png';
+export const OG_IMAGE_PATH = '/images/og-share.webp';
 export const OG_IMAGE_WIDTH = 1200;
 export const OG_IMAGE_HEIGHT = 630;
 

@@ -104,7 +104,7 @@
 
   .home-hero-shell .hero-title {
     min-height: auto;
-    margin-top: 0.7rem;
+    margin-top: 0;
     font-size: clamp(2.85rem, 13vw, 4.1rem);
     line-height: 0.94;
   }

@@ -165,6 +165,7 @@ export function SuitePage() {
                 .replace('{current}', String(current))
                 .replace('{total}', String(total))
             }
+            autoplayLabel={gallery.autoplayLabel}
           />
         </div>
       </section>

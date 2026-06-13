@@ -2,6 +2,7 @@ import type { SiteLocale } from '../lib/siteLocales';
 import { getNavLinks, headerUiCopy } from '../data/navCopy';
 import { getLocaleCopyCached } from './localeLoader';
 import {
+  contactMedia,
   galleryMedia,
   heroMedia,
   legalEntity,
@@ -56,6 +57,7 @@ export type SiteContent = Omit<LocaleCopy, 'suites'> & {
   reviewLinks: typeof reviewLinks;
   suites: MergedSuite[];
   galleryImages: { src: string; alt: string }[];
+  contactPhotos: { src: string; alt: string }[];
   pelosaMedia: typeof pelosaMedia;
   residenceCardsMerged: Array<{
     icon: (typeof residenceCardMedia)[number]['icon'];
@@ -106,6 +108,11 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
     alt: copy.gallery.imageAlts[i] ?? '',
   }));
 
+  const contactPhotos = contactMedia.map((item, i) => ({
+    src: item.src,
+    alt: copy.contactPhotoAlts[i] ?? '',
+  }));
+
   const residenceCardsMerged = residenceCardMedia.map((media, i) => {
     const text = copy.residenceCards[i];
     if (!text) {
@@ -148,6 +155,7 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
     reviewLinks,
     suites,
     galleryImages,
+    contactPhotos,
     pelosaMedia,
     residenceCardsMerged,
   };

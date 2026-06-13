@@ -418,6 +418,21 @@ export function Header({ animateEntrance = false }: HeaderProps) {
       {mobileMenuPortal}
 
       <div className="site-header__bar">
+        <Link
+          to="/"
+          className="site-header__logo"
+          onClick={() => (showMobileMenu ? requestCloseMenu() : setMenuOpen(false))}
+        >
+          <img
+            src={isHeroHeader ? logo.header : logo.headerOnLight}
+            alt={`${site.name} — ${site.tagline}`}
+            width={180}
+            height={80}
+            decoding="async"
+            fetchPriority="low"
+          />
+        </Link>
+
         <nav className="site-header__nav" aria-label={content.header.mainNavAria}>
           <button
             type="button"
@@ -438,21 +453,6 @@ export function Header({ animateEntrance = false }: HeaderProps) {
 
           {!isMobileNav && renderNavLinks('desktop')}
         </nav>
-
-        <Link
-          to="/"
-          className="site-header__logo"
-          onClick={() => (showMobileMenu ? requestCloseMenu() : setMenuOpen(false))}
-        >
-          <img
-            src={isHeroHeader ? logo.header : logo.headerOnLight}
-            alt={`${site.name} — ${site.tagline}`}
-            width={180}
-            height={80}
-            decoding="async"
-            fetchPriority="low"
-          />
-        </Link>
 
         <div className="site-header__aside">
           <LanguageToggle variant="header" />

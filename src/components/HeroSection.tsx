@@ -16,9 +16,6 @@ export function HeroSection() {
   return (
     <section id="hero" className="hero">
       <div className="hero-content">
-        <p className="hero-kicker">
-          <HeroRevealLine>{hero.kicker}</HeroRevealLine>
-        </p>
         <h1 className="hero-title">
           <span className="hero-title__line">
             <HeroRevealLine>{hero.titleLines[0]}</HeroRevealLine>
@@ -27,6 +24,9 @@ export function HeroSection() {
             <HeroRevealLine>{hero.titleLines[1]}</HeroRevealLine>
           </span>
         </h1>
+        <p className="hero-kicker">
+          <HeroRevealLine>{hero.kicker}</HeroRevealLine>
+        </p>
         <p className="hero-tagline">
           <HeroRevealLine>{hero.tagline}</HeroRevealLine>
         </p>

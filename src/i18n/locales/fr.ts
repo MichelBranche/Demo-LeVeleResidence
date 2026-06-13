@@ -33,17 +33,17 @@ export const fr: LocaleCopy = {
   ],
   residenceCards: [
     {
-      title: 'Baie de Cala Lupo',
-      description:
-        'La Residence se situe dans la baie de Cala Lupo, dans un quartier calme à environ 2 km du centre de Stintino, entre maquis méditerranéen et mer du Nord de la Sardaigne.',
-      imageAlt: 'Baie de Cala Lupo — plage et mer turquoise près de la Residence',
-    },
-    {
       title: 'La Pelosa',
       description:
         'À quelques minutes de la Residence, La Pelosa est l\'une des plages les plus célèbres de la Méditerranée : sable blanc fin, eau turquoise transparente et la tour aragonaise historique qui émerge de la mer.',
       imageAlt: 'La Pelosa — plage et Torre della Pelosa, Stintino',
       linkLabel: 'Découvrir La Pelosa',
+    },
+    {
+      title: 'Baie de Cala Lupo',
+      description:
+        'La Residence se situe dans la baie de Cala Lupo, dans un quartier calme à environ 2 km du centre de Stintino, entre maquis méditerranéen et mer du Nord de la Sardaigne.',
+      imageAlt: 'Baie de Cala Lupo — plage et mer turquoise près de la Residence',
     },
     {
       title: 'Accès',
@@ -140,6 +140,10 @@ export const fr: LocaleCopy = {
         'Véranda couverte, patio et jardin privé — monolocale vue jardin Le Vele',
         'Terrasse avec mobilier, jardin et vue mer — Residence Le Vele, Stintino',
         'Intérieur du studio vue jardin avec coin repas et patio — Le Vele',
+        'Table à manger en véranda avec moka et vue jardin — studio vue jardin Le Vele',
+        'Petit-déjeuner en véranda avec moka, fleurs blanches et jardin — Residence Le Vele, Stintino',
+        'Chambre avec lit double et salle de bain privée — studio vue jardin Le Vele',
+        'Détail du lit avec serviettes et hibiscus, vue patio — studio vue jardin Le Vele',
         'Lit superposé dans le studio vue jardin — jusqu\'à 4 personnes',
         'Intérieur du studio avec coin cuisine — Residence Le Vele',
         'Jardin privé et véranda couverte — Residence Le Vele, Stintino',
@@ -171,7 +175,13 @@ export const fr: LocaleCopy = {
         'Table à manger et terrasse avec vue mer — studio Le Vele',
         'Coin cuisine et accès à la terrasse vue mer — Residence Le Vele',
         'Chambre avec lit double et vue mer depuis la terrasse — Le Vele',
+        'Terrasse aménagée avec vue sur le studio et la mer — Le Vele',
         'Studio vue mer avec terrasse et lumière sur la baie — Residence Le Vele',
+        'Terrasse couverte avec table, moka et vue mer — studio Le Vele',
+        'Petit-déjeuner en terrasse avec moka et oleander — vue mer Stintino',
+        'Chambre double avec hibiscus et mobilier en bois — studio vue mer',
+        'Détail d\'accueil avec serviettes et hibiscus rouge — Le Vele',
+        'Coin cuisine équipé et espace repas — studio vue mer',
         'Lit superposé avec vue mer — studio Stintino',
         'Panorama depuis la suite vue mer — Stintino, Sardaigne',
         'Terrasse avec vue mer — studio Residence Le Vele, Stintino',
@@ -189,10 +199,15 @@ export const fr: LocaleCopy = {
   gallery: {
     title: 'Atmosphère Le Vele',
     imageAlts: [
+      'Vue aérienne de la Residence Le Vele sur la côte de Stintino — Sardaigne',
+      'Terrasse vue mer avec moka et oleander — atmosphère Le Vele, Stintino',
       'Jardin de la Residence Le Vele à Stintino avec maquis méditerranéen',
+      'Vue sur la mer depuis la residence avec bateau et maquis méditerranéen — Stintino',
       'Studio vue mer — Residence Le Vele, Stintino',
+      'Véranda avec mobilier de jardin et moka — studio vue jardin Le Vele',
+      'Coin cuisine et accès à la terrasse vue mer — Residence Le Vele',
       'Espace vert et véranda — appartements de vacances Sardaigne',
-      'Terrasse avec vue mer à la Residence Le Vele, Stintino',
+      'Détail chambre avec hibiscus blanc et véranda sur le jardin — Le Vele',
       'Intérieur studio vue mer avec balcon sur la mer — Le Vele, Stintino',
       'Espace commun extérieur avec terrasse, mobilier et vue mer — Residence Le Vele',
     ],
@@ -200,6 +215,7 @@ export const fr: LocaleCopy = {
     prevLabel: 'Image précédente',
     nextLabel: 'Image suivante',
     counterLabel: '{current} / {total}',
+    autoplayLabel: 'Parcourir les photos',
   },
   offers: {
     sectionEyebrow: 'Forfaits',
@@ -389,6 +405,11 @@ export const fr: LocaleCopy = {
     email: 'E-mail',
     address: 'Adresse',
   },
+  contactPhotoAlts: [
+    'Vue aérienne de la côte de Stintino avec piscine et criques — Residence Le Vele',
+    'Coucher de soleil sur le promontoire de la Residence Le Vele — Stintino, Sardaigne',
+    'Vue aérienne de la Residence Le Vele avec appartements et mer — Stintino, Sardaigne',
+  ],
   siteMap: {
     placeholderAlt: 'Baie de Cala Lupo — zone de la Residence Le Vele à Stintino',
     badgeLabel: 'Residence Le Vele — Stintino',
