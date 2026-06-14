@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { SuiteCardMedia } from '../ui/SuiteCardMedia';
 import { SuiteFeatureIcon } from '../SuiteFeatureIcon';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 import { useSuitesAnimations } from '../../hooks/useSuitesAnimations';
@@ -41,21 +42,18 @@ export function SuitesSection() {
         <div className="suites__list">
           {suites.map((suite) => (
             <article key={suite.slug} className={`suites__item suites__item--${suite.theme}`}>
-              <Link
-                to={`/camere/${suite.slug}`}
-                className="suites__media"
-                aria-label={suite.discoverAria}
-              >
-                <div className="suites__media-inner">
-                  <img
-                    src={suite.cardImage}
-                    alt={suite.title}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-                <span className="suites__media-tag">{suite.kicker}</span>
-              </Link>
+              <SuiteCardMedia
+                href={`/camere/${suite.slug}`}
+                discoverAria={suite.discoverAria}
+                kicker={suite.kicker}
+                title={suite.title}
+                cardImage={suite.cardImage}
+                cardImagePosition={suite.cardImagePosition}
+                cardImageNight={suite.cardImageNight}
+                cardImageNightPosition={suite.cardImageNightPosition}
+                dayToggleAria={suitesIntro.cardToggleDayAria}
+                nightToggleAria={suitesIntro.cardToggleNightAria}
+              />
 
               <div className="suites__content">
                 <div className="suites__meta">

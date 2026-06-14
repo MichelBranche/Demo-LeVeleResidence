@@ -2,9 +2,17 @@ import { useEffect, type RefObject } from 'react';
 import {
   bindHeroVideoLoopOffset,
   canPlayNativeHls,
+  HERO_VIDEO_START_OFFSET_SEC,
   isHlsVideoUrl,
+  loadHlsModule,
   notifyHeroVideoPrime,
 } from '../lib/heroVideo';
+
+function tryPlay(video: HTMLVideoElement) {
+  if (video.paused) {
+    void video.play().catch(() => {});
+  }
+}
 
 /** Collega MP4 o stream HLS (Mux) al <video> hero — con hls.js dove serve. */
 export function useHeroVideoSource(
@@ -18,10 +26,14 @@ export function useHeroVideoSource(
     video.crossOrigin = 'anonymous';
     const unbindLoopOffset = bindHeroVideoLoopOffset(video);
 
-    const onMetadata = () => notifyHeroVideoPrime(video);
+    const onMetadata = () => {
+      notifyHeroVideoPrime(video);
+      tryPlay(video);
+    };
 
     if (!isHlsVideoUrl(url)) {
       video.addEventListener('loadedmetadata', onMetadata, { once: true });
+      video.addEventListener('canplay', () => tryPlay(video), { once: true });
       if (video.src !== url) {
         video.src = url;
         void video.load();
@@ -34,6 +46,7 @@ export function useHeroVideoSource(
 
     if (canPlayNativeHls(video)) {
       video.addEventListener('loadedmetadata', onMetadata, { once: true });
+      video.addEventListener('canplay', () => tryPlay(video), { once: true });
       if (video.src !== url) {
         video.src = url;
         void video.load();
@@ -47,7 +60,7 @@ export function useHeroVideoSource(
     let cancelled = false;
     let hls: { destroy: () => void } | null = null;
 
-    void import('hls.js').then(({ default: Hls }) => {
+    void loadHlsModule().then(({ default: Hls }) => {
       if (cancelled || !videoRef.current) return;
 
       if (!Hls.isSupported()) {
@@ -56,9 +69,17 @@ export function useHeroVideoSource(
         return;
       }
 
-      const instance = new Hls({ enableWorker: true });
+      const instance = new Hls({
+        enableWorker: true,
+        startPosition: HERO_VIDEO_START_OFFSET_SEC,
+        maxBufferLength: 20,
+        maxMaxBufferLength: 40,
+      });
       hls = instance;
-      instance.on(Hls.Events.MANIFEST_PARSED, () => notifyHeroVideoPrime(video));
+      instance.on(Hls.Events.MANIFEST_PARSED, () => {
+        notifyHeroVideoPrime(video);
+        tryPlay(video);
+      });
       video.addEventListener('loadedmetadata', onMetadata, { once: true });
       instance.loadSource(url);
       instance.attachMedia(video);

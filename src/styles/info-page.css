@@ -1,0 +1,17 @@
+.info-page.section--info {
+  padding-top: clamp(5.5rem, 12vh, 7.5rem);
+  padding-bottom: clamp(5rem, 10vh, 7rem);
+  background: linear-gradient(180deg, var(--crema) 0%, var(--suites-bg) 100%);
+}
+
+.info-page__inner {
+  max-width: min(48rem, 100%);
+}
+
+.info-page__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5.5vw, 3.35rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}

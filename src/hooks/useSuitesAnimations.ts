@@ -52,10 +52,10 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
             },
           );
 
-          const img = mediaInner.querySelector('img');
-          if (img && allowScrollScrub()) {
+          const stack = mediaInner.querySelector<HTMLElement>('.suites__media-stack');
+          if (stack && allowScrollScrub()) {
             gsap.fromTo(
-              img,
+              stack,
               { scale: 1.08 },
               {
                 scale: 1,
@@ -68,8 +68,8 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
                 },
               },
             );
-          } else if (img && isMobileViewport()) {
-            gsap.set(img, { scale: 1 });
+          } else if (stack && isMobileViewport()) {
+            gsap.set(stack, { scale: 1 });
           }
         }
 

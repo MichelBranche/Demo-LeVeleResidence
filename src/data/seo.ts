@@ -41,6 +41,7 @@ export function getSeoForPath(pathname: string, locale: SiteLocale = 'it'): Page
   const pages: Record<string, PageSeoConfig> = {
     '/': { path: '/', ...seo.default },
     '/prenota': { path: '/prenota', ...seo.booking },
+    '/info-condizioni': { path: '/info-condizioni', ...seo.info },
     '/la-pelosa': { path: '/la-pelosa', ...seo.pelosa },
     '/privacy-policy': { path: '/privacy-policy', ...seo.privacy, noindex: true },
     '/cookie-policy': { path: '/cookie-policy', ...seo.cookie, noindex: true },
@@ -144,6 +145,7 @@ function breadcrumbLabelForPath(path: string, locale: SiteLocale): string | null
 
   if (path === '/') return null;
   if (path === '/prenota') return seo.booking.breadcrumb;
+  if (path === '/info-condizioni') return seo.info.breadcrumb;
   if (path === '/la-pelosa') return copy.pelosa.hero.title;
 
   if (path.startsWith('/camere/')) {

@@ -97,7 +97,9 @@ export const suitesMedia = [
     index: '01',
     theme: 'mare' as const,
     cardImage: `${SEA}/le_vele_residence_stintino_appartamenti_26.webp`,
-    cardImagePosition: 'center 38%',
+    cardImagePosition: 'center 42%',
+    cardImageNight: `${SEA}/vista-mare-notte.webp`,
+    cardImageNightPosition: 'center 42%',
     image: `${SEA}/vista-mare-hero.webp`,
     gallery: [
       { src: `${SEA}/le_vele_residence_stintino_appartamenti_26.webp`, layout: 'wide' as const },
@@ -122,8 +124,10 @@ export const suitesMedia = [
     slug: 'vista-giardino' as const,
     index: '02',
     theme: 'giardino' as const,
-    cardImage: `${GARDEN}/vista_giardino_1.webp`,
-    cardImagePosition: 'center 48%',
+    cardImage: `${GARDEN}/giardino-privato-lead.webp`,
+    cardImagePosition: 'center 38%',
+    cardImageNight: `${GARDEN}/vista-giardino-notte.webp`,
+    cardImageNightPosition: 'center 38%',
     image: `${GARDEN}/giardino-hero.webp`,
     gallery: [
       { src: `${GARDEN}/giardino-privato-lead.webp`, layout: 'wide' as const },

@@ -120,6 +120,8 @@ export const it: LocaleCopy = {
     countLabel: 'Monolocali',
     kicker: 'Due atmosfere — mare e giardino — per vivere Stintino con la privacy di un residence.',
     marquee: ['Vista mare', 'Vista giardino', 'Monolocali', 'Stintino', 'La Pelosa'],
+    cardToggleDayAria: 'Mostra foto di giorno',
+    cardToggleNightAria: 'Mostra foto notturna',
   },
   suites: {
     'vista-giardino': {
@@ -521,6 +523,14 @@ export const it: LocaleCopy = {
       keywords:
         'prenotazione residence stintino, richiesta disponibilità, monolocali stintino, appartamenti vacanze sardegna',
       breadcrumb: 'Richiedi disponibilità',
+    },
+    info: {
+      title: 'Residence Le Vele | Info & condizioni di soggiorno',
+      description:
+        'Check-in, check-out, condizioni di prenotazione, cauzione, animali e parcheggio al Residence Le Vele a Stintino.',
+      keywords:
+        'info residence stintino, condizioni soggiorno, check-in check-out, prenotazione appartamenti sardegna',
+      breadcrumb: 'Info & condizioni',
     },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Spiaggia e mare',

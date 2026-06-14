@@ -31,6 +31,8 @@ export type MergedSuite = {
   theme: (typeof suitesMedia)[number]['theme'];
   cardImage: string;
   cardImagePosition: string;
+  cardImageNight: string;
+  cardImageNightPosition: string;
   image: string;
   title: string;
   kicker: string;
@@ -84,6 +86,8 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
       theme: media.theme,
       cardImage: media.cardImage,
       cardImagePosition: media.cardImagePosition,
+      cardImageNight: media.cardImageNight,
+      cardImageNightPosition: media.cardImageNightPosition,
       image: media.image,
       title: text.title,
       kicker: text.kicker,

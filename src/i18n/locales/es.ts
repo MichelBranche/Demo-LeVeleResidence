@@ -120,6 +120,8 @@ export const es: LocaleCopy = {
     countLabel: 'estudios',
     kicker: 'Dos ambientes — mar y jardín — para vivir Stintino con la privacidad de una residence.',
     marquee: ['Vista mar', 'Vista jardín', 'Estudios', 'Stintino', 'La Pelosa'],
+    cardToggleDayAria: 'Mostrar foto diurna',
+    cardToggleNightAria: 'Mostrar foto nocturna',
   },
   suites: {
     'vista-giardino': {
@@ -521,6 +523,14 @@ export const es: LocaleCopy = {
       keywords:
         'reservar residence stintino, solicitud disponibilidad, estudios stintino, apartamentos vacaciones cerdeña',
       breadcrumb: 'Solicitar disponibilidad',
+    },
+    info: {
+      title: 'Residence Le Vele | Info y condiciones de estancia',
+      description:
+        'Check-in, check-out, condiciones de reserva, depósito, mascotas y aparcamiento en Residence Le Vele en Stintino.',
+      keywords:
+        'info residence stintino, condiciones estancia, check-in check-out, apartamentos vacaciones cerdeña',
+      breadcrumb: 'Info y condiciones',
     },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Playa y mar',

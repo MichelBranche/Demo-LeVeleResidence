@@ -4,6 +4,7 @@ export type RoutePageId =
   | 'home'
   | 'booking'
   | 'la-pelosa'
+  | 'info'
   | 'privacy-policy'
   | 'cookie-policy';
 

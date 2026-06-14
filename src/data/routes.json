@@ -16,6 +16,11 @@
       "aliases": ["/pelosa", "/la_pelosa", "/spiaggia-la-pelosa"]
     },
     {
+      "id": "info",
+      "path": "/info-condizioni",
+      "aliases": ["/info", "/informazioni", "/info-servizi"]
+    },
+    {
       "id": "privacy-policy",
       "path": "/privacy-policy",
       "aliases": ["/privacy", "/informativa-privacy"]

@@ -120,6 +120,8 @@ export const de: LocaleCopy = {
     countLabel: 'Studios',
     kicker: 'Zwei Atmosphären — Meer und Garten — um Stintino mit der Privatsphäre einer Residence zu erleben.',
     marquee: ['Meerblick', 'Gartenblick', 'Studios', 'Stintino', 'La Pelosa'],
+    cardToggleDayAria: 'Tagesfoto anzeigen',
+    cardToggleNightAria: 'Nachtfoto anzeigen',
   },
   suites: {
     'vista-giardino': {
@@ -521,6 +523,14 @@ export const de: LocaleCopy = {
       keywords:
         'residence stintino buchen, verfügbarkeit anfragen, studios stintino, ferienwohnungen sardinien',
       breadcrumb: 'Verfügbarkeit anfragen',
+    },
+    info: {
+      title: 'Residence Le Vele | Info & Aufenthaltsbedingungen',
+      description:
+        'Check-in, Check-out, Buchungsbedingungen, Kaution, Haustiere und Parkplatz in der Residence Le Vele in Stintino.',
+      keywords:
+        'residence stintino info, aufenthaltsbedingungen, check-in check-out, ferienwohnung sardinien',
+      breadcrumb: 'Info & Bedingungen',
     },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Strand und Meer',

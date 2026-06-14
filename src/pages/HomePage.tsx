@@ -14,8 +14,6 @@ import { revealHeroCopyStatic } from '../lib/homeIntroEntrance';
 import { isHeroCopyDone, onHeroCopyDone, resetIntroState } from '../lib/intro';
 import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
-  shouldAutoplayHeroVideoImmediately,
-  shouldDeferHeroVideoLoad,
   shouldRunVideoPreloader,
   shouldUsePosterOnlyHero,
 } from '../lib/network';
@@ -34,11 +32,6 @@ const GallerySection = lazy(() =>
 );
 const OffersSection = lazy(() =>
   import('../components/sections/OffersSection').then((m) => ({ default: m.OffersSection })),
-);
-const InfoServicesSection = lazy(() =>
-  import('../components/sections/InfoServicesSection').then((m) => ({
-    default: m.InfoServicesSection,
-  })),
 );
 const ReviewsSection = lazy(() =>
   import('../components/sections/ReviewsSection').then((m) => ({ default: m.ReviewsSection })),
@@ -74,7 +67,6 @@ function BelowFoldSections() {
       <GallerySection />
       <OffersSection />
       <ReviewsSection />
-      <InfoServicesSection />
       <ContactSection />
     </Suspense>
   );
@@ -89,7 +81,7 @@ export function HomePage() {
     readPreloaderDone() ? 'complete' : 'pending-consent',
   );
   const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
-    shouldAutoplayHeroVideoImmediately() ? heroMedia.video : undefined,
+    shouldUsePosterOnlyHero() ? undefined : heroMedia.video,
   );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -242,18 +234,8 @@ export function HomePage() {
     return () => window.clearTimeout(t);
   }, [ready]);
 
-  useEffect(() => {
-    if (!ready || heroVideoSrc || posterOnlyHero) return;
-    if (!shouldDeferHeroVideoLoad()) return;
-
-    const enable = () => setHeroVideoSrc(heroMedia.video);
-    if (typeof requestIdleCallback === 'function') {
-      const id = requestIdleCallback(enable, { timeout: 5000 });
-      return () => cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(enable, 4500);
-    return () => window.clearTimeout(id);
-  }, [ready, heroVideoSrc, posterOnlyHero, heroMedia.video]);
+  const shouldPlayHeroVideo =
+    Boolean(heroVideoSrc && !posterOnlyHero && (ready || (showPreloader && !lightPreloader)));
 
   const shellClass = [
     'home-hero-shell',
@@ -279,19 +261,11 @@ export function HomePage() {
               poster={heroMedia.poster}
               className="hero-bg-video"
               crossOrigin="anonymous"
-              autoPlay={ready && !!heroVideoSrc}
+              autoPlay={shouldPlayHeroVideo}
               muted
               loop
               playsInline
-              preload={
-                heroVideoSrc
-                  ? showPreloader && !lightPreloader
-                    ? 'auto'
-                    : ready
-                      ? 'metadata'
-                      : 'none'
-                  : 'none'
-              }
+              preload={heroVideoSrc && !posterOnlyHero ? 'auto' : 'none'}
               width={1920}
               height={1080}
               aria-label={hero.videoAria}

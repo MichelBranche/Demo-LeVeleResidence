@@ -120,6 +120,8 @@ export const en: LocaleCopy = {
     countLabel: 'studio apartments',
     kicker: 'Two atmospheres — sea and garden — to experience Stintino with the privacy of a residence.',
     marquee: ['Sea view', 'Garden view', 'Studio apartments', 'Stintino', 'La Pelosa'],
+    cardToggleDayAria: 'Show daytime photo',
+    cardToggleNightAria: 'Show night photo',
   },
   suites: {
     'vista-giardino': {
@@ -521,6 +523,14 @@ export const en: LocaleCopy = {
       keywords:
         'book residence stintino, availability request, studio apartments stintino, sardinia holiday apartments',
       breadcrumb: 'Request availability',
+    },
+    info: {
+      title: 'Residence Le Vele | Stay info & conditions',
+      description:
+        'Check-in, check-out, booking conditions, deposit, pets and parking at Residence Le Vele in Stintino.',
+      keywords:
+        'residence stintino info, stay conditions, check-in check-out, sardinia apartment booking',
+      breadcrumb: 'Info & conditions',
     },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Beach and sea',

@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useLayoutEffect } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AppBootstrap } from './components/AppBootstrap';
 import { CustomCursor } from './components/CustomCursor';
 import { CookieConsentRoot } from './components/consent/CookieConsentRoot';
@@ -31,11 +31,19 @@ const PrivacyPolicyPage = lazy(() =>
 const CookiePolicyPage = lazy(() =>
   import('./pages/CookiePolicyPage').then((m) => ({ default: m.CookiePolicyPage })),
 );
+const InfoPage = lazy(() => import('./pages/InfoPage').then((m) => ({ default: m.InfoPage })));
 
 function ScrollOnNavigate() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { stage } = useRouteTransition();
   const isSuite = isSuiteDetailPath(location.pathname);
+
+  useEffect(() => {
+    if (location.pathname === '/' && location.hash === '#info-servizi') {
+      navigate('/info-condizioni', { replace: true });
+    }
+  }, [location.pathname, location.hash, navigate]);
 
   useLayoutEffect(() => {
     if (stage !== 'idle') return;
@@ -88,6 +96,7 @@ export default function App() {
   const bookingPaths = getPagePaths('booking');
   const privacyPaths = getPagePaths('privacy-policy');
   const cookiePaths = getPagePaths('cookie-policy');
+  const infoPaths = getPagePaths('info');
   const suiteRoutes = getSuiteRouteEntries();
 
   return (
@@ -116,6 +125,9 @@ export default function App() {
               ))}
               {suiteRoutes.map(({ path }) => (
                 <Route key={path} path={path} element={<SuitePage />} />
+              ))}
+              {infoPaths.map((path) => (
+                <Route key={path} path={path} element={<InfoPage />} />
               ))}
               {privacyPaths.map((path) => (
                 <Route key={path} path={path} element={<PrivacyPolicyPage />} />

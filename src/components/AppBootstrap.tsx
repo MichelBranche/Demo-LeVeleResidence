@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { warmHeroVideoPipeline } from '../lib/heroVideo';
 import { isMobileViewport } from '../lib/motion';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -8,6 +9,9 @@ gsap.registerPlugin(ScrollTrigger);
 /** Ripristina stato DOM dopo refresh/HMR (overflow, classi bloccanti). */
 export function AppBootstrap() {
   useEffect(() => {
+    if (window.location.pathname === '/') {
+      warmHeroVideoPipeline();
+    }
     ScrollTrigger.config({
       ignoreMobileResize: true,
       limitCallbacks: true,

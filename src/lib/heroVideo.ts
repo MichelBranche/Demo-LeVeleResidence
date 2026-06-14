@@ -29,6 +29,36 @@ export const HERO_VIDEO_PRIME_EVENT = 'hero-video:prime';
 /** Salta i primi N secondi del clip hero (intro drone ecc.). */
 export const HERO_VIDEO_START_OFFSET_SEC = 10;
 
+let hlsModulePromise: Promise<typeof import('hls.js')> | null = null;
+
+export function loadHlsModule() {
+  hlsModulePromise ??= import('hls.js');
+  return hlsModulePromise;
+}
+
+/** Preconnect + prefetch manifesto HLS il prima possibile (home). */
+export function warmHeroVideoPipeline(videoUrl = getHeroVideoUrl()): void {
+  if (typeof document === 'undefined') return;
+
+  const origin = 'https://stream.mux.com';
+  if (!document.querySelector(`link[rel="preconnect"][href="${origin}"]`)) {
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = origin;
+    link.crossOrigin = 'anonymous';
+    document.head.appendChild(link);
+  }
+
+  if (shouldWarmHeroVideo(videoUrl)) {
+    void loadHlsModule();
+    void fetch(videoUrl, { mode: 'cors', credentials: 'omit', cache: 'force-cache' }).catch(() => {});
+  }
+}
+
+function shouldWarmHeroVideo(videoUrl: string): boolean {
+  return isHlsVideoUrl(videoUrl);
+}
+
 export function applyHeroVideoStartOffset(video: HTMLVideoElement): void {
   const offset = HERO_VIDEO_START_OFFSET_SEC;
 

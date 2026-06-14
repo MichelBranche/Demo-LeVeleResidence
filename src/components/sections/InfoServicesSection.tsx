@@ -1,6 +1,10 @@
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 
-export function InfoServicesSection() {
+type InfoServicesSectionProps = {
+  asPage?: boolean;
+};
+
+export function InfoServicesSection({ asPage = false }: InfoServicesSectionProps) {
   const { content } = useSiteLocale();
   const info = content.infoServices;
 
@@ -11,13 +15,26 @@ export function InfoServicesSection() {
     info.noteCleaningPenalty,
   ];
 
+  const titleId = 'info-servizi-title';
+  const Root = asPage ? 'article' : 'section';
+
   return (
-    <section id="info-servizi" className="section section--info" aria-labelledby="info-servizi-title">
-      <div className="section--info__inner">
+    <Root
+      id="info-servizi"
+      className={`section section--info${asPage ? ' info-page' : ''}`}
+      aria-labelledby={titleId}
+    >
+      <div className={`section--info__inner${asPage ? ' info-page__inner' : ''}`}>
         <p className="eyebrow">{info.eyebrow}</p>
-        <h2 id="info-servizi-title" className="section-title">
-          {info.title}
-        </h2>
+        {asPage ? (
+          <h1 id={titleId} className="section-title display-serif info-page__title">
+            {info.title}
+          </h1>
+        ) : (
+          <h2 id={titleId} className="section-title">
+            {info.title}
+          </h2>
+        )}
         <p className="section-kicker">{info.kicker}</p>
 
         <div className="info-times">
@@ -46,6 +63,6 @@ export function InfoServicesSection() {
           </ul>
         </div>
       </div>
-    </section>
+    </Root>
   );
 }
