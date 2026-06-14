@@ -260,6 +260,10 @@
     min-height: clamp(11rem, 34vw, 14rem);
   }
 
+  .expandable-gallery__controls {
+    display: none;
+  }
+
   .expandable-gallery__lightbox-btn {
     width: 2.5rem;
     height: 2.5rem;

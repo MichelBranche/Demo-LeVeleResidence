@@ -233,6 +233,15 @@
     max-height: none;
   }
 
+  .suites__media-tag {
+    left: 0.6rem;
+    bottom: 0.6rem;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+    max-width: calc(100% - 4.75rem);
+  }
+
   .suites__features {
     grid-template-columns: 1fr;
   }
