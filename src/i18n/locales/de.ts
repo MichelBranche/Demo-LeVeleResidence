@@ -532,6 +532,14 @@ export const de: LocaleCopy = {
         'residence stintino info, aufenthaltsbedingungen, check-in check-out, ferienwohnung sardinien',
       breadcrumb: 'Info & Bedingungen',
     },
+    contact: {
+      title: 'Residence Le Vele | Kontakt & Anfahrt',
+      description:
+        'Telefon, E-Mail und Wegbeschreibung zur Residence Le Vele in Stintino: Buchungen und Anfragen für Ferienwohnungen in Sardinien.',
+      keywords:
+        'kontakt residence stintino, anfahrt le vele, telefon buchung stintino, ferienwohnung sardinien',
+      breadcrumb: 'Kontakt',
+    },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Strand und Meer',
       description:

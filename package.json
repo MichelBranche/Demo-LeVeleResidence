@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "dev:vercel": "vercel dev",
+    "generate-routes": "node scripts/generate-spa-routes.mjs",
+    "prebuild": "npm run generate-routes",
     "build": "tsc -b && vite build",
     "optimize-images": "node scripts/optimize-images.mjs",
     "lint": "eslint .",

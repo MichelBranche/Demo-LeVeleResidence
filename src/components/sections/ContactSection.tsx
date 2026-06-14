@@ -1,7 +1,11 @@
 import { Mail, MapPin, Phone, Smartphone } from 'lucide-react';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 
-export function ContactSection() {
+type ContactSectionProps = {
+  asPage?: boolean;
+};
+
+export function ContactSection({ asPage = false }: ContactSectionProps) {
   const { content } = useSiteLocale();
   const { contactIntro, contactLabels, contactPhotos, config: site } = content;
 
@@ -26,14 +30,27 @@ export function ContactSection() {
     },
   ] as const;
 
+  const titleId = 'contatti-title';
+  const Root = asPage ? 'article' : 'section';
+
   return (
-    <section id="contatti" className="contact-section" aria-labelledby="contatti-title">
-      <div className="contact-section__inner">
+    <Root
+      id="contatti"
+      className={`contact-section${asPage ? ' contact-page' : ''}`}
+      aria-labelledby={titleId}
+    >
+      <div className={`contact-section__inner${asPage ? ' contact-page__inner' : ''}`}>
         <header className="contact-section__header">
           <p className="contact-section__eyebrow">{contactIntro.eyebrow}</p>
-          <h2 id="contatti-title" className="contact-section__title">
-            {contactIntro.title}
-          </h2>
+          {asPage ? (
+            <h1 id={titleId} className="contact-section__title contact-page__title display-serif">
+              {contactIntro.title}
+            </h1>
+          ) : (
+            <h2 id={titleId} className="contact-section__title">
+              {contactIntro.title}
+            </h2>
+          )}
           <p className="contact-section__lead">{contactIntro.kicker}</p>
         </header>
 
@@ -91,6 +108,6 @@ export function ContactSection() {
           </ul>
         )}
       </div>
-    </section>
+    </Root>
   );
 }

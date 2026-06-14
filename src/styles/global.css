@@ -362,7 +362,7 @@ button {
 .residence {
   position: relative;
   overflow-x: clip;
-  padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(3rem, 6vh, 4.5rem);
+  padding: clamp(4rem, 9vh, 6.5rem) 0 clamp(2rem, 4vh, 3rem);
   background: var(--suites-bg);
   color: var(--ink);
   border-top: 1px solid var(--border-on-light);
@@ -1187,6 +1187,7 @@ button {
 }
 
 .section--offers .section-title {
+  font-family: var(--font-body);
   color: var(--ink);
 }
 

@@ -5,6 +5,7 @@ export type RoutePageId =
   | 'booking'
   | 'la-pelosa'
   | 'info'
+  | 'contact'
   | 'privacy-policy'
   | 'cookie-policy';
 
@@ -41,8 +42,29 @@ export function getLaPelosaPaths(): string[] {
   return [page.path, ...(page.aliases ?? [])];
 }
 
-export function getBookingPaths(): string[] {
-  return getPagePaths('booking');
+export function getInfoPaths(): string[] {
+  return getPagePaths('info');
+}
+
+export function getContactPaths(): string[] {
+  return getPagePaths('contact');
+}
+
+/** Tutti i path SPA (canonici + alias) per hosting statico. */
+export function getAllSpaPaths(): string[] {
+  const paths = new Set<string>(['/']);
+
+  for (const page of routes.pages) {
+    paths.add(page.path);
+    for (const alias of page.aliases ?? []) paths.add(alias);
+  }
+
+  for (const item of routes.suites.items) {
+    paths.add(`${routes.suites.basePath}/${item.slug}`);
+    for (const alias of item.aliases ?? []) paths.add(alias);
+  }
+
+  return [...paths];
 }
 
 export function getPagePaths(id: RoutePageId): string[] {

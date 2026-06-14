@@ -1,2 +1,37 @@
-# Netlify / Cloudflare Pages — SPA fallback (no 404 su refresh)
-/*    /index.html   200
+# Auto-generated from src/data/routes.json — do not edit by hand
+# Regenerate: npm run generate-routes
+
+/  /index.html  200
+/booking  /index.html  200
+/camere/vista-giardino  /index.html  200
+/camere/vista-mare  /index.html  200
+/contact  /index.html  200
+/contacts  /index.html  200
+/contatti  /index.html  200
+/cookie  /index.html  200
+/cookie-policy  /index.html  200
+/cookies  /index.html  200
+/giardino  /index.html  200
+/info  /index.html  200
+/info-condizioni  /index.html  200
+/info-servizi  /index.html  200
+/informativa-privacy  /index.html  200
+/informazioni  /index.html  200
+/kontakt  /index.html  200
+/la-pelosa  /index.html  200
+/la_pelosa  /index.html  200
+/mare  /index.html  200
+/monolocale-giardino  /index.html  200
+/monolocale-mare  /index.html  200
+/pelosa  /index.html  200
+/prenota  /index.html  200
+/prenotazioni  /index.html  200
+/privacy  /index.html  200
+/privacy-policy  /index.html  200
+/spiaggia-la-pelosa  /index.html  200
+/suite-giardino  /index.html  200
+/suite-mare  /index.html  200
+/vista-mare  /index.html  200
+
+# SPA fallback
+/*  /index.html  200

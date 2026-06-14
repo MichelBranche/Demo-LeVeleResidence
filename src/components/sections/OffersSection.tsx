@@ -8,7 +8,7 @@ export function OffersSection() {
     <section id="offerte" className="section section--offers" aria-labelledby="offers-title">
       <div className="section--offers__inner">
         <p className="eyebrow">{offers.sectionEyebrow}</p>
-        <h2 id="offers-title" className="section-title display-serif">
+        <h2 id="offers-title" className="section-title">
           {offers.sectionTitle}
         </h2>
         <div className="offers-grid">

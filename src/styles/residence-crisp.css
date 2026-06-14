@@ -38,10 +38,11 @@
   color: var(--eyebrow);
 }
 
-.residence-crisp__title {
+.residence-crisp__title,
+.residence-crisp__services-title {
+  font-family: var(--font-body);
   margin: 0;
-  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-  line-height: 1.08;
+  text-wrap: balance;
   color: var(--ink);
 }
 
@@ -442,17 +443,39 @@
   border-top: 1px solid var(--border-on-light);
 }
 
+.residence-crisp--services .residence-crisp__services-block {
+  padding-top: 0;
+  border-top: none;
+}
+
+.residence-showcase {
+  position: relative;
+  color: var(--ink);
+}
+
+.residence-showcase__inner {
+  max-width: min(76rem, 100%);
+  margin: 0 auto;
+}
+
+.residence-crisp--showcase {
+  margin-top: 0;
+}
+
+.residence-services-section {
+  position: relative;
+  color: var(--ink);
+}
+
+.residence-services-section__inner {
+  max-width: min(76rem, 100%);
+  margin: 0 auto;
+}
+
 .residence-crisp__services-header {
   max-width: min(44rem, 100%);
   margin: 0 auto clamp(1.25rem, 2.5vw, 1.75rem);
   text-align: center;
-}
-
-.residence-crisp__services-title {
-  font-family: var(--font-body);
-  margin: 0;
-  text-wrap: balance;
-  color: var(--ink);
 }
 
 .residence-services {

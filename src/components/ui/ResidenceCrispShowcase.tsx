@@ -9,6 +9,7 @@ type ResidenceCard = ReturnType<typeof useSiteLocale>['content']['residenceCards
 
 type ResidenceCrispShowcaseProps = {
   className?: string;
+  variant?: 'showcase' | 'services';
 };
 
 function PawIcon() {
@@ -142,7 +143,10 @@ function ThumbMedia({ card }: { card: ResidenceCard }) {
   return <img src={visual.src} alt="" loading="lazy" decoding="async" draggable={false} />;
 }
 
-export function ResidenceCrispShowcase({ className = '' }: ResidenceCrispShowcaseProps) {
+export function ResidenceCrispShowcase({
+  className = '',
+  variant = 'showcase',
+}: ResidenceCrispShowcaseProps) {
   const { content } = useSiteLocale();
   const { residenceCardsMerged, residenceAccordion, residenceServices } = content;
   const slides = useMemo(
@@ -152,18 +156,29 @@ export function ResidenceCrispShowcase({ className = '' }: ResidenceCrispShowcas
   const wrapRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const onSlideChange = useCallback((index: number) => setActiveIndex(index), []);
+  const showShowcase = variant === 'showcase';
+  const showServices = variant === 'services';
 
-  useCrispSlideshow(wrapRef, slides.length, onSlideChange, { autoplay: true });
+  useCrispSlideshow(
+    showShowcase ? wrapRef : { current: null },
+    showShowcase ? slides.length : 0,
+    onSlideChange,
+    { autoplay: showShowcase },
+  );
 
   return (
-    <div className={`residence-crisp ${className}`.trim()}>
-      <header className="residence-crisp__header">
-        <p className="residence-crisp__eyebrow">{residenceAccordion.eyebrow}</p>
-        <h3 className="residence-crisp__title display-serif">{residenceAccordion.showcaseTitle}</h3>
-      </header>
+    <div className={`residence-crisp residence-crisp--${variant} ${className}`.trim()}>
+      {showShowcase ? (
+        <>
+          <header className="residence-crisp__header">
+            <p className="residence-crisp__eyebrow">{residenceAccordion.eyebrow}</p>
+            <h3 id="residence-showcase-title" className="section-title residence-crisp__title">
+              {residenceAccordion.showcaseTitle}
+            </h3>
+          </header>
 
-      {slides.length > 0 ? (
-        <div ref={wrapRef} className="residence-crisp__showcase" data-slideshow="wrap">
+          {slides.length > 0 ? (
+            <div ref={wrapRef} className="residence-crisp__showcase" data-slideshow="wrap">
           <div className="residence-crisp__stage">
             <div className="residence-crisp__slider" aria-hidden>
               <div className="residence-crisp__slider-list">
@@ -241,12 +256,17 @@ export function ResidenceCrispShowcase({ className = '' }: ResidenceCrispShowcas
               ))}
             </div>
           </div>
-        </div>
+            </div>
+          ) : null}
+        </>
       ) : null}
 
+      {showServices ? (
       <div className="residence-crisp__services-block">
         <header className="residence-crisp__services-header">
-          <h3 className="section-title residence-crisp__services-title">{residenceAccordion.title}</h3>
+          <h3 id="residence-services-title" className="section-title residence-crisp__services-title">
+            {residenceAccordion.title}
+          </h3>
           {residenceAccordion.subtitle ? (
             <p className="residence-crisp__subtitle">{residenceAccordion.subtitle}</p>
           ) : null}
@@ -282,6 +302,7 @@ export function ResidenceCrispShowcase({ className = '' }: ResidenceCrispShowcas
           ))}
         </div>
       </div>
+      ) : null}
     </div>
   );
 }

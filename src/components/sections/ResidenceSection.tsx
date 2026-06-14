@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import { useResidenceAnimations } from '../../hooks/useResidenceAnimations';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
-import { ResidenceCrispShowcase } from '../ui/ResidenceCrispShowcase';
 
 export function ResidenceSection() {
   const { content } = useSiteLocale();
@@ -50,8 +49,6 @@ export function ResidenceSection() {
             </div>
           ))}
         </dl>
-
-        <ResidenceCrispShowcase />
       </div>
     </section>
   );

@@ -234,6 +234,7 @@ export type LocaleCopy = {
     default: { title: string; description: string; keywords: string };
     booking: { title: string; description: string; keywords: string; breadcrumb: string };
     info: { title: string; description: string; keywords: string; breadcrumb: string };
+    contact: { title: string; description: string; keywords: string; breadcrumb: string };
     pelosa: { title: string; description: string; keywords: string };
     privacy: { title: string; description: string };
     cookie: { title: string; description: string };

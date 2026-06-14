@@ -1,22 +1,29 @@
 import {
-  getBookingPaths,
-  getLaPelosaPaths,
+  getPagePaths,
   isSuiteDetailPath,
   normalizePathname,
+  type RoutePageId,
 } from '../data/routes';
+
+/** Pagine con transizione cinematografica in entrata/uscita. */
+const EXPERIENCE_PAGE_IDS: RoutePageId[] = ['booking', 'la-pelosa', 'info', 'contact'];
+
+const EXPERIENCE_CANONICAL_PATHS = new Set(
+  [
+    '/',
+    ...EXPERIENCE_PAGE_IDS.map((id) => {
+      const paths = getPagePaths(id);
+      return paths[0] ? normalizePathname(paths[0]).toLowerCase() : null;
+    }),
+  ].filter((path): path is string => Boolean(path)),
+);
 
 /** Pagine “esperienza” che usano la transizione cinematografica. */
 export function isExperienceRoute(pathname: string): boolean {
-  const path = normalizePathname(pathname);
-  const lower = path.toLowerCase();
-  if (path === '/') return true;
-  if (isSuiteDetailPath(path)) return true;
-
-  const pelosaPaths = getLaPelosaPaths().map((p) => normalizePathname(p).toLowerCase());
-  if (pelosaPaths.includes(lower)) return true;
-
-  const bookingPaths = getBookingPaths().map((p) => normalizePathname(p).toLowerCase());
-  return bookingPaths.includes(lower);
+  const canonical = normalizePathname(pathname).toLowerCase();
+  if (EXPERIENCE_CANONICAL_PATHS.has(canonical)) return true;
+  if (isSuiteDetailPath(pathname)) return true;
+  return false;
 }
 
 export function shouldAnimateRouteChange(fromPath: string, toPath: string): boolean {

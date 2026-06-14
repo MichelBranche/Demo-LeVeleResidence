@@ -532,6 +532,14 @@ export const es: LocaleCopy = {
         'info residence stintino, condiciones estancia, check-in check-out, apartamentos vacaciones cerdeña',
       breadcrumb: 'Info y condiciones',
     },
+    contact: {
+      title: 'Residence Le Vele | Contacto y cómo llegar',
+      description:
+        'Teléfono, email e indicaciones para llegar a Residence Le Vele en Stintino: reservas y consultas para apartamentos vacacionales en Cerdeña.',
+      keywords:
+        'contacto residence stintino, cómo llegar le vele, teléfono reservas stintino, apartamentos vacaciones cerdeña',
+      breadcrumb: 'Contacto',
+    },
     pelosa: {
       title: 'La Pelosa Stintino | Residence Le Vele — Playa y mar',
       description:

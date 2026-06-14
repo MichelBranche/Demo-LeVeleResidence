@@ -27,6 +27,16 @@ const ResidenceSection = lazy(() =>
 const SuitesSection = lazy(() =>
   import('../components/sections/SuitesSection').then((m) => ({ default: m.SuitesSection })),
 );
+const ResidenceServicesSection = lazy(() =>
+  import('../components/sections/ResidenceServicesSection').then((m) => ({
+    default: m.ResidenceServicesSection,
+  })),
+);
+const ResidenceShowcaseSection = lazy(() =>
+  import('../components/sections/ResidenceShowcaseSection').then((m) => ({
+    default: m.ResidenceShowcaseSection,
+  })),
+);
 const GallerySection = lazy(() =>
   import('../components/sections/GallerySection').then((m) => ({ default: m.GallerySection })),
 );
@@ -35,9 +45,6 @@ const OffersSection = lazy(() =>
 );
 const ReviewsSection = lazy(() =>
   import('../components/sections/ReviewsSection').then((m) => ({ default: m.ReviewsSection })),
-);
-const ContactSection = lazy(() =>
-  import('../components/sections/ContactSection').then((m) => ({ default: m.ContactSection })),
 );
 
 const PRELOADER_DONE_KEY = 'lv-preloader-done';
@@ -64,10 +71,11 @@ function BelowFoldSections() {
     <Suspense fallback={null}>
       <ResidenceSection />
       <SuitesSection />
+      <ResidenceServicesSection />
+      <ResidenceShowcaseSection />
       <GallerySection />
       <OffersSection />
       <ReviewsSection />
-      <ContactSection />
     </Suspense>
   );
 }

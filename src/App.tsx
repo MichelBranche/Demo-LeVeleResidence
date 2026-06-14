@@ -13,7 +13,7 @@ import { RouteTransitionOverlay } from './components/RouteTransitionOverlay';
 import { SkipToMain } from './components/SkipToMain';
 import { SubPageLayout } from './components/SubPageLayout';
 import { RouteTransitionProvider, useRouteTransition } from './context/RouteTransitionContext';
-import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath } from './data/routes';
+import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath, normalizePathname } from './data/routes';
 import { scheduleScrollToSuiteHero, scrollToHash, scrollToTop } from './lib/scroll';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
@@ -32,6 +32,9 @@ const CookiePolicyPage = lazy(() =>
   import('./pages/CookiePolicyPage').then((m) => ({ default: m.CookiePolicyPage })),
 );
 const InfoPage = lazy(() => import('./pages/InfoPage').then((m) => ({ default: m.InfoPage })));
+const ContactPage = lazy(() =>
+  import('./pages/ContactPage').then((m) => ({ default: m.ContactPage })),
+);
 
 function ScrollOnNavigate() {
   const location = useLocation();
@@ -40,10 +43,23 @@ function ScrollOnNavigate() {
   const isSuite = isSuiteDetailPath(location.pathname);
 
   useEffect(() => {
+    if (stage !== 'idle') return;
+
     if (location.pathname === '/' && location.hash === '#info-servizi') {
       navigate('/info-condizioni', { replace: true });
+      return;
     }
-  }, [location.pathname, location.hash, navigate]);
+
+    if (location.pathname === '/' && location.hash === '#contatti') {
+      navigate('/contatti', { replace: true });
+      return;
+    }
+
+    const canonical = normalizePathname(location.pathname);
+    if (location.pathname !== canonical) {
+      navigate(`${canonical}${location.search}${location.hash}`, { replace: true });
+    }
+  }, [location.pathname, location.hash, location.search, navigate, stage]);
 
   useLayoutEffect(() => {
     if (stage !== 'idle') return;
@@ -97,6 +113,7 @@ export default function App() {
   const privacyPaths = getPagePaths('privacy-policy');
   const cookiePaths = getPagePaths('cookie-policy');
   const infoPaths = getPagePaths('info');
+  const contactPaths = getPagePaths('contact');
   const suiteRoutes = getSuiteRouteEntries();
 
   return (
@@ -128,6 +145,9 @@ export default function App() {
               ))}
               {infoPaths.map((path) => (
                 <Route key={path} path={path} element={<InfoPage />} />
+              ))}
+              {contactPaths.map((path) => (
+                <Route key={path} path={path} element={<ContactPage />} />
               ))}
               {privacyPaths.map((path) => (
                 <Route key={path} path={path} element={<PrivacyPolicyPage />} />

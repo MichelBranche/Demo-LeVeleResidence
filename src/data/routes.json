@@ -21,6 +21,11 @@
       "aliases": ["/info", "/informazioni", "/info-servizi"]
     },
     {
+      "id": "contact",
+      "path": "/contatti",
+      "aliases": ["/contact", "/contacts", "/kontakt"]
+    },
+    {
       "id": "privacy-policy",
       "path": "/privacy-policy",
       "aliases": ["/privacy", "/informativa-privacy"]
