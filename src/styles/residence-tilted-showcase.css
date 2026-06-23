@@ -285,25 +285,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.4rem;
-  width: min(11rem, 42vw);
+  gap: 0.55rem;
+  width: min(14rem, 56vw);
 }
 
 .tilted-carousel__dot {
+  position: relative;
   flex-shrink: 0;
-  width: 0.45rem;
-  height: 0.45rem;
+  width: 1.5rem;
+  height: 1.5rem;
   padding: 0;
   border: none;
   border-radius: 999px;
-  background: rgb(58 52 48 / 28%);
+  background: transparent;
   cursor: pointer;
+}
+
+.tilted-carousel__dot::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: rgb(58 52 48 / 28%);
+  transform: translate(-50%, -50%);
   transition:
     width 0.3s ease,
     background-color 0.3s ease;
 }
 
-.tilted-carousel__dot.is-active {
+.tilted-carousel__dot.is-active::before {
   width: 1.65rem;
   background: var(--ink);
 }
