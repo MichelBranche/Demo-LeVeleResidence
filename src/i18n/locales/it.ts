@@ -20,16 +20,17 @@ export const it: LocaleCopy = {
     titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: 'Baia · Stintino',
-    kicker: 'Tra Cala Lupo e il mare del Nord Sardegna, a pochi minuti da Stintino e dalla Pelosa.',
+    kicker:
+      'A 300 m dal mare: la strada carreggiabile finisce con noi; la spiaggetta si raggiunge a piedi lungo una stradina adatta a passeggini e bici.',
     lead:
-      'Monolocali con veranda o terrazza nel verde della macchia mediterranea: appartamenti vacanze a Stintino, a pochi minuti da La Pelosa e dal mare del Nord Sardegna. Un residence tranquillo per chi cerca soggiorni autentici in Sardegna.',
+      'Monolocali con veranda o terrazza nel verde della macchia mediterranea. A 300 m un piccolo centro commerciale con ottimo rapporto qualità-prezzo; a pochi minuti Stintino, La Pelosa e il mare del Nord Sardegna. Un residence tranquillo, lontano dal traffico, per soggiorni autentici in Sardegna.',
     marquee: ['Cala Lupo', 'La Pelosa', 'Calette', 'Nord Sardegna', 'Stintino'],
     metricsAria: 'In sintesi',
   },
   residenceHighlights: [
-    { value: 'Cala Lupo', label: 'Baia' },
-    { value: '~2 km', label: 'Centro & Pelosa' },
-    { value: 'Iconica', label: 'La Pelosa' },
+    { value: '300 m', label: 'Dal mare' },
+    { value: '300 m', label: 'Centro commerciale' },
+    { value: '~2 km', label: 'Stintino & Pelosa' },
   ],
   residenceCards: [
     {
@@ -42,7 +43,7 @@ export const it: LocaleCopy = {
     {
       title: 'Baia di Cala Lupo',
       description:
-        'Il Residence sorge nella baia di Cala Lupo, in una zona tranquilla a circa 2 km dal centro di Stintino, tra macchia mediterranea e mare del Nord Sardegna.',
+        'Il Residence sorge dove la strada carreggiabile termina, a 300 m dal mare. La baia di Cala Lupo è una zona tranquilla a circa 2 km dal centro di Stintino: la spiaggetta si raggiunge a piedi per una stradina pianeggiante, percorribile con passeggini e biciclette.',
       imageAlt: 'Spiaggia di Cala Lupo — sabbia, mare turchese e relax vicino al Residence',
     },
     {
@@ -99,12 +100,14 @@ export const it: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Kit di cortesia' },
           { icon: 'ac', label: 'Aria condizionata' },
           { icon: 'wifi', label: 'Connessione internet Wi-Fi' },
+          { icon: 'parking', label: 'Parcheggio gratuito' },
         ],
       },
       {
         id: 'paid',
         title: 'Servizi a pagamento',
         items: [
+          { icon: 'parking-paid', label: 'Parcheggio non custodito' },
           { icon: 'extra-cleaning', label: 'Pulizie extra della camera' },
           { icon: 'laundry', label: 'Lavanderia' },
           { icon: 'transport', label: 'Servizi di trasporto' },
@@ -129,7 +132,7 @@ export const it: LocaleCopy = {
     title: 'I Monolocali',
     count: '18',
     countLabel: 'Monolocali',
-    kicker: 'Due atmosfere — mare e giardino — per vivere Stintino con la privacy di un residence.',
+    kicker: 'Due tipologie — mare e giardino — da 2 a 4 posti, per vivere Stintino con la privacy di un residence.',
     marquee: ['Vista mare', 'Vista giardino', 'Monolocali', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Mostra foto di giorno',
     cardToggleNightAria: 'Mostra foto notturna',
@@ -137,14 +140,16 @@ export const it: LocaleCopy = {
   suites: {
     'vista-giardino': {
       title: 'Con Vista Giardino',
-      kicker: 'Monolocale per 2 o 4 persone',
+      kicker: 'Monolocale da 2, 3 o 4 posti',
       tagline: 'Veranda, giardino privato e quiete della macchia mediterranea.',
       description:
-        'Monolocale con veranda coperta e accesso al giardino privato: letto matrimoniale e letto a castello per fino a 4 ospiti. Bagni ristrutturati — in base all’alloggio, doccia walk-in più ampia oppure doccia compatta con bidet.',
+        'Monolocali da 2, 3 o 4 posti: con 3 ospiti è previsto un letto singolo aggiuntivo, con 4 ospiti un letto a castello (oltre al matrimoniale). Veranda coperta e accesso al giardino privato. Bagni ristrutturati — in base all’alloggio, doccia walk-in più ampia oppure doccia compatta con bidet.',
       features: [
+        '2, 3 o 4 posti',
+        'Letto singolo (3 ospiti)',
+        'Letto a castello (4 ospiti)',
         'Veranda coperta',
         'Giardino privato',
-        'Letto a castello',
         'Bagno ristrutturato',
         'Angolo cucina',
         'Wi-Fi gratuito',
@@ -156,7 +161,7 @@ export const it: LocaleCopy = {
         'Colazione in veranda con moka, fiori bianchi e giardino — Residence Le Vele, Stintino',
         'Camera con letto matrimoniale e bagno privato — monolocale vista giardino Le Vele',
         'Dettaglio letto con asciugamani e ibisco, vista sul patio — monolocale vista giardino Le Vele',
-        'Letto a castello nel monolocale vista giardino — fino a 4 ospiti',
+        'Letto a castello nel monolocale vista giardino — configurazione 4 posti',
         'Interno monolocale con angolo cucina — Residence Le Vele',
         'Giardino privato e veranda coperta — Residence Le Vele, Stintino',
         'Veranda coperta e area esterna — appartamento vacanze Sardegna',
@@ -171,14 +176,16 @@ export const it: LocaleCopy = {
     },
     'vista-mare': {
       title: 'Con Vista Mare',
-      kicker: 'Monolocale per 2 o 4 persone',
+      kicker: 'Monolocale da 2, 3 o 4 posti',
       tagline: 'Terrazza privata e luce sulla baia di Stintino.',
       description:
-        'Monolocale con terrazza privata sulla baia: letto matrimoniale e letto a castello per fino a 4 ospiti, luce del Nord Sardegna e tramonti verso La Pelosa. Bagni ristrutturati — doccia ampia senza bidet oppure doccia compatta con bidet, a seconda dell’alloggio.',
+        'Monolocali da 2, 3 o 4 posti: con 3 ospiti è previsto un letto singolo aggiuntivo, con 4 ospiti un letto a castello (oltre al matrimoniale). Terrazza privata sulla baia, luce del Nord Sardegna e tramonti verso La Pelosa. Bagni ristrutturati — doccia ampia senza bidet oppure doccia compatta con bidet, a seconda dell’alloggio.',
       features: [
+        '2, 3 o 4 posti',
+        'Letto singolo (3 ospiti)',
+        'Letto a castello (4 ospiti)',
         'Terrazza privata',
         'Piano cucina attrezzato',
-        'Letto a castello',
         'Bagno ristrutturato',
         'Aria condizionata',
         'Wi-Fi gratuito',
@@ -193,7 +200,7 @@ export const it: LocaleCopy = {
         'Camera matrimoniale con ibisco e arredi in legno — monolocale vista mare',
         'Dettaglio accoglienza con asciugamani e ibisco rosso — Le Vele',
         'Angolo cucina attrezzato e zona pranzo — monolocale vista mare',
-        'Letto a castello con vista sul mare — monolocale Stintino',
+        'Letto a castello con vista sul mare — configurazione 4 posti',
         'Panorama dalla suite vista mare — Stintino, Sardegna',
         'Terrazza con vista mare — monolocale Residence Le Vele, Stintino',
         'Dettaglio interno monolocale vista mare — Le Vele',
@@ -488,7 +495,7 @@ export const it: LocaleCopy = {
     backToSuites: '← Torna alle suites',
     backLink: '← I Monolocali',
     specsAria: 'Informazioni suite',
-    guests: '2–4',
+    guests: '2 / 3 / 4',
     guestsLabel: 'ospiti',
     locationValue: 'Stintino',
     locationLabel: 'Sardegna',
@@ -581,7 +588,15 @@ export const it: LocaleCopy = {
     schemaTouristTypes: ['Famiglie', 'Coppie', 'Escursionisti'],
     nearbyAttractions: [
       { name: 'La Pelosa', description: 'Spiaggia iconica di Stintino, a circa 2 km dal residence.' },
-      { name: 'Baia di Cala Lupo', description: 'Baia tranquilla dove sorge il Residence Le Vele.' },
+      {
+        name: 'Baia di Cala Lupo',
+        description:
+          'Spiaggetta a 300 m dal Residence, raggiungibile a piedi lungo una stradina adatta a passeggini e bici.',
+      },
+      {
+        name: 'Centro commerciale',
+        description: 'Piccolo centro commerciale a 300 m con ottimo rapporto qualità-prezzo.',
+      },
       { name: 'Centro storico di Stintino', description: 'Borgo marinaresco del Nord Sardegna, vicino al residence.' },
     ],
   },

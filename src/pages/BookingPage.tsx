@@ -506,7 +506,7 @@ export function BookingPage() {
                     name="guests"
                     type="number"
                     min={1}
-                    max={6}
+                    max={4}
                     required
                     inputMode="numeric"
                     value={form.guests}

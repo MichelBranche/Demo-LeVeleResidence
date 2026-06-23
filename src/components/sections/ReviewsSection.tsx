@@ -1,6 +1,5 @@
 import { Star } from 'lucide-react';
 import { UniqueTestimonials, type TestimonialItem } from '@/components/ui/UniqueTestimonials';
-import { getReviewListingUrl } from '../../i18n';
 import type { ReviewCopy } from '../../i18n/types';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 
@@ -32,7 +31,6 @@ function toTestimonial(review: ReviewCopy): TestimonialItem {
     role: `${platformLabel(review.source)} · ${review.dateLabel}`,
     rating: review.rating,
     source: review.source,
-    href: getReviewListingUrl(review),
   };
 }
 
@@ -107,7 +105,6 @@ export function ReviewsSection() {
         <UniqueTestimonials
           items={testimonialItems}
           ariaLabel={reviews.marqueeAria}
-          openOnTemplate={reviews.openOn}
           prevAria={reviews.prevAria}
           nextAria={reviews.nextAria}
           className="unique-testimonial--minimal"

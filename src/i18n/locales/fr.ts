@@ -20,16 +20,17 @@ export const fr: LocaleCopy = {
     titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: 'Baie · Stintino',
-    kicker: 'Entre Cala Lupo et la mer du Nord de la Sardaigne, à quelques minutes de Stintino et de La Pelosa.',
+    kicker:
+      'À 300 m de la mer : la route carrossable s\'arrête chez nous ; la petite plage est accessible à pied par un chemin adapté aux poussettes et aux vélos.',
     lead:
-      'Studios avec véranda ou terrasse au cœur du maquis méditerranéen : appartements de vacances à Stintino, à quelques minutes de La Pelosa et de la mer du Nord de la Sardaigne. Une residence paisible pour ceux qui recherchent un séjour authentique en Sardaigne.',
+      'Studios avec véranda ou terrasse au cœur du maquis méditerranéen. À 300 m, un petit centre commercial avec un excellent rapport qualité-prix ; à quelques minutes de Stintino, La Pelosa et la mer du Nord de la Sardaigne. Une residence paisible, loin du transit, pour un séjour authentique en Sardaigne.',
     marquee: ['Cala Lupo', 'La Pelosa', 'Criques', 'Nord Sardaigne', 'Stintino'],
     metricsAria: 'En bref',
   },
   residenceHighlights: [
-    { value: 'Cala Lupo', label: 'Baie' },
-    { value: '~2 km', label: 'Centre & Pelosa' },
-    { value: 'Iconique', label: 'La Pelosa' },
+    { value: '300 m', label: 'De la mer' },
+    { value: '300 m', label: 'Centre commercial' },
+    { value: '~2 km', label: 'Stintino & Pelosa' },
   ],
   residenceCards: [
     {
@@ -42,7 +43,7 @@ export const fr: LocaleCopy = {
     {
       title: 'Baie de Cala Lupo',
       description:
-        'La Residence se situe dans la baie de Cala Lupo, dans un quartier calme à environ 2 km du centre de Stintino, entre maquis méditerranéen et mer du Nord de la Sardaigne.',
+        'La Residence se situe là où la route carrossable s\'arrête, à 300 m de la mer. La baie de Cala Lupo est un quartier calme à environ 2 km du centre de Stintino : la petite plage est accessible à pied par un chemin plat, praticable avec poussettes et vélos.',
       imageAlt: 'Plage de Cala Lupo — sable, mer turquoise et détente près de la Residence',
     },
     {
@@ -99,12 +100,14 @@ export const fr: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Kit de courtoisie' },
           { icon: 'ac', label: 'Climatisation' },
           { icon: 'wifi', label: 'Connexion internet Wi-Fi' },
+          { icon: 'parking', label: 'Parking gratuit' },
         ],
       },
       {
         id: 'paid',
         title: 'Services payants',
         items: [
+          { icon: 'parking-paid', label: 'Parking non gardé' },
           { icon: 'extra-cleaning', label: 'Ménage supplémentaire de la chambre' },
           { icon: 'laundry', label: 'Blanchisserie' },
           { icon: 'transport', label: 'Services de transport' },
@@ -129,7 +132,7 @@ export const fr: LocaleCopy = {
     title: 'Les studios',
     count: '18',
     countLabel: 'studios',
-    kicker: 'Deux atmosphères — mer et jardin — pour vivre Stintino avec l\'intimité d\'une residence.',
+    kicker: 'Deux typologies — mer et jardin — de 2 à 4 personnes, pour vivre Stintino avec l\'intimité d\'une residence.',
     marquee: ['Vue mer', 'Vue jardin', 'Studios', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Afficher la photo de jour',
     cardToggleNightAria: 'Afficher la photo de nuit',
@@ -137,14 +140,16 @@ export const fr: LocaleCopy = {
   suites: {
     'vista-giardino': {
       title: 'Vue Jardin',
-      kicker: 'Studio pour 2 ou 4 personnes',
+      kicker: 'Studio pour 2, 3 ou 4 personnes',
       tagline: 'Véranda, jardin privé et quiétude du maquis méditerranéen.',
       description:
-        'Studio avec véranda couverte et jardin privé : lit double et lit superposé jusqu\'à 4 personnes. Salles de bain rénovées — douche walk-in plus grande ou douche compacte avec bidet selon le logement.',
+        'Studios pour 2, 3 ou 4 personnes : lit simple supplémentaire pour 3 personnes, lit superposé pour 4 (en plus du double). Véranda couverte et jardin privé. Salles de bain rénovées — douche walk-in plus grande ou douche compacte avec bidet selon le logement.',
       features: [
+        '2, 3 ou 4 personnes',
+        'Lit simple (3 personnes)',
+        'Lit superposé (4 personnes)',
         'Véranda couverte',
         'Jardin privé',
-        'Lit superposé',
         'Salle de bain rénovée',
         'Coin cuisine',
         'Wi-Fi gratuit',
@@ -156,7 +161,7 @@ export const fr: LocaleCopy = {
         'Petit-déjeuner en véranda avec moka, fleurs blanches et jardin — Residence Le Vele, Stintino',
         'Chambre avec lit double et salle de bain privée — studio vue jardin Le Vele',
         'Détail du lit avec serviettes et hibiscus, vue patio — studio vue jardin Le Vele',
-        'Lit superposé dans le studio vue jardin — jusqu\'à 4 personnes',
+        'Lit superposé dans le studio vue jardin — configuration 4 personnes',
         'Intérieur du studio avec coin cuisine — Residence Le Vele',
         'Jardin privé et véranda couverte — Residence Le Vele, Stintino',
         'Véranda couverte et espace extérieur — appartement de vacances Sardaigne',
@@ -171,14 +176,16 @@ export const fr: LocaleCopy = {
     },
     'vista-mare': {
       title: 'Vue Mer',
-      kicker: 'Studio pour 2 ou 4 personnes',
+      kicker: 'Studio pour 2, 3 ou 4 personnes',
       tagline: 'Terrasse privée et lumière sur la baie de Stintino.',
       description:
-        'Studio avec terrasse privée sur la baie : lit double et lit superposé jusqu\'à 4 personnes, lumière du Nord de la Sardaigne et couchers vers La Pelosa. Salles de bain rénovées — grande douche sans bidet ou douche compacte avec bidet selon le logement.',
+        'Studios pour 2, 3 ou 4 personnes : lit simple supplémentaire pour 3 personnes, lit superposé pour 4 (en plus du double). Terrasse privée sur la baie, lumière du Nord de la Sardaigne et couchers vers La Pelosa. Salles de bain rénovées — grande douche sans bidet ou douche compacte avec bidet selon le logement.',
       features: [
+        '2, 3 ou 4 personnes',
+        'Lit simple (3 personnes)',
+        'Lit superposé (4 personnes)',
         'Terrasse privée',
         'Plaque de cuisson équipée',
-        'Lit superposé',
         'Salle de bain rénovée',
         'Climatisation',
         'Wi-Fi gratuit',
@@ -193,7 +200,7 @@ export const fr: LocaleCopy = {
         'Chambre double avec hibiscus et mobilier en bois — studio vue mer',
         'Détail d\'accueil avec serviettes et hibiscus rouge — Le Vele',
         'Coin cuisine équipé et espace repas — studio vue mer',
-        'Lit superposé avec vue mer — studio Stintino',
+        'Lit superposé avec vue mer — configuration 4 personnes',
         'Panorama depuis la suite vue mer — Stintino, Sardaigne',
         'Terrasse avec vue mer — studio Residence Le Vele, Stintino',
         'Détail intérieur du studio vue mer — Le Vele',
@@ -488,7 +495,7 @@ export const fr: LocaleCopy = {
     backToSuites: '← Retour aux suites',
     backLink: '← Les studios',
     specsAria: 'Informations sur la suite',
-    guests: '2–4',
+    guests: '2 / 3 / 4',
     guestsLabel: 'hôtes',
     locationValue: 'Stintino',
     locationLabel: 'Sardaigne',
@@ -581,7 +588,15 @@ export const fr: LocaleCopy = {
     schemaTouristTypes: ['Familles', 'Couples', 'Randonneurs'],
     nearbyAttractions: [
       { name: 'La Pelosa', description: 'Plage emblématique de Stintino, à environ 2 km de la residence.' },
-      { name: 'Baie de Cala Lupo', description: 'Baie paisible où se situe la Residence Le Vele.' },
+      {
+        name: 'Baie de Cala Lupo',
+        description:
+          'Petite plage à 300 m de la Residence, accessible à pied par un chemin adapté aux poussettes et aux vélos.',
+      },
+      {
+        name: 'Centre commercial',
+        description: 'Petit centre commercial à 300 m avec un excellent rapport qualité-prix.',
+      },
       { name: 'Centre historique de Stintino', description: 'Village de pêcheurs du Nord de la Sardaigne, près de la residence.' },
     ],
   },

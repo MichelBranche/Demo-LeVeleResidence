@@ -20,16 +20,17 @@ export const zh: LocaleCopy = {
     titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: '海湾 · Stintino',
-    kicker: '坐落于 Cala Lupo 与撒丁岛西北部海域之间，距 Stintino 和 La Pelosa 仅数分钟路程。',
+    kicker:
+      '距海 300 米：车行道在我们这里结束；小海滩可沿一条适合婴儿车和自行车的小路步行抵达。',
     lead:
-      '地中海灌木丛中的工作室公寓，配有游廊或露台：Stintino 度假公寓，距 La Pelosa 和撒丁岛西北部海域仅数分钟。宁静寓所，为寻求地道撒丁岛体验的游客而设。',
+      '地中海灌木丛中的工作室公寓，配有游廊或露台。300 米处有一家小型购物中心，性价比出色；距 Stintino、La Pelosa 和撒丁岛西北部海域仅数分钟。远离过境车流的宁静寓所，适合地道的撒丁岛度假。',
     marquee: ['Cala Lupo', 'La Pelosa', '小海湾', '撒丁岛西北部', 'Stintino'],
     metricsAria: '一览',
   },
   residenceHighlights: [
-    { value: 'Cala Lupo', label: '海湾' },
-    { value: '~2 公里', label: '市中心与 Pelosa' },
-    { value: '标志性地', label: 'La Pelosa' },
+    { value: '300 米', label: '距大海' },
+    { value: '300 米', label: '购物中心' },
+    { value: '~2 公里', label: 'Stintino 与 Pelosa' },
   ],
   residenceCards: [
     {
@@ -42,7 +43,7 @@ export const zh: LocaleCopy = {
     {
       title: 'Cala Lupo 海湾',
       description:
-        '寓所坐落于 Cala Lupo 海湾，宁静区域，距 Stintino 市中心约 2 公里，地中海灌木丛与撒丁岛西北部海域环抱其间。',
+        '寓所位于车行道尽头，距海 300 米。Cala Lupo 海湾是距 Stintino 市中心约 2 公里的宁静区域：小海滩可沿平坦小路步行抵达，适合婴儿车和自行车。',
       imageAlt: 'Cala Lupo 海滩 — 沙滩、碧蓝海水，寓所附近的休闲海湾',
     },
     {
@@ -99,12 +100,14 @@ export const zh: LocaleCopy = {
           { icon: 'courtesy-kit', label: '客用洗漱套装' },
           { icon: 'ac', label: '空调' },
           { icon: 'wifi', label: 'Wi-Fi 网络连接' },
+          { icon: 'parking', label: '免费停车位' },
         ],
       },
       {
         id: 'paid',
         title: '付费服务',
         items: [
+          { icon: 'parking-paid', label: '无看守停车位' },
           { icon: 'extra-cleaning', label: '额外客房清洁' },
           { icon: 'laundry', label: '洗衣服务' },
           { icon: 'transport', label: '交通服务' },
@@ -129,7 +132,7 @@ export const zh: LocaleCopy = {
     title: '工作室公寓',
     count: '18',
     countLabel: '间工作室',
-    kicker: '两种氛围——海景与园景——以寓所的私密性体验 Stintino。',
+    kicker: '两种房型——海景与园景——可容纳 2 至 4 位住客，在 Stintino 享受寓所般的私密空间。',
     marquee: ['海景', '园景', '工作室公寓', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: '显示日间照片',
     cardToggleNightAria: '显示夜间照片',
@@ -137,14 +140,16 @@ export const zh: LocaleCopy = {
   suites: {
     'vista-giardino': {
       title: '园景',
-      kicker: '可容纳 2 或 4 位住客的工作室',
+      kicker: '可容纳 2、3 或 4 位住客',
       tagline: '游廊、私家花园与地中海灌木丛的宁静。',
       description:
-        '工作室配有顶盖游廊与私家花园入口：双人床与双层床，最多容纳 4 位住客。翻新浴室——宽敞步入式淋浴间或紧凑型淋浴间配坐浴盆，因房间而异。',
+        '工作室可容纳 2、3 或 4 位住客：3 位住客配备额外单人床，4 位住客配备双层床（另含双人床）。顶盖游廊与私家花园入口。翻新浴室——宽敞步入式淋浴间或紧凑型淋浴间配坐浴盆，因房间而异。',
       features: [
+        '2、3 或 4 位住客',
+        '单人床（3 位住客）',
+        '双层床（4 位住客）',
         '顶盖游廊',
         '私家花园',
-        '双层床',
         '翻新浴室',
         '小厨房',
         '免费 Wi-Fi',
@@ -156,7 +161,7 @@ export const zh: LocaleCopy = {
         '游廊早餐，摩卡壶、白花与花园 — Residence Le Vele，Stintino',
         '卧室配双人床与独立浴室 — 园景工作室 Le Vele',
         '床铺细节，卷叠毛巾与木槿，庭院景观 — 园景工作室 Le Vele',
-        '园景工作室双层床 — 最多 4 位住客',
+        '园景工作室双层床 — 4 位住客配置',
         '工作室室内与小厨房 — Residence Le Vele',
         '私家花园与顶盖游廊 — Residence Le Vele，Stintino',
         '顶盖游廊与户外区域 — 撒丁岛度假公寓',
@@ -171,14 +176,16 @@ export const zh: LocaleCopy = {
     },
     'vista-mare': {
       title: '海景',
-      kicker: '可容纳 2 或 4 位住客的工作室',
+      kicker: '可容纳 2、3 或 4 位住客',
       tagline: '私人露台与 Stintino 海湾上的光影。',
       description:
-        '工作室配有俯瞰海湾的私人露台：双人床与双层床，最多容纳 4 位住客，撒丁岛西北部阳光与朝向 La Pelosa 的日落。翻新浴室——较大淋浴间无坐浴盆，或紧凑型淋浴间配坐浴盆，因房间而异。',
+        '工作室可容纳 2、3 或 4 位住客：3 位住客配备额外单人床，4 位住客配备双层床（另含双人床）。俯瞰海湾的私人露台，撒丁岛西北部阳光与朝向 La Pelosa 的日落。翻新浴室——较大淋浴间无坐浴盆，或紧凑型淋浴间配坐浴盆，因房间而异。',
       features: [
+        '2、3 或 4 位住客',
+        '单人床（3 位住客）',
+        '双层床（4 位住客）',
         '私人露台',
         '配备炉灶的小厨房',
-        '双层床',
         '翻新浴室',
         '空调',
         '免费 Wi-Fi',
@@ -193,7 +200,7 @@ export const zh: LocaleCopy = {
         '双人卧室，木槿与木质家具 — 海景工作室',
         '欢迎细节，卷叠毛巾与红色木槿 — Le Vele',
         '配备齐全的小厨房与用餐区 — 海景工作室',
-        '双层床与海景 — Stintino 工作室',
+        '双层床与海景 — 4 位住客配置',
         '海景套房全景 — Stintino，撒丁岛',
         '海景露台 — 工作室 Residence Le Vele，Stintino',
         '海景工作室室内细节 — Le Vele',
@@ -488,7 +495,7 @@ export const zh: LocaleCopy = {
     backToSuites: '← 返回套房',
     backLink: '← 工作室公寓',
     specsAria: '套房信息',
-    guests: '2–4',
+    guests: '2 / 3 / 4',
     guestsLabel: '位住客',
     locationValue: 'Stintino',
     locationLabel: '撒丁岛',
@@ -581,7 +588,14 @@ export const zh: LocaleCopy = {
     schemaTouristTypes: ['家庭', '情侣', '徒步者'],
     nearbyAttractions: [
       { name: 'La Pelosa', description: 'Stintino 标志海滩，距寓所约 2 公里。' },
-      { name: 'Cala Lupo 海湾', description: 'Residence Le Vele 所在的宁静海湾。' },
+      {
+        name: 'Cala Lupo 海湾',
+        description: '距寓所 300 米的小海滩，可沿适合婴儿车和自行车的小路步行抵达。',
+      },
+      {
+        name: '购物中心',
+        description: '300 米处的小型购物中心，性价比出色。',
+      },
       { name: 'Stintino 历史中心', description: '撒丁岛西北部渔村，毗邻寓所。' },
     ],
   },

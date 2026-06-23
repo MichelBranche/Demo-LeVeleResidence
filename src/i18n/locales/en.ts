@@ -20,16 +20,17 @@ export const en: LocaleCopy = {
     titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: 'Bay · Stintino',
-    kicker: 'Between Cala Lupo and the North Sardinia sea, just minutes from Stintino and La Pelosa.',
+    kicker:
+      '300 m from the sea: the paved road ends at our residence; the little beach is a short walk along a path suitable for strollers and bikes.',
     lead:
-      'Studio apartments with veranda or terrace amid Mediterranean scrubland: holiday apartments in Stintino, minutes from La Pelosa and the North Sardinia sea. A peaceful residence for those seeking an authentic stay in Sardinia.',
+      'Studios with veranda or terrace amid Mediterranean scrubland. A small shopping centre 300 m away with excellent value for money; minutes from Stintino, La Pelosa and the North Sardinia sea. A peaceful residence away from through traffic, for an authentic stay in Sardinia.',
     marquee: ['Cala Lupo', 'La Pelosa', 'Coves', 'North Sardinia', 'Stintino'],
     metricsAria: 'At a glance',
   },
   residenceHighlights: [
-    { value: 'Cala Lupo', label: 'Bay' },
-    { value: '~2 km', label: 'Town centre & Pelosa' },
-    { value: 'Iconic', label: 'La Pelosa' },
+    { value: '300 m', label: 'From the sea' },
+    { value: '300 m', label: 'Shopping centre' },
+    { value: '~2 km', label: 'Stintino & Pelosa' },
   ],
   residenceCards: [
     {
@@ -42,7 +43,7 @@ export const en: LocaleCopy = {
     {
       title: 'Cala Lupo Bay',
       description:
-        'The Residence stands in Cala Lupo bay, in a quiet area about 2 km from the centre of Stintino, amid Mediterranean scrubland and the North Sardinia sea.',
+        'The Residence stands where the paved road ends, 300 m from the sea. Cala Lupo bay is a quiet area about 2 km from the centre of Stintino: the little beach is a short walk along a flat path suitable for strollers and bicycles.',
       imageAlt: 'Cala Lupo beach — sand, turquoise sea and relaxation near the Residence',
     },
     {
@@ -99,12 +100,14 @@ export const en: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Courtesy kit' },
           { icon: 'ac', label: 'Air conditioning' },
           { icon: 'wifi', label: 'Wi-Fi internet connection' },
+          { icon: 'parking', label: 'Free parking' },
         ],
       },
       {
         id: 'paid',
         title: 'Paid services',
         items: [
+          { icon: 'parking-paid', label: 'Unattended parking' },
           { icon: 'extra-cleaning', label: 'Extra room cleaning' },
           { icon: 'laundry', label: 'Laundry' },
           { icon: 'transport', label: 'Transport services' },
@@ -129,7 +132,7 @@ export const en: LocaleCopy = {
     title: 'Studio apartments',
     count: '18',
     countLabel: 'studio apartments',
-    kicker: 'Two atmospheres — sea and garden — to experience Stintino with the privacy of a residence.',
+    kicker: 'Two types — sea and garden — sleeping 2 to 4 guests, with the privacy of a residence in Stintino.',
     marquee: ['Sea view', 'Garden view', 'Studio apartments', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Show daytime photo',
     cardToggleNightAria: 'Show night photo',
@@ -137,14 +140,16 @@ export const en: LocaleCopy = {
   suites: {
     'vista-giardino': {
       title: 'Garden View',
-      kicker: 'Studio for 2 or 4 guests',
+      kicker: 'Studio for 2, 3 or 4 guests',
       tagline: 'Veranda, private garden and the quiet of the Mediterranean scrubland.',
       description:
-        'Studio with covered veranda and private garden access: double bed and bunk bed for up to 4 guests. Renovated bathrooms — either a larger walk-in shower or a compact shower with bidet, depending on the unit.',
+        'Studios for 2, 3 or 4 guests: an extra single bed for 3 guests, a bunk bed for 4 (in addition to the double). Covered veranda and private garden access. Renovated bathrooms — either a larger walk-in shower or a compact shower with bidet, depending on the unit.',
       features: [
+        '2, 3 or 4 guests',
+        'Single bed (3 guests)',
+        'Bunk bed (4 guests)',
         'Covered veranda',
         'Private garden',
-        'Bunk bed',
         'Renovated bathroom',
         'Kitchenette',
         'Free Wi-Fi',
@@ -156,7 +161,7 @@ export const en: LocaleCopy = {
         'Breakfast on the veranda with moka, white flowers and garden — Residence Le Vele, Stintino',
         'Bedroom with double bed and private bathroom — garden-view studio Le Vele',
         'Bed detail with rolled towels and hibiscus, patio view — garden-view studio Le Vele',
-        'Bunk bed in the garden-view studio — up to 4 guests',
+        'Bunk bed in the garden-view studio — 4-guest layout',
         'Studio interior with kitchenette — Residence Le Vele',
         'Private garden and covered veranda — Residence Le Vele, Stintino',
         'Covered veranda and outdoor area — holiday apartment Sardinia',
@@ -171,14 +176,16 @@ export const en: LocaleCopy = {
     },
     'vista-mare': {
       title: 'Sea View',
-      kicker: 'Studio for 2 or 4 guests',
+      kicker: 'Studio for 2, 3 or 4 guests',
       tagline: 'Private terrace and light over Stintino bay.',
       description:
-        'Studio with private terrace over the bay: double bed and bunk bed for up to 4 guests, North Sardinia light and sunsets towards La Pelosa. Renovated bathrooms — larger shower without bidet or compact shower with bidet, depending on the unit.',
+        'Studios for 2, 3 or 4 guests: an extra single bed for 3 guests, a bunk bed for 4 (in addition to the double). Private terrace over the bay, North Sardinia light and sunsets towards La Pelosa. Renovated bathrooms — larger shower without bidet or compact shower with bidet, depending on the unit.',
       features: [
+        '2, 3 or 4 guests',
+        'Single bed (3 guests)',
+        'Bunk bed (4 guests)',
         'Private terrace',
         'Equipped kitchen hob',
-        'Bunk bed',
         'Renovated bathroom',
         'Air conditioning',
         'Free Wi-Fi',
@@ -193,7 +200,7 @@ export const en: LocaleCopy = {
         'Double bedroom with hibiscus and wooden furniture — sea-view studio',
         'Welcome detail with rolled towels and red hibiscus — Le Vele',
         'Equipped kitchenette and dining area — sea-view studio',
-        'Bunk bed with sea view — Stintino studio',
+        'Bunk bed with sea view — 4-guest layout',
         'Panorama from the sea-view suite — Stintino, Sardinia',
         'Terrace with sea view — studio Residence Le Vele, Stintino',
         'Interior detail of the sea-view studio — Le Vele',
@@ -488,7 +495,7 @@ export const en: LocaleCopy = {
     backToSuites: '← Back to suites',
     backLink: '← Studio apartments',
     specsAria: 'Suite information',
-    guests: '2–4',
+    guests: '2 / 3 / 4',
     guestsLabel: 'guests',
     locationValue: 'Stintino',
     locationLabel: 'Sardinia',
@@ -581,7 +588,15 @@ export const en: LocaleCopy = {
     schemaTouristTypes: ['Families', 'Couples', 'Hikers'],
     nearbyAttractions: [
       { name: 'La Pelosa', description: 'Iconic beach in Stintino, about 2 km from the residence.' },
-      { name: 'Cala Lupo Bay', description: 'Quiet bay where Residence Le Vele stands.' },
+      {
+        name: 'Cala Lupo Bay',
+        description:
+          'Little beach 300 m from the Residence, reachable on foot along a path suitable for strollers and bikes.',
+      },
+      {
+        name: 'Shopping centre',
+        description: 'Small shopping centre 300 m away with excellent value for money.',
+      },
       { name: 'Historic centre of Stintino', description: 'Fishing village in North Sardinia, near the residence.' },
     ],
   },

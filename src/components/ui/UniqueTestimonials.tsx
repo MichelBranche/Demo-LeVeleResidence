@@ -2,7 +2,6 @@ import { AnimatePresence, useReducedMotion } from 'framer-motion';
 import * as m from 'framer-motion/m';
 import '../../styles/unique-testimonials.css';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { formatCopy } from '@/i18n';
 import { cn } from '@/lib/utils';
 import { MotionLazy } from './MotionLazy';
 
@@ -15,55 +14,17 @@ export type TestimonialItem = {
   role: string;
   rating: number;
   source: 'google' | 'tripadvisor';
-  href?: string;
 };
 
 type UniqueTestimonialsProps = {
   items: readonly TestimonialItem[];
   ariaLabel: string;
-  openOnTemplate: string;
   prevAria: string;
   nextAria: string;
   className?: string;
 };
 
-function TestimonialSlide({
-  item,
-  openOnTemplate,
-}: {
-  item: TestimonialItem;
-  openOnTemplate: string;
-}) {
-  return (
-    <>
-      <blockquote className="unique-testimonial__quote">
-        <p>{item.quote}</p>
-      </blockquote>
-
-      <footer className="unique-testimonial__attribution">
-        <cite className="unique-testimonial__author">{item.author}</cite>
-        <span className="unique-testimonial__role" aria-hidden>
-          ·
-        </span>
-        <span className="unique-testimonial__role">{item.role}</span>
-        {item.href ? (
-          <a
-            className="unique-testimonial__source-link"
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {formatCopy(openOnTemplate, {
-              platform: item.source === 'google' ? 'Google' : 'Tripadvisor',
-            })}
-          </a>
-        ) : null}
-      </footer>
-    </>
-  );
-}
-
-function TestimonialMeasureContent({ item }: { item: TestimonialItem }) {
+function TestimonialSlide({ item }: { item: TestimonialItem }) {
   return (
     <>
       <blockquote className="unique-testimonial__quote">
@@ -84,7 +45,6 @@ function TestimonialMeasureContent({ item }: { item: TestimonialItem }) {
 export function UniqueTestimonials({
   items,
   ariaLabel,
-  openOnTemplate,
   className,
 }: UniqueTestimonialsProps) {
   const reduceMotion = useReducedMotion();
@@ -116,7 +76,7 @@ export function UniqueTestimonials({
 
   useLayoutEffect(() => {
     measureStage();
-  }, [measureStage, testimonials, openOnTemplate]);
+  }, [measureStage, testimonials]);
 
   useEffect(() => {
     const root = measureRef.current;
@@ -187,7 +147,7 @@ export function UniqueTestimonials({
             aria-live="polite"
             {...motionProps}
           >
-            <TestimonialSlide item={active} openOnTemplate={openOnTemplate} />
+            <TestimonialSlide item={active} />
           </m.div>
         </AnimatePresence>
       </div>
@@ -199,7 +159,7 @@ export function UniqueTestimonials({
             data-testimonial-measure
             className="unique-testimonial__content unique-testimonial__content--measure"
           >
-            <TestimonialMeasureContent item={item} />
+            <TestimonialSlide item={item} />
           </div>
         ))}
       </div>

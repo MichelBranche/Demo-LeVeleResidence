@@ -20,16 +20,17 @@ export const de: LocaleCopy = {
     titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: 'Bucht · Stintino',
-    kicker: 'Zwischen Cala Lupo und dem Meer Nord-Sardiniens, nur wenige Minuten von Stintino und La Pelosa entfernt.',
+    kicker:
+      '300 m vom Meer: Die befahrbare Straße endet bei uns; der kleine Strand ist zu Fuß über einen Weg erreichbar, der für Kinderwagen und Fahrräder geeignet ist.',
     lead:
-      'Studios mit Veranda oder Terrasse inmitten mediterraner Macchia: Ferienwohnungen in Stintino, wenige Minuten von La Pelosa und dem Meer Nord-Sardiniens. Eine ruhige Residence für alle, die authentische Aufenthalte auf Sardinien suchen.',
+      'Studios mit Veranda oder Terrasse inmitten mediterraner Macchia. 300 m entfernt ein kleines Einkaufszentrum mit sehr gutem Preis-Leistungs-Verhältnis; wenige Minuten von Stintino, La Pelosa und dem Meer Nord-Sardiniens. Eine ruhige Residence abseits des Durchgangsverkehrs für authentische Aufenthalte auf Sardinien.',
     marquee: ['Cala Lupo', 'La Pelosa', 'Buchten', 'Nord-Sardinien', 'Stintino'],
     metricsAria: 'Auf einen Blick',
   },
   residenceHighlights: [
-    { value: 'Cala Lupo', label: 'Bucht' },
-    { value: '~2 km', label: 'Zentrum & Pelosa' },
-    { value: 'Ikonsich', label: 'La Pelosa' },
+    { value: '300 m', label: 'Vom Meer' },
+    { value: '300 m', label: 'Einkaufszentrum' },
+    { value: '~2 km', label: 'Stintino & Pelosa' },
   ],
   residenceCards: [
     {
@@ -42,7 +43,7 @@ export const de: LocaleCopy = {
     {
       title: 'Bucht von Cala Lupo',
       description:
-        'Die Residence liegt in der Bucht von Cala Lupo, in einer ruhigen Gegend etwa 2 km vom Zentrum Stintinos entfernt, zwischen mediterraner Macchia und dem Meer Nord-Sardiniens.',
+        'Die Residence liegt dort, wo die befahrbare Straße endet, 300 m vom Meer entfernt. Die Bucht von Cala Lupo ist eine ruhige Gegend etwa 2 km vom Zentrum Stintinos entfernt: Der kleine Strand ist zu Fuß über einen flachen Weg erreichbar, der für Kinderwagen und Fahrräder geeignet ist.',
       imageAlt: 'Strand von Cala Lupo — Sand, türkisfarbenes Meer und Entspannung nahe der Residence',
     },
     {
@@ -99,12 +100,14 @@ export const de: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Willkommensset' },
           { icon: 'ac', label: 'Klimaanlage' },
           { icon: 'wifi', label: 'WLAN-Internetverbindung' },
+          { icon: 'parking', label: 'Kostenloser Parkplatz' },
         ],
       },
       {
         id: 'paid',
         title: 'Kostenpflichtige Leistungen',
         items: [
+          { icon: 'parking-paid', label: 'Unbewachter Parkplatz' },
           { icon: 'extra-cleaning', label: 'Zusätzliche Zimmerreinigung' },
           { icon: 'laundry', label: 'Wäscheservice' },
           { icon: 'transport', label: 'Transferservice' },
@@ -129,7 +132,7 @@ export const de: LocaleCopy = {
     title: 'Die Studios',
     count: '18',
     countLabel: 'Studios',
-    kicker: 'Zwei Atmosphären — Meer und Garten — um Stintino mit der Privatsphäre einer Residence zu erleben.',
+    kicker: 'Zwei Typen — Meer und Garten — für 2 bis 4 Personen, mit der Privatsphäre einer Residence in Stintino.',
     marquee: ['Meerblick', 'Gartenblick', 'Studios', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Tagesfoto anzeigen',
     cardToggleNightAria: 'Nachtfoto anzeigen',
@@ -137,14 +140,16 @@ export const de: LocaleCopy = {
   suites: {
     'vista-giardino': {
       title: 'Mit Gartenblick',
-      kicker: 'Studio für 2 oder 4 Personen',
+      kicker: 'Studio für 2, 3 oder 4 Personen',
       tagline: 'Veranda, privater Garten und die Ruhe der mediterranen Macchia.',
       description:
-        'Studio mit überdachter Veranda und privatem Garten: Doppelbett und Etagenbett für bis zu 4 Gäste. Renovierte Bäder — je nach Wohnung große Walk-in-Dusche oder kompakte Dusche mit Bidet.',
+        'Studios für 2, 3 oder 4 Personen: bei 3 Gästen ein zusätzliches Einzelbett, bei 4 Gästen ein Etagenbett (zusätzlich zum Doppelbett). Überdachte Veranda und privater Garten. Renovierte Bäder — je nach Wohnung große Walk-in-Dusche oder kompakte Dusche mit Bidet.',
       features: [
+        '2, 3 oder 4 Personen',
+        'Einzelbett (3 Personen)',
+        'Etagenbett (4 Personen)',
         'Überdachte Veranda',
         'Privater Garten',
-        'Etagenbett',
         'Renoviertes Bad',
         'Küchenzeile',
         'Kostenloses WLAN',
@@ -156,7 +161,7 @@ export const de: LocaleCopy = {
         'Frühstück auf der Veranda mit Moka, weißen Blumen und Garten — Residence Le Vele, Stintino',
         'Schlafzimmer mit Doppelbett und privatem Bad — Studio mit Gartenblick Le Vele',
         'Bettdetail mit Handtüchern und Hibiskus, Blick auf den Patio — Studio mit Gartenblick Le Vele',
-        'Etagenbett im Studio mit Gartenblick — bis zu 4 Gäste',
+        'Etagenbett im Studio mit Gartenblick — Belegung 4 Personen',
         'Studio-Innenraum mit Küchenzeile — Residence Le Vele',
         'Privater Garten und überdachte Veranda — Residence Le Vele, Stintino',
         'Überdachte Veranda und Außenbereich — Ferienwohnung Sardinien',
@@ -171,14 +176,16 @@ export const de: LocaleCopy = {
     },
     'vista-mare': {
       title: 'Mit Meerblick',
-      kicker: 'Studio für 2 oder 4 Personen',
+      kicker: 'Studio für 2, 3 oder 4 Personen',
       tagline: 'Private Terrasse und Licht über der Bucht von Stintino.',
       description:
-        'Studio mit privater Terrasse über der Bucht: Doppelbett und Etagenbett für bis zu 4 Gäste, Licht Nord-Sardiniens und Sonnenuntergänge Richtung La Pelosa. Renovierte Bäder — große Dusche ohne Bidet oder kompakte Dusche mit Bidet, je nach Wohnung.',
+        'Studios für 2, 3 oder 4 Personen: bei 3 Gästen ein zusätzliches Einzelbett, bei 4 Gästen ein Etagenbett (zusätzlich zum Doppelbett). Private Terrasse über der Bucht, Licht Nord-Sardiniens und Sonnenuntergänge Richtung La Pelosa. Renovierte Bäder — große Dusche ohne Bidet oder kompakte Dusche mit Bidet, je nach Wohnung.',
       features: [
+        '2, 3 oder 4 Personen',
+        'Einzelbett (3 Personen)',
+        'Etagenbett (4 Personen)',
         'Private Terrasse',
         'Ausgestattete Küchenzeile',
-        'Etagenbett',
         'Renoviertes Bad',
         'Klimaanlage',
         'Kostenloses WLAN',
@@ -193,7 +200,7 @@ export const de: LocaleCopy = {
         'Doppelzimmer mit Hibiskus und Holzmöbeln — Studio mit Meerblick',
         'Willkommensdetail mit Handtüchern und rotem Hibiskus — Le Vele',
         'Ausgestattete Küchenzeile und Essbereich — Studio mit Meerblick',
-        'Etagenbett mit Meerblick — Stintino Studio',
+        'Etagenbett mit Meerblick — Belegung 4 Personen',
         'Panorama von der Suite mit Meerblick — Stintino, Sardinien',
         'Terrasse mit Meerblick — Studio Residence Le Vele, Stintino',
         'Innenraumdetail Studio mit Meerblick — Le Vele',
@@ -488,7 +495,7 @@ export const de: LocaleCopy = {
     backToSuites: '← Zurück zu den Suites',
     backLink: '← Die Studios',
     specsAria: 'Suite-Informationen',
-    guests: '2–4',
+    guests: '2 / 3 / 4',
     guestsLabel: 'Gäste',
     locationValue: 'Stintino',
     locationLabel: 'Sardinien',
@@ -581,7 +588,15 @@ export const de: LocaleCopy = {
     schemaTouristTypes: ['Familien', 'Paare', 'Wanderer'],
     nearbyAttractions: [
       { name: 'La Pelosa', description: 'Ikonsicher Strand in Stintino, etwa 2 km von der Residence entfernt.' },
-      { name: 'Bucht von Cala Lupo', description: 'Ruhige Bucht, in der die Residence Le Vele liegt.' },
+      {
+        name: 'Bucht von Cala Lupo',
+        description:
+          'Kleiner Strand 300 m von der Residence, zu Fuß über einen Weg erreichbar, der für Kinderwagen und Fahrräder geeignet ist.',
+      },
+      {
+        name: 'Einkaufszentrum',
+        description: 'Kleines Einkaufszentrum in 300 m Entfernung mit sehr gutem Preis-Leistungs-Verhältnis.',
+      },
       { name: 'Historisches Zentrum Stintinos', description: 'Fischerdorf in Nord-Sardinien, in der Nähe der Residence.' },
     ],
   },

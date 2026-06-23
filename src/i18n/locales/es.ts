@@ -20,16 +20,17 @@ export const es: LocaleCopy = {
     titleBrandAccent: 'Le Vele',
     location: 'Cala Lupo',
     locationLabel: 'Bahía · Stintino',
-    kicker: 'Entre Cala Lupo y el mar del norte de Cerdeña, a pocos minutos de Stintino y La Pelosa.',
+    kicker:
+      'A 300 m del mar: la carretera asfaltada termina en nosotros; la playita se alcanza a pie por un camino apto para carritos y bicicletas.',
     lead:
-      'Estudios con veranda o terraza en plena macchia mediterránea: apartamentos de vacaciones en Stintino, a pocos minutos de La Pelosa y del mar del norte de Cerdeña. Una residence tranquila para quienes buscan estancias auténticas en Cerdeña.',
+      'Estudios con veranda o terraza en plena macchia mediterránea. A 300 m, un pequeño centro comercial con excelente relación calidad-precio; a pocos minutos de Stintino, La Pelosa y el mar del norte de Cerdeña. Una residence tranquila, lejos del tráfico de paso, para estancias auténticas en Cerdeña.',
     marquee: ['Cala Lupo', 'La Pelosa', 'Calas', 'Norte Cerdeña', 'Stintino'],
     metricsAria: 'En resumen',
   },
   residenceHighlights: [
-    { value: 'Cala Lupo', label: 'Bahía' },
-    { value: '~2 km', label: 'Centro y Pelosa' },
-    { value: 'Icónica', label: 'La Pelosa' },
+    { value: '300 m', label: 'Del mar' },
+    { value: '300 m', label: 'Centro comercial' },
+    { value: '~2 km', label: 'Stintino y Pelosa' },
   ],
   residenceCards: [
     {
@@ -42,7 +43,7 @@ export const es: LocaleCopy = {
     {
       title: 'Bahía de Cala Lupo',
       description:
-        'La Residence se encuentra en la bahía de Cala Lupo, en una zona tranquila a unos 2 km del centro de Stintino, entre macchia mediterránea y el mar del norte de Cerdeña.',
+        'La Residence está donde termina la carretera asfaltada, a 300 m del mar. La bahía de Cala Lupo es una zona tranquila a unos 2 km del centro de Stintino: la playita se alcanza a pie por un camino llano, apto para carritos y bicicletas.',
       imageAlt: 'Playa de Cala Lupo — arena, mar turquesa y relax cerca de la Residence',
     },
     {
@@ -99,12 +100,14 @@ export const es: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Kit de cortesía' },
           { icon: 'ac', label: 'Aire acondicionado' },
           { icon: 'wifi', label: 'Conexión a internet Wi-Fi' },
+          { icon: 'parking', label: 'Aparcamiento gratuito' },
         ],
       },
       {
         id: 'paid',
         title: 'Servicios de pago',
         items: [
+          { icon: 'parking-paid', label: 'Aparcamiento no vigilado' },
           { icon: 'extra-cleaning', label: 'Limpieza extra de la habitación' },
           { icon: 'laundry', label: 'Lavandería' },
           { icon: 'transport', label: 'Servicios de transporte' },
@@ -129,7 +132,7 @@ export const es: LocaleCopy = {
     title: 'Los estudios',
     count: '18',
     countLabel: 'estudios',
-    kicker: 'Dos ambientes — mar y jardín — para vivir Stintino con la privacidad de una residence.',
+    kicker: 'Dos tipologías — mar y jardín — de 2 a 4 plazas, para vivir Stintino con la privacidad de una residence.',
     marquee: ['Vista mar', 'Vista jardín', 'Estudios', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Mostrar foto diurna',
     cardToggleNightAria: 'Mostrar foto nocturna',
@@ -137,14 +140,16 @@ export const es: LocaleCopy = {
   suites: {
     'vista-giardino': {
       title: 'Con Vista Jardín',
-      kicker: 'Estudio para 2 o 4 personas',
+      kicker: 'Estudio para 2, 3 o 4 personas',
       tagline: 'Veranda, jardín privado y la calma de la macchia mediterránea.',
       description:
-        'Estudio con veranda cubierta y jardín privado: cama doble y litera para hasta 4 personas. Baños reformados — ducha walk-in amplia o ducha compacta con bidé según el alojamiento.',
+        'Estudios para 2, 3 o 4 personas: cama individual adicional para 3 personas, litera para 4 (además de la doble). Veranda cubierta y jardín privado. Baños reformados — ducha walk-in amplia o ducha compacta con bidé según el alojamiento.',
       features: [
+        '2, 3 o 4 personas',
+        'Cama individual (3 personas)',
+        'Litera (4 personas)',
         'Veranda cubierta',
         'Jardín privado',
-        'Litera',
         'Baño reformado',
         'Rincón cocina',
         'Wi-Fi gratuito',
@@ -156,7 +161,7 @@ export const es: LocaleCopy = {
         'Desayuno en veranda con moka, flores blancas y jardín — Residence Le Vele, Stintino',
         'Dormitorio con cama doble y baño privado — estudio vista jardín Le Vele',
         'Detalle de la cama con toallas e hibisco, vista al patio — estudio vista jardín Le Vele',
-        'Litera en el estudio con vista jardín — hasta 4 personas',
+        'Litera en el estudio con vista jardín — configuración 4 plazas',
         'Interior del estudio con rincón cocina — Residence Le Vele',
         'Jardín privado y veranda cubierta — Residence Le Vele, Stintino',
         'Veranda cubierta y zona exterior — apartamento de vacaciones Cerdeña',
@@ -171,14 +176,16 @@ export const es: LocaleCopy = {
     },
     'vista-mare': {
       title: 'Con Vista Mar',
-      kicker: 'Estudio para 2 o 4 personas',
+      kicker: 'Estudio para 2, 3 o 4 personas',
       tagline: 'Terraza privada y luz sobre la bahía de Stintino.',
       description:
-        'Estudio con terraza privada sobre la bahía: cama doble y litera para hasta 4 personas, luz del norte de Cerdeña y atardeceres hacia La Pelosa. Baños reformados — ducha amplia sin bidé o ducha compacta con bidé según el alojamiento.',
+        'Estudios para 2, 3 o 4 personas: cama individual adicional para 3 personas, litera para 4 (además de la doble). Terraza privada sobre la bahía, luz del norte de Cerdeña y atardeceres hacia La Pelosa. Baños reformados — ducha amplia sin bidé o ducha compacta con bidé según el alojamiento.',
       features: [
+        '2, 3 o 4 personas',
+        'Cama individual (3 personas)',
+        'Litera (4 personas)',
         'Terraza privada',
         'Cocina equipada',
-        'Litera',
         'Baño reformado',
         'Aire acondicionado',
         'Wi-Fi gratuito',
@@ -193,7 +200,7 @@ export const es: LocaleCopy = {
         'Dormitorio doble con hibisco y muebles de madera — estudio vista mar',
         'Detalle de bienvenida con toallas e hibisco rojo — Le Vele',
         'Cocina equipada y zona comedor — estudio vista mar',
-        'Litera con vistas al mar — estudio Stintino',
+        'Litera con vistas al mar — configuración 4 plazas',
         'Panorama desde la suite con vista mar — Stintino, Cerdeña',
         'Terraza con vista mar — estudio Residence Le Vele, Stintino',
         'Detalle interior del estudio con vista mar — Le Vele',
@@ -488,7 +495,7 @@ export const es: LocaleCopy = {
     backToSuites: '← Volver a las suites',
     backLink: '← Los estudios',
     specsAria: 'Información de la suite',
-    guests: '2–4',
+    guests: '2 / 3 / 4',
     guestsLabel: 'huéspedes',
     locationValue: 'Stintino',
     locationLabel: 'Cerdeña',
@@ -581,7 +588,15 @@ export const es: LocaleCopy = {
     schemaTouristTypes: ['Familias', 'Parejas', 'Excursionistas'],
     nearbyAttractions: [
       { name: 'La Pelosa', description: 'Playa icónica de Stintino, a unos 2 km de la residence.' },
-      { name: 'Bahía de Cala Lupo', description: 'Bahía tranquila donde se encuentra la Residence Le Vele.' },
+      {
+        name: 'Bahía de Cala Lupo',
+        description:
+          'Playita a 300 m de la Residence, accesible a pie por un camino apto para carritos y bicicletas.',
+      },
+      {
+        name: 'Centro comercial',
+        description: 'Pequeño centro comercial a 300 m con excelente relación calidad-precio.',
+      },
       { name: 'Centro histórico de Stintino', description: 'Pueblo marinero del norte de Cerdeña, cerca de la residence.' },
     ],
   },

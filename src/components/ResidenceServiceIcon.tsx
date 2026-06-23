@@ -1,6 +1,7 @@
 import {
   Bike,
   Bus,
+  CircleParking,
   Map,
   Mountain,
   Ship,
@@ -90,6 +91,9 @@ export function ResidenceServiceIcon({ id, className }: Props) {
       return <Wind {...iconProps} className={className} />;
     case 'wifi':
       return <Wifi {...iconProps} className={className} />;
+    case 'parking':
+    case 'parking-paid':
+      return <CircleParking {...iconProps} className={className} />;
     case 'extra-cleaning':
       return <BedGlyph className={className} />;
     case 'laundry':

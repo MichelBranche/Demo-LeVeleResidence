@@ -4,6 +4,8 @@ export type ResidenceServiceIconId =
   | 'courtesy-kit'
   | 'ac'
   | 'wifi'
+  | 'parking'
+  | 'parking-paid'
   | 'extra-cleaning'
   | 'laundry'
   | 'transport'
