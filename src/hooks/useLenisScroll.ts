@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { isIntroDone, onIntroDone } from '../lib/intro';
 import { isMobileViewport } from '../lib/motion';
 import { setLenisInstance } from '../lib/scroll';
+import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -42,7 +43,7 @@ export function useLenisScroll() {
 
       setLenisInstance(lenis);
       lenis.on('scroll', ScrollTrigger.update);
-      requestAnimationFrame(() => ScrollTrigger.refresh());
+      scheduleScrollTriggerRefresh();
     };
 
     const startDeferred = () => {
@@ -73,7 +74,7 @@ export function useLenisScroll() {
         lenis?.destroy();
         document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped');
         document.body.style.overflow = '';
-        ScrollTrigger.refresh();
+        scheduleScrollTriggerRefresh();
       };
     }
 
@@ -84,7 +85,7 @@ export function useLenisScroll() {
       lenis?.destroy();
       document.documentElement.classList.remove('lenis', 'lenis-smooth', 'lenis-stopped');
       document.body.style.overflow = '';
-      ScrollTrigger.refresh();
+      scheduleScrollTriggerRefresh();
     };
   }, []);
 }

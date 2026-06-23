@@ -5,10 +5,14 @@ const GARDEN = asset('/Foto%202024%20camere%20Le%20Vele/vista%20giardino');
 const SEA = asset('/Foto%202024%20camere%20Le%20Vele/vista%20mare');
 const BATH = asset('/Foto%202024%20camere%20Le%20Vele/bagni');
 const CALA_LUPO = asset('/images/cala-lupo.webp');
+const CALA_LUPO_RESIDENCE = asset('/images/cala-lupo-residence.webp');
 const ZONA_COMUNE = asset('/images/zona-comune.webp');
 const LA_PELOSA = asset('/images/la-pelosa-spiaggia.webp');
 const ALGHERO_AIRPORT = asset('/images/alghero-aeroporto.webp');
 const OLBIA_PORT = asset('/images/olbia-porto.webp');
+const DRONE_PANORAMA = asset('/images/dintorni/drone-panorama.webp');
+const DRONE_RESIDENCE = asset('/images/dintorni/drone-residence.webp');
+const DRONE_TRAMONTO = asset('/images/dintorni/drone-tramonto.webp');
 const PETS = asset('/images/amici-4-zampe.webp');
 const ATMOSFERA = asset('/images/atmosfera');
 const CONTATTI = asset('/images/contatti');
@@ -76,7 +80,15 @@ export const residenceCardMedia = [
   },
   {
     icon: 'bay' as const,
-    image: CALA_LUPO,
+    image: CALA_LUPO_RESIDENCE,
+  },
+  {
+    icon: 'drone' as const,
+    images: [
+      { src: DRONE_PANORAMA },
+      { src: DRONE_RESIDENCE },
+      { src: DRONE_TRAMONTO },
+    ],
   },
   {
     icon: 'routes' as const,
@@ -148,7 +160,6 @@ export const suitesMedia = [
 ] as const;
 
 export const galleryMedia = [
-  { src: `${ATMOSFERA}/drone-residence.webp` },
   { src: `${ATMOSFERA}/dettaglio-vista-mare.webp` },
   { src: `${GARDEN}/esterno%20giardino.webp` },
   { src: `${ATMOSFERA}/vista-mare.webp` },

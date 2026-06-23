@@ -43,7 +43,18 @@ export const es: LocaleCopy = {
       title: 'Bahía de Cala Lupo',
       description:
         'La Residence se encuentra en la bahía de Cala Lupo, en una zona tranquila a unos 2 km del centro de Stintino, entre macchia mediterránea y el mar del norte de Cerdeña.',
-      imageAlt: 'Bahía de Cala Lupo — playa y mar turquesa cerca de la Residence',
+      imageAlt: 'Playa de Cala Lupo — arena, mar turquesa y relax cerca de la Residence',
+    },
+    {
+      title: 'Vista aérea',
+      description:
+        'Residence Le Vele desde el cielo: costa, piscina y estudios entre la macchia mediterránea, a pocos pasos del mar de Cala Lupo.',
+      imageAlt: 'Vista aérea de la Residence Le Vele en la costa de Stintino — Cerdeña',
+      images: [
+        { alt: 'Vista aérea de la costa y la piscina — Residence Le Vele, Stintino', caption: 'Costa y piscina' },
+        { alt: 'Vista aérea de la Residence Le Vele con apartamentos y mar — Stintino', caption: 'La Residence' },
+        { alt: 'Atardecer aéreo sobre la Residence Le Vele y el mar — Stintino', caption: 'Atardecer' },
+      ],
     },
     {
       title: 'Cómo llegar',
@@ -201,7 +212,6 @@ export const es: LocaleCopy = {
   gallery: {
     title: 'Atmósfera Le Vele',
     imageAlts: [
-      'Vista aérea de la Residence Le Vele en la costa de Stintino — Cerdeña',
       'Terraza con vista mar, moka y adelfa — atmósfera Le Vele, Stintino',
       'Jardín de la Residence Le Vele en Stintino con macchia mediterránea',
       'Vista al mar desde la residence con barco y macchia mediterránea — Stintino',

@@ -15,7 +15,7 @@ import { SubPageLayout } from './components/SubPageLayout';
 import { RouteTransitionProvider, useRouteTransition } from './context/RouteTransitionContext';
 import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath, normalizePathname } from './data/routes';
 import { scheduleScrollToSuiteHero, scrollToHash, scrollToTop } from './lib/scroll';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { scheduleScrollTriggerRefresh } from './lib/scrollTriggerRefresh';
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
 const BookingPage = lazy(() =>
   import('./pages/BookingPage').then((m) => ({ default: m.BookingPage })),
@@ -76,7 +76,7 @@ function ScrollOnNavigate() {
     if (location.hash) {
       const scroll = () => {
         scrollToHash(location.hash);
-        ScrollTrigger.refresh();
+        scheduleScrollTriggerRefresh();
       };
       requestAnimationFrame(scroll);
       const delays = [350, 900, 1600];
@@ -88,7 +88,7 @@ function ScrollOnNavigate() {
       return scheduleScrollToSuiteHero();
     }
 
-    requestAnimationFrame(() => ScrollTrigger.refresh());
+    scheduleScrollTriggerRefresh();
   }, [location.pathname, location.hash, isSuite, stage]);
 
   return null;

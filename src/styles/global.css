@@ -148,8 +148,7 @@ button {
   font-style: normal;
 }
 
-.hero-title,
-.hero-tagline {
+.hero-title {
   font-family: var(--font-display);
 }
 
@@ -263,7 +262,7 @@ button {
 
 .hero-tagline {
   margin: 0 0 1rem;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: clamp(1.25rem, 3vw, 2rem);
   font-style: normal;
   opacity: 0.92;

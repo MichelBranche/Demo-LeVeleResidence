@@ -43,7 +43,18 @@ export const en: LocaleCopy = {
       title: 'Cala Lupo Bay',
       description:
         'The Residence stands in Cala Lupo bay, in a quiet area about 2 km from the centre of Stintino, amid Mediterranean scrubland and the North Sardinia sea.',
-      imageAlt: 'Cala Lupo Bay — beach and turquoise sea near the Residence',
+      imageAlt: 'Cala Lupo beach — sand, turquoise sea and relaxation near the Residence',
+    },
+    {
+      title: 'From above',
+      description:
+        'Residence Le Vele from the sky: coastline, pool and studios amid Mediterranean scrubland, steps from the Cala Lupo sea.',
+      imageAlt: 'Aerial view of Residence Le Vele on the Stintino coast — Sardinia',
+      images: [
+        { alt: 'Aerial view of the coast and pool — Residence Le Vele, Stintino', caption: 'Coast & pool' },
+        { alt: 'Aerial view of Residence Le Vele with apartments and the sea — Stintino', caption: 'The Residence' },
+        { alt: 'Aerial sunset over Residence Le Vele and the sea — Stintino, Sardinia', caption: 'Sunset' },
+      ],
     },
     {
       title: 'Getting here',
@@ -201,7 +212,6 @@ export const en: LocaleCopy = {
   gallery: {
     title: 'Le Vele Atmosphere',
     imageAlts: [
-      'Aerial view of Residence Le Vele on the Stintino coast — Sardinia',
       'Sea-view terrace with moka pot and oleander — Le Vele atmosphere, Stintino',
       'Garden at Residence Le Vele in Stintino with Mediterranean scrubland',
       'Sea view from the residence with boat and Mediterranean scrub — Stintino',

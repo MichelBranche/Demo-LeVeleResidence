@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { useSiteLocale } from '../hooks/useSiteLocale';
+import '../styles/landing-intro.css';
 
 function HeroRevealLine({ children }: { children: ReactNode }) {
   return (

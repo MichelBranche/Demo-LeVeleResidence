@@ -15,6 +15,8 @@ const loaders: Record<
   de: () => import('./locales/de'),
   fr: () => import('./locales/fr'),
   es: () => import('./locales/es'),
+  ru: () => import('./locales/ru'),
+  zh: () => import('./locales/zh'),
 };
 
 function extractCopy(mod: Awaited<ReturnType<(typeof loaders)[SiteLocale]>>, locale: SiteLocale): LocaleCopy {

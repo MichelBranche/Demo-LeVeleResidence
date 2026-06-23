@@ -7,6 +7,8 @@ const countryByLocale: Record<SiteLocale, string> = {
   de: 'Italien',
   fr: 'Italie',
   es: 'Italia',
+  ru: 'Италия',
+  zh: '意大利',
 };
 
 const copyByLocale: Record<
@@ -41,6 +43,18 @@ const copyByLocale: Record<
     lead: 'El responsable del tratamiento es',
     contact: 'Consultas de privacidad:',
     vatLabel: 'P. IVA',
+    cinLabel: 'CIN',
+  },
+  ru: {
+    lead: 'Оператором обработки персональных данных является',
+    contact: 'Запросы по конфиденциальности:',
+    vatLabel: 'НДС',
+    cinLabel: 'CIN',
+  },
+  zh: {
+    lead: '个人数据处理控制者为',
+    contact: '隐私相关咨询：',
+    vatLabel: '增值税号',
     cinLabel: 'CIN',
   },
 };

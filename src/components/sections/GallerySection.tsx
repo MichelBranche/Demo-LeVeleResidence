@@ -18,6 +18,7 @@ export function GallerySection() {
           nextLabel={gallery.nextLabel}
           counterLabel={(current, total) => gallery.counterLabel.replace('{current}', String(current)).replace('{total}', String(total))}
           autoplayLabel={gallery.autoplayLabel}
+          autoplayOnEnter
         />
       </div>
     </section>

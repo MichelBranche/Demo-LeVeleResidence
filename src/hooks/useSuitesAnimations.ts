@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { RefObject } from 'react';
 import { allowScrollScrub, isMobileViewport, prefersReducedMotion } from '../lib/motion';
+import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -113,7 +114,7 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
         });
       }
 
-      requestAnimationFrame(() => ScrollTrigger.refresh());
+      scheduleScrollTriggerRefresh();
     },
     { scope: sectionRef, dependencies: [] },
   );

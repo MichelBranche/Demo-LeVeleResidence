@@ -2,6 +2,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { RefObject } from 'react';
+import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -71,7 +72,7 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
         });
       }
 
-      requestAnimationFrame(() => ScrollTrigger.refresh());
+      scheduleScrollTriggerRefresh();
     },
     { scope: sectionRef, dependencies: [] },
   );

@@ -43,7 +43,18 @@ export const de: LocaleCopy = {
       title: 'Bucht von Cala Lupo',
       description:
         'Die Residence liegt in der Bucht von Cala Lupo, in einer ruhigen Gegend etwa 2 km vom Zentrum Stintinos entfernt, zwischen mediterraner Macchia und dem Meer Nord-Sardiniens.',
-      imageAlt: 'Bucht von Cala Lupo — Strand und türkisfarbenes Meer in der Nähe der Residence',
+      imageAlt: 'Strand von Cala Lupo — Sand, türkisfarbenes Meer und Entspannung nahe der Residence',
+    },
+    {
+      title: 'Aus der Luft',
+      description:
+        'Residence Le Vele aus der Vogelperspektive: Küste, Pool und Studios in der mediterranen Macchia, nur Schritte vom Meer der Cala Lupo.',
+      imageAlt: 'Luftaufnahme der Residence Le Vele an der Küste von Stintino — Sardinien',
+      images: [
+        { alt: 'Luftaufnahme der Küste und des Pools — Residence Le Vele, Stintino', caption: 'Küste & Pool' },
+        { alt: 'Luftaufnahme der Residence Le Vele mit Apartments und Meer — Stintino', caption: 'Die Residence' },
+        { alt: 'Luftaufnahme bei Sonnenuntergang — Residence Le Vele, Stintino', caption: 'Sonnenuntergang' },
+      ],
     },
     {
       title: 'Anreise',
@@ -201,7 +212,6 @@ export const de: LocaleCopy = {
   gallery: {
     title: 'Atmosphäre Le Vele',
     imageAlts: [
-      'Luftaufnahme der Residence Le Vele an der Küste von Stintino — Sardinien',
       'Terrasse mit Meerblick, Moka und Oleander — Atmosphäre Le Vele, Stintino',
       'Garten der Residence Le Vele in Stintino mit mediterraner Macchia',
       'Meerblick vom Residence mit Boot und mediterraner Macchia — Stintino',

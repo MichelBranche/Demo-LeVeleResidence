@@ -58,9 +58,13 @@ export default defineConfig(({ mode }) => {
           manualChunks(id) {
             if (id.includes('node_modules/gsap')) return 'gsap'
             if (id.includes('node_modules/lenis')) return 'lenis'
+            if (id.includes('node_modules/framer-motion/dist/es/m.mjs') || id.includes('framer-motion/m')) {
+              return 'motion-m'
+            }
             if (id.includes('node_modules/framer-motion')) return 'motion'
             if (id.includes('node_modules/react-router')) return 'router'
             if (id.includes('node_modules/lucide-react')) return 'lucide'
+            if (id.includes('node_modules/hls.js')) return 'hls'
           },
         },
       },

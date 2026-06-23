@@ -1,7 +1,7 @@
 import '../styles/suite-detail.css';
 import { useEffect, useRef } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 import { useRouteTransition } from '../context/RouteTransitionContext';
 import { getSuiteSlugFromPathname } from '../data/routes';
 import { useSiteLocale } from '../hooks/useSiteLocale';
@@ -33,12 +33,8 @@ export function SuitePage() {
   useEffect(() => {
     if (stage !== 'idle') return;
 
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 400);
-
-    return () => {
-      window.clearTimeout(refreshTimer);
-    };
+    scheduleScrollTriggerRefresh();
+    scheduleScrollTriggerRefresh(400);
   }, [slug, stage]);
 
   if (!suite) {

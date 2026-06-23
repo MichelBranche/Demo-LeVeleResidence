@@ -12,6 +12,10 @@ import { useNetworkTier } from '../hooks/useNetworkTier';
 import { useSiteLocale } from '../hooks/useSiteLocale';
 import { revealHeroCopyStatic } from '../lib/homeIntroEntrance';
 import { isHeroCopyDone, onHeroCopyDone, resetIntroState } from '../lib/intro';
+import {
+  scheduleScrollTriggerRefresh,
+  scheduleScrollTriggerRefreshAfterLayout,
+} from '../lib/scrollTriggerRefresh';
 import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
   shouldRunVideoPreloader,
@@ -227,9 +231,8 @@ export function HomePage() {
   useEffect(() => {
     if (!ready) return undefined;
 
-    const refresh = () => ScrollTrigger.refresh();
     const id = requestAnimationFrame(() => {
-      requestAnimationFrame(refresh);
+      scheduleScrollTriggerRefreshAfterLayout();
     });
 
     return () => cancelAnimationFrame(id);
@@ -237,9 +240,7 @@ export function HomePage() {
 
   useEffect(() => {
     if (!ready) return;
-    const refresh = () => ScrollTrigger.refresh();
-    const t = window.setTimeout(refresh, 600);
-    return () => window.clearTimeout(t);
+    scheduleScrollTriggerRefresh(600);
   }, [ready]);
 
   const shouldPlayHeroVideo =

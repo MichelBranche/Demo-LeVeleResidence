@@ -43,7 +43,18 @@ export const fr: LocaleCopy = {
       title: 'Baie de Cala Lupo',
       description:
         'La Residence se situe dans la baie de Cala Lupo, dans un quartier calme à environ 2 km du centre de Stintino, entre maquis méditerranéen et mer du Nord de la Sardaigne.',
-      imageAlt: 'Baie de Cala Lupo — plage et mer turquoise près de la Residence',
+      imageAlt: 'Plage de Cala Lupo — sable, mer turquoise et détente près de la Residence',
+    },
+    {
+      title: 'Vue du ciel',
+      description:
+        'Residence Le Vele vue du ciel : côte, piscine et studios dans la maquis méditerranéenne, à deux pas de la mer de Cala Lupo.',
+      imageAlt: 'Vue aérienne de la Residence Le Vele sur la côte de Stintino — Sardaigne',
+      images: [
+        { alt: 'Vue aérienne de la côte et de la piscine — Residence Le Vele, Stintino', caption: 'Côte & piscine' },
+        { alt: 'Vue aérienne de la Residence Le Vele avec appartements et mer — Stintino', caption: 'La Residence' },
+        { alt: 'Coucher de soleil aérien sur la Residence Le Vele — Stintino, Sardaigne', caption: 'Coucher de soleil' },
+      ],
     },
     {
       title: 'Accès',
@@ -201,7 +212,6 @@ export const fr: LocaleCopy = {
   gallery: {
     title: 'Atmosphère Le Vele',
     imageAlts: [
-      'Vue aérienne de la Residence Le Vele sur la côte de Stintino — Sardaigne',
       'Terrasse vue mer avec moka et oleander — atmosphère Le Vele, Stintino',
       'Jardin de la Residence Le Vele à Stintino avec maquis méditerranéen',
       'Vue sur la mer depuis la residence avec bateau et maquis méditerranéen — Stintino',

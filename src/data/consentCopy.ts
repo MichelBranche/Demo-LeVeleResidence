@@ -268,4 +268,92 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       legalNav: 'Privacidad y cookies',
     },
   },
+  ru: {
+    banner: {
+      eyebrow: 'Конфиденциальность и cookie',
+      title: 'Ваш опыт — ваш выбор',
+      description:
+        'Мы используем технические cookie, необходимые для работы сайта, и — только с вашего согласия — аналитику и маркетинг. Вы можете принять всё, отклонить необязательные cookie или настроить предпочтения.',
+      acceptAll: 'Принять всё',
+      rejectAll: 'Отклонить всё',
+      customize: 'Настроить',
+      privacyLink: 'Политика конфиденциальности',
+      cookieLink: 'Политика cookie',
+    },
+    panel: {
+      title: 'Настройки cookie',
+      description:
+        'Выберите категории. Необходимые cookie всегда активны для безопасности и базовых функций.',
+      necessary: {
+        title: 'Необходимые',
+        description: 'Нужны для навигации, безопасности и сохранения вашего согласия.',
+        alwaysOn: 'Всегда активны',
+      },
+      analytics: {
+        title: 'Аналитика',
+        description: 'Помогают понять использование сайта (напр. Google Analytics) в агрегированном виде.',
+      },
+      marketing: {
+        title: 'Маркетинг',
+        description: 'Реклама и ремаркетинг (напр. Meta Pixel) только с вашего разрешения.',
+      },
+      preferences: {
+        title: 'Предпочтения',
+        description:
+          'Включают интерактивную карту Google и другие настройки интерфейса. Без согласия карта не загружается.',
+      },
+      save: 'Сохранить настройки',
+      back: 'Назад',
+    },
+    footer: { manage: 'Управление cookie', privacy: 'Конфиденциальность', cookies: 'Cookie' },
+    aria: {
+      dialog: 'Согласие на cookie',
+      panel: 'Настройки cookie',
+      localeSwitch: 'Сменить язык',
+      legalNav: 'Конфиденциальность и cookie',
+    },
+  },
+  zh: {
+    banner: {
+      eyebrow: '隐私与 Cookie',
+      title: '您的体验，您的选择',
+      description:
+        '我们使用网站运行所必需的技术性 Cookie；仅在您同意时才会启用分析与营销工具。您可以全部接受、拒绝非必要 Cookie 或自定义偏好。',
+      acceptAll: '全部接受',
+      rejectAll: '全部拒绝',
+      customize: '自定义',
+      privacyLink: '隐私政策',
+      cookieLink: 'Cookie 政策',
+    },
+    panel: {
+      title: 'Cookie 偏好设置',
+      description: '选择要启用的类别。必要 Cookie 始终启用，以保障安全与基本功能。',
+      necessary: {
+        title: '必要',
+        description: '用于浏览、安全及保存您的同意偏好。',
+        alwaysOn: '始终启用',
+      },
+      analytics: {
+        title: '分析',
+        description: '帮助我们了解网站使用情况（如 Google Analytics），以汇总形式呈现。',
+      },
+      marketing: {
+        title: '营销',
+        description: '仅在您授权时用于推广与再营销（如 Meta Pixel）。',
+      },
+      preferences: {
+        title: '偏好',
+        description: '启用 Google 互动地图等界面功能。未经同意不会加载地图。',
+      },
+      save: '保存偏好',
+      back: '返回',
+    },
+    footer: { manage: '管理 Cookie', privacy: '隐私', cookies: 'Cookie' },
+    aria: {
+      dialog: 'Cookie 同意',
+      panel: 'Cookie 偏好',
+      localeSwitch: '切换语言',
+      legalNav: '隐私与 Cookie',
+    },
+  },
 };

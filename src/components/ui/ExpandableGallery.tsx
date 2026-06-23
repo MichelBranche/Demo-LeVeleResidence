@@ -1,7 +1,10 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, useReducedMotion } from 'framer-motion';
+import * as m from 'framer-motion/m';
+import '../../styles/expandable-gallery.css';
 import { ChevronLeft, ChevronRight, Play, X } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
+import { MotionLazy } from './MotionLazy';
 
 export type ExpandableGalleryImage = {
   src: string;
@@ -21,6 +24,8 @@ type ExpandableGalleryProps = {
   nextLabel: string;
   counterLabel: (current: number, total: number) => string;
   autoplayLabel: string;
+  /** Avvia lo scorrimento automatico quando la galleria entra nel viewport (una sola volta). */
+  autoplayOnEnter?: boolean;
 };
 
 export function ExpandableGallery({
@@ -33,8 +38,11 @@ export function ExpandableGallery({
   nextLabel,
   counterLabel,
   autoplayLabel,
+  autoplayOnEnter = false,
 }: ExpandableGalleryProps) {
   const reduceMotion = useReducedMotion();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const autoplayOnEnterStartedRef = useRef(false);
   const autoplayRunRef = useRef(0);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -92,12 +100,34 @@ export function ExpandableGallery({
     };
   }, [selectedIndex, closeImage, goToNext, goToPrev]);
 
-  const startAutoplay = () => {
+  const startAutoplay = useCallback(() => {
     setHoveredIndex(null);
     autoplayRunRef.current += 1;
     setIsAutoplaying(true);
     setAutoplayIndex(0);
-  };
+  }, []);
+
+  const canAutoplay = allImages.length > 1 && !reduceMotion;
+
+  useEffect(() => {
+    if (!autoplayOnEnter || !canAutoplay) return undefined;
+
+    const root = rootRef.current;
+    if (!root) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting || autoplayOnEnterStartedRef.current) return;
+        autoplayOnEnterStartedRef.current = true;
+        startAutoplay();
+        observer.disconnect();
+      },
+      { threshold: 0.35 },
+    );
+
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, [autoplayOnEnter, canAutoplay, startAutoplay]);
 
   useEffect(() => {
     if (!isAutoplaying || autoplayIndex === null) return undefined;
@@ -132,7 +162,6 @@ export function ExpandableGallery({
   const trackHighlightIndex = getTrackHighlightIndex();
   const isLeadActive =
     isAutoplaying && autoplayIndex === 0 && Boolean(leadImage && !leadInTrack);
-  const canAutoplay = allImages.length > 1 && !reduceMotion;
 
   const getFlexValue = (index: number) => {
     const isLeadCell = leadInTrack && index === 0;
@@ -147,7 +176,9 @@ export function ExpandableGallery({
   }
 
   return (
+    <MotionLazy>
     <div
+      ref={rootRef}
       className={`expandable-gallery${
         leadImage && !leadInTrack ? ' expandable-gallery--with-lead' : ''
       }${leadInTrack ? ' expandable-gallery--lead-in-track' : ''} ${className}`.trim()}
@@ -174,7 +205,7 @@ export function ExpandableGallery({
       {trackImages.length > 0 && (
       <div className="expandable-gallery__track">
         {trackImages.map((image, index) => (
-          <motion.button
+          <m.button
             key={image.src}
             type="button"
             className={`expandable-gallery__item${
@@ -199,14 +230,14 @@ export function ExpandableGallery({
             aria-label={image.alt}
           >
             <img src={image.src} alt="" className="expandable-gallery__img" loading="lazy" decoding="async" />
-            <motion.span
+            <m.span
               className="expandable-gallery__shade"
               aria-hidden
               initial={false}
               animate={{ opacity: trackHighlightIndex === index ? 0 : 0.28 }}
               transition={{ duration: reduceMotion ? 0 : 0.3 }}
             />
-          </motion.button>
+          </m.button>
         ))}
       </div>
       )}
@@ -230,7 +261,7 @@ export function ExpandableGallery({
         createPortal(
           <AnimatePresence>
             {selectedIndex !== null && (
-              <motion.div
+              <m.div
                 className="expandable-gallery__lightbox"
                 role="dialog"
                 aria-modal="true"
@@ -260,7 +291,7 @@ export function ExpandableGallery({
                   </button>
                 )}
 
-                <motion.figure
+                <m.figure
                   className="expandable-gallery__lightbox-stage"
                   onClick={(e) => e.stopPropagation()}
                   key={selectedIndex}
@@ -274,7 +305,7 @@ export function ExpandableGallery({
                     alt={allImages[selectedIndex].alt}
                     className="expandable-gallery__lightbox-img"
                   />
-                </motion.figure>
+                </m.figure>
 
                 {allImages.length > 1 && (
                   <button
@@ -290,11 +321,12 @@ export function ExpandableGallery({
                 <p className="expandable-gallery__counter" aria-live="polite">
                   {counterLabel(selectedIndex + 1, allImages.length)}
                 </p>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>,
           document.body,
         )}
     </div>
+    </MotionLazy>
   );
 }

@@ -12,6 +12,8 @@ const cookiePrefsCopy: Record<SiteLocale, { title: string; button: string }> = {
   de: { title: 'Einstellungen ändern', button: 'Cookie-Einstellungen öffnen' },
   fr: { title: 'Modifier les préférences', button: 'Ouvrir le panneau cookies' },
   es: { title: 'Cambiar preferencias', button: 'Abrir panel de cookies' },
+  ru: { title: 'Изменить настройки', button: 'Открыть панель cookie' },
+  zh: { title: '更改偏好设置', button: '打开 Cookie 面板' },
 };
 
 const cookieByLang: Record<SiteLocale, LegalDoc> = {
@@ -302,6 +304,155 @@ const cookieByLang: Record<SiteLocale, LegalDoc> = {
         body: (
           <p>
             Consultas: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          </p>
+        ),
+      },
+    ],
+  },
+  ru: {
+    title: 'Политика cookie',
+    updated: 'Последнее обновление: июнь 2026',
+    sections: [
+      {
+        h: '1. Что такое cookie',
+        body: (
+          <p>
+            Cookie — небольшие текстовые файлы на вашем устройстве для основных функций, запоминания
+            предпочтений и — только с согласия — анализа использования и маркетинга.
+          </p>
+        ),
+      },
+      {
+        h: '2. Строго необходимые cookie',
+        body: (
+          <ul>
+            <li>
+              <strong>lv_consent</strong> (технический cookie, Path=/, SameSite=Lax) — предпочтения, время,
+              версия политики, хеш. Срок: 12 месяцев.
+            </li>
+            <li>
+              <strong>lv_consent</strong> (localStorage) — локальная копия для быстрого восстановления.
+            </li>
+            <li>
+              <strong>lv-site-locale</strong> (localStorage) — выбранный язык интерфейса до очистки.
+            </li>
+            <li>Cookie сессии и безопасности браузера/хостинга (Vercel), необходимые для навигации.</li>
+          </ul>
+        ),
+      },
+      {
+        h: '3. Аналитические cookie',
+        body: (
+          <p>
+            Включаются только при принятии категории <em>Аналитика</em>. Могут включать Google Analytics и
+            Vercel Analytics / Speed Insights. Скрипты не загружаются до согласия.
+          </p>
+        ),
+      },
+      {
+        h: '4. Маркетинговые cookie',
+        body: (
+          <p>
+            Только с согласием на <em>Маркетинг</em>. Могут включать Meta Pixel. Скрипты подгружаются лениво
+            после согласия.
+          </p>
+        ),
+      },
+      {
+        h: '5. Cookie предпочтений',
+        body: (
+          <p>
+            Сохраняют выбор интерфейса при разрешении <em>Предпочтения</em>. Включают встраивание Google Maps в
+            подвале. Без согласия показывается статическая карта.
+          </p>
+        ),
+      },
+      {
+        h: '6. Управление согласием',
+        body: (
+          <p>
+            При первом визите баннер предлагает «Принять всё», «Отклонить всё» или «Настроить». Изменить выбор
+            можно через «Управление cookie» в подвале.
+          </p>
+        ),
+      },
+      {
+        h: '7. Контакты',
+        body: (
+          <p>
+            Вопросы: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+          </p>
+        ),
+      },
+    ],
+  },
+  zh: {
+    title: 'Cookie 政策',
+    updated: '最后更新：2026年6月',
+    sections: [
+      {
+        h: '1. 什么是 Cookie',
+        body: (
+          <p>
+            Cookie 是保存在您设备上的小型文本文件，用于核心功能、记住偏好，以及——仅在您同意时——分析使用情况和支持营销活动。
+          </p>
+        ),
+      },
+      {
+        h: '2. 严格必要的 Cookie',
+        body: (
+          <ul>
+            <li>
+              <strong>lv_consent</strong>（技术 Cookie，Path=/，SameSite=Lax）— 偏好、时间戳、政策版本、完整性哈希。期限：12个月。
+            </li>
+            <li>
+              <strong>lv_consent</strong>（localStorage）— 相同数据的本地副本，便于快速恢复。
+            </li>
+            <li>
+              <strong>lv-site-locale</strong>（localStorage）— 用户选择的界面语言，直至手动清除。
+            </li>
+            <li>浏览器/托管（Vercel）的会话与安全 Cookie，浏览所必需。</li>
+          </ul>
+        ),
+      },
+      {
+        h: '3. 分析 Cookie',
+        body: (
+          <p>
+            仅在您接受<em>分析</em>类别时启用。可能包括 Google Analytics 与 Vercel Analytics / Speed
+            Insights。同意前不会加载分析脚本。
+          </p>
+        ),
+      },
+      {
+        h: '4. 营销 Cookie',
+        body: (
+          <p>
+            仅在<em>营销</em>同意下启用。可能包括 Meta Pixel。脚本仅在同意后延迟加载。
+          </p>
+        ),
+      },
+      {
+        h: '5. 偏好 Cookie',
+        body: (
+          <p>
+            在您允许<em>偏好</em>时保存界面或内容选择。包括页脚 Google 地图嵌入。未经同意仅显示静态地图预览。
+          </p>
+        ),
+      },
+      {
+        h: '6. 管理同意',
+        body: (
+          <p>
+            首次访问时全屏横幅提供全部接受、全部拒绝或自定义。可随时通过页脚「管理 Cookie」更改选择。
+          </p>
+        ),
+      },
+      {
+        h: '7. 联系方式',
+        body: (
+          <p>
+            咨询：<a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
           </p>
         ),
       },

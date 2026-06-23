@@ -43,7 +43,18 @@ export const it: LocaleCopy = {
       title: 'Baia di Cala Lupo',
       description:
         'Il Residence sorge nella baia di Cala Lupo, in una zona tranquilla a circa 2 km dal centro di Stintino, tra macchia mediterranea e mare del Nord Sardegna.',
-      imageAlt: 'Baia di Cala Lupo — spiaggia e mare turchese vicino al Residence',
+      imageAlt: 'Spiaggia di Cala Lupo — sabbia, mare turchese e relax vicino al Residence',
+    },
+    {
+      title: 'Vista dall\'alto',
+      description:
+        'Il Residence Le Vele visto dal cielo: costa, piscina e monolocali immersi nella macchia mediterranea, a pochi passi dal mare di Cala Lupo.',
+      imageAlt: 'Vista aerea del Residence Le Vele sulla costa di Stintino — Sardegna',
+      images: [
+        { alt: 'Vista aerea della costa e della piscina — Residence Le Vele, Stintino', caption: 'Costa e piscina' },
+        { alt: 'Vista aerea del Residence Le Vele con appartamenti e mare — Stintino', caption: 'Il Residence' },
+        { alt: 'Tramonto aereo sul Residence Le Vele e il mare — Stintino, Sardegna', caption: 'Tramonto' },
+      ],
     },
     {
       title: 'Collegamenti',
@@ -201,7 +212,6 @@ export const it: LocaleCopy = {
   gallery: {
     title: 'Atmosfera Le Vele',
     imageAlts: [
-      'Vista aerea del Residence Le Vele sulla costa di Stintino — Sardegna',
       'Terrazza vista mare con moka e oleandro — Atmosfera Le Vele, Stintino',
       'Giardino del Residence Le Vele a Stintino con macchia mediterranea',
       'Vista sul mare dal residence con barca e macchia mediterranea — Stintino',

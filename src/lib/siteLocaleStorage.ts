@@ -22,7 +22,17 @@ export function writeSiteLocale(locale: SiteLocale): void {
   }
 }
 
+const HTML_LANG: Record<SiteLocale, string> = {
+  it: 'it',
+  en: 'en',
+  de: 'de',
+  fr: 'fr',
+  es: 'es',
+  ru: 'ru',
+  zh: 'zh-Hans',
+};
+
 export function applyDocumentLocale(locale: SiteLocale): void {
   if (typeof document === 'undefined') return;
-  document.documentElement.lang = locale;
+  document.documentElement.lang = HTML_LANG[locale];
 }

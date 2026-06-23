@@ -1,7 +1,10 @@
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, useReducedMotion } from 'framer-motion';
+import * as m from 'framer-motion/m';
+import '../../styles/unique-testimonials.css';
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { formatCopy } from '@/i18n';
 import { cn } from '@/lib/utils';
+import { MotionLazy } from './MotionLazy';
 
 const AUTOPLAY_MS = 5200;
 
@@ -141,6 +144,7 @@ export function UniqueTestimonials({
       };
 
   return (
+    <MotionLazy>
     <article
       className={cn('unique-testimonial', className)}
       aria-label={ariaLabel}
@@ -159,14 +163,14 @@ export function UniqueTestimonials({
         style={stageHeight ? { minHeight: stageHeight } : undefined}
       >
         <AnimatePresence mode="wait">
-          <motion.div
+          <m.div
             key={active.id}
             className="unique-testimonial__content"
             aria-live="polite"
             {...motionProps}
           >
             <TestimonialSlide item={active} openOnTemplate={openOnTemplate} />
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
 
@@ -196,5 +200,6 @@ export function UniqueTestimonials({
         </div>
       )}
     </article>
+    </MotionLazy>
   );
 }

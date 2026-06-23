@@ -125,7 +125,7 @@
 
 .hero-tagline {
   margin: clamp(0.45rem, 1.2vh, 0.75rem) 0 0;
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: clamp(1.15rem, 2.8vw, 1.65rem);
   font-style: normal;
   font-weight: 400;
