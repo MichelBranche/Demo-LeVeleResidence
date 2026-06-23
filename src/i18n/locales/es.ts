@@ -152,7 +152,6 @@ export const es: LocaleCopy = {
       galleryAlts: [
         'Veranda cubierta, patio y jardín privado — estudio vista jardín Le Vele',
         'Terraza con mobiliario, jardín y vista al mar — Residence Le Vele, Stintino',
-        'Interior del estudio con vista jardín y zona de comedor — Le Vele',
         'Mesa de comedor en veranda con moka y vista al jardín — estudio vista jardín Le Vele',
         'Desayuno en veranda con moka, flores blancas y jardín — Residence Le Vele, Stintino',
         'Dormitorio con cama doble y baño privado — estudio vista jardín Le Vele',
@@ -187,7 +186,6 @@ export const es: LocaleCopy = {
       galleryAlts: [
         'Mesa de comedor y terraza con vista al mar — estudio Le Vele',
         'Cocina americana y acceso a terraza con vista mar — Residence Le Vele',
-        'Dormitorio con cama doble y vista al mar desde la terraza — Le Vele',
         'Terraza amueblada con vista al estudio y al mar — Le Vele',
         'Estudio con vista mar y terraza sobre la bahía — Residence Le Vele',
         'Terraza cubierta con mesa, moka y vista al mar — estudio Le Vele',

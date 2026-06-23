@@ -28,6 +28,7 @@ export function SuitePage() {
   const slug = paramSlug || getSuiteSlugFromPathname(pathname) || '';
   const suite = suites.find((s) => s.slug === slug);
   const pageRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLElement>(null);
   useSuitePageAnimations(pageRef);
 
   useEffect(() => {
@@ -35,6 +36,33 @@ export function SuitePage() {
 
     scheduleScrollTriggerRefresh();
     scheduleScrollTriggerRefresh(400);
+  }, [slug, stage]);
+
+  useEffect(() => {
+    const gallery = galleryRef.current;
+    const page = pageRef.current;
+    if (!gallery || !page) return undefined;
+
+    const setImmersed = (active: boolean) => {
+      page.classList.toggle('suite-page--gallery-immersed', active);
+      gallery.classList.toggle('suite-gallery--immersed', active);
+    };
+
+    setImmersed(false);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        setImmersed(entry.isIntersecting && entry.intersectionRatio >= 0.12);
+      },
+      { threshold: [0, 0.08, 0.12, 0.2, 0.35, 0.5] },
+    );
+
+    observer.observe(gallery);
+    return () => {
+      observer.disconnect();
+      setImmersed(false);
+    };
   }, [slug, stage]);
 
   if (!suite) {
@@ -135,9 +163,11 @@ export function SuitePage() {
       </section>
 
       <section
+        ref={galleryRef}
         className="section section--gallery suite-gallery"
         aria-labelledby="suite-gallery-title"
       >
+        <div className="suite-gallery__immersion" aria-hidden />
         <div className="section--gallery__inner" data-suite-reveal>
           <header className="suite-gallery__head">
             <p className="suite-gallery__eyebrow">{suite.galleryKicker}</p>
@@ -162,6 +192,7 @@ export function SuitePage() {
                 .replace('{total}', String(total))
             }
             autoplayLabel={gallery.autoplayLabel}
+            autoplayOnEnter
           />
         </div>
       </section>

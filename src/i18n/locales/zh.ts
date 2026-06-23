@@ -152,7 +152,6 @@ export const zh: LocaleCopy = {
       galleryAlts: [
         '顶盖游廊、庭院与私家花园 — 园景工作室 Le Vele',
         '露台配户外座椅、花园与海景 — Residence Le Vele，Stintino',
-        '园景工作室室内，用餐区与庭院 — Le Vele',
         '游廊上的餐桌、摩卡壶与园景 — 园景工作室 Le Vele',
         '游廊早餐，摩卡壶、白花与花园 — Residence Le Vele，Stintino',
         '卧室配双人床与独立浴室 — 园景工作室 Le Vele',
@@ -187,7 +186,6 @@ export const zh: LocaleCopy = {
       galleryAlts: [
         '餐桌与海景露台 — Le Vele 工作室',
         '小厨房与通往海景露台的入口 — Residence Le Vele',
-        '卧室配双人床，露台海景 — Le Vele',
         '布置精美的露台，俯瞰工作室与大海 — Le Vele',
         '海景工作室，露台与海湾光影 — Residence Le Vele',
         '顶盖露台，餐桌、摩卡壶与海景 — Le Vele 工作室',

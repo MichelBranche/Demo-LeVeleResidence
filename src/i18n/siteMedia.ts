@@ -116,7 +116,6 @@ export const suitesMedia = [
     gallery: [
       { src: `${SEA}/le_vele_residence_stintino_appartamenti_26.webp`, layout: 'wide' as const },
       { src: `${SEA}/le_vele_residence_stintino_appartamenti_27.webp`, layout: 'tall' as const },
-      { src: `${SEA}/le_vele_residence_stintino_appartamenti_08.webp`, layout: 'tall' as const },
       { src: `${SEA}/dettaglio-vista-mare-interno.webp`, layout: 'wide' as const },
       { src: `${SEA}/monolocale-mare-1.webp`, layout: 'wide' as const },
       { src: `${SEA}/vista-mare-terrazza.webp`, layout: 'wide' as const },
@@ -144,7 +143,6 @@ export const suitesMedia = [
     gallery: [
       { src: `${GARDEN}/giardino-privato-lead.webp`, layout: 'wide' as const },
       { src: `${GARDEN}/terrazza-giardino-vista-mare.webp`, layout: 'wide' as const },
-      { src: `${GARDEN}/monolocale-giardino.webp`, layout: 'wide' as const },
       { src: `${GARDEN}/veranda-giardino-tavolo.webp`, layout: 'wide' as const },
       { src: `${GARDEN}/colazione-giardino-moka.webp`, layout: 'wide' as const },
       { src: `${GARDEN}/camera-giardino-bagno.webp`, layout: 'wide' as const },

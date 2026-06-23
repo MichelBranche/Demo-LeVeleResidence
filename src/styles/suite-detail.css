@@ -16,6 +16,7 @@
   overflow-x: clip;
   background: var(--crema);
   color: var(--ink);
+  transition: background-color 1.15s cubic-bezier(0.33, 1, 0.68, 1);
   --suite-accent: var(--eyebrow);
   --suite-accent-soft: color-mix(in srgb, var(--eyebrow) 18%, var(--crema));
   --suite-cta-panel-bg: var(--crema);
@@ -32,6 +33,15 @@
 .suite-page--mare {
   --suite-accent: color-mix(in srgb, #7796cb 62%, var(--eyebrow));
   --suite-accent-soft: color-mix(in srgb, #7796cb 14%, var(--crema));
+  --suite-gallery-immersion-bg:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, #7796cb 52%, var(--crema)) 0%,
+      color-mix(in srgb, #81b29a 22%, var(--crema)) 100%
+    );
+  --suite-gallery-immersion-glow:
+    radial-gradient(ellipse 120% 90% at 50% 0%, rgb(119 150 203 / 38%), transparent 62%),
+    radial-gradient(ellipse 90% 70% at 100% 100%, rgb(129 178 154 / 22%), transparent 58%);
   --suite-cta-panel-glow:
     radial-gradient(ellipse 72% 58% at 100% 0%, rgb(119 150 203 / 16%), transparent 55%),
     radial-gradient(ellipse 50% 42% at 0% 100%, rgb(129 178 154 / 10%), transparent 52%);
@@ -40,6 +50,15 @@
 .suite-page--giardino {
   --suite-accent: color-mix(in srgb, var(--mirto) 55%, var(--accent-primary));
   --suite-accent-soft: color-mix(in srgb, var(--mirto) 14%, var(--crema));
+  --suite-gallery-immersion-bg:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--mirto) 48%, var(--crema)) 0%,
+      color-mix(in srgb, #b5a886 20%, var(--crema)) 100%
+    );
+  --suite-gallery-immersion-glow:
+    radial-gradient(ellipse 120% 90% at 50% 0%, rgb(129 178 154 / 34%), transparent 62%),
+    radial-gradient(ellipse 90% 70% at 0% 100%, rgb(181 168 134 / 24%), transparent 58%);
   --suite-cta-panel-glow:
     radial-gradient(ellipse 72% 58% at 100% 0%, rgb(129 178 154 / 14%), transparent 55%),
     radial-gradient(ellipse 50% 42% at 0% 100%, rgb(181 168 134 / 10%), transparent 52%);
@@ -47,6 +66,14 @@
   --suite-cta-btn-hover: color-mix(in srgb, var(--mirto) 72%, var(--ink-muted));
   --suite-cta-btn-shadow: rgb(129 178 154 / 38%);
   --suite-cta-sibling-arrow-hover: color-mix(in srgb, var(--mirto) 28%, var(--crema));
+}
+
+.suite-page--gallery-immersed.suite-page--mare {
+  background: color-mix(in srgb, #7796cb 46%, var(--crema));
+}
+
+.suite-page--gallery-immersed.suite-page--giardino {
+  background: color-mix(in srgb, var(--mirto) 42%, var(--crema));
 }
 
 /* Hero */
@@ -360,6 +387,51 @@
 }
 
 /* Gallery — ExpandableGallery (stesso componente della home #galleria) */
+.suite-page .suite-gallery.section--gallery {
+  position: relative;
+  background: transparent;
+}
+
+.suite-gallery__immersion {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 50svw);
+  width: 100svw;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--suite-gallery-immersion-bg, var(--crema));
+  transition: opacity 1.15s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.suite-gallery__immersion::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--suite-gallery-immersion-glow, none);
+  opacity: 0.95;
+}
+
+.suite-gallery--immersed .suite-gallery__immersion {
+  opacity: 1;
+}
+
+.suite-gallery > .section--gallery__inner {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .suite-page {
+    transition-duration: 0.2s;
+  }
+
+  .suite-gallery__immersion {
+    transition-duration: 0.2s;
+  }
+}
+
 .suite-gallery {
   padding-top: clamp(2.5rem, 6vh, 4rem);
   padding-bottom: clamp(4rem, 9vh, 6rem);
