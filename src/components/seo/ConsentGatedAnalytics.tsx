@@ -1,9 +1,9 @@
 import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import { useConsent } from '../../hooks/useConsent';
 
 /**
- * Vercel Analytics / Speed Insights — caricati solo con consenso analitici (ePrivacy).
+ * Vercel Analytics — solo con consenso analitici (ePrivacy).
+ * Speed Insights è in {@link VercelSpeedInsights} (metriche prestazioni, produzione).
  */
 export function ConsentGatedAnalytics() {
   const { consent, isReady } = useConsent();
@@ -12,10 +12,5 @@ export function ConsentGatedAnalytics() {
     return null;
   }
 
-  return (
-    <>
-      <Analytics />
-      <SpeedInsights />
-    </>
-  );
+  return <Analytics />;
 }

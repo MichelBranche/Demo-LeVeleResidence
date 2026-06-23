@@ -10,6 +10,7 @@ declare module '@vercel/speed-insights/react' {
     dsn?: string;
     sampleRate?: number;
     route?: string | null;
+    framework?: string;
     debug?: boolean;
     scriptSrc?: string;
     endpoint?: string;

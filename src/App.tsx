@@ -5,6 +5,7 @@ import { CustomCursor } from './components/CustomCursor';
 import { CookieConsentRoot } from './components/consent/CookieConsentRoot';
 import { LenisScroll } from './components/LenisScroll';
 import { ConsentGatedAnalytics } from './components/seo/ConsentGatedAnalytics';
+import { VercelSpeedInsights } from './components/seo/VercelSpeedInsights';
 import { PageSeo } from './components/seo/PageSeo';
 import { StructuredData } from './components/seo/StructuredData';
 import { TrackingRouteSync } from './components/seo/TrackingRouteSync';
@@ -159,6 +160,7 @@ export default function App() {
           </Routes>
         </Suspense>
         <ConsentGatedAnalytics />
+        <VercelSpeedInsights />
       </CookieConsentRoot>
       </RouteTransitionProvider>
     </BrowserRouter>

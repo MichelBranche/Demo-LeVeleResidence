@@ -227,7 +227,7 @@ export function SuitePage() {
           <div className="suite-cta__panel" data-suite-reveal>
             <div className="suite-cta__panel-inner">
               <p className="suite-cta__eyebrow">{suitePage.bookingEyebrow}</p>
-              <h2 id="suite-cta-title" className="suite-cta__title display-serif">
+              <h2 id="suite-cta-title" className="suite-cta__title">
                 {suitePage.bookingTitle}
               </h2>
               <p className="suite-cta__text">{suitePage.bookingText}</p>
