@@ -122,16 +122,17 @@ export function RouteTransitionOverlay() {
   const overlay = (
     <div
       ref={rootRef}
-      className="route-transition"
-      role="status"
+      className={`route-transition${visible ? ' route-transition--active' : ''}`}
+      role={visible ? 'dialog' : 'status'}
       aria-live="polite"
       aria-busy={visible}
-      aria-hidden={!visible}
+      aria-modal={visible ? true : undefined}
+      inert={!visible ? true : undefined}
       aria-label={siteConfig.name}
     >
-      <div className="route-transition__panel route-transition__panel--sand" aria-hidden />
-      <div className="route-transition__panel route-transition__panel--surface" aria-hidden />
-      <div className="route-transition__panel route-transition__panel--ink" aria-hidden />
+      <div className="route-transition__panel route-transition__panel--sand" />
+      <div className="route-transition__panel route-transition__panel--surface" />
+      <div className="route-transition__panel route-transition__panel--ink" />
       <div className="route-transition__content">
         <p className="route-transition__brand display-serif">
           {siteConfig.name.split(' ').map((word, wi) => (
@@ -144,7 +145,7 @@ export function RouteTransitionOverlay() {
             </span>
           ))}
         </p>
-        <span className="route-transition__line" aria-hidden />
+        <span className="route-transition__line" />
       </div>
     </div>
   );

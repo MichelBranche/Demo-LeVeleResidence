@@ -43,7 +43,7 @@
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--eyebrow);
+  color: var(--eyebrow-accessible);
 }
 
 .residence-tilted__title {

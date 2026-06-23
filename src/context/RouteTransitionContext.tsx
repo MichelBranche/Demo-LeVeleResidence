@@ -115,6 +115,19 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
   );
 
   useEffect(() => {
+    if (stage === 'idle') return undefined;
+
+    const root = document.getElementById('root');
+    if (!root) return undefined;
+
+    root.setAttribute('inert', '');
+
+    return () => {
+      root.removeAttribute('inert');
+    };
+  }, [stage]);
+
+  useEffect(() => {
     if (stage !== 'loading' || !pendingToRef.current) return;
 
     const pending = pendingToRef.current;

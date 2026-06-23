@@ -434,7 +434,7 @@ export function BookingPage() {
               </div>
             )}
 
-            <div className="booking-page__hp" aria-hidden="true">
+            <div className="booking-page__hp" inert aria-hidden="true">
               <label htmlFor="website">Website</label>
               <input
                 id="website"

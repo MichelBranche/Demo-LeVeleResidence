@@ -78,7 +78,7 @@
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--eyebrow);
+  color: var(--eyebrow-accessible);
   text-decoration: none;
   transition: opacity 0.2s ease;
 }

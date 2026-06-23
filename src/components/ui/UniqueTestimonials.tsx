@@ -63,6 +63,24 @@ function TestimonialSlide({
   );
 }
 
+function TestimonialMeasureContent({ item }: { item: TestimonialItem }) {
+  return (
+    <>
+      <blockquote className="unique-testimonial__quote">
+        <p>{item.quote}</p>
+      </blockquote>
+
+      <footer className="unique-testimonial__attribution">
+        <cite className="unique-testimonial__author">{item.author}</cite>
+        <span className="unique-testimonial__role" aria-hidden>
+          ·
+        </span>
+        <span className="unique-testimonial__role">{item.role}</span>
+      </footer>
+    </>
+  );
+}
+
 export function UniqueTestimonials({
   items,
   ariaLabel,
@@ -174,14 +192,14 @@ export function UniqueTestimonials({
         </AnimatePresence>
       </div>
 
-      <div ref={measureRef} className="unique-testimonial__measure" aria-hidden>
+      <div ref={measureRef} className="unique-testimonial__measure" inert aria-hidden>
         {testimonials.map((item) => (
           <div
             key={item.id}
             data-testimonial-measure
             className="unique-testimonial__content unique-testimonial__content--measure"
           >
-            <TestimonialSlide item={item} openOnTemplate={openOnTemplate} />
+            <TestimonialMeasureContent item={item} />
           </div>
         ))}
       </div>

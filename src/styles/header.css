@@ -12,7 +12,7 @@
   --header-bar-shadow: none;
   --header-fg: var(--ink-muted);
   --header-fg-active: var(--ink);
-  --header-index: rgb(58 52 48 / 38%);
+  --header-index: rgb(58 52 48 / 54%);
   --header-index-active: var(--carbone);
   --header-underline: var(--eyebrow);
   --header-cta-border: rgb(58 52 48 / 14%);
@@ -33,7 +33,7 @@
   --header-bar-shadow: none;
   --header-fg: rgb(244 238 232 / 72%);
   --header-fg-active: var(--crema);
-  --header-index: rgb(244 238 232 / 42%);
+  --header-index: rgb(244 238 232 / 58%);
   --header-index-active: var(--eyebrow);
   --header-underline: var(--eyebrow);
   --header-cta-border: rgb(244 238 232 / 26%);

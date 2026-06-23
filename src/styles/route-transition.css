@@ -35,12 +35,12 @@ html.route-transition-snapshot::before {
   opacity: 0;
 }
 
-.route-transition[aria-hidden='false'] {
+.route-transition--active {
   visibility: visible;
   opacity: 1;
 }
 
-.route-transition[aria-hidden='true'] {
+.route-transition:not(.route-transition--active) {
   pointer-events: none;
 }
 

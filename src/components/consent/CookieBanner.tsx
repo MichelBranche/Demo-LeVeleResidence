@@ -99,6 +99,9 @@ export function CookieBanner() {
   }, [panelOpen, showButtons]);
 
   useLayoutEffect(() => {
+    const root = document.getElementById('root');
+    root?.setAttribute('inert', '');
+
     lockScroll(true);
     playEnter();
 
@@ -109,6 +112,7 @@ export function CookieBanner() {
       enterTimelineRef.current?.kill();
       showButtons();
       lockScroll(false);
+      root?.removeAttribute('inert');
     };
   }, [lockScroll, playEnter, showButtons]);
 
