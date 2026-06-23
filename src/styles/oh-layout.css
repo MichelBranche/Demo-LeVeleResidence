@@ -123,7 +123,14 @@ body.oh-preloader-active .home-hero-shell.home-hero-shell--ready .oh-video-bg {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgb(0 0 0 / 30%);
+  background:
+    linear-gradient(
+      to top,
+      rgb(26 21 18 / 90%) 0%,
+      rgb(26 21 18 / 68%) 22%,
+      rgb(26 21 18 / 38%) 48%,
+      rgb(0 0 0 / 28%) 100%
+    );
   pointer-events: none;
 }
 

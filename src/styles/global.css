@@ -216,7 +216,14 @@ button {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(26, 21, 18, 0.38);
+  background:
+    linear-gradient(
+      to top,
+      rgb(26 21 18 / 90%) 0%,
+      rgb(26 21 18 / 68%) 22%,
+      rgb(26 21 18 / 38%) 48%,
+      rgb(26 21 18 / 32%) 100%
+    );
   pointer-events: none;
 }
 
@@ -266,7 +273,10 @@ button {
   font-family: var(--font-body);
   font-size: clamp(1.25rem, 3vw, 2rem);
   font-style: normal;
-  opacity: 0.92;
+}
+
+.home-hero-shell .hero-tagline {
+  opacity: 1;
 }
 
 .btn {
