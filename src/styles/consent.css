@@ -585,6 +585,30 @@
   color: var(--accent);
 }
 
+@media (max-width: 767px) {
+  .cookie-consent__chip {
+    position: relative;
+    justify-content: center;
+    gap: 0;
+    width: 2.75rem;
+    min-width: 2.75rem;
+    height: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0;
+    border-radius: 50%;
+  }
+
+  .cookie-consent__chip-label {
+    display: none;
+  }
+
+  .cookie-consent__chip-dot {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+  }
+}
+
 @media (max-width: 540px) {
   .cookie-consent {
     width: min(20rem, calc(100vw - 1.5rem));

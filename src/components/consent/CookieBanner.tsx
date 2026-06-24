@@ -262,7 +262,7 @@ export function CookieBanner() {
         aria-label={expanded ? copy.aria.minimize : copy.aria.expand}
       >
         <CookieGlyph />
-        <span>{copy.footer.cookies}</span>
+        <span className="cookie-consent__chip-label">{copy.footer.cookies}</span>
         {!hasConsent && <span className="cookie-consent__chip-dot" aria-hidden />}
       </button>
     </div>,
