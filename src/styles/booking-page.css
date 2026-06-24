@@ -13,6 +13,10 @@
   gap: clamp(2.25rem, 5vw, 3.25rem);
 }
 
+.booking-page__inner--confirm {
+  max-width: min(38rem, 100%);
+}
+
 /* Header */
 .booking-page__header {
   text-align: center;
@@ -139,12 +143,45 @@
   color: var(--ink-muted);
 }
 
-.booking-page__field input,
-.booking-page__field select,
-.booking-page__field textarea {
+/* Campo con icona tematica */
+.booking-page__control {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+.booking-page__control--multiline {
+  align-items: flex-start;
+}
+
+.booking-page__control-icon {
+  position: absolute;
+  left: 0.95rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--eyebrow);
+  pointer-events: none;
+}
+
+.booking-page__control--multiline .booking-page__control-icon {
+  top: 0.95rem;
+  transform: none;
+}
+
+.booking-page__control input,
+.booking-page__control select,
+.booking-page__control textarea {
   width: 100%;
   min-height: 3rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
   border-radius: 12px;
   border: 1px solid var(--border-on-light);
   background: var(--suites-bg);
@@ -160,15 +197,125 @@
   appearance: none;
 }
 
-.booking-page__field select {
-  padding-right: 2.5rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%233a3430' stroke-opacity='0.55' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+.booking-page__control select {
+  padding-right: 2.65rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23284f87' stroke-opacity='0.65' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   cursor: pointer;
 }
 
-.booking-page__field input[type='date'] {
+/* Date e ora — aspetto personalizzato */
+.booking-page__control--picker input {
+  padding-right: 3.15rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  accent-color: var(--eyebrow);
+  color-scheme: light;
+  cursor: pointer;
+}
+
+.booking-page__control--date input:not(:focus):invalid {
+  color: rgb(58 52 48 / 52%);
+}
+
+.booking-page__control--time input:not(:focus):invalid {
+  color: rgb(58 52 48 / 52%);
+}
+
+.booking-page__control--picker input::-webkit-datetime-edit {
+  padding: 0;
+}
+
+.booking-page__control--picker input::-webkit-datetime-edit-fields-wrapper {
+  padding: 0;
+}
+
+.booking-page__control--picker input::-webkit-datetime-edit-text,
+.booking-page__control--picker input::-webkit-datetime-edit-month-field,
+.booking-page__control--picker input::-webkit-datetime-edit-day-field,
+.booking-page__control--picker input::-webkit-datetime-edit-year-field,
+.booking-page__control--picker input::-webkit-datetime-edit-hour-field,
+.booking-page__control--picker input::-webkit-datetime-edit-minute-field,
+.booking-page__control--picker input::-webkit-datetime-edit-ampm-field {
+  padding: 0 0.12em;
+  color: inherit;
+}
+
+.booking-page__control--picker input:focus::-webkit-datetime-edit-text,
+.booking-page__control--picker input:focus::-webkit-datetime-edit-month-field,
+.booking-page__control--picker input:focus::-webkit-datetime-edit-day-field,
+.booking-page__control--picker input:focus::-webkit-datetime-edit-year-field,
+.booking-page__control--picker input:focus::-webkit-datetime-edit-hour-field,
+.booking-page__control--picker input:focus::-webkit-datetime-edit-minute-field {
+  color: var(--ink);
+}
+
+.booking-page__control--picker input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 3rem;
+  height: 100%;
+  cursor: pointer;
+}
+
+.booking-page__picker-btn {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: none;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--eyebrow) 12%, var(--crema));
+  color: var(--eyebrow-accessible);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.booking-page__picker-btn:hover {
+  background: color-mix(in srgb, var(--eyebrow) 22%, var(--crema));
+  color: var(--eyebrow);
+}
+
+.booking-page__picker-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--crema), 0 0 0 4px var(--eyebrow);
+}
+
+.booking-page__control--picker:focus-within .booking-page__picker-btn {
+  background: color-mix(in srgb, var(--eyebrow) 20%, var(--crema));
+  color: var(--eyebrow);
+}
+
+/* Fallback senza wrapper icona (honeypot) */
+.booking-page__field > input,
+.booking-page__field > select,
+.booking-page__field > textarea {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-on-light);
+  background: var(--suites-bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.booking-page__field input[type='date'],
+.booking-page__field input[type='time'] {
   min-height: 3rem;
   color-scheme: light;
 }
@@ -177,33 +324,54 @@
   -moz-appearance: textfield;
 }
 
+.booking-page__control input[type='number'] {
+  -moz-appearance: textfield;
+}
+
 .booking-page__field input[type='number']::-webkit-outer-spin-button,
-.booking-page__field input[type='number']::-webkit-inner-spin-button {
+.booking-page__field input[type='number']::-webkit-inner-spin-button,
+.booking-page__control input[type='number']::-webkit-outer-spin-button,
+.booking-page__control input[type='number']::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-.booking-page__field textarea {
+.booking-page__field textarea,
+.booking-page__control textarea {
   min-height: 8.5rem;
   resize: vertical;
 }
 
 .booking-page__field input::placeholder,
-.booking-page__field textarea::placeholder {
+.booking-page__field textarea::placeholder,
+.booking-page__control input::placeholder,
+.booking-page__control textarea::placeholder {
   color: rgb(58 52 48 / 38%);
 }
 
 .booking-page__field input:hover,
 .booking-page__field select:hover,
-.booking-page__field textarea:hover {
+.booking-page__field textarea:hover,
+.booking-page__control input:hover,
+.booking-page__control select:hover,
+.booking-page__control textarea:hover {
   border-color: color-mix(in srgb, var(--eyebrow) 35%, var(--border-on-light));
   background: color-mix(in srgb, var(--suites-bg) 70%, var(--crema));
 }
 
 .booking-page__field input:focus-visible,
 .booking-page__field select:focus-visible,
-.booking-page__field textarea:focus-visible {
+.booking-page__field textarea:focus-visible,
+.booking-page__control input:focus-visible,
+.booking-page__control select:focus-visible,
+.booking-page__control textarea:focus-visible {
   outline: none;
+  border-color: color-mix(in srgb, var(--eyebrow) 65%, var(--border-on-light));
+  box-shadow: 0 0 0 3px rgb(87 144 241 / 22%);
+  background: var(--crema);
+}
+
+.booking-page__control--picker:focus-within input {
   border-color: color-mix(in srgb, var(--eyebrow) 65%, var(--border-on-light));
   box-shadow: 0 0 0 3px rgb(87 144 241 / 22%);
   background: var(--crema);

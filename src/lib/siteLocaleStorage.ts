@@ -4,13 +4,54 @@ export type { SiteLocale } from './siteLocales';
 
 const STORAGE_KEY = 'lv-site-locale';
 
+const FALLBACK_LOCALE: SiteLocale = 'en';
+
+function normalizeLanguageTag(tag: string): string {
+  return tag.trim().toLowerCase().replace(/_/g, '-');
+}
+
+function languageTagToSiteLocale(tag: string): SiteLocale | null {
+  const normalized = normalizeLanguageTag(tag);
+  if (!normalized) return null;
+
+  const [primary] = normalized.split('-');
+  if (primary && isSiteLocale(primary)) return primary;
+
+  return null;
+}
+
+/** Lingua del dispositivo/browser mappata sulle lingue del sito, altrimenti inglese. */
+export function detectBrowserSiteLocale(): SiteLocale {
+  if (typeof navigator === 'undefined') return FALLBACK_LOCALE;
+
+  const tags: string[] = [];
+  if (Array.isArray(navigator.languages)) {
+    tags.push(...navigator.languages);
+  }
+  if (navigator.language) {
+    tags.push(navigator.language);
+  }
+
+  for (const tag of tags) {
+    const locale = languageTagToSiteLocale(tag);
+    if (locale) return locale;
+  }
+
+  return FALLBACK_LOCALE;
+}
+
 export function readSiteLocale(): SiteLocale {
-  if (typeof window === 'undefined') return 'it';
+  if (typeof window === 'undefined') return FALLBACK_LOCALE;
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw && isSiteLocale(raw) ? raw : 'it';
+    if (raw && isSiteLocale(raw)) return raw;
+
+    const detected = detectBrowserSiteLocale();
+    writeSiteLocale(detected);
+    return detected;
   } catch {
-    return 'it';
+    return detectBrowserSiteLocale();
   }
 }
 

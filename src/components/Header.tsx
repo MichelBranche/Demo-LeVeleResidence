@@ -6,7 +6,7 @@ import { getLaPelosaPaths, isSuiteDetailPath, normalizePathname } from '../data/
 import { useRouteTransitionNavigate } from '../context/RouteTransitionContext';
 import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useSiteLocale } from '../hooks/useSiteLocale';
-import { prefersReducedMotion } from '../lib/motion';
+import { prefersReducedMotion, shouldUseMobileNav } from '../lib/motion';
 import { shouldAnimateRouteChange } from '../lib/routeTransition';
 import { scheduleHashScroll, subscribeScroll } from '../lib/scroll';
 import { useHomeHeaderEntrance } from '../hooks/useHomeHeaderEntrance';
@@ -29,8 +29,12 @@ function mobileMenuTargets(nav: HTMLElement, backdrop: HTMLElement) {
   return [nav, backdrop, top, foot, ...items].filter(Boolean) as gsap.TweenTarget[];
 }
 
-/** Hamburger fino a ~laptop: i 5 link desktop non entrano in una riga sotto ~1600px. */
-const MOBILE_NAV_MQ = '(max-width: 1599px)';
+
+function mobileNavMediaQueries(): MediaQueryList[] {
+  return ['(max-width: 767px)', '(max-width: 1023px)', '(pointer: coarse)'].map((q) =>
+    window.matchMedia(q),
+  );
+}
 
 function parseNavTarget(to: string): { pathname: string; hash: string } {
   const hashIndex = to.indexOf('#');
@@ -83,11 +87,11 @@ export function Header({ animateEntrance = false }: HeaderProps) {
   }, [showMobileMenu]);
 
   useEffect(() => {
-    const mq = window.matchMedia(MOBILE_NAV_MQ);
-    const update = () => setIsMobileNav(mq.matches);
+    const update = () => setIsMobileNav(shouldUseMobileNav());
+    const mqs = mobileNavMediaQueries();
     update();
-    mq.addEventListener('change', update);
-    return () => mq.removeEventListener('change', update);
+    mqs.forEach((mq) => mq.addEventListener('change', update));
+    return () => mqs.forEach((mq) => mq.removeEventListener('change', update));
   }, []);
 
   const forceCloseMenuSync = useCallback(() => {
@@ -127,35 +131,34 @@ export function Header({ animateEntrance = false }: HeaderProps) {
 
     const { top, items, foot } = getMobileMenuParts(nav);
     const targets = mobileMenuTargets(nav, backdrop);
-    const offY = -nav.offsetHeight;
 
     gsap.killTweensOf(targets);
 
     const tl = gsap.timeline({ onComplete: finishClose });
 
     if (foot) {
-      tl.to(foot, { opacity: 0, y: 12, duration: 0.22, ease: 'power2.in' }, 0);
+      tl.to(foot, { opacity: 0, y: 8, duration: 0.18, ease: 'power2.in' }, 0);
     }
     if (items.length) {
       tl.to(
         items,
         {
           opacity: 0,
-          y: -16,
-          duration: 0.28,
-          stagger: { each: 0.04, from: 'end' },
+          y: -8,
+          duration: 0.22,
+          stagger: { each: 0.03, from: 'end' },
           ease: 'power2.in',
         },
-        0.04,
+        0.02,
       );
     }
     if (top) {
-      tl.to(top, { opacity: 0, y: -12, duration: 0.22, ease: 'power2.in' }, 0.06);
+      tl.to(top, { opacity: 0, duration: 0.18, ease: 'power2.in' }, 0.04);
     }
-    tl.to(nav, { y: offY, duration: 0.58, ease: 'power3.in' }, 0.08).to(
+    tl.to(nav, { opacity: 0, y: 14, duration: 0.3, ease: 'power2.in' }, 0.06).to(
       backdrop,
-      { opacity: 0, duration: 0.36, ease: 'power2.in' },
-      0.14,
+      { opacity: 0, duration: 0.26, ease: 'power2.in' },
+      0.08,
     );
   }, []);
 
@@ -215,30 +218,29 @@ export function Header({ animateEntrance = false }: HeaderProps) {
 
       const { top, items, foot } = getMobileMenuParts(nav);
       const targets = mobileMenuTargets(nav, backdrop);
-      const offY = -nav.offsetHeight;
 
       gsap.killTweensOf(targets);
 
       if (prefersReducedMotion()) {
-        gsap.set(nav, { y: 0, clearProps: 'transform' });
+        gsap.set(nav, { opacity: 1, y: 0, clearProps: 'transform' });
         gsap.set(backdrop, { opacity: 1 });
         gsap.set([top, foot, ...items].filter(Boolean), { opacity: 1, clearProps: 'transform' });
         return;
       }
 
-      gsap.set(nav, { y: offY });
+      gsap.set(nav, { opacity: 0, y: 18 });
       gsap.set(backdrop, { opacity: 0 });
-      if (top) gsap.set(top, { opacity: 0, y: -14 });
-      gsap.set(items, { opacity: 0, y: 20 });
-      if (foot) gsap.set(foot, { opacity: 0, y: 18 });
+      if (top) gsap.set(top, { opacity: 0 });
+      gsap.set(items, { opacity: 0, y: 10 });
+      if (foot) gsap.set(foot, { opacity: 0, y: 10 });
 
       gsap
         .timeline()
-        .to(backdrop, { opacity: 1, duration: 0.45, ease: 'power2.out' })
-        .to(nav, { y: 0, duration: 0.72, ease: 'power3.out' }, 0.04)
-        .to(top, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.2)
-        .to(items, { opacity: 1, y: 0, duration: 0.46, stagger: 0.065, ease: 'power2.out' }, 0.28)
-        .to(foot, { opacity: 1, y: 0, duration: 0.46, ease: 'power2.out' }, 0.36);
+        .to(backdrop, { opacity: 1, duration: 0.32, ease: 'power2.out' })
+        .to(nav, { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, 0.02)
+        .to(top, { opacity: 1, duration: 0.28, ease: 'power2.out' }, 0.1)
+        .to(items, { opacity: 1, y: 0, duration: 0.32, stagger: 0.04, ease: 'power2.out' }, 0.14)
+        .to(foot, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 0.22);
     };
 
     playOpen();
@@ -299,6 +301,7 @@ export function Header({ animateEntrance = false }: HeaderProps) {
 
   const headerClass = [
     'site-header',
+    isMobileNav ? 'site-header--mobile-nav' : '',
     isHeroHeader ? 'site-header--hero' : '',
     scrolled ? 'site-header--scrolled' : '',
     showMobileMenu ? 'site-header--menu-open' : '',

@@ -8,6 +8,8 @@ import {
   type ReactNode,
 } from 'react';
 import { consentCopy } from '../data/consentCopy';
+import { toConsentLocale } from '../lib/siteLocales';
+import { readSiteLocale } from '../lib/siteLocaleStorage';
 import { applyTrackingIfConsented, revokeAllTracking } from '../lib/tracking';
 import {
   clearConsent,
@@ -54,7 +56,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
   const [isReady, setIsReady] = useState(false);
   const [bannerOpen, setBannerOpen] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
-  const [locale, setLocale] = useState<ConsentLocale>('it');
+  const [locale, setLocale] = useState<ConsentLocale>(() => toConsentLocale(readSiteLocale()));
 
   const applyTrackingScripts = useCallback((saved: Consent) => {
     applyTrackingIfConsented(saved);
@@ -132,7 +134,7 @@ export function ConsentProvider({ children }: { children: ReactNode }) {
 
   const openBanner = useCallback((options?: { panel?: boolean }) => {
     setBannerOpen(true);
-    setPanelOpen(Boolean(options?.panel));
+    setPanelOpen(options?.panel === true);
   }, []);
 
   useEffect(() => {

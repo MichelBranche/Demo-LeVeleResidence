@@ -9,6 +9,8 @@ type BookingBody = {
   firstName?: string;
   lastName?: string;
   email?: string;
+  phone?: string;
+  arrivalTime?: string;
   message?: string;
   locale?: string;
   /** Honeypot — deve restare vuoto */
@@ -16,8 +18,10 @@ type BookingBody = {
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 const MAX = {
   name: 80,
+  phone: 40,
   message: 4000,
 } as const;
 
@@ -126,6 +130,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const firstName = trim(body.firstName, MAX.name);
   const lastName = trim(body.lastName, MAX.name);
   const email = trim(body.email, 120).toLowerCase();
+  const phone = trim(body.phone, MAX.phone);
+  const arrivalTimeRaw = trim(body.arrivalTime, 5);
   const message = trim(body.message, MAX.message);
 
   if (!checkIn || !checkOut || !isValidDate(checkIn) || !isValidDate(checkOut)) {
@@ -136,7 +142,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(400).json({ error: 'Check-out must be after check-in' });
   }
 
-  if (!Number.isFinite(guestsRaw) || guestsRaw < 1 || guestsRaw > 6) {
+  if (!Number.isFinite(guestsRaw) || guestsRaw < 1 || guestsRaw > 4) {
     return res.status(400).json({ error: 'Invalid guest count' });
   }
 
@@ -147,6 +153,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!email || !EMAIL_RE.test(email)) {
     return res.status(400).json({ error: 'Valid email is required' });
   }
+
+  if (!phone || phone.replace(/\D/g, '').length < 8) {
+    return res.status(400).json({ error: 'Valid phone is required' });
+  }
+
+  const arrivalTime = arrivalTimeRaw && TIME_RE.test(arrivalTimeRaw) ? arrivalTimeRaw : '';
 
   const to = resolveToAddress();
   const from = resolveFromAddress();
@@ -165,7 +177,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     `${locale === 'it' ? 'Nome' : 'First name'}: ${firstName}`,
     `${locale === 'it' ? 'Cognome' : 'Last name'}: ${lastName}`,
     `Email: ${email}`,
+    `${locale === 'it' ? 'Telefono' : 'Phone'}: ${phone}`,
     `${locale === 'it' ? 'Date' : 'Dates'}: ${dateLabel}`,
+    `${locale === 'it' ? 'Orario di arrivo' : 'Arrival time'}: ${
+      arrivalTime || (locale === 'it' ? '(non indicato)' : '(not provided)')
+    }`,
     `${locale === 'it' ? 'Alloggio' : 'Accommodation'}: ${accLabel}`,
     `${locale === 'it' ? 'Ospiti' : 'Guests'}: ${guests}`,
     '',
@@ -191,8 +207,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         }</td><td style="padding:6px 0">${escapeHtml(lastName)}</td></tr>
         <tr><td style="padding:6px 0;color:#816e62;font-weight:600">Email</td><td style="padding:6px 0"><a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a></td></tr>
         <tr><td style="padding:6px 0;color:#816e62;font-weight:600">${
+          locale === 'it' ? 'Telefono' : 'Phone'
+        }</td><td style="padding:6px 0"><a href="tel:${escapeHtml(phone.replace(/\s/g, ''))}">${escapeHtml(phone)}</a></td></tr>
+        <tr><td style="padding:6px 0;color:#816e62;font-weight:600">${
           locale === 'it' ? 'Date' : 'Dates'
         }</td><td style="padding:6px 0">${escapeHtml(dateLabel)}</td></tr>
+        <tr><td style="padding:6px 0;color:#816e62;font-weight:600">${
+          locale === 'it' ? 'Orario di arrivo' : 'Arrival time'
+        }</td><td style="padding:6px 0">${escapeHtml(arrivalTime || '—')}</td></tr>
         <tr><td style="padding:6px 0;color:#816e62;font-weight:600">${
           locale === 'it' ? 'Alloggio' : 'Accommodation'
         }</td><td style="padding:6px 0">${escapeHtml(accLabel)}</td></tr>

@@ -26,11 +26,17 @@ type ConsentCopy = {
     privacy: string;
     cookies: string;
   };
+  manage: {
+    description: string;
+  };
   aria: {
     dialog: string;
     panel: string;
+    manage: string;
     localeSwitch: string;
     legalNav: string;
+    minimize: string;
+    expand: string;
   };
 };
 
@@ -77,11 +83,17 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       privacy: 'Privacy',
       cookies: 'Cookie',
     },
+    manage: {
+      description: 'Puoi rivedere o modificare le tue preferenze in qualsiasi momento.',
+    },
     aria: {
       dialog: 'Consenso cookie',
       panel: 'Pannello preferenze cookie',
+      manage: 'Gestione preferenze cookie',
       localeSwitch: 'Cambia lingua',
       legalNav: 'Privacy e cookie',
+      minimize: 'Riduci pannello cookie',
+      expand: 'Apri pannello cookie',
     },
   },
   en: {
@@ -126,11 +138,17 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       privacy: 'Privacy',
       cookies: 'Cookies',
     },
+    manage: {
+      description: 'You can review or update your preferences at any time.',
+    },
     aria: {
       dialog: 'Cookie consent',
       panel: 'Cookie preferences panel',
+      manage: 'Cookie preference management',
       localeSwitch: 'Change language',
       legalNav: 'Privacy and cookies',
+      minimize: 'Minimize cookie panel',
+      expand: 'Open cookie panel',
     },
   },
   de: {
@@ -171,11 +189,17 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: 'Zurück',
     },
     footer: { manage: 'Cookies verwalten', privacy: 'Datenschutz', cookies: 'Cookies' },
+    manage: {
+      description: 'Sie können Ihre Einstellungen jederzeit einsehen oder ändern.',
+    },
     aria: {
       dialog: 'Cookie-Einwilligung',
       panel: 'Cookie-Einstellungen',
+      manage: 'Cookie-Einstellungen verwalten',
       localeSwitch: 'Sprache ändern',
       legalNav: 'Datenschutz und Cookies',
+      minimize: 'Cookie-Panel minimieren',
+      expand: 'Cookie-Panel öffnen',
     },
   },
   fr: {
@@ -216,11 +240,17 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: 'Retour',
     },
     footer: { manage: 'Gérer les cookies', privacy: 'Confidentialité', cookies: 'Cookies' },
+    manage: {
+      description: 'Vous pouvez consulter ou modifier vos préférences à tout moment.',
+    },
     aria: {
       dialog: 'Consentement cookies',
       panel: 'Préférences cookies',
+      manage: 'Gestion des préférences cookies',
       localeSwitch: 'Changer de langue',
       legalNav: 'Confidentialité et cookies',
+      minimize: 'Réduire le panneau cookies',
+      expand: 'Ouvrir le panneau cookies',
     },
   },
   es: {
@@ -261,11 +291,17 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: 'Atrás',
     },
     footer: { manage: 'Gestionar cookies', privacy: 'Privacidad', cookies: 'Cookies' },
+    manage: {
+      description: 'Puede revisar o modificar sus preferencias en cualquier momento.',
+    },
     aria: {
       dialog: 'Consentimiento de cookies',
       panel: 'Preferencias de cookies',
+      manage: 'Gestión de preferencias de cookies',
       localeSwitch: 'Cambiar idioma',
       legalNav: 'Privacidad y cookies',
+      minimize: 'Minimizar panel de cookies',
+      expand: 'Abrir panel de cookies',
     },
   },
   ru: {
@@ -306,11 +342,17 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: 'Назад',
     },
     footer: { manage: 'Управление cookie', privacy: 'Конфиденциальность', cookies: 'Cookie' },
+    manage: {
+      description: 'Вы можете просмотреть или изменить настройки в любое время.',
+    },
     aria: {
       dialog: 'Согласие на cookie',
       panel: 'Настройки cookie',
+      manage: 'Управление настройками cookie',
       localeSwitch: 'Сменить язык',
       legalNav: 'Конфиденциальность и cookie',
+      minimize: 'Свернуть панель cookie',
+      expand: 'Открыть панель cookie',
     },
   },
   zh: {
@@ -349,11 +391,17 @@ export const consentCopy: Record<ConsentLocale, ConsentCopy> = {
       back: '返回',
     },
     footer: { manage: '管理 Cookie', privacy: '隐私', cookies: 'Cookie' },
+    manage: {
+      description: '您可以随时查看或更新您的偏好设置。',
+    },
     aria: {
       dialog: 'Cookie 同意',
       panel: 'Cookie 偏好',
+      manage: 'Cookie 偏好管理',
       localeSwitch: '切换语言',
       legalNav: '隐私与 Cookie',
+      minimize: '收起 Cookie 面板',
+      expand: '打开 Cookie 面板',
     },
   },
 };

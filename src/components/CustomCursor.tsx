@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 
 const INTERACTIVE =
-  'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for], .site-header__cta, .site-header__menu, .site-header__backdrop, .consent-btn, .consent-toggle, .cookie-consent__lang, [data-cursor-hover]';
+  'a, button, [role="button"], input:not([type="hidden"]), textarea, select, summary, label[for], .site-header__cta, .site-header__menu, .site-header__backdrop, .consent-btn, .consent-toggle, .cookie-consent__lang, .cookie-consent__chip, [data-cursor-hover]';
 
 const LERP_DOT = 0.28;
 const LERP_RING = 0.14;

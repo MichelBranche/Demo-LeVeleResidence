@@ -4,12 +4,11 @@ import { SiteLocaleProvider } from '../../hooks/useSiteLocale';
 import { CookieBanner } from './CookieBanner';
 
 export function CookieBannerGate() {
-  const { isReady, bannerOpen, hasConsent } = useConsent();
+  const { isReady } = useConsent();
 
   if (!isReady) return null;
-  if (!bannerOpen) return null;
 
-  return <CookieBanner key={hasConsent ? 'manage' : 'first'} />;
+  return <CookieBanner />;
 }
 
 /**

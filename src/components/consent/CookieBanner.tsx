@@ -1,19 +1,29 @@
-import gsap from 'gsap';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 import { useConsent } from '../../hooks/useConsent';
 import type { ConsentPreferences } from '../../lib/consentTypes';
+import { getLenisInstance } from '../../lib/scroll';
 import { ConsentPanel } from './ConsentPanel';
 
-function prefersReducedMotion(): boolean {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function CookieGlyph() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+      <circle cx="9" cy="9" r="7.25" stroke="currentColor" strokeWidth="1.2" />
+      <circle cx="6.5" cy="7" r="0.9" fill="currentColor" />
+      <circle cx="10.5" cy="6.25" r="0.75" fill="currentColor" />
+      <circle cx="11.25" cy="10" r="0.85" fill="currentColor" />
+      <circle cx="7.25" cy="11" r="0.7" fill="currentColor" />
+    </svg>
+  );
 }
 
 export function CookieBanner() {
   const {
     copy,
     panelOpen,
+    bannerOpen,
+    hasConsent,
     closePanel,
     acceptAll,
     rejectAll,
@@ -23,221 +33,238 @@ export function CookieBanner() {
     openBanner,
   } = useConsent();
 
-  const blurRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const buttonsRef = useRef<HTMLDivElement>(null);
-  const enterTimelineRef = useRef<gsap.core.Timeline | null>(null);
-  const exitTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const shellRef = useRef<HTMLDivElement>(null);
+  const expanded = bannerOpen;
+  const [panelScrollReady, setPanelScrollReady] = useState(false);
 
-  const [render, setRender] = useState(true);
-
-  const lockScroll = useCallback((lock: boolean) => {
-    if (lock) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+  const toggleExpanded = useCallback(() => {
+    if (expanded) {
+      closeBanner();
+      return;
     }
-  }, []);
+    openBanner(hasConsent ? { panel: false } : undefined);
+  }, [closeBanner, expanded, hasConsent, openBanner]);
 
-  const showButtons = useCallback(() => {
-    if (!buttonsRef.current) return;
-    gsap.set(buttonsRef.current.children, { opacity: 1, y: 0, clearProps: 'opacity,transform' });
-  }, []);
+  useEffect(() => {
+    if (!expanded || !panelRef.current) return;
+    panelRef.current.focus();
+  }, [expanded, panelOpen]);
 
-  const playEnter = useCallback(() => {
-    if (!blurRef.current || !overlayRef.current || !panelRef.current) return;
-
-    enterTimelineRef.current?.kill();
-    exitTimelineRef.current?.kill();
-    showButtons();
-
-    const reduced = prefersReducedMotion();
-
-    if (reduced) {
-      gsap.set([blurRef.current, overlayRef.current, panelRef.current], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        clearProps: 'transform',
-      });
+  useEffect(() => {
+    if (!expanded) {
+      setPanelScrollReady(false);
       return;
     }
 
-    gsap.set(blurRef.current, { opacity: 0 });
-    gsap.set(overlayRef.current, { opacity: 0 });
-    gsap.set(panelRef.current, { opacity: 0, y: 40, scale: 0.96 });
+    const shell = shellRef.current;
+    if (!shell) return;
 
-    const tl = gsap.timeline({
-      onComplete: showButtons,
-    });
+    const enableScroll = (event: TransitionEvent) => {
+      if (event.target !== shell || event.propertyName !== 'grid-template-rows') return;
+      setPanelScrollReady(true);
+    };
+    const fallback = window.setTimeout(() => setPanelScrollReady(true), 580);
 
-    tl.fromTo(blurRef.current, { opacity: 0 }, { opacity: 1, duration: 0.35 })
-      .fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.35 }, 0)
-      .fromTo(
-        panelRef.current,
-        { opacity: 0, y: 40, scale: 0.96 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'power3.out' },
-        '-=0.2',
-      );
-
-    if (!panelOpen && buttonsRef.current?.children.length) {
-      tl.from(
-        buttonsRef.current.children,
-        {
-          opacity: 0,
-          y: 10,
-          stagger: 0.06,
-          duration: 0.35,
-          clearProps: 'opacity,transform',
-        },
-        '-=0.1',
-      );
-    }
-
-    enterTimelineRef.current = tl;
-  }, [panelOpen, showButtons]);
-
-  useLayoutEffect(() => {
-    const root = document.getElementById('root');
-    root?.setAttribute('inert', '');
-
-    lockScroll(true);
-    playEnter();
-
-    const safety = window.setTimeout(showButtons, 900);
+    shell.addEventListener('transitionend', enableScroll);
 
     return () => {
-      window.clearTimeout(safety);
-      enterTimelineRef.current?.kill();
-      showButtons();
-      lockScroll(false);
-      root?.removeAttribute('inert');
+      window.clearTimeout(fallback);
+      shell.removeEventListener('transitionend', enableScroll);
     };
-  }, [lockScroll, playEnter, showButtons]);
+  }, [expanded]);
 
   useEffect(() => {
-    if (panelOpen) playEnter();
-  }, [panelOpen, playEnter]);
+    if (!expanded) return;
 
-  const playExit = useCallback(
-    (onComplete: () => void) => {
-      if (!blurRef.current || !overlayRef.current || !panelRef.current) {
-        onComplete();
-        return;
-      }
+    const lenis = getLenisInstance();
+    lenis?.stop();
 
-      enterTimelineRef.current?.kill();
+    return () => {
+      lenis?.start();
+    };
+  }, [expanded]);
 
-      if (prefersReducedMotion()) {
-        onComplete();
-        return;
-      }
+  useEffect(() => {
+    if (!expanded) return;
 
-      exitTimelineRef.current = gsap.timeline({
-        defaults: { ease: 'power2.in' },
-        onComplete,
-      });
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+      if (rootRef.current?.contains(target)) return;
+      closeBanner();
+    };
 
-      if (buttonsRef.current && !panelOpen) {
-        exitTimelineRef.current.to(buttonsRef.current.children, {
-          opacity: 0,
-          y: 8,
-          stagger: 0.04,
-          duration: 0.2,
-        });
-      }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeBanner();
+    };
 
-      exitTimelineRef.current
-        .to(panelRef.current, { opacity: 0, y: 24, scale: 0.97, duration: 0.35 }, 0)
-        .to(overlayRef.current, { opacity: 0, duration: 0.28 }, 0.1)
-        .to(blurRef.current, { opacity: 0, duration: 0.28 }, 0.1);
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [closeBanner, expanded]);
+
+  const savePreferences = useCallback(
+    async (resolvePrefs: () => Promise<ConsentPreferences>) => {
+      const prefs = await resolvePrefs();
+      const saved = await persistPreferences(prefs);
+      closeBanner();
+      applyTrackingScripts(saved);
     },
-    [panelOpen],
+    [applyTrackingScripts, closeBanner, persistPreferences],
   );
 
-  const finalize = useCallback(
-    (resolvePrefs: () => Promise<ConsentPreferences>) => {
-      playExit(() => {
-        void (async () => {
-          const prefs = await resolvePrefs();
-          const saved = await persistPreferences(prefs);
-          lockScroll(false);
-          closeBanner();
-          setRender(false);
-          applyTrackingScripts(saved);
-        })();
-      });
-    },
-    [applyTrackingScripts, closeBanner, lockScroll, persistPreferences, playExit],
-  );
+  const handleAcceptAll = () => void savePreferences(acceptAll);
+  const handleRejectAll = () => void savePreferences(rejectAll);
+  const handleSave = (prefs: ConsentPreferences) => {
+    closePanel();
+    void savePreferences(async () => prefs);
+  };
 
-  const handleAcceptAll = () => finalize(acceptAll);
-  const handleRejectAll = () => finalize(rejectAll);
-  const handleSave = (prefs: ConsentPreferences) => finalize(async () => prefs);
+  const handlePreferencesBack = () => {
+    if (hasConsent) {
+      closeBanner();
+      return;
+    }
+    closePanel();
+  };
 
-  if (!render) return null;
+  const showPreferences = panelOpen;
+  const showManage = hasConsent && !panelOpen;
+  const showInitial = !hasConsent && !panelOpen;
+  const allowPanelScroll = showPreferences && panelScrollReady;
 
   return createPortal(
     <div
-      className="cookie-consent cookie-consent--visible"
-      role="dialog"
-      aria-modal="true"
-      aria-label={copy.aria.dialog}
+      ref={rootRef}
+      className={[
+        'cookie-consent',
+        'cookie-consent--dock',
+        expanded ? 'cookie-consent--expanded' : 'cookie-consent--minimized',
+        hasConsent ? 'cookie-consent--saved' : 'cookie-consent--pending',
+      ]
+        .filter(Boolean)
+        .join(' ')}
     >
-      <div ref={blurRef} className="cookie-consent__blur" aria-hidden />
-      <div ref={overlayRef} className="cookie-consent__overlay" aria-hidden />
+      <div
+        ref={shellRef}
+        className={`cookie-consent__panel-shell${expanded ? ' is-open' : ''}`}
+      >
+        <div
+          id="cookie-consent-panel"
+          ref={panelRef}
+          className="cookie-consent__panel"
+          role="dialog"
+          aria-modal="false"
+          aria-hidden={!expanded}
+          aria-label={
+            showPreferences ? copy.aria.panel : showManage ? copy.aria.manage : copy.aria.dialog
+          }
+          tabIndex={-1}
+        >
+          <div className="cookie-consent__panel-toolbar">
+            <p className="cookie-consent__panel-kicker">{copy.banner.eyebrow}</p>
+            <button
+              type="button"
+              className="cookie-consent__minimize"
+              onClick={closeBanner}
+              aria-label={copy.aria.minimize}
+            >
+              <span aria-hidden>−</span>
+            </button>
+          </div>
 
-      <div ref={panelRef} className="cookie-consent__panel">
-        <div className="cookie-consent__panel-inner">
-          {!panelOpen ? (
-            <>
-              <p className="cookie-consent__eyebrow">{copy.banner.eyebrow}</p>
-              <h2 className="cookie-consent__title display-serif">{copy.banner.title}</h2>
-              <p className="cookie-consent__text">{copy.banner.description}</p>
+          <div
+            className={[
+              'cookie-consent__panel-scroll',
+              allowPanelScroll ? 'cookie-consent__panel-scroll--scrollable' : '',
+            ]
+              .filter(Boolean)
+              .join(' ')}
+            data-lenis-prevent
+          >
+            <div className="cookie-consent__panel-inner">
+            {showPreferences ? (
+              <ConsentPanel onBack={handlePreferencesBack} onSave={handleSave} />
+            ) : showManage ? (
+              <>
+                <h2 className="cookie-consent__title display-serif">{copy.panel.title}</h2>
+                <p className="cookie-consent__text cookie-consent__text--compact">
+                  {copy.manage.description}
+                </p>
 
-              <div ref={buttonsRef} className="cookie-consent__actions">
-                <button
-                  type="button"
-                  className="consent-btn consent-btn--primary"
-                  onClick={handleAcceptAll}
-                >
-                  {copy.banner.acceptAll}
-                </button>
-                <button
-                  type="button"
-                  className="consent-btn consent-btn--ghost"
-                  onClick={handleRejectAll}
-                >
-                  {copy.banner.rejectAll}
-                </button>
-                <button
-                  type="button"
-                  className="consent-btn consent-btn--outline"
-                  onClick={() => openBanner({ panel: true })}
-                >
-                  {copy.banner.customize}
-                </button>
-              </div>
+                <div className="cookie-consent__actions cookie-consent__actions--single">
+                  <button
+                    type="button"
+                    className="consent-btn consent-btn--primary"
+                    onClick={() => openBanner({ panel: true })}
+                  >
+                    {copy.banner.customize}
+                  </button>
+                </div>
 
-              <nav className="cookie-consent__legal" aria-label={copy.aria.legalNav}>
-                <Link to="/privacy-policy">{copy.banner.privacyLink}</Link>
-                <span aria-hidden>·</span>
-                <Link to="/cookie-policy">{copy.banner.cookieLink}</Link>
-              </nav>
-            </>
-          ) : (
-            <ConsentPanel
-              onBack={closePanel}
-              onSave={(prefs) => {
-                closePanel();
-                handleSave(prefs);
-              }}
-            />
-          )}
+                <nav className="cookie-consent__legal" aria-label={copy.aria.legalNav}>
+                  <Link to="/privacy-policy">{copy.banner.privacyLink}</Link>
+                  <span aria-hidden>·</span>
+                  <Link to="/cookie-policy">{copy.banner.cookieLink}</Link>
+                </nav>
+              </>
+            ) : showInitial ? (
+              <>
+                <h2 className="cookie-consent__title display-serif">{copy.banner.title}</h2>
+                <p className="cookie-consent__text">{copy.banner.description}</p>
 
+                <div className="cookie-consent__actions">
+                  <button
+                    type="button"
+                    className="consent-btn consent-btn--primary"
+                    onClick={handleAcceptAll}
+                  >
+                    {copy.banner.acceptAll}
+                  </button>
+                  <button
+                    type="button"
+                    className="consent-btn consent-btn--ghost"
+                    onClick={handleRejectAll}
+                  >
+                    {copy.banner.rejectAll}
+                  </button>
+                  <button
+                    type="button"
+                    className="consent-btn consent-btn--outline"
+                    onClick={() => openBanner({ panel: true })}
+                  >
+                    {copy.banner.customize}
+                  </button>
+                </div>
+
+                <nav className="cookie-consent__legal" aria-label={copy.aria.legalNav}>
+                  <Link to="/privacy-policy">{copy.banner.privacyLink}</Link>
+                  <span aria-hidden>·</span>
+                  <Link to="/cookie-policy">{copy.banner.cookieLink}</Link>
+                </nav>
+              </>
+            ) : null}
+            </div>
+          </div>
         </div>
       </div>
+
+      <button
+        type="button"
+        className="cookie-consent__chip"
+        onClick={toggleExpanded}
+        aria-expanded={expanded}
+        aria-controls="cookie-consent-panel"
+        aria-label={expanded ? copy.aria.minimize : copy.aria.expand}
+      >
+        <CookieGlyph />
+        <span>{copy.footer.cookies}</span>
+        {!hasConsent && <span className="cookie-consent__chip-dot" aria-hidden />}
+      </button>
     </div>,
     document.body,
   );

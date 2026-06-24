@@ -1,0 +1,261 @@
+/* Popover calendario e orario — tema Residence Le Vele */
+.booking-page__popover-anchor {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+.booking-page__popover-anchor--end .booking-page__popover {
+  left: auto;
+  right: 0;
+}
+
+.booking-page__value-btn {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 3.15rem 0.75rem 2.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-on-light);
+  background: var(--suites-bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.booking-page__value-btn--placeholder {
+  color: rgb(58 52 48 / 52%);
+}
+
+.booking-page__value-btn:hover {
+  border-color: color-mix(in srgb, var(--eyebrow) 35%, var(--border-on-light));
+  background: color-mix(in srgb, var(--suites-bg) 70%, var(--crema));
+}
+
+.booking-page__value-btn:focus-visible,
+.booking-page__control--picker-open .booking-page__value-btn {
+  outline: none;
+  border-color: color-mix(in srgb, var(--eyebrow) 65%, var(--border-on-light));
+  box-shadow: 0 0 0 3px rgb(87 144 241 / 22%);
+  background: var(--crema);
+}
+
+.booking-page__control--picker-open .booking-page__picker-btn {
+  background: color-mix(in srgb, var(--eyebrow) 20%, var(--crema));
+  color: var(--eyebrow);
+}
+
+.booking-page__popover {
+  position: absolute;
+  top: calc(100% + 0.45rem);
+  left: 0;
+  z-index: 30;
+  min-width: min(100%, 18.5rem);
+  padding: 0.85rem 0.75rem 0.95rem;
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--eyebrow) 22%, var(--border-on-light));
+  background: var(--crema);
+  box-shadow:
+    0 18px 44px rgb(58 52 48 / 14%),
+    0 0 0 1px rgb(255 255 255 / 65%) inset;
+  animation: booking-popover-in 0.2s ease;
+}
+
+.booking-page__popover--date {
+  min-width: min(100%, 20.5rem);
+}
+
+@keyframes booking-popover-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* DayPicker — override variabili brand */
+.booking-daypicker.rdp-root {
+  --rdp-accent-color: var(--eyebrow);
+  --rdp-accent-background-color: color-mix(in srgb, var(--eyebrow) 14%, var(--crema));
+  --rdp-day-height: 2.35rem;
+  --rdp-day-width: 2.35rem;
+  --rdp-day_button-height: 2.15rem;
+  --rdp-day_button-width: 2.15rem;
+  --rdp-day_button-border-radius: 10px;
+  --rdp-selected-border: 2px solid var(--eyebrow);
+  --rdp-today-color: var(--eyebrow-accessible);
+  --rdp-nav_button-height: 2rem;
+  --rdp-nav_button-width: 2rem;
+  --rdp-nav-height: 2.35rem;
+
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+.booking-daypicker .rdp-month_caption {
+  justify-content: center;
+}
+
+.booking-daypicker .rdp-caption_label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--eyebrow);
+}
+
+.booking-daypicker .rdp-weekday {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--eyebrow-accessible);
+  opacity: 1;
+}
+
+.booking-daypicker .rdp-day_button {
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  border-radius: 10px;
+}
+
+.booking-daypicker .rdp-day_button:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--eyebrow) 10%, var(--suites-bg));
+}
+
+.booking-daypicker .rdp-selected .rdp-day_button {
+  background: var(--eyebrow);
+  color: var(--crema);
+  font-weight: 600;
+}
+
+.booking-daypicker .rdp-today:not(.rdp-selected) .rdp-day_button {
+  border: 1px solid color-mix(in srgb, var(--eyebrow) 45%, transparent);
+  color: var(--eyebrow-accessible);
+}
+
+.booking-daypicker .rdp-button_previous,
+.booking-daypicker .rdp-button_next {
+  border-radius: 999px;
+  color: var(--eyebrow-accessible);
+}
+
+.booking-daypicker .rdp-button_previous:hover,
+.booking-daypicker .rdp-button_next:hover {
+  background: color-mix(in srgb, var(--eyebrow) 12%, var(--crema));
+}
+
+/* Time picker */
+.booking-timepicker__section-label {
+  margin: 0 0 0.45rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--eyebrow-accessible);
+}
+
+.booking-timepicker__section-label + .booking-timepicker__grid {
+  margin-bottom: 0.85rem;
+}
+
+.booking-timepicker__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.booking-timepicker__grid--minutes {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 0.35rem;
+}
+
+.booking-timepicker__pill {
+  min-height: 2.35rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-on-light);
+  background: var(--suites-bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.booking-timepicker__pill:hover {
+  border-color: color-mix(in srgb, var(--eyebrow) 40%, var(--border-on-light));
+  background: color-mix(in srgb, var(--eyebrow) 8%, var(--suites-bg));
+}
+
+.booking-timepicker__pill--active {
+  border-color: var(--eyebrow);
+  background: var(--eyebrow);
+  color: var(--crema);
+  font-weight: 600;
+  box-shadow: 0 8px 18px rgb(87 144 241 / 28%);
+}
+
+.booking-timepicker__pill:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(87 144 241 / 22%);
+}
+
+.booking-timepicker__clear {
+  display: block;
+  width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.55rem 0.75rem;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-muted);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.booking-timepicker__clear:hover,
+.booking-timepicker__clear:focus-visible {
+  color: var(--eyebrow-accessible);
+  background: color-mix(in srgb, var(--eyebrow) 8%, var(--crema));
+}
+
+@media (max-width: 559px) {
+  .booking-page__popover {
+    left: 0;
+    right: 0;
+    min-width: 0;
+  }
+
+  .booking-page__popover-anchor--end .booking-page__popover {
+    left: 0;
+    right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .booking-page__popover {
+    animation: none;
+  }
+}

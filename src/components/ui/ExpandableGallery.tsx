@@ -107,6 +107,24 @@ export function ExpandableGallery({
     setAutoplayIndex(0);
   }, []);
 
+  const stopAutoplay = useCallback(() => {
+    autoplayRunRef.current += 1;
+    setIsAutoplaying(false);
+    setAutoplayIndex(null);
+  }, []);
+
+  const handleTrackItemEnter = useCallback(
+    (index: number) => {
+      stopAutoplay();
+      setHoveredIndex(index);
+    },
+    [stopAutoplay],
+  );
+
+  const handleTrackItemLeave = useCallback(() => {
+    setHoveredIndex(null);
+  }, []);
+
   const canAutoplay = allImages.length > 1 && !reduceMotion;
 
   useEffect(() => {
@@ -190,6 +208,8 @@ export function ExpandableGallery({
             isLeadActive ? ' expandable-gallery__lead--active' : ''
           }`}
           onClick={() => openImage(0)}
+          onMouseEnter={stopAutoplay}
+          onFocus={stopAutoplay}
           aria-label={leadImage.alt}
         >
           <img
@@ -203,7 +223,7 @@ export function ExpandableGallery({
       )}
 
       {trackImages.length > 0 && (
-      <div className="expandable-gallery__track">
+      <div className="expandable-gallery__track" onMouseEnter={stopAutoplay}>
         {trackImages.map((image, index) => (
           <m.button
             key={image.src}
@@ -214,18 +234,10 @@ export function ExpandableGallery({
             style={{ flex: 1 }}
             animate={{ flex: getFlexValue(index) }}
             transition={{ duration: reduceMotion ? 0 : 0.5, ease: 'easeInOut' }}
-            onMouseEnter={() => {
-              if (!isAutoplaying) setHoveredIndex(index);
-            }}
-            onMouseLeave={() => {
-              if (!isAutoplaying) setHoveredIndex(null);
-            }}
-            onFocus={() => {
-              if (!isAutoplaying) setHoveredIndex(index);
-            }}
-            onBlur={() => {
-              if (!isAutoplaying) setHoveredIndex(null);
-            }}
+            onMouseEnter={() => handleTrackItemEnter(index)}
+            onMouseLeave={handleTrackItemLeave}
+            onFocus={() => handleTrackItemEnter(index)}
+            onBlur={handleTrackItemLeave}
             onClick={() => openImage(index + trackOffset)}
             aria-label={image.alt}
           >

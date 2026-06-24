@@ -290,9 +290,8 @@
   }
 
   /* Cookie */
-  .cookie-consent__panel {
-    max-height: min(88dvh, 640px);
-    margin: var(--page-pad);
+  .cookie-consent__panel-shell > .cookie-consent__panel {
+    max-height: min(72dvh, 34rem);
   }
 
   .cookie-consent__actions button {

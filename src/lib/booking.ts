@@ -10,6 +10,8 @@ export type BookingRequestPayload = {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
+  arrivalTime?: string;
   message: string;
   locale: SiteLocale;
   website?: string;

@@ -32,11 +32,6 @@ export function AppBootstrap() {
       'oh-preloader-hero-phase',
       'oh-preloader-header-phase',
     );
-
-    const stuck = document.querySelector('.cookie-consent:not(.cookie-consent--visible)');
-    if (stuck) {
-      stuck.classList.add('cookie-consent--visible');
-    }
   }, []);
 
   return null;

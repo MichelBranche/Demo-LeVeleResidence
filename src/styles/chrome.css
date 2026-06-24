@@ -77,17 +77,17 @@ html {
   will-change: transform;
 }
 
-/* Pannello cookie scuro: contrasto più alto */
-body:has(.cookie-consent--visible) .custom-cursor__dot {
+/* Pannello cookie scuro: contrasto più alto quando espanso */
+body:has(.cookie-consent--expanded) .custom-cursor__dot {
   background: var(--crema);
   box-shadow: 0 0 14px rgb(240 237 228 / 45%);
 }
 
-body:has(.cookie-consent--visible) .custom-cursor__ring {
+body:has(.cookie-consent--expanded) .custom-cursor__ring {
   border-color: rgb(240 237 228 / 58%);
 }
 
-body:has(.cookie-consent--visible) .custom-cursor.is-hover .custom-cursor__ring {
+body:has(.cookie-consent--expanded) .custom-cursor.is-hover .custom-cursor__ring {
   border-color: var(--eyebrow);
   background: rgb(87 144 241 / 16%);
 }
