@@ -54,6 +54,7 @@ export function SlopePromotionsWidget({ locale, onError }: SlopePromotionsWidget
         id="slope-promotions"
         className="slope-promotions-mount__widget"
         data-id={propertyId}
+        data-host-managed
         data-open-new-tab
         aria-busy={loading}
         aria-live="polite"

@@ -833,60 +833,81 @@ button {
 }
 
 .offers-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: clamp(1rem, 2vw, 1.35rem);
   margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
 }
 
 .offer-card {
-  padding: clamp(1.25rem, 2.5vw, 1.65rem);
-  border-radius: clamp(12px, 1.5vw, 16px);
-  border: 1px solid var(--border-on-light);
-  background: var(--suites-card-bg);
-  box-shadow: 0 8px 28px rgb(58 52 48 / 4%);
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 22rem;
+  width: 100%;
+  max-width: 26rem;
+  padding: clamp(1.25rem, 2.2vw, 1.65rem);
+  border-radius: clamp(1.35rem, 2.8vw, 2.75rem);
+  border: 1px solid color-mix(in srgb, white 55%, var(--border-on-light));
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--crema) 78%, white),
+    color-mix(in srgb, var(--suites-card-bg) 88%, white)
+  );
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 28px 56px rgb(206 168 132 / 10%),
+    0 14px 28px rgb(58 52 48 / 7%),
+    0 0 72px rgb(198 169 126 / 14%),
+    inset 0 1px 0 rgb(255 255 255 / 58%),
+    -4px -4px 10px 0 rgb(255 252 233 / 55%);
   transition:
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .offer-card:hover {
-  transform: translateY(-2px);
-  border-color: rgb(58 52 48 / 16%);
-  box-shadow: 0 14px 36px rgb(58 52 48 / 8%);
+  transform: translateY(-4px);
+  box-shadow:
+    0 34px 64px rgb(206 168 132 / 14%),
+    0 18px 34px rgb(58 52 48 / 9%),
+    0 0 80px rgb(198 169 126 / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 62%);
 }
 
 .offer-card__badge {
   display: inline-block;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   font-size: var(--text-2xs);
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--eyebrow-accessible);
+  color: #8f4f3a;
 }
 
 .offer-card h3 {
-  margin: 0 0 0.5rem;
-  font-size: clamp(1.1rem, 2vw, 1.3rem);
-  font-weight: 600;
+  margin: 0 0 0.4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+  font-weight: 400;
   line-height: 1.2;
   color: var(--ink);
 }
 
 .offer-card__period {
-  margin: 0 0 0.85rem;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  margin: 0 0 0.6rem;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: #8f4f3a;
 }
 
 .offer-card__desc {
   margin: 0;
-  font-size: clamp(0.88rem, 1.5vw, 0.95rem);
-  line-height: 1.55;
+  flex: 1;
+  font-size: clamp(0.78rem, 1.2vw, 0.86rem);
+  line-height: 1.45;
   color: var(--ink-muted);
 }
 

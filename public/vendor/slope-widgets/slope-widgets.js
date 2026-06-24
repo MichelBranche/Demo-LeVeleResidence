@@ -98,16 +98,21 @@ var WidgetManager = function () {
 
 
 jQuery(document).ready(function ($) {
-  // Check if the member included the select promotion widget.
-  if ($('#slope-promotions').length) {
-    WidgetManager.create($('#slope-promotions').attr('data-id'), $('#slope-bl').attr('data-domain'), 'promotions'); // The page might have more than 1 widget, include the css just once.
+  // Host app loads promotions via initSlopePromotionsWidget (locale + custom markup).
+  var promotionsMount = $('#slope-promotions');
+  if (promotionsMount.length && promotionsMount.attr('data-host-managed')) {
+    return;
+  }
+
+  if (promotionsMount.length) {
+    WidgetManager.create(promotionsMount.attr('data-id'), $('#slope-bl').attr('data-domain'), 'promotions'); // The page might have more than 1 widget, include the css just once.
 
     if ($('#widget-css').length === 0) {
       $("head").append('<link id="widget-css" rel="stylesheet" type="text/css" href="' + WidgetManager.getCSSResource() + '" />');
     }
 
     $.get(WidgetManager.getWidgetUrl(), null, function (data) {
-      $('#slope-promotions').html(data.html); // Inject HTML in the page.
+      promotionsMount.html(data.html); // Inject HTML in the page.
       // Book engine in new window Promotions
 
       if (document.querySelectorAll('[data-open-new-tab]').length > 0) {

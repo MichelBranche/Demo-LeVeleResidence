@@ -1,3 +1,4 @@
+import { enhanceSlopePromotionsMarkup } from './enhanceSlopePromotions';
 import {
   buildSlopePromotionsUrl,
   getSlopeBookingBaseUrl,
@@ -156,11 +157,15 @@ export function initSlopePromotionsWidget(
             }
 
             const widgetElement = document.getElementById('slope-promotions');
-            if (widgetElement?.hasAttribute('data-open-new-tab')) {
-              widgetElement.querySelectorAll('.slp-button').forEach((button) => {
-                button.setAttribute('target', '_blank');
-                button.setAttribute('rel', 'noopener noreferrer');
-              });
+            if (widgetElement) {
+              enhanceSlopePromotionsMarkup(widgetElement, locale);
+
+              if (widgetElement.hasAttribute('data-open-new-tab')) {
+                widgetElement.querySelectorAll('.slp-button').forEach((button) => {
+                  button.setAttribute('target', '_blank');
+                  button.setAttribute('rel', 'noopener noreferrer');
+                });
+              }
             }
 
             finish();

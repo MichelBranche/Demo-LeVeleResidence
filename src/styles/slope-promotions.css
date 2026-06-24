@@ -1,4 +1,4 @@
-/* Slope promotions widget — skin per sezione Offerte Le Vele */
+/* Slope promotions — matches suite card warm-minimal style */
 
 .slope-promotions-mount {
   margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
@@ -6,80 +6,190 @@
 
 .slope-promotions-mount__loading {
   margin: 0;
-  padding: clamp(2rem, 4vw, 3rem) 0;
+  padding: clamp(1.5rem, 3vw, 2rem) 0;
   text-align: center;
   font-size: var(--text-sm);
   color: var(--ink-muted);
 }
 
-.slope-promotions-mount__widget .slp,
-.slope-promotions-mount__widget table {
+.slope-promotions-mount__widget,
+.slope-promotions-mount__widget #slope-widget {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: clamp(0.75rem, 1.5vw, 1.35rem);
+  font-family: var(--font-body) !important;
+  color: var(--ink);
 }
 
-.slope-promotions-mount__widget .slp-column {
-  padding: clamp(1.25rem, 2.5vw, 1.65rem);
-  border-radius: clamp(12px, 1.5vw, 16px) !important;
-  border: 1px solid var(--border-on-light) !important;
-  background: var(--suites-card-bg) !important;
-  box-shadow: 0 8px 28px rgb(58 52 48 / 4%);
-  vertical-align: top;
+/* Hide raw Slope fields if enhancement did not run */
+.slope-promotions-mount__widget .lp-column:not(.slope-promo-card-shell) > table.lp,
+.slope-promotions-mount__widget .slp-column:not(.slope-promo-card-shell) > table.slp,
+.slope-promotions-mount__widget .lp-column:not(.slope-promo-card-shell) > p:not(.lp-title),
+.slope-promotions-mount__widget .slp-column:not(.slope-promo-card-shell) > p:not(.slp-title),
+.slope-promotions-mount__widget .lp-column:not(.slope-promo-card-shell) > img.promotion,
+.slope-promotions-mount__widget .slp-column:not(.slope-promo-card-shell) > img.promotion {
+  display: none !important;
 }
 
-.slope-promotions-mount__widget .slp-column p,
-.slope-promotions-mount__widget .slp td {
+.slope-promotions-mount__widget .slp-row,
+.slope-promotions-mount__widget .lp-row,
+.slope-promotions-deck {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(1.1rem, 2vw, 1.5rem);
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+.slope-promo-card-shell,
+.slope-promotions-mount__widget .lp-column.slope-promo-card-shell,
+.slope-promotions-mount__widget .slp-column.slope-promo-card-shell {
+  flex: 0 1 22rem;
+  width: 100% !important;
+  max-width: 26rem !important;
+  min-width: 0;
+  display: flex !important;
+  flex-direction: column;
+  padding: 0 !important;
+  overflow: hidden;
+  border-radius: clamp(1.35rem, 2.8vw, 2.75rem) !important;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--crema) 78%, white),
+    color-mix(in srgb, var(--suites-card-bg) 88%, white)
+  ) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid color-mix(in srgb, white 55%, var(--border-on-light)) !important;
+  box-shadow:
+    0 28px 56px rgb(206 168 132 / 10%),
+    0 14px 28px rgb(58 52 48 / 7%),
+    0 0 72px rgb(198 169 126 / 14%),
+    inset 0 1px 0 rgb(255 255 255 / 58%),
+    -4px -4px 10px 0 rgb(255 252 233 / 55%) !important;
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s ease;
+}
+
+.slope-promo-card-shell:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 34px 64px rgb(206 168 132 / 14%),
+    0 18px 34px rgb(58 52 48 / 9%),
+    0 0 80px rgb(198 169 126 / 18%),
+    inset 0 1px 0 rgb(255 255 255 / 62%) !important;
+}
+
+.slope-promo-card {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  min-height: auto;
+}
+
+.slope-promo-card__media {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  line-height: 0;
+  background: color-mix(in srgb, var(--crema) 40%, white);
+}
+
+.slope-promo-card__image,
+.slope-promotions-mount__widget img.slope-promo-card__image,
+.slope-promotions-mount__widget img.promotion.slope-promo-card__image {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: none !important;
+  object-fit: unset !important;
+  object-position: center;
+  flex-shrink: 0;
+}
+
+.slope-promo-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.75rem;
+  padding: clamp(1.2rem, 2.2vw, 1.55rem);
+  min-height: 0;
+}
+
+.slope-promo-card__title {
+  margin: 0;
+  font-family: var(--font-display) !important;
+  font-size: clamp(1.3rem, 2.4vw, 1.55rem) !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
   color: var(--ink) !important;
 }
 
-.slope-promotions-mount__widget p.slp-title {
-  margin: 0 0 0.5rem;
-  color: var(--ink) !important;
-  font-family: var(--font-display, var(--font-body));
-  font-size: clamp(1.1rem, 2vw, 1.3rem) !important;
-  font-weight: 600 !important;
-  line-height: 1.2;
-  text-align: left !important;
+.slope-promo-card__validity {
+  margin: 0;
+  flex: 1;
+  font-size: clamp(0.8rem, 1.2vw, 0.9rem) !important;
+  line-height: 1.5 !important;
+  color: var(--ink-muted) !important;
 }
 
-.slope-promotions-mount__widget a.slp-button {
-  display: inline-flex;
+.slope-promo-card__cta,
+.slope-promotions-mount__widget a.slope-promo-card__cta,
+.slope-promotions-mount__widget [id^='promotion-submit-'].slope-promo-card__cta {
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  margin-top: 0.85rem;
-  padding: 0.65rem 1.25rem;
+  width: 100%;
+  margin-top: auto !important;
+  padding: 0.75rem 1.15rem !important;
   border: none !important;
   border-radius: 999px !important;
-  background: var(--ink) !important;
-  color: var(--panna) !important;
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-decoration: none;
-  text-transform: uppercase;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--accent-primary) 92%, white),
+    color-mix(in srgb, var(--accent-primary) 68%, #8a6030)
+  ) !important;
+  color: #fff !important;
+  font-family: var(--font-body) !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 6px 16px rgb(181 168 134 / 28%) !important;
+  opacity: 1 !important;
   transition:
-    background 0.25s ease,
-    transform 0.25s ease;
+    filter 0.2s ease,
+    transform 0.2s ease !important;
 }
 
-.slope-promotions-mount__widget a.slp-button:hover {
-  background: color-mix(in srgb, var(--ink) 88%, var(--eyebrow)) !important;
+.slope-promo-card__cta:hover {
+  filter: brightness(1.05);
   transform: translateY(-1px);
 }
 
 @media (max-width: 767px) {
-  .slope-promotions-mount__widget .slp,
-  .slope-promotions-mount__widget table,
-  .slope-promotions-mount__widget tbody,
-  .slope-promotions-mount__widget tr {
-    display: block;
-    width: 100%;
+  .slope-promo-card-shell {
+    flex: 1 1 100%;
+    max-width: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slope-promo-card-shell {
+    transition: none;
   }
 
-  .slope-promotions-mount__widget .slp-column {
-    display: block;
-    width: 100%;
-    margin-bottom: 1rem;
+  .slope-promo-card-shell:hover {
+    transform: none;
+  }
+
+  .slope-promo-card__cta:hover {
+    transform: none;
   }
 }
