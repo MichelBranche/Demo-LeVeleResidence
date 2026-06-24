@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import '../../styles/suites-cards.css';
 import { SuiteCardMedia } from '../ui/SuiteCardMedia';
 import { SuiteFeatureIcon } from '../SuiteFeatureIcon';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
@@ -42,48 +43,45 @@ export function SuitesSection() {
         <div className="suites__list">
           {suites.map((suite) => (
             <article key={suite.slug} className={`suites__item suites__item--${suite.theme}`}>
-              <SuiteCardMedia
-                href={`/camere/${suite.slug}`}
-                discoverAria={suite.discoverAria}
-                kicker={suite.kicker}
-                title={suite.title}
-                cardImage={suite.cardImage}
-                cardImagePosition={suite.cardImagePosition}
-                cardImageNight={suite.cardImageNight}
-                cardImageNightPosition={suite.cardImageNightPosition}
-                dayToggleAria={suitesIntro.cardToggleDayAria}
-                nightToggleAria={suitesIntro.cardToggleNightAria}
-              />
+              <div className="suites__card-content">
+                <SuiteCardMedia
+                  href={`/camere/${suite.slug}`}
+                  discoverAria={suite.discoverAria}
+                  title={suite.title}
+                  cardImage={suite.cardImage}
+                  cardImagePosition={suite.cardImagePosition}
+                  cardImageNight={suite.cardImageNight}
+                  cardImageNightPosition={suite.cardImageNightPosition}
+                  dayToggleAria={suitesIntro.cardToggleDayAria}
+                  nightToggleAria={suitesIntro.cardToggleNightAria}
+                />
 
-              <div className="suites__content">
-                <div className="suites__meta">
-                  <span className="suites__index" aria-hidden>
-                    {suite.index}
-                  </span>
-                  <p className="suites__label">{suite.listLabel}</p>
+                <div className="suites__content">
+                  <p className="suites__card-kicker">
+                    <span className="suites__index" aria-hidden>
+                      {suite.index}
+                    </span>
+                    <span className="suites__label">{suite.listLabel}</span>
+                  </p>
+                  <h3 className="suites__name display-serif">{suite.title}</h3>
+                  <ul className="suites__features" role="list">
+                    {suite.features.slice(0, 4).map((feature, featureIndex) => (
+                      <li key={feature}>
+                        <SuiteFeatureIcon
+                          id={getSuiteFeatureIcon(suite.slug, featureIndex)}
+                          className="suites__feature-icon"
+                        />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to={`/camere/${suite.slug}`} className="suites__cta">
+                    <span className="suites__cta-text">{suite.exploreCta}</span>
+                    <span className="suites__cta-arrow" aria-hidden>
+                      →
+                    </span>
+                  </Link>
                 </div>
-                <h3 className="suites__name display-serif">{suite.title}</h3>
-                <p className="suites__desc">{suite.description}</p>
-                <ul className="suites__features" role="list">
-                  {suite.features.slice(0, 4).map((feature, featureIndex) => (
-                    <li key={feature}>
-                      <SuiteFeatureIcon
-                        id={getSuiteFeatureIcon(suite.slug, featureIndex)}
-                        className="suites__feature-icon"
-                      />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  to={`/camere/${suite.slug}`}
-                  className="suites__cta"
-                >
-                  <span className="suites__cta-text">{suite.exploreCta}</span>
-                  <span className="suites__cta-arrow" aria-hidden>
-                    →
-                  </span>
-                </Link>
               </div>
             </article>
           ))}

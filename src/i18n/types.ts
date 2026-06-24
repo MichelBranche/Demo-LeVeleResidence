@@ -144,7 +144,15 @@ export type LocaleCopy = {
     items: readonly ReviewCopy[];
   };
   contactIntro: { eyebrow: string; title: string; kicker: string };
-  contactLabels: { phone: string; mobile: string; email: string; address: string };
+  contactLabels: {
+    phone: string;
+    mobile: string;
+    email: string;
+    address: string;
+    directions: string;
+    bookStay: string;
+  };
+  contactCustomOffer: { title: string; text: string };
   contactPhotoAlts: readonly string[];
   siteMap: {
     placeholderAlt: string;

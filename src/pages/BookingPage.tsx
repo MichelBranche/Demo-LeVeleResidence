@@ -9,8 +9,10 @@ import { BookingDateField } from '../components/booking/BookingDateField';
 import { BookingTimeField } from '../components/booking/BookingTimeField';
 import { BookingFieldControl } from '../components/BookingFieldControl';
 import { useSiteLocale } from '../hooks/useSiteLocale';
-import { createBookingReference } from '../lib/bookingDateTime';
+import { SlopeReservationsWidget } from '../components/booking/SlopeReservationsWidget';
+import { getSlopeBookingPageCopy, isSlopeBookingEnabled } from '../lib/slope';
 import { submitBookingRequest, type BookingAccommodation } from '../lib/booking';
+import { createBookingReference } from '../lib/bookingDateTime';
 import type { BookingReceipt } from '../lib/bookingReceipt';
 
 type BookingFormState = {
@@ -54,6 +56,9 @@ export function BookingPage() {
 
   const gardenSuite = suites.find((s) => s.slug === 'vista-giardino');
   const seaSuite = suites.find((s) => s.slug === 'vista-mare');
+
+  const slopeBooking = isSlopeBookingEnabled();
+  const slopeCopy = getSlopeBookingPageCopy(locale);
 
   const labels = useMemo(() => {
     const copyByLocale = {
@@ -684,12 +689,23 @@ export function BookingPage() {
             <p className="booking-page__eyebrow">{labels.eyebrow}</p>
           </div>
           <h1 id="booking-title" className="booking-page__title display-serif">
-            {labels.title}
+            {slopeBooking ? slopeCopy.title : labels.title}
           </h1>
-          <p className="booking-page__intro">{labels.intro}</p>
-          <p className="booking-page__hint">{labels.requiredHint}</p>
+          <p className="booking-page__intro">
+            {slopeBooking ? slopeCopy.intro : labels.intro}
+          </p>
+          {!slopeBooking && <p className="booking-page__hint">{labels.requiredHint}</p>}
         </header>
 
+        {slopeBooking ? (
+          <div className="booking-page__slope">
+            <SlopeReservationsWidget locale={locale} />
+            <p className="booking-page__note booking-page__slope-note">
+              {slopeCopy.note}{' '}
+              <Link to="/contatti">{slopeCopy.contactLink}</Link>.
+            </p>
+          </div>
+        ) : (
           <form className="booking-page__form" onSubmit={handleSubmit} noValidate={false}>
             {status === 'error' && (
               <div className="booking-page__status booking-page__status--error" role="alert">
@@ -923,6 +939,7 @@ export function BookingPage() {
               </p>
             </div>
           </form>
+        )}
           </>
         )}
       </div>

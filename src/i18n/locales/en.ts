@@ -421,6 +421,12 @@ export const en: LocaleCopy = {
     mobile: 'Mobile',
     email: 'Email',
     address: 'Address',
+    directions: 'Get directions',
+    bookStay: 'Book your stay',
+  },
+  contactCustomOffer: {
+    title: 'Personalised quote',
+    text: 'For specific requests you can ask for a tailored quote: email us with your dates, number of guests and preferred apartment type, or call us directly.',
   },
   contactPhotoAlts: [
     'Aerial view of the Stintino coast with pool and coves — Residence Le Vele',

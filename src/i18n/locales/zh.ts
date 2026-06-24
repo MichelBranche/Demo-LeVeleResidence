@@ -421,6 +421,12 @@ export const zh: LocaleCopy = {
     mobile: '手机',
     email: '电子邮件',
     address: '地址',
+    directions: '路线指引',
+    bookStay: '立即预订',
+  },
+  contactCustomOffer: {
+    title: '定制报价',
+    text: '如有特殊需求，可向我们索取个性化报价：发送电子邮件并注明日期、入住人数及偏好的房型，或直接致电联系我们。',
   },
   contactPhotoAlts: [
     'Stintino 海岸鸟瞰，泳池与小海湾 — Residence Le Vele',

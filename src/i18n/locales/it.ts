@@ -414,13 +414,19 @@ export const it: LocaleCopy = {
     eyebrow: 'Contattaci',
     title: 'Contatti',
     kicker:
-      'Prenotazioni e richieste per appartamenti vacanze a Stintino: telefono, email e indicazioni per raggiungere il Residence Le Vele.',
+      'Per prenotazioni e informazioni siamo a Stintino: telefono, email e indicazioni per raggiungerci.',
   },
   contactLabels: {
     phone: 'Telefono',
     mobile: 'Mobile',
     email: 'Email',
     address: 'Indirizzo',
+    directions: 'Come arrivare',
+    bookStay: 'Prenota',
+  },
+  contactCustomOffer: {
+    title: 'Offerta su misura',
+    text: 'Per richieste specifiche puoi chiedere un preventivo personalizzato: scrivici via email indicando date, numero di ospiti e tipologia preferita, oppure contattaci al recapito telefonico.',
   },
   contactPhotoAlts: [
     'Vista aerea della costa di Stintino con piscina e baie — Residence Le Vele',

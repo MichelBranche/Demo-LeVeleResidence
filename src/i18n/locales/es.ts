@@ -421,6 +421,12 @@ export const es: LocaleCopy = {
     mobile: 'Móvil',
     email: 'Correo electrónico',
     address: 'Dirección',
+    directions: 'Cómo llegar',
+    bookStay: 'Reservar',
+  },
+  contactCustomOffer: {
+    title: 'Oferta personalizada',
+    text: 'Para solicitudes específicas puede pedirnos un presupuesto a medida: escríbanos por correo con las fechas, el número de huéspedes y la tipología preferida, o llámenos por teléfono.',
   },
   contactPhotoAlts: [
     'Vista aérea de la costa de Stintino con piscina y calas — Residence Le Vele',

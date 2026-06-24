@@ -227,33 +227,6 @@
     gap: 1.25rem;
   }
 
-  .suites__media-inner {
-    aspect-ratio: 3 / 2;
-    min-height: clamp(11rem, 52vw, 16rem);
-    max-height: none;
-  }
-
-  .suites__media-tag {
-    left: 0.6rem;
-    bottom: 0.6rem;
-    padding: 0.28rem 0.55rem;
-    font-size: 0.625rem;
-    letter-spacing: 0.1em;
-    max-width: calc(100% - 4.75rem);
-  }
-
-  .suites__features {
-    grid-template-columns: 1fr;
-  }
-
-  .suites__item:hover {
-    transform: none;
-  }
-
-  .suites__desc {
-    -webkit-line-clamp: 4;
-  }
-
   /* Offers */
   .offers-grid {
     grid-template-columns: 1fr;

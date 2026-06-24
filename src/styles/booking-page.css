@@ -534,3 +534,17 @@
     padding: 1.5rem 1.25rem;
   }
 }
+
+.booking-page__slope {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.booking-page__slope-note {
+  max-width: 42rem;
+}
+
+.booking-page__slope-note a {
+  color: var(--eyebrow-accessible);
+  text-underline-offset: 0.18em;
+}

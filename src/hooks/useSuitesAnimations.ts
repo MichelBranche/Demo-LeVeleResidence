@@ -35,25 +35,27 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
       items.forEach((item) => {
         const mediaInner = item.querySelector<HTMLElement>('.suites__media-inner');
         const content = item.querySelector<HTMLElement>('.suites__content');
-        const index = item.querySelector<HTMLElement>('.suites__index');
+        const index = item.querySelector<HTMLElement>('.suites__card-kicker .suites__index');
 
         if (mediaInner) {
-          gsap.fromTo(
-            mediaInner,
-            { clipPath: 'inset(100% 0% 0% 0%)' },
-            {
-              clipPath: 'inset(0% 0% 0% 0%)',
-              duration: 1.2,
-              ease: 'power4.out',
-              scrollTrigger: {
-                trigger: item,
-                start: 'top 78%',
-                toggleActions: 'play none none none',
-              },
-            },
-          );
-
           const stack = mediaInner.querySelector<HTMLElement>('.suites__media-stack');
+          if (stack) {
+            gsap.fromTo(
+              stack,
+              { clipPath: 'inset(100% 0% 0% 0%)' },
+              {
+                clipPath: 'inset(0% 0% 0% 0%)',
+                duration: 1.2,
+                ease: 'power4.out',
+                scrollTrigger: {
+                  trigger: item,
+                  start: 'top 78%',
+                  toggleActions: 'play none none none',
+                },
+              },
+            );
+          }
+
           if (stack && allowScrollScrub()) {
             gsap.fromTo(
               stack,
@@ -75,18 +77,21 @@ export function useSuitesAnimations(sectionRef: RefObject<HTMLElement | null>) {
         }
 
         if (content) {
-          gsap.from(content.children, {
-            y: 36,
-            opacity: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            stagger: 0.08,
-            scrollTrigger: {
-              trigger: item,
-              start: 'top 72%',
-              toggleActions: 'play none none none',
+          gsap.fromTo(
+            content.children,
+            { opacity: 0 },
+            {
+              opacity: 1,
+              duration: 0.75,
+              ease: 'power3.out',
+              stagger: 0.07,
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 72%',
+                toggleActions: 'play none none none',
+              },
             },
-          });
+          );
         }
 
         if (index) {

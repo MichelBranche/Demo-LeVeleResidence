@@ -1,0 +1,85 @@
+/* Slope promotions widget — skin per sezione Offerte Le Vele */
+
+.slope-promotions-mount {
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.slope-promotions-mount__loading {
+  margin: 0;
+  padding: clamp(2rem, 4vw, 3rem) 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+
+.slope-promotions-mount__widget .slp,
+.slope-promotions-mount__widget table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: clamp(0.75rem, 1.5vw, 1.35rem);
+}
+
+.slope-promotions-mount__widget .slp-column {
+  padding: clamp(1.25rem, 2.5vw, 1.65rem);
+  border-radius: clamp(12px, 1.5vw, 16px) !important;
+  border: 1px solid var(--border-on-light) !important;
+  background: var(--suites-card-bg) !important;
+  box-shadow: 0 8px 28px rgb(58 52 48 / 4%);
+  vertical-align: top;
+}
+
+.slope-promotions-mount__widget .slp-column p,
+.slope-promotions-mount__widget .slp td {
+  color: var(--ink) !important;
+}
+
+.slope-promotions-mount__widget p.slp-title {
+  margin: 0 0 0.5rem;
+  color: var(--ink) !important;
+  font-family: var(--font-display, var(--font-body));
+  font-size: clamp(1.1rem, 2vw, 1.3rem) !important;
+  font-weight: 600 !important;
+  line-height: 1.2;
+  text-align: left !important;
+}
+
+.slope-promotions-mount__widget a.slp-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.85rem;
+  padding: 0.65rem 1.25rem;
+  border: none !important;
+  border-radius: 999px !important;
+  background: var(--ink) !important;
+  color: var(--panna) !important;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.slope-promotions-mount__widget a.slp-button:hover {
+  background: color-mix(in srgb, var(--ink) 88%, var(--eyebrow)) !important;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 767px) {
+  .slope-promotions-mount__widget .slp,
+  .slope-promotions-mount__widget table,
+  .slope-promotions-mount__widget tbody,
+  .slope-promotions-mount__widget tr {
+    display: block;
+    width: 100%;
+  }
+
+  .slope-promotions-mount__widget .slp-column {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}

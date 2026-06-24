@@ -1,0 +1,107 @@
+/* Slope booking widget — skin per palette Le Vele */
+
+.slope-widget-mount {
+  width: 100%;
+}
+
+.slope-widget-mount__error {
+  margin: 0 0 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgb(143 79 58 / 25%);
+  background: rgb(143 79 58 / 8%);
+  color: #8f4f3a;
+  font-size: var(--text-sm);
+}
+
+.slope-widget-mount .slope-block {
+  border-radius: clamp(14px, 2vw, 20px);
+  overflow: visible;
+  box-shadow: 0 18px 48px rgb(58 52 48 / 10%);
+}
+
+body > .slope-stepper-container {
+  z-index: 10050;
+}
+
+.slope-widget-mount .slope-reservation-submit {
+  background: var(--ink) !important;
+  color: var(--panna) !important;
+  border: none;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease;
+}
+
+.slope-widget-mount .slope-reservation-submit:hover {
+  background: color-mix(in srgb, var(--ink) 88%, var(--eyebrow)) !important;
+}
+
+.slope-widget-mount .slope-save-guests {
+  background: var(--eyebrow) !important;
+  color: #fff !important;
+}
+
+.slope-widget-mount .slope-cancel-guests {
+  color: var(--ink-muted) !important;
+}
+
+.slope-guests-selector__trigger {
+  width: 100%;
+  cursor: pointer;
+}
+
+.slope-guests-selector__panel {
+  z-index: 10050;
+  margin-top: 0 !important;
+  background: #fff;
+  box-shadow: 0 18px 48px rgb(58 52 48 / 14%);
+}
+
+.slope-guests-selector__panel .slope-decrement-button,
+.slope-guests-selector__panel .slope-increment-button {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.slope-guests-selector__panel .slope-decrement-button:disabled,
+.slope-guests-selector__panel .slope-increment-button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.slope-guests-selector__panel .slope-cancel-guests,
+.slope-guests-selector__panel .slope-save-guests {
+  cursor: pointer;
+}
+
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.selected,
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.startRange,
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.endRange,
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.selected:hover,
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.startRange:hover,
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.endRange:hover {
+  background: var(--eyebrow) !important;
+  border-color: var(--eyebrow) !important;
+}
+
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.inRange {
+  background: rgb(87 144 241 / 18%) !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.slope-widget-mount .slope-flatpickr-calendar .flatpickr-day.today {
+  border-color: color-mix(in srgb, var(--eyebrow) 55%, transparent) !important;
+}
+
+@media (max-width: 767px) {
+  .slope-widget-mount .slope-block {
+    border-radius: 1rem;
+  }
+}
