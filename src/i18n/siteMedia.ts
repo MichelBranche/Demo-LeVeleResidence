@@ -6,15 +6,14 @@ const SEA = asset('/Foto%202024%20camere%20Le%20Vele/vista%20mare');
 const BATH = asset('/Foto%202024%20camere%20Le%20Vele/bagni');
 const CALA_LUPO = asset('/images/cala-lupo.webp');
 const CALA_LUPO_RESIDENCE = asset('/images/cala-lupo-residence.webp');
-const ZONA_COMUNE = asset('/images/zona-comune.webp');
 const LA_PELOSA = asset('/images/la-pelosa-spiaggia.webp');
 const ALGHERO_AIRPORT = asset('/images/alghero-aeroporto.webp');
-const OLBIA_PORT = asset('/images/olbia-porto.webp');
+const PORTO_TORRES = asset('/images/porto-torres.webp');
+const RESIDENCE_WELCOME = asset('/images/residence-welcome');
 const DRONE_PANORAMA = asset('/images/dintorni/drone-panorama.webp');
 const DRONE_RESIDENCE = asset('/images/dintorni/drone-residence.webp');
 const DRONE_TRAMONTO = asset('/images/dintorni/drone-tramonto.webp');
 const PETS = asset('/images/amici-4-zampe.webp');
-const ATMOSFERA = asset('/images/atmosfera');
 const CONTATTI = asset('/images/contatti');
 const PELOSA_DIR = asset('/la-pelosa');
 
@@ -94,7 +93,7 @@ export const residenceCardMedia = [
     icon: 'routes' as const,
     images: [
       { src: ALGHERO_AIRPORT },
-      { src: OLBIA_PORT },
+      { src: PORTO_TORRES },
     ],
   },
   {
@@ -157,18 +156,19 @@ export const suitesMedia = [
   },
 ] as const;
 
-export const galleryMedia = [
-  { src: `${ATMOSFERA}/dettaglio-vista-mare.webp` },
-  { src: `${GARDEN}/esterno%20giardino.webp` },
-  { src: `${ATMOSFERA}/vista-mare.webp` },
-  { src: `${SEA}/14.webp` },
-  { src: `${ATMOSFERA}/dettaglio-giardino.webp` },
-  { src: `${SEA}/le_vele_residence_stintino_appartamenti_27.webp` },
-  { src: `${GARDEN}/39.webp` },
-  { src: `${ATMOSFERA}/dettaglio-vista-giardino.webp` },
-  { src: `${SEA}/le_vele_residence_stintino_appartamenti_08.webp` },
-  { src: ZONA_COMUNE },
+/** Welcome gallery in #residence — horizontal scroll showcase (drone + terraces + sea). */
+export const residenceWelcomeMedia = [
+  { src: `${RESIDENCE_WELCOME}/drone-residence-tramonto.webp` },
+  { src: `${RESIDENCE_WELCOME}/terrazza-tavolo-mare.webp` },
+  { src: `${RESIDENCE_WELCOME}/drone-residence-mare.webp` },
+  { src: `${RESIDENCE_WELCOME}/terrazze-pergolato.webp` },
+  { src: `${RESIDENCE_WELCOME}/barca-vela-mare.webp` },
+  { src: `${RESIDENCE_WELCOME}/piazzetta-gazebi.webp` },
+  { src: `${RESIDENCE_WELCOME}/drone-costa-piscina.webp` },
 ] as const;
+
+/** @deprecated Use residenceWelcomeMedia */
+export const galleryMedia = residenceWelcomeMedia;
 
 export const contactMedia = [
   { src: `${CONTATTI}/contatti-drone-costa.webp` },

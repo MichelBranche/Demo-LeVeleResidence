@@ -194,48 +194,49 @@ const SLOPE_BOOKING_PAGE_COPY: Record<SiteLocale, SlopeBookingPageCopy> = {
   it: {
     title: 'Prenota il tuo soggiorno',
     intro:
-      'Indica date e ospiti per consultare disponibilità e tariffe aggiornate, poi completa la prenotazione online.',
+      'Indica date e ospiti per consultare disponibilità e tariffe aggiornate, poi completa la prenotazione online. Le tariffe dipendono dalla durata del soggiorno; il sistema propone la configurazione adatta (2, 3 o 4 posti, mare o giardino).',
     note: 'Per richieste speciali o esigenze particolari, consulta la pagina',
     contactLink: 'Contatti',
   },
   en: {
     title: 'Book your stay',
     intro:
-      'Enter your dates and number of guests to check availability and current rates, then complete your booking online.',
+      'Enter your dates and number of guests to check availability and current rates, then complete your booking online. Rates depend on stay length; the system assigns the right setup (2, 3 or 4 guests, sea or garden view).',
     note: 'For special requests or tailored stays, visit our',
     contactLink: 'Contact page',
   },
   de: {
     title: 'Aufenthalt buchen',
     intro:
-      'Wählen Sie Reisedaten und Gästezahl, prüfen Sie Verfügbarkeit und aktuelle Preise und schließen Sie die Buchung online ab.',
+      'Wählen Sie Reisedaten und Gästezahl, prüfen Sie Verfügbarkeit und aktuelle Preise und schließen Sie die Buchung online ab. Die Tarife hängen von der Aufenthaltsdauer ab; das System schlägt die passende Belegung vor (2, 3 oder 4 Personen, Meer- oder Gartenblick).',
     note: 'Für Sonderwünsche oder individuelle Aufenthalte besuchen Sie unsere',
     contactLink: 'Kontaktseite',
   },
   fr: {
     title: 'Réservez votre séjour',
     intro:
-      'Indiquez vos dates et le nombre de voyageurs pour consulter les disponibilités et tarifs, puis finalisez votre réservation en ligne.',
+      'Indiquez vos dates et le nombre de voyageurs pour consulter les disponibilités et tarifs, puis finalisez votre réservation en ligne. Les tarifs dépendent de la durée du séjour ; le système propose la configuration adaptée (2, 3 ou 4 personnes, vue mer ou jardin).',
     note: 'Pour toute demande particulière ou séjour sur mesure, consultez notre',
     contactLink: 'page Contact',
   },
   es: {
     title: 'Reserva tu estancia',
     intro:
-      'Indica fechas y número de huéspedes para consultar disponibilidad y tarifas actualizadas, y completa la reserva en línea.',
+      'Indica fechas y número de huéspedes para consultar disponibilidad y tarifas actualizadas, y completa la reserva en línea. Las tarifas dependen de la duración de la estancia; el sistema propone la configuración adecuada (2, 3 o 4 plazas, vista mar o jardín).',
     note: 'Para peticiones especiales o estancias a medida, visita nuestra',
     contactLink: 'página de contacto',
   },
   ru: {
     title: 'Забронируйте проживание',
     intro:
-      'Укажите даты и число гостей, чтобы проверить наличие и актуальные цены, затем завершите бронирование онлайн.',
+      'Укажите даты и число гостей, чтобы проверить наличие и актуальные цены, затем завершите бронирование онлайн. Тарифы зависят от длительности проживания; система подберёт подходящую конфигурацию (2, 3 или 4 места, вид на море или сад).',
     note: 'Для особых запросов или индивидуальных условий —',
     contactLink: 'страница «Контакты»',
   },
   zh: {
     title: '预订您的住宿',
-    intro: '填写入住日期和人数，查看实时房态与价格，然后在线完成预订。',
+    intro:
+      '填写入住日期和人数，查看实时房态与价格，然后在线完成预订。价格因入住天数而异；系统将匹配合适房型（2、3 或 4 人，海景或园景）。',
     note: '如有特殊需求或定制住宿，请访问',
     contactLink: '联系页面',
   },

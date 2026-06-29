@@ -7,8 +7,8 @@ type ContactSectionProps = {
   asPage?: boolean;
 };
 
-/** Subset of home gallery images shown on the contact page (0-based indices). */
-const CONTACT_GALLERY_INDICES = [0, 2, 4, 5, 6] as const;
+/** Subset of residence welcome gallery images on the contact page (0-based indices). */
+const CONTACT_GALLERY_INDICES = [0, 1, 3, 5, 6] as const;
 
 type ContactChannel = {
   label: string;
@@ -123,8 +123,8 @@ export function ContactSection({ asPage = false }: ContactSectionProps) {
     contactLabels,
     contactCustomOffer,
     contactPhotos,
-    gallery,
-    galleryImages,
+    residenceWelcome,
+    residenceWelcomeImages,
     config: site,
     siteMapCoords,
     addressCountry,
@@ -152,7 +152,7 @@ export function ContactSection({ asPage = false }: ContactSectionProps) {
   ] as const;
 
   const contactGalleryPhotos = CONTACT_GALLERY_INDICES.flatMap((index) => {
-    const photo = galleryImages[index];
+    const photo = residenceWelcomeImages[index];
     return photo ? [photo] : [];
   });
 
@@ -219,7 +219,7 @@ export function ContactSection({ asPage = false }: ContactSectionProps) {
 
             <SwayingPhotoGallery
               photos={contactGalleryPhotos}
-              ariaLabel={gallery.title}
+              ariaLabel={residenceWelcome.galleryAria}
               className="contact-page__swaying-gallery"
             />
           </div>

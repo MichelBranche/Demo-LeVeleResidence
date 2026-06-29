@@ -3,12 +3,12 @@ import { getNavLinks, headerUiCopy } from '../data/navCopy';
 import { getLocaleCopyCached } from './localeLoader';
 import {
   contactMedia,
-  galleryMedia,
   heroMedia,
   legalEntity,
   logo,
   pelosaMedia,
   residenceCardMedia,
+  residenceWelcomeMedia,
   reviewLinks,
   reviewSourceUrls,
   siteConfig,
@@ -58,6 +58,8 @@ export type SiteContent = Omit<LocaleCopy, 'suites'> & {
   siteMapCoords: typeof siteMapCoords;
   reviewLinks: typeof reviewLinks;
   suites: MergedSuite[];
+  residenceWelcomeImages: { src: string; alt: string }[];
+  /** @deprecated Use residenceWelcomeImages */
   galleryImages: { src: string; alt: string }[];
   contactPhotos: { src: string; alt: string }[];
   pelosaMedia: typeof pelosaMedia;
@@ -107,10 +109,12 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
     }];
   });
 
-  const galleryImages = galleryMedia.map((item, i) => ({
+  const residenceWelcomeImages = residenceWelcomeMedia.map((item, i) => ({
     src: item.src,
-    alt: copy.gallery.imageAlts[i] ?? '',
+    alt: copy.residenceWelcome.imageAlts[i] ?? '',
   }));
+
+  const galleryImages = residenceWelcomeImages;
 
   const contactPhotos = contactMedia.map((item, i) => ({
     src: item.src,
@@ -158,6 +162,7 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
     siteMapCoords,
     reviewLinks,
     suites,
+    residenceWelcomeImages,
     galleryImages,
     contactPhotos,
     pelosaMedia,

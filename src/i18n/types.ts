@@ -67,6 +67,17 @@ export type LocaleCopy = {
     count: string;
     countLabel: string;
     kicker: string;
+    capacityNote: string;
+    capacityGrid: {
+      aria: string;
+      sea: string;
+      garden: string;
+      seats2: string;
+      seats3: string;
+      seats4: string;
+      seatsUnit: string;
+      available: string;
+    };
     marquee: readonly string[];
     cardToggleDayAria: string;
     cardToggleNightAria: string;
@@ -87,8 +98,8 @@ export type LocaleCopy = {
       galleryTitle: string;
     }
   >;
-  gallery: {
-    title: string;
+  residenceWelcome: {
+    galleryAria: string;
     imageAlts: readonly string[];
     closeLabel: string;
     prevLabel: string;

@@ -64,11 +64,12 @@ export function SuitesSection() {
                     <span className="suites__label">{suite.listLabel}</span>
                   </p>
                   <h3 className="suites__name display-serif">{suite.title}</h3>
+                  <p className="suites__card-tagline">{suite.kicker}</p>
                   <ul className="suites__features" role="list">
-                    {suite.features.slice(0, 4).map((feature, featureIndex) => (
+                    {suite.features.slice(1).map((feature, i) => (
                       <li key={feature}>
                         <SuiteFeatureIcon
-                          id={getSuiteFeatureIcon(suite.slug, featureIndex)}
+                          id={getSuiteFeatureIcon(suite.slug, i + 1)}
                           className="suites__feature-icon"
                         />
                         <span>{feature}</span>

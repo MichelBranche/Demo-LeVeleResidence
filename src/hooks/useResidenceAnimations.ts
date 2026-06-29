@@ -2,6 +2,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { RefObject } from 'react';
+import { isMobileViewport } from '../lib/motion';
 import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -69,6 +70,59 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
           ease: 'none',
           duration: 32,
           repeat: -1,
+        });
+      }
+
+      // Horizontal scroll-driven gallery (desktop only; mobile keeps native swipe).
+      const gallery = section.querySelector<HTMLElement>('.residence-scroll');
+      const galleryTrack = section.querySelector<HTMLElement>('.residence-scroll__track');
+      const progressBar = section.querySelector<HTMLElement>('.residence-scroll__progress-bar');
+
+      if (gallery && galleryTrack && !isMobileViewport()) {
+        gallery.classList.add('is-pinned');
+
+        const getDistance = () => Math.max(0, galleryTrack.scrollWidth - window.innerWidth);
+
+        const horizontalTween = gsap.to(galleryTrack, {
+          x: () => -getDistance(),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: gallery,
+            start: 'top top',
+            end: () => '+=' + getDistance(),
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            anticipatePin: 1,
+            onUpdate: (self) => {
+              if (progressBar) gsap.set(progressBar, { scaleX: self.progress });
+            },
+          },
+        });
+
+        const slides = gsap.utils.toArray<HTMLElement>(
+          '.residence-scroll__slide',
+          galleryTrack,
+        );
+        slides.forEach((slide) => {
+          const img = slide.querySelector('img');
+          if (!img) return;
+          gsap.fromTo(
+            img,
+            { scale: 1.18, xPercent: -4 },
+            {
+              scale: 1,
+              xPercent: 4,
+              ease: 'none',
+              scrollTrigger: {
+                containerAnimation: horizontalTween,
+                trigger: slide,
+                start: 'left right',
+                end: 'right left',
+                scrub: true,
+              },
+            },
+          );
         });
       }
 

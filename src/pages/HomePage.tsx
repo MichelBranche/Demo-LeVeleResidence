@@ -41,9 +41,6 @@ const ResidenceShowcaseSection = lazy(() =>
     default: m.ResidenceShowcaseSection,
   })),
 );
-const GallerySection = lazy(() =>
-  import('../components/sections/GallerySection').then((m) => ({ default: m.GallerySection })),
-);
 const OffersSection = lazy(() =>
   import('../components/sections/OffersSection').then((m) => ({ default: m.OffersSection })),
 );
@@ -77,7 +74,6 @@ function BelowFoldSections() {
       <SuitesSection />
       <ResidenceServicesSection />
       <ResidenceShowcaseSection />
-      <GallerySection />
       <OffersSection />
       <ReviewsSection />
     </Suspense>

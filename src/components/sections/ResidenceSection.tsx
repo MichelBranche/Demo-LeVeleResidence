@@ -4,7 +4,7 @@ import { useSiteLocale } from '../../hooks/useSiteLocale';
 
 export function ResidenceSection() {
   const { content } = useSiteLocale();
-  const { residenceIntro, residenceHighlights } = content;
+  const { residenceIntro, residenceHighlights, residenceWelcome, residenceWelcomeImages } = content;
   const sectionRef = useRef<HTMLElement>(null);
   useResidenceAnimations(sectionRef);
 
@@ -49,6 +49,36 @@ export function ResidenceSection() {
             </div>
           ))}
         </dl>
+      </div>
+
+      <div
+        className="residence-scroll"
+        aria-roledescription="carousel"
+        aria-label={residenceWelcome.galleryAria}
+      >
+        <div className="residence-scroll__viewport">
+          <div className="residence-scroll__track">
+            {residenceWelcomeImages.map((image, index) => (
+              <figure
+                className="residence-scroll__slide"
+                key={image.src}
+                data-index={index + 1}
+              >
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  decoding="async"
+                  draggable={false}
+                />
+                <figcaption className="residence-scroll__caption">{image.alt}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+        <div className="residence-scroll__progress" aria-hidden="true">
+          <span className="residence-scroll__progress-bar" />
+        </div>
       </div>
     </section>
   );

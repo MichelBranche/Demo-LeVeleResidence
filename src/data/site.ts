@@ -8,6 +8,7 @@ export {
   heroMedia,
   siteMapCoords,
   suitesMedia,
+  residenceWelcomeMedia,
   galleryMedia,
   pelosaMedia,
   residenceCardMedia,

@@ -368,6 +368,19 @@ button {
   transform: translateY(100%);
 }
 
+/* Skip link & screen-reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Residence — layout editoriale (stile suites, senza immagine) */
 .residence {
   position: relative;
@@ -571,6 +584,120 @@ button {
   font-weight: 600;
   line-height: 1.15;
   color: var(--ink);
+}
+
+/* === Residence welcome — horizontal scroll gallery ======================= */
+.residence-scroll {
+  --slide-h: clamp(260px, 52vh, 460px);
+  position: relative;
+  width: 100%;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+}
+
+.residence-scroll__viewport {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+
+.residence-scroll__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.residence-scroll__track {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: clamp(0.9rem, 2vw, 1.6rem);
+  padding-inline: clamp(1.25rem, 6vw, 8rem);
+  width: max-content;
+  will-change: transform;
+}
+
+.residence-scroll__slide {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(260px, 78vw, 620px);
+  height: var(--slide-h);
+  margin: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  scroll-snap-align: center;
+  background: var(--surface-muted, #e9eef0);
+  box-shadow: 0 24px 60px -32px rgba(15, 32, 39, 0.55);
+}
+
+.residence-scroll__slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.residence-scroll__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  margin: 0;
+  padding: 2.5rem 1.1rem 1rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  color: #fff;
+  background: linear-gradient(to top, rgba(8, 20, 25, 0.8), rgba(8, 20, 25, 0));
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.residence-scroll__slide:hover .residence-scroll__caption,
+.residence-scroll__slide:focus-within .residence-scroll__caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.residence-scroll__progress {
+  position: relative;
+  height: 3px;
+  margin: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 6vw, 8rem) 0;
+  border-radius: 999px;
+  background: var(--border-on-light, rgba(15, 32, 39, 0.12));
+  overflow: hidden;
+}
+
+.residence-scroll__progress-bar {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent, #1f6f78);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+/* Desktop: pinned, GSAP-driven horizontal scroll */
+.residence-scroll.is-pinned {
+  --slide-h: min(70vh, 620px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 0;
+}
+
+.residence-scroll.is-pinned .residence-scroll__viewport {
+  overflow: visible;
+  scroll-snap-type: none;
+}
+
+.residence-scroll.is-pinned .residence-scroll__slide {
+  width: clamp(420px, 46vw, 760px);
+  scroll-snap-align: none;
+}
+
+.residence-scroll.is-pinned .residence-scroll__progress {
+  margin-top: clamp(1.5rem, 3vh, 2.5rem);
 }
 
 .residence__list {

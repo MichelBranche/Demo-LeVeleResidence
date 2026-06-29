@@ -21,7 +21,7 @@ function splitSuiteTitle(title: string) {
 
 export function SuitePage() {
   const { content } = useSiteLocale();
-  const { suitePage, suites, config, gallery } = content;
+  const { suitePage, suites, config, residenceWelcome } = content;
   const { stage } = useRouteTransition();
   const { slug: paramSlug = '' } = useParams();
   const { pathname } = useLocation();
@@ -183,15 +183,15 @@ export function SuitePage() {
               alt: suite.gallery[0].alt,
             }}
             images={suite.gallery.slice(1).map(({ src, alt }) => ({ src, alt }))}
-            closeLabel={gallery.closeLabel}
-            prevLabel={gallery.prevLabel}
-            nextLabel={gallery.nextLabel}
+            closeLabel={residenceWelcome.closeLabel}
+            prevLabel={residenceWelcome.prevLabel}
+            nextLabel={residenceWelcome.nextLabel}
             counterLabel={(current, total) =>
-              gallery.counterLabel
+              residenceWelcome.counterLabel
                 .replace('{current}', String(current))
                 .replace('{total}', String(total))
             }
-            autoplayLabel={gallery.autoplayLabel}
+            autoplayLabel={residenceWelcome.autoplayLabel}
             autoplayOnEnter
           />
         </div>

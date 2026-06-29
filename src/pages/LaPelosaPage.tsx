@@ -9,7 +9,7 @@ import { shouldUsePosterOnlyHero } from '../lib/network';
 
 export function LaPelosaPage() {
   const { content } = useSiteLocale();
-  const { pelosa, pelosaMedia, gallery: galleryUi } = content;
+  const { pelosa, pelosaMedia, residenceWelcome: galleryUi } = content;
   const { hero, intro, gallery, ui } = pelosa;
   const pageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);

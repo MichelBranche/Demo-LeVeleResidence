@@ -153,7 +153,7 @@ function ActiveCardPanel({
 
 export function ResidenceTiltedShowcase() {
   const { content } = useSiteLocale();
-  const { residenceCardsMerged, residenceAccordion, gallery } = content;
+  const { residenceCardsMerged, residenceAccordion, residenceWelcome } = content;
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const [photoIndex, setPhotoIndex] = useState(0);
@@ -195,8 +195,8 @@ export function ResidenceTiltedShowcase() {
             items={carouselItems}
             activeIndex={activeIndex}
             onActiveIndexChange={setActiveIndex}
-            prevLabel={gallery.prevLabel}
-            nextLabel={gallery.nextLabel}
+            prevLabel={residenceWelcome.prevLabel}
+            nextLabel={residenceWelcome.nextLabel}
           />
 
           {activeCard ? (
