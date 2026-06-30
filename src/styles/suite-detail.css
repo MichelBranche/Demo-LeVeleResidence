@@ -24,7 +24,7 @@
     radial-gradient(ellipse 72% 58% at 100% 0%, rgb(87 144 241 / 18%), transparent 55%),
     radial-gradient(ellipse 50% 42% at 0% 100%, rgb(87 144 241 / 10%), transparent 52%);
   --suite-cta-btn: var(--eyebrow);
-  --suite-cta-btn-hover: var(--scrollbar-thumb-hover);
+  --suite-cta-btn-hover: var(--scrollbar-accent-hover);
   --suite-cta-btn-shadow: rgb(87 144 241 / 38%);
   --suite-cta-home: var(--carbone);
   --suite-cta-sibling-arrow-hover: color-mix(in srgb, var(--eyebrow) 28%, var(--crema));

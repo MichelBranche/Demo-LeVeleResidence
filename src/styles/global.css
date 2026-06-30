@@ -15,9 +15,12 @@
   --accent: var(--accent-secondary);
   --eyebrow: #5790f1;
   --eyebrow-accessible: #284f87;
-  --scrollbar-track: var(--crema);
-  --scrollbar-thumb: var(--eyebrow);
-  --scrollbar-thumb-hover: #4b81e7;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgb(87 144 241 / 42%);
+  --scrollbar-thumb-hover: rgb(87 144 241 / 62%);
+  --scrollbar-thumb-highlight: rgb(255 255 255 / 45%);
+  --scrollbar-thumb-shadow: rgb(40 79 135 / 18%);
+  --scrollbar-accent-hover: #4b81e7;
   --cursor-dot: #4b81e7;
   --cursor-ring: rgb(58 52 48 / 22%);
   --cursor-hover-ring: var(--eyebrow);
@@ -671,7 +674,7 @@ button {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: var(--accent, #1f6f78);
+  background: color-mix(in srgb, var(--accent, #1f6f78) 50%, transparent);
   transform: scaleX(0);
   transform-origin: left center;
 }
