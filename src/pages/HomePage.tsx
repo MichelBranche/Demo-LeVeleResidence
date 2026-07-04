@@ -242,14 +242,6 @@ export function HomePage() {
   const shouldPlayHeroVideo =
     Boolean(heroVideoSrc && !posterOnlyHero && (ready || (showPreloader && !lightPreloader)));
 
-  // Prima visita con preloader: preload pieno (intro invariata). Visite successive: solo metadata.
-  const heroVideoPreload =
-    heroVideoSrc && !posterOnlyHero
-      ? skippedPreloaderOnMount.current && !showPreloader
-        ? 'metadata'
-        : 'auto'
-      : 'none';
-
   const shellClass = [
     'home-hero-shell',
     shellReady ? 'home-hero-shell--ready' : '',
@@ -278,7 +270,7 @@ export function HomePage() {
               muted
               loop
               playsInline
-              preload={heroVideoPreload}
+              preload={heroVideoSrc && !posterOnlyHero ? 'auto' : 'none'}
               width={1920}
               height={1080}
               aria-label={hero.videoAria}
