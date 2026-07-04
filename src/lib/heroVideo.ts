@@ -36,22 +36,27 @@ export function loadHlsModule() {
   return hlsModulePromise;
 }
 
-/** Preconnect + prefetch manifesto HLS il prima possibile (home). */
+/** Prefetch manifesto HLS + hls.js dopo il first paint (preconnect già in index.html). */
 export function warmHeroVideoPipeline(videoUrl = getHeroVideoUrl()): void {
-  if (typeof document === 'undefined') return;
+  if (typeof document === 'undefined' || !shouldWarmHeroVideo(videoUrl)) return;
 
-  const origin = 'https://stream.mux.com';
-  if (!document.querySelector(`link[rel="preconnect"][href="${origin}"]`)) {
-    const link = document.createElement('link');
-    link.rel = 'preconnect';
-    link.href = origin;
-    link.crossOrigin = 'anonymous';
-    document.head.appendChild(link);
-  }
-
-  if (shouldWarmHeroVideo(videoUrl)) {
+  const warm = () => {
     void loadHlsModule();
     void fetch(videoUrl, { mode: 'cors', credentials: 'omit', cache: 'force-cache' }).catch(() => {});
+  };
+
+  const scheduleWarm = () => {
+    if (typeof requestIdleCallback === 'function') {
+      requestIdleCallback(warm, { timeout: 2500 });
+    } else {
+      window.setTimeout(warm, 1500);
+    }
+  };
+
+  if (document.readyState === 'complete') {
+    scheduleWarm();
+  } else {
+    window.addEventListener('load', scheduleWarm, { once: true });
   }
 }
 
