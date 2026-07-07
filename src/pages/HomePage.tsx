@@ -286,7 +286,9 @@ export function HomePage() {
 
     let removeFallbackScroll: (() => void) | null = null;
 
-    if ('IntersectionObserver' in window) {
+    const canUseIntersectionObserver = typeof IntersectionObserver !== 'undefined';
+
+    if (canUseIntersectionObserver) {
       waitForLead();
     } else {
       const onScroll = () => {
