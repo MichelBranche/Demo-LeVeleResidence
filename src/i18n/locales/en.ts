@@ -2,6 +2,13 @@ import type { LocaleCopy } from '../types';
 
 export const en: LocaleCopy = {
   preloaderText: 'Residence Le Vele',
+  directBookingPopup: {
+    ariaLabel: 'Best price guaranteed',
+    eyebrow: 'Direct booking',
+    title: 'Best available offer',
+    text: 'When you book directly on our website, you always get the best available offer at the best price.',
+    closeCta: 'Got it',
+  },
   addressCountry: 'Italy',
   hero: {
     kicker: 'Sardinia, North-West',

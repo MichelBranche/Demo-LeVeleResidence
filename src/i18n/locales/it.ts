@@ -2,6 +2,13 @@ import type { LocaleCopy } from '../types';
 
 export const it: LocaleCopy = {
   preloaderText: 'Residence Le Vele',
+  directBookingPopup: {
+    ariaLabel: 'Miglior prezzo garantito',
+    eyebrow: 'Prenotazione diretta',
+    title: 'Miglior offerta disponibile',
+    text: 'Prenotando direttamente sul nostro sito trovi sempre la miglior offerta disponibile, al miglior prezzo.',
+    closeCta: 'Ho capito',
+  },
   addressCountry: 'Italia',
   hero: {
     kicker: 'Sardegna, Nord-Ovest',

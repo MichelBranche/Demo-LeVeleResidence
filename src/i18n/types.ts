@@ -14,6 +14,13 @@ export type ReviewCopy = {
 
 export type LocaleCopy = {
   preloaderText: string;
+  directBookingPopup: {
+    ariaLabel: string;
+    eyebrow: string;
+    title: string;
+    text: string;
+    closeCta: string;
+  };
   addressCountry: string;
   hero: {
     kicker: string;

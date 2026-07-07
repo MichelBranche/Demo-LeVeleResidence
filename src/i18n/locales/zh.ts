@@ -2,6 +2,13 @@ import type { LocaleCopy } from '../types';
 
 export const zh: LocaleCopy = {
   preloaderText: 'Residence Le Vele',
+  directBookingPopup: {
+    ariaLabel: '最优价格保障',
+    eyebrow: '官网直订',
+    title: '当前最佳可用优惠',
+    text: '通过我们官网直接预订，您始终可享受当前最佳可用优惠与最优价格。',
+    closeCta: '我知道了',
+  },
   addressCountry: '意大利',
   hero: {
     kicker: '撒丁岛，西北部',

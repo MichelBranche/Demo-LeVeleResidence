@@ -49,6 +49,9 @@ const ReviewsSection = lazy(() =>
 );
 
 const PRELOADER_DONE_KEY = 'lv-preloader-done';
+const DIRECT_BOOKING_POPUP_KEY = 'lv-direct-booking-popup-shown';
+const DIRECT_BOOKING_POPUP_DELAY_MS = 850;
+const RESIDENCE_LEAD_SELECTOR = '#residence .residence__lead';
 
 type IntroPhase = 'pending-consent' | 'preloader' | 'complete';
 
@@ -82,8 +85,8 @@ function BelowFoldSections() {
 
 export function HomePage() {
   const { content } = useSiteLocale();
-  const { hero, heroMedia, preloaderText } = content;
-  const { isReady, bannerOpen, hasConsent } = useConsent();
+  const { hero, heroMedia, preloaderText, directBookingPopup } = content;
+  const { isReady } = useConsent();
   const networkTier = useNetworkTier();
   const [introPhase, setIntroPhase] = useState<IntroPhase>(() =>
     readPreloaderDone() ? 'complete' : 'pending-consent',
@@ -107,6 +110,7 @@ export function HomePage() {
   const [shellReady, setShellReady] = useState(
     () => readPreloaderDone() || !shouldRunVideoPreloader(),
   );
+  const [showDirectBookingPopup, setShowDirectBookingPopup] = useState(false);
 
   useHomeLangReveal(ready);
 
@@ -149,15 +153,6 @@ export function HomePage() {
         return;
       }
 
-      if (!hasConsent) {
-        setIntroPhase('pending-consent');
-        return;
-      }
-
-      if (bannerOpen) {
-        return;
-      }
-
       if (networkTier !== 'fast') {
         try {
           sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
@@ -176,7 +171,7 @@ export function HomePage() {
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [isReady, bannerOpen, hasConsent, networkTier]);
+  }, [isReady, networkTier]);
 
   useLayoutEffect(() => {
     if (!showPreloader) {
@@ -238,6 +233,109 @@ export function HomePage() {
     if (!ready) return;
     scheduleScrollTriggerRefresh(600);
   }, [ready]);
+
+  useEffect(() => {
+    if (!ready) return undefined;
+
+    let alreadyShown = false;
+    try {
+      alreadyShown = sessionStorage.getItem(DIRECT_BOOKING_POPUP_KEY) === '1';
+    } catch {
+      alreadyShown = false;
+    }
+
+    if (alreadyShown) return undefined;
+
+    let timeoutId = 0;
+    let rafId = 0;
+    let observer: IntersectionObserver | null = null;
+
+    const openWithDelay = () => {
+      if (timeoutId !== 0) return;
+      timeoutId = window.setTimeout(() => {
+        setShowDirectBookingPopup(true);
+      }, DIRECT_BOOKING_POPUP_DELAY_MS);
+    };
+
+    const startObserver = (leadEl: Element) => {
+      observer = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (!entry?.isIntersecting) return;
+          observer?.disconnect();
+          observer = null;
+          openWithDelay();
+        },
+        {
+          root: null,
+          threshold: 0.35,
+        },
+      );
+
+      observer.observe(leadEl);
+    };
+
+    const waitForLead = () => {
+      const leadEl = document.querySelector(RESIDENCE_LEAD_SELECTOR);
+      if (!leadEl) {
+        rafId = requestAnimationFrame(waitForLead);
+        return;
+      }
+      startObserver(leadEl);
+    };
+
+    let removeFallbackScroll: (() => void) | null = null;
+
+    if ('IntersectionObserver' in window) {
+      waitForLead();
+    } else {
+      const onScroll = () => {
+        const leadEl = document.querySelector(RESIDENCE_LEAD_SELECTOR);
+        if (!leadEl) return;
+        const rect = leadEl.getBoundingClientRect();
+        if (rect.top > window.innerHeight * 0.72) return;
+        window.removeEventListener('scroll', onScroll);
+        openWithDelay();
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      removeFallbackScroll = () => window.removeEventListener('scroll', onScroll);
+    }
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      cancelAnimationFrame(rafId);
+      observer?.disconnect();
+      removeFallbackScroll?.();
+    };
+  }, [ready]);
+
+  useEffect(() => {
+    if (!showDirectBookingPopup) return undefined;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      setShowDirectBookingPopup(false);
+      try {
+        sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
+      } catch {
+        /* ignore */
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [showDirectBookingPopup]);
+
+  const closeDirectBookingPopup = useCallback(() => {
+    setShowDirectBookingPopup(false);
+    try {
+      sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+  }, []);
 
   const shouldPlayHeroVideo =
     Boolean(heroVideoSrc && !posterOnlyHero && (ready || (showPreloader && !lightPreloader)));
@@ -308,6 +406,28 @@ export function HomePage() {
         {ready && <BelowFoldSections />}
       </main>
       {ready && <Footer />}
+      {ready &&
+        showDirectBookingPopup &&
+        typeof document !== 'undefined' &&
+        createPortal(
+          <div
+            className="home-offer-popup"
+            role="dialog"
+            aria-modal="true"
+            aria-label={directBookingPopup.ariaLabel}
+          >
+            <div className="home-offer-popup__backdrop" onClick={closeDirectBookingPopup} aria-hidden />
+            <div className="home-offer-popup__card">
+              <p className="home-offer-popup__eyebrow">{directBookingPopup.eyebrow}</p>
+              <h2 className="home-offer-popup__title display-serif">{directBookingPopup.title}</h2>
+              <p className="home-offer-popup__text">{directBookingPopup.text}</p>
+              <button type="button" className="home-offer-popup__close" onClick={closeDirectBookingPopup}>
+                {directBookingPopup.closeCta}
+              </button>
+            </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

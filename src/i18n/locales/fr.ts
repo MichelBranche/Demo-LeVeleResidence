@@ -2,6 +2,13 @@ import type { LocaleCopy } from '../types';
 
 export const fr: LocaleCopy = {
   preloaderText: 'Residence Le Vele',
+  directBookingPopup: {
+    ariaLabel: 'Meilleur prix garanti',
+    eyebrow: 'Réservation directe',
+    title: 'Meilleure offre disponible',
+    text: 'En réservant directement sur notre site, vous bénéficiez toujours de la meilleure offre disponible au meilleur prix.',
+    closeCta: "J'ai compris",
+  },
   addressCountry: 'Italie',
   hero: {
     kicker: 'Sardaigne, Nord-Ouest',

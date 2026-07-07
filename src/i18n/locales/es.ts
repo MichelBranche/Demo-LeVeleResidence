@@ -2,6 +2,13 @@ import type { LocaleCopy } from '../types';
 
 export const es: LocaleCopy = {
   preloaderText: 'Residence Le Vele',
+  directBookingPopup: {
+    ariaLabel: 'Mejor precio garantizado',
+    eyebrow: 'Reserva directa',
+    title: 'Mejor oferta disponible',
+    text: 'Reservando directamente en nuestro sitio web, siempre obtendrá la mejor oferta disponible al mejor precio.',
+    closeCta: 'Entendido',
+  },
   addressCountry: 'Italia',
   hero: {
     kicker: 'Cerdeña, Noroeste',
