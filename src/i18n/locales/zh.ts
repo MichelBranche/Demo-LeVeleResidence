@@ -7,6 +7,7 @@ export const zh: LocaleCopy = {
     eyebrow: '官网直订',
     title: '当前最佳可用优惠',
     text: '通过我们官网直接预订，您始终可享受当前最佳可用优惠与最优价格。',
+    bookCta: '查看空房',
     closeCta: '我知道了',
   },
   addressCountry: '意大利',

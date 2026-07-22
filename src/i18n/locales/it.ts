@@ -7,6 +7,7 @@ export const it: LocaleCopy = {
     eyebrow: 'Prenotazione diretta',
     title: 'Miglior offerta disponibile',
     text: 'Prenotando direttamente sul nostro sito trovi sempre la miglior offerta disponibile, al miglior prezzo.',
+    bookCta: 'Vedi disponibilità',
     closeCta: 'Ho capito',
   },
   addressCountry: 'Italia',

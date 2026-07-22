@@ -3,9 +3,9 @@
   --crema: #f0ede4;
   --suites-bg: #f0ede4;
   --suites-card-bg: #fdfdf5;
-  --carbone: #816e62;
+  --carbone: #645248;
   --ink: #3a3430;
-  --ink-muted: rgb(58 52 48 / 72%);
+  --ink-muted: rgb(58 52 48 / 80%);
   --border-on-light: rgb(58 52 48 / 10%);
   --surface: #62544b;
   --accent-primary: #b5a886;
@@ -29,7 +29,7 @@
   --cursor-pressed-fill: rgb(182 166 202 / 20%);
   --panna: #f4eee8;
   --text-main: #f4eee8;
-  --text-muted: rgb(244 238 232 / 60%);
+  --text-muted: rgb(244 238 232 / 74%);
   --terra: #e07a5f;
   --mirto: #81b29a;
   --sabbia: #4a4039;
@@ -43,9 +43,9 @@
   --radius: 15px;
   --page-pad: clamp(15px, 4vw, 48px);
 
-  /* Tipografia secondaria — minimo leggibile (~13.5–17px @ 18px root) */
-  --text-2xs: 0.75rem;
-  --text-xs: 0.8125rem;
+  /* Tipografia secondaria — minimo leggibile (~14.5–17px @ 18px root) */
+  --text-2xs: 0.8125rem;
+  --text-xs: 0.875rem;
   --text-sm: 0.9375rem;
   --text-md: 1rem;
 
@@ -295,27 +295,57 @@ button {
   color: var(--ink-muted);
 }
 
+.home-offer-popup__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem 0.75rem;
+}
+
+.home-offer-popup__book,
 .home-offer-popup__close {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 9rem;
+  min-height: 2.65rem;
   border-radius: 999px;
   padding: 0.62rem 1.3rem;
-  background: var(--terra);
-  color: var(--panna);
   font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  transition: background 0.22s ease, transform 0.2s ease;
+  text-decoration: none;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, transform 0.2s ease;
 }
 
-.home-offer-popup__close:hover {
-  background: #c9684f;
+.home-offer-popup__book {
+  background: var(--eyebrow);
+  color: var(--ink);
+  border: 1px solid var(--eyebrow);
+}
+
+.home-offer-popup__book:hover {
+  background: var(--scrollbar-accent-hover);
+  border-color: var(--scrollbar-accent-hover);
   transform: translateY(-1px);
 }
 
+.home-offer-popup__close {
+  border: 1px solid var(--border-on-light);
+  background: transparent;
+  color: var(--ink-muted);
+}
+
+.home-offer-popup__close:hover {
+  border-color: rgb(58 52 48 / 22%);
+  color: var(--ink);
+  background: rgb(255 255 255 / 55%);
+  transform: translateY(-1px);
+}
+
+.home-offer-popup__book:focus-visible,
 .home-offer-popup__close:focus-visible {
   outline: 2px solid var(--eyebrow-accessible);
   outline-offset: 3px;

@@ -1,5 +1,6 @@
 import { lazy, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Footer } from '../components/Footer';
@@ -423,9 +424,18 @@ export function HomePage() {
               <p className="home-offer-popup__eyebrow">{directBookingPopup.eyebrow}</p>
               <h2 className="home-offer-popup__title display-serif">{directBookingPopup.title}</h2>
               <p className="home-offer-popup__text">{directBookingPopup.text}</p>
-              <button type="button" className="home-offer-popup__close" onClick={closeDirectBookingPopup}>
-                {directBookingPopup.closeCta}
-              </button>
+              <div className="home-offer-popup__actions">
+                <Link
+                  to="/prenota"
+                  className="home-offer-popup__book"
+                  onClick={closeDirectBookingPopup}
+                >
+                  {directBookingPopup.bookCta}
+                </Link>
+                <button type="button" className="home-offer-popup__close" onClick={closeDirectBookingPopup}>
+                  {directBookingPopup.closeCta}
+                </button>
+              </div>
             </div>
           </div>,
           document.body,
