@@ -5,10 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://stream.mux.com" crossorigin />
     <link rel="dns-prefetch" href="https://stream.mux.com" />
-    <link rel="preload" as="image" href="/images/cala-lupo.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/images/hero-video-poster.webp" fetchpriority="low" />
     <link
       rel="preload"
       href="/fonts/absans/Absans-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/bigilla/Bigilla.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -19,6 +26,21 @@
     <meta name="theme-color" content="#F0EDE4" />
     <link rel="canonical" href="%HTML_CANONICAL%" />
     <title>%HTML_TITLE%</title>
+    <style>
+      /* Primo paint: solo crema — niente flash del frame hero */
+      html,
+      body {
+        margin: 0;
+        background: #f0ede4;
+      }
+      #initial-hero-poster {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: #f0ede4;
+        pointer-events: none;
+      }
+    </style>
 
     <!-- Open Graph / social preview (letti dai crawler senza JavaScript) -->
     <meta property="og:site_name" content="%OG_SITE_NAME%" />
@@ -37,17 +59,8 @@
     <meta name="twitter:image" content="%OG_IMAGE%" />
   </head>
   <body>
-    <!-- Poster istantaneo pre-React: migliora LCP mobile (rimosso da HomePage al mount) -->
-    <div id="initial-hero-poster" aria-hidden="true">
-      <img
-        src="/images/cala-lupo.webp"
-        alt=""
-        width="1920"
-        height="1080"
-        fetchpriority="high"
-        decoding="async"
-      />
-    </div>
+    <!-- Solo fondo crema pre-React (niente frame: evita flash prima dell'intro) -->
+    <div id="initial-hero-poster" aria-hidden="true"></div>
     <script>
       try {
         var locale = localStorage.getItem('lv-site-locale');

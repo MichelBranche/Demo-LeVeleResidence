@@ -10,7 +10,11 @@ import {
 
 function tryPlay(video: HTMLVideoElement) {
   if (video.paused) {
-    void video.play().catch(() => {});
+    void video.play().then(() => {
+      video.classList.add('is-playing');
+    }).catch(() => {});
+  } else {
+    video.classList.add('is-playing');
   }
 }
 
@@ -24,6 +28,7 @@ export function useHeroVideoSource(
     if (!video || !url) return undefined;
 
     video.crossOrigin = 'anonymous';
+    video.classList.remove('is-playing');
     const unbindLoopOffset = bindHeroVideoLoopOffset(video);
 
     const onMetadata = () => {

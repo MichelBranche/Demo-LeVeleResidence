@@ -230,27 +230,49 @@ function prepareSlotReveal(
     opacity: 1,
     zIndex: 1,
     margin: 0,
-    clearProps: 'top,left,transform,xPercent,yPercent',
+    clearProps: 'top,left,transform,xPercent,yPercent,x,y,scaleX,scaleY',
   });
 }
 
 function pinRevealMediaForExpand(revealMedia: HTMLDivElement, preloaderEl: HTMLDivElement) {
   const rect = revealMedia.getBoundingClientRect();
   preloaderEl.appendChild(revealMedia);
+
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const width = Math.max(rect.width, 1);
+  const height = Math.max(rect.height, 1);
+  const cx = rect.left + width / 2;
+  const cy = rect.top + height / 2;
+
+  /*
+   * Elemento già a viewport intero + scale ridotto: il bitmap resta nitido.
+   * (Scalare un box piccolo → blur perché il layer è rasterizzato alla size layout.)
+   */
   gsap.set(revealMedia, {
     position: 'fixed',
-    top: rect.top,
-    left: rect.left,
-    width: Math.max(rect.width, 1),
-    height: Math.max(rect.height, 1),
+    top: 0,
+    left: 0,
+    width: vw,
+    height: vh,
     margin: 0,
-    xPercent: 0,
-    yPercent: 0,
+    x: cx - vw / 2,
+    y: cy - vh / 2,
+    scaleX: width / vw,
+    scaleY: height / vh,
+    transformOrigin: '50% 50%',
     zIndex: 2,
     opacity: 1,
     overflow: 'hidden',
     pointerEvents: 'none',
   });
+
+  return {
+    x: 0,
+    y: 0,
+    scaleX: 1,
+    scaleY: 1,
+  };
 }
 
 function markPreloaderHeroPhase() {
@@ -343,10 +365,14 @@ function addWillemTimeline({
 
   const chromeLight = lightMode || isMobilePreloader();
 
-  // Dopo lo slot: pin + expand fullscreen (resta nel layer preloader, sopra il fondo crema)
+  // Dopo lo slot: pin + expand fullscreen via transform (CLS-safe)
+  let expandTarget = { x: 0, y: 0, scaleX: 1, scaleY: 1 };
   timeline.call(
     () => {
-      pinRevealMediaForExpand(revealMedia as HTMLDivElement, preloaderEl as HTMLDivElement);
+      expandTarget = pinRevealMediaForExpand(
+        revealMedia as HTMLDivElement,
+        preloaderEl as HTMLDivElement,
+      );
     },
     undefined,
     '>',
@@ -355,12 +381,10 @@ function addWillemTimeline({
   timeline.to(
     revealMedia,
     {
-      width: '100vw',
-      height: '100dvh',
-      left: '50%',
-      top: '50%',
-      xPercent: -50,
-      yPercent: -50,
+      x: () => expandTarget.x,
+      y: () => expandTarget.y,
+      scaleX: () => expandTarget.scaleX,
+      scaleY: () => expandTarget.scaleY,
       duration: WILLEM.expandDuration,
       ease: WILLEM.ease,
       onComplete: () => {
@@ -528,7 +552,10 @@ function setupLightIntro({
   posterEl.className = 'oh-preloader__poster';
   posterEl.src = posterSrc ?? '';
   posterEl.alt = '';
+  posterEl.width = 1920;
+  posterEl.height = 1080;
   posterEl.decoding = 'async';
+  posterEl.fetchPriority = 'high';
   revealMedia.appendChild(posterEl);
 
   const playLight = () => {

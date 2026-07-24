@@ -20,7 +20,9 @@ import {
 import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
   shouldRunVideoPreloader,
+  shouldRunIntroPreloader,
   shouldUsePosterOnlyHero,
+  shouldDeferHeroVideoLoad,
 } from '../lib/network';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -93,7 +95,7 @@ export function HomePage() {
     readPreloaderDone() ? 'complete' : 'pending-consent',
   );
   const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
-    shouldUsePosterOnlyHero() ? undefined : heroMedia.video,
+    shouldUsePosterOnlyHero() || shouldDeferHeroVideoLoad() ? undefined : heroMedia.video,
   );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -106,14 +108,45 @@ export function HomePage() {
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
   const heroMounted = isReady;
-  const showHeroCopy = isReady;
+  /* Hero copy solo a intro completa, o in DOM durante preloader (nascosta via CSS fino all'handoff). */
+  const showHeroCopy = ready || showPreloader;
   const [preloaderReady, setPreloaderReady] = useState(false);
-  const [shellReady, setShellReady] = useState(
-    () => readPreloaderDone() || !shouldRunVideoPreloader(),
-  );
+  const [shellReady, setShellReady] = useState(() => readPreloaderDone());
   const [showDirectBookingPopup, setShowDirectBookingPopup] = useState(false);
+  const [directBookingPopupClosing, setDirectBookingPopupClosing] = useState(false);
 
   useHomeLangReveal(ready);
+
+  /* Poster dipinge LCP; Mux/HLS parte dopo (idle) così non compete sul first paint. */
+  useEffect(() => {
+    if (posterOnlyHero || !isReady) return undefined;
+    if (heroVideoSrc) return undefined;
+
+    let cancelled = false;
+    const start = () => {
+      if (cancelled) return;
+      setHeroVideoSrc(heroMedia.video);
+    };
+
+    const win = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (typeof win.requestIdleCallback === 'function') {
+      const idleId = win.requestIdleCallback(start, { timeout: 1400 });
+      return () => {
+        cancelled = true;
+        win.cancelIdleCallback?.(idleId);
+      };
+    }
+
+    const timeoutId = window.setTimeout(start, 450);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [posterOnlyHero, isReady, heroVideoSrc, heroMedia.video]);
 
   useLayoutEffect(() => {
     const removePoster = () => document.getElementById('initial-hero-poster')?.remove();
@@ -141,37 +174,34 @@ export function HomePage() {
   const headerAnimateEntrance =
     !skippedPreloaderOnMount.current && !preloaderOrchestratedRef.current;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isReady) return;
 
-    const frame = requestAnimationFrame(() => {
-      if (readPreloaderDone()) {
-        setIntroPhase('complete');
-        setShellReady(true);
-        requestAnimationFrame(() => {
-          if (!isHeroCopyDone()) revealHeroCopyStatic();
-        });
-        return;
+    if (readPreloaderDone()) {
+      setIntroPhase('complete');
+      setShellReady(true);
+      requestAnimationFrame(() => {
+        if (!isHeroCopyDone()) revealHeroCopyStatic();
+      });
+      return;
+    }
+
+    if (!shouldRunIntroPreloader()) {
+      try {
+        sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
+      } catch {
+        /* ignore */
       }
+      setIntroPhase('complete');
+      setShellReady(true);
+      requestAnimationFrame(() => {
+        revealHeroCopyStatic();
+      });
+      return;
+    }
 
-      if (networkTier !== 'fast') {
-        try {
-          sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
-        } catch {
-          /* ignore */
-        }
-        setIntroPhase('complete');
-        setShellReady(true);
-        requestAnimationFrame(() => {
-          revealHeroCopyStatic();
-        });
-        return;
-      }
-
-      setIntroPhase('preloader');
-    });
-
-    return () => cancelAnimationFrame(frame);
+    setShellReady(false);
+    setIntroPhase('preloader');
   }, [isReady, networkTier]);
 
   useLayoutEffect(() => {
@@ -188,12 +218,14 @@ export function HomePage() {
 
       const video = videoRef.current;
       const slot = videoSlotRef.current;
-      if (!video || !slot) {
+
+      /* Light intro: basta lo slot — non attendere <video> (evita frame neri). */
+      if (!slot || (!lightPreloader && !video)) {
         rafId = requestAnimationFrame(prime);
         return;
       }
 
-      if (!lightPreloader) {
+      if (!lightPreloader && video) {
         video.preload = 'auto';
         if (!heroVideoSrc) {
           setHeroVideoSrc(heroMedia.video);
@@ -254,6 +286,7 @@ export function HomePage() {
     const openWithDelay = () => {
       if (timeoutId !== 0) return;
       timeoutId = window.setTimeout(() => {
+        setDirectBookingPopupClosing(false);
         setShowDirectBookingPopup(true);
       }, DIRECT_BOOKING_POPUP_DELAY_MS);
     };
@@ -312,33 +345,46 @@ export function HomePage() {
     };
   }, [ready]);
 
+  const closeDirectBookingPopup = useCallback(() => {
+    if (directBookingPopupClosing) return;
+
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    try {
+      sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+
+    if (reduceMotion) {
+      setShowDirectBookingPopup(false);
+      setDirectBookingPopupClosing(false);
+      return;
+    }
+
+    setDirectBookingPopupClosing(true);
+  }, [directBookingPopupClosing]);
+
+  const finishDirectBookingPopupClose = useCallback(() => {
+    setShowDirectBookingPopup(false);
+    setDirectBookingPopupClosing(false);
+  }, []);
+
   useEffect(() => {
     if (!showDirectBookingPopup) return undefined;
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Escape') return;
-      setShowDirectBookingPopup(false);
-      try {
-        sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
-      } catch {
-        /* ignore */
-      }
+      closeDirectBookingPopup();
     };
 
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [showDirectBookingPopup]);
-
-  const closeDirectBookingPopup = useCallback(() => {
-    setShowDirectBookingPopup(false);
-    try {
-      sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
-    } catch {
-      /* ignore */
-    }
-  }, []);
+  }, [showDirectBookingPopup, closeDirectBookingPopup]);
 
   const shouldPlayHeroVideo =
     Boolean(heroVideoSrc && !posterOnlyHero && (ready || (showPreloader && !lightPreloader)));
@@ -354,24 +400,38 @@ export function HomePage() {
 
   return (
     <>
+      {(introPhase === 'pending-consent' || (showPreloader && !preloaderReady)) && (
+        <div className="home-intro-veil" aria-hidden />
+      )}
       <main id="main-content" className="home-page">
-        {heroMounted && (
+        {heroMounted && (ready || showPreloader) && (
           <div className="home-page__sticky-header">
             <Header animateEntrance={headerAnimateEntrance} />
           </div>
         )}
         <div className={shellClass}>
           <div className="oh-video-bg" ref={videoSlotRef}>
+            {ready && (
+              <img
+                className="hero-bg-poster"
+                src={heroMedia.poster}
+                alt=""
+                width={1920}
+                height={1080}
+                decoding="async"
+                aria-hidden
+              />
+            )}
             <video
               ref={videoRef}
-              poster={heroMedia.poster}
-              className="hero-bg-video"
+              poster={ready ? heroMedia.poster : undefined}
+              className={`hero-bg-video${ready ? '' : ' hero-bg-video--deferred'}`}
               crossOrigin="anonymous"
               autoPlay={shouldPlayHeroVideo}
               muted
               loop
               playsInline
-              preload={heroVideoSrc && !posterOnlyHero ? 'auto' : 'none'}
+              preload={ready && heroVideoSrc && !posterOnlyHero ? 'metadata' : 'none'}
               width={1920}
               height={1080}
               aria-label={hero.videoAria}
@@ -414,10 +474,16 @@ export function HomePage() {
         typeof document !== 'undefined' &&
         createPortal(
           <div
-            className="home-offer-popup"
+            className={`home-offer-popup${directBookingPopupClosing ? ' home-offer-popup--closing' : ''}`}
             role="dialog"
             aria-modal="true"
             aria-label={directBookingPopup.ariaLabel}
+            onAnimationEnd={(event) => {
+              if (!directBookingPopupClosing) return;
+              const target = event.target as HTMLElement | null;
+              if (!target?.classList.contains('home-offer-popup__card')) return;
+              finishDirectBookingPopupClose();
+            }}
           >
             <div className="home-offer-popup__backdrop" onClick={closeDirectBookingPopup} aria-hidden />
             <div className="home-offer-popup__card">

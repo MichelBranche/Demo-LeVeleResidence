@@ -26,7 +26,8 @@ export function canPlayNativeHls(video: HTMLVideoElement): boolean {
 /** Il preloader può partire senza attendere `canplay` (Mux HLS è spesso lento). */
 export const HERO_VIDEO_PRIME_EVENT = 'hero-video:prime';
 
-/** Salta i primi N secondi del clip hero (intro drone ecc.). */
+/** Salta i primi N secondi del clip hero (intro drone ecc.).
+ *  Il poster `/images/hero-video-poster.webp` è un fotogramma a questo istante. */
 export const HERO_VIDEO_START_OFFSET_SEC = 10;
 
 let hlsModulePromise: Promise<typeof import('hls.js')> | null = null;

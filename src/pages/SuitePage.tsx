@@ -92,6 +92,8 @@ export function SuitePage() {
             className="suite-hero__img"
             src={suite.image}
             alt={`${suite.title}${suitePage.heroAltSuffix}`}
+            width={1024}
+            height={682}
             fetchPriority="high"
             decoding="async"
           />
@@ -192,7 +194,7 @@ export function SuitePage() {
                 .replace('{total}', String(total))
             }
             autoplayLabel={residenceWelcome.autoplayLabel}
-            autoplayOnEnter
+            autoplayOnEnter={false}
           />
         </div>
       </section>
