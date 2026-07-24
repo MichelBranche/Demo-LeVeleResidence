@@ -99,7 +99,6 @@ export function HomePage() {
   );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  useHeroVideoSource(videoRef, heroVideoSrc);
   const skippedPreloaderOnMount = useRef(readPreloaderDone());
   const preloaderOrchestratedRef = useRef(false);
 
@@ -107,6 +106,7 @@ export function HomePage() {
   const posterOnlyHero = shouldUsePosterOnlyHero();
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
+  useHeroVideoSource(videoRef, heroVideoSrc, ready && !posterOnlyHero);
   const heroMounted = isReady;
   /* Hero copy solo a intro completa, o in DOM durante preloader (nascosta via CSS fino all'handoff). */
   const showHeroCopy = ready || showPreloader;
@@ -117,9 +117,9 @@ export function HomePage() {
 
   useHomeLangReveal(ready);
 
-  /* Poster dipinge LCP; Mux/HLS parte dopo (idle) così non compete sul first paint. */
+  /* Mux/HLS solo dopo l'intro: se parte mentre il video è deferred, play() non riparte da solo. */
   useEffect(() => {
-    if (posterOnlyHero || !isReady) return undefined;
+    if (posterOnlyHero || !ready) return undefined;
     if (heroVideoSrc) return undefined;
 
     let cancelled = false;
@@ -134,19 +134,38 @@ export function HomePage() {
     };
 
     if (typeof win.requestIdleCallback === 'function') {
-      const idleId = win.requestIdleCallback(start, { timeout: 1400 });
+      const idleId = win.requestIdleCallback(start, { timeout: 900 });
       return () => {
         cancelled = true;
         win.cancelIdleCallback?.(idleId);
       };
     }
 
-    const timeoutId = window.setTimeout(start, 450);
+    const timeoutId = window.setTimeout(start, 120);
     return () => {
       cancelled = true;
       window.clearTimeout(timeoutId);
     };
-  }, [posterOnlyHero, isReady, heroVideoSrc, heroMedia.video]);
+  }, [posterOnlyHero, ready, heroVideoSrc, heroMedia.video]);
+
+  /* Se il src era già pronto, assicurati il play quando il video diventa visibile. */
+  useEffect(() => {
+    if (!ready || !heroVideoSrc || posterOnlyHero) return undefined;
+    const video = videoRef.current;
+    if (!video) return undefined;
+
+    const kick = () => {
+      void video.play()
+        .then(() => {
+          video.classList.add('is-playing');
+        })
+        .catch(() => {});
+    };
+
+    kick();
+    video.addEventListener('canplay', kick, { once: true });
+    return () => video.removeEventListener('canplay', kick);
+  }, [ready, heroVideoSrc, posterOnlyHero]);
 
   useLayoutEffect(() => {
     const removePoster = () => document.getElementById('initial-hero-poster')?.remove();
@@ -386,8 +405,7 @@ export function HomePage() {
     };
   }, [showDirectBookingPopup, closeDirectBookingPopup]);
 
-  const shouldPlayHeroVideo =
-    Boolean(heroVideoSrc && !posterOnlyHero && (ready || (showPreloader && !lightPreloader)));
+  const shouldPlayHeroVideo = Boolean(heroVideoSrc && !posterOnlyHero && ready);
 
   const shellClass = [
     'home-hero-shell',
