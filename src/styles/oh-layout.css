@@ -19,6 +19,25 @@ body.oh-preloader-active:not(.oh-preloader-hero-phase) .home-hero-shell--intro .
   pointer-events: none;
 }
 
+/* Prima del preloader / tra crema e intro: niente flash di "Oltre l'Orizzonte" */
+html:not([data-hero-copy-done]) .home-hero-shell .oh-reveal {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+html:not([data-hero-copy-done]) body.oh-preloader-active.oh-preloader-hero-phase .home-hero-shell .oh-reveal {
+  visibility: visible;
+  opacity: 1;
+  z-index: calc(var(--z-preloader) + 2);
+  pointer-events: none;
+}
+
+html[data-hero-copy-done] .home-hero-shell .oh-reveal {
+  visibility: visible;
+  opacity: 1;
+}
+
 body.oh-preloader-active:not(.oh-preloader-header-phase) .home-page__sticky-header,
 body.oh-preloader-active:not(.oh-preloader-header-phase) .home-page__sticky-header .site-header {
   visibility: hidden !important;
@@ -89,6 +108,21 @@ body.oh-preloader-active.oh-preloader-header-phase .home-page__sticky-header {
   transition: background-color 0.35s ease;
 }
 
+/* Niente gradiente scuro / video nero prima che l'intro finisca */
+.home-hero-shell:not(.home-hero-shell--ready) .oh-video-bg::after,
+.home-hero-shell:not(.home-hero-shell--ready) .oh-video-bg video {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.home-intro-veil {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-preloader) - 1);
+  background: var(--crema);
+  pointer-events: none;
+}
+
 body.oh-preloader-active .home-hero-shell .oh-video-bg {
   transition: none;
 }
@@ -120,11 +154,15 @@ body.oh-preloader-active .home-hero-shell.home-hero-shell--ready .oh-video-bg {
   opacity: 1;
 }
 
-.oh-video-bg:has(video) {
+.oh-video-bg:has(video),
+.oh-video-bg:has(.hero-bg-poster) {
   background: transparent;
 }
 
+.oh-video-bg .hero-bg-poster,
 .oh-video-bg video {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
@@ -132,10 +170,31 @@ body.oh-preloader-active .home-hero-shell.home-hero-shell--ready .oh-video-bg {
   object-position: center center;
 }
 
+.oh-video-bg .hero-bg-poster {
+  z-index: 0;
+}
+
+.oh-video-bg video {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.oh-video-bg video.is-playing {
+  opacity: 1;
+}
+
+.oh-video-bg video.hero-bg-video--deferred {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none;
+}
+
 .oh-video-bg::after {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 2;
   background:
     linear-gradient(
       to top,
@@ -145,6 +204,12 @@ body.oh-preloader-active .home-hero-shell.home-hero-shell--ready .oh-video-bg {
       rgb(0 0 0 / 28%) 100%
     );
   pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.home-hero-shell--ready .oh-video-bg::after {
+  opacity: 1;
 }
 
 .oh-reveal {
@@ -191,6 +256,7 @@ html:not([data-hero-copy-done]) .hero-reveal-line--inline {
 
 html:not([data-hero-copy-done]) .hero-reveal-line__inner {
   display: block;
+  transform: translateY(100%);
 }
 
 .home-hero-shell .hero {

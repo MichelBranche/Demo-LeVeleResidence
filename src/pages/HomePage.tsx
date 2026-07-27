@@ -21,7 +21,9 @@ import { scrollToHash } from '../lib/scroll';
 import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
   shouldRunVideoPreloader,
+  shouldRunIntroPreloader,
   shouldUsePosterOnlyHero,
+  shouldDeferHeroVideoLoad,
 } from '../lib/network';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -94,11 +96,10 @@ export function HomePage() {
     readPreloaderDone() ? 'complete' : 'pending-consent',
   );
   const [heroVideoSrc, setHeroVideoSrc] = useState<string | undefined>(() =>
-    shouldUsePosterOnlyHero() ? undefined : heroMedia.video,
+    shouldUsePosterOnlyHero() || shouldDeferHeroVideoLoad() ? undefined : heroMedia.video,
   );
   const videoSlotRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  useHeroVideoSource(videoRef, heroVideoSrc);
   const skippedPreloaderOnMount = useRef(readPreloaderDone());
   const preloaderOrchestratedRef = useRef(false);
 
@@ -106,8 +107,10 @@ export function HomePage() {
   const posterOnlyHero = shouldUsePosterOnlyHero();
   const showPreloader = introPhase === 'preloader';
   const ready = introPhase === 'complete';
+  useHeroVideoSource(videoRef, heroVideoSrc, ready && !posterOnlyHero);
   const heroMounted = isReady;
-  const showHeroCopy = isReady;
+  /* Hero copy solo a intro completa, o in DOM durante preloader (nascosta via CSS fino all'handoff). */
+  const showHeroCopy = ready || showPreloader;
   const [preloaderReady, setPreloaderReady] = useState(false);
   const [shellReady, setShellReady] = useState(
     () => readPreloaderDone() || !shouldRunVideoPreloader(),
@@ -117,6 +120,56 @@ export function HomePage() {
   const scrollToOffersAfterCloseRef = useRef(false);
 
   useHomeLangReveal(ready);
+
+  /* Mux/HLS solo dopo l'intro: se parte mentre il video è deferred, play() non riparte da solo. */
+  useEffect(() => {
+    if (posterOnlyHero || !ready) return undefined;
+    if (heroVideoSrc) return undefined;
+
+    let cancelled = false;
+    const start = () => {
+      if (cancelled) return;
+      setHeroVideoSrc(heroMedia.video);
+    };
+
+    const win = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (typeof win.requestIdleCallback === 'function') {
+      const idleId = win.requestIdleCallback(start, { timeout: 900 });
+      return () => {
+        cancelled = true;
+        win.cancelIdleCallback?.(idleId);
+      };
+    }
+
+    const timeoutId = window.setTimeout(start, 120);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [posterOnlyHero, ready, heroVideoSrc, heroMedia.video]);
+
+  /* Se il src era già pronto, assicurati il play quando il video diventa visibile. */
+  useEffect(() => {
+    if (!ready || !heroVideoSrc || posterOnlyHero) return undefined;
+    const video = videoRef.current;
+    if (!video) return undefined;
+
+    const kick = () => {
+      void video.play()
+        .then(() => {
+          video.classList.add('is-playing');
+        })
+        .catch(() => {});
+    };
+
+    kick();
+    video.addEventListener('canplay', kick, { once: true });
+    return () => video.removeEventListener('canplay', kick);
+  }, [ready, heroVideoSrc, posterOnlyHero]);
 
   useLayoutEffect(() => {
     const removePoster = () => document.getElementById('initial-hero-poster')?.remove();
@@ -144,37 +197,34 @@ export function HomePage() {
   const headerAnimateEntrance =
     !skippedPreloaderOnMount.current && !preloaderOrchestratedRef.current;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isReady) return;
 
-    const frame = requestAnimationFrame(() => {
-      if (readPreloaderDone()) {
-        setIntroPhase('complete');
-        setShellReady(true);
-        requestAnimationFrame(() => {
-          if (!isHeroCopyDone()) revealHeroCopyStatic();
-        });
-        return;
+    if (readPreloaderDone()) {
+      setIntroPhase('complete');
+      setShellReady(true);
+      requestAnimationFrame(() => {
+        if (!isHeroCopyDone()) revealHeroCopyStatic();
+      });
+      return;
+    }
+
+    if (!shouldRunIntroPreloader()) {
+      try {
+        sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
+      } catch {
+        /* ignore */
       }
+      setIntroPhase('complete');
+      setShellReady(true);
+      requestAnimationFrame(() => {
+        revealHeroCopyStatic();
+      });
+      return;
+    }
 
-      if (networkTier !== 'fast') {
-        try {
-          sessionStorage.setItem(PRELOADER_DONE_KEY, '1');
-        } catch {
-          /* ignore */
-        }
-        setIntroPhase('complete');
-        setShellReady(true);
-        requestAnimationFrame(() => {
-          revealHeroCopyStatic();
-        });
-        return;
-      }
-
-      setIntroPhase('preloader');
-    });
-
-    return () => cancelAnimationFrame(frame);
+    setShellReady(false);
+    setIntroPhase('preloader');
   }, [isReady, networkTier]);
 
   useLayoutEffect(() => {
@@ -191,12 +241,14 @@ export function HomePage() {
 
       const video = videoRef.current;
       const slot = videoSlotRef.current;
-      if (!video || !slot) {
+
+      /* Light intro: basta lo slot — non attendere <video> (evita frame neri). */
+      if (!slot || (!lightPreloader && !video)) {
         rafId = requestAnimationFrame(prime);
         return;
       }
 
-      if (!lightPreloader) {
+      if (!lightPreloader && video) {
         video.preload = 'auto';
         if (!heroVideoSrc) {
           setHeroVideoSrc(heroMedia.video);
@@ -338,8 +390,7 @@ export function HomePage() {
     }
   }, []);
 
-  const shouldPlayHeroVideo =
-    Boolean(heroVideoSrc && !posterOnlyHero && (ready || (showPreloader && !lightPreloader)));
+  const shouldPlayHeroVideo = Boolean(heroVideoSrc && !posterOnlyHero && ready);
 
   const shellClass = [
     'home-hero-shell',
@@ -352,24 +403,38 @@ export function HomePage() {
 
   return (
     <>
+      {(introPhase === 'pending-consent' || (showPreloader && !preloaderReady)) && (
+        <div className="home-intro-veil" aria-hidden />
+      )}
       <main id="main-content" className="home-page">
-        {heroMounted && (
+        {heroMounted && (ready || showPreloader) && (
           <div className="home-page__sticky-header">
             <Header animateEntrance={headerAnimateEntrance} />
           </div>
         )}
         <div className={shellClass}>
           <div className="oh-video-bg" ref={videoSlotRef}>
+            {ready && (
+              <img
+                className="hero-bg-poster"
+                src={heroMedia.poster}
+                alt=""
+                width={1920}
+                height={1080}
+                decoding="async"
+                aria-hidden
+              />
+            )}
             <video
               ref={videoRef}
-              poster={heroMedia.poster}
-              className="hero-bg-video"
+              poster={ready ? heroMedia.poster : undefined}
+              className={`hero-bg-video${ready ? '' : ' hero-bg-video--deferred'}`}
               crossOrigin="anonymous"
               autoPlay={shouldPlayHeroVideo}
               muted
               loop
               playsInline
-              preload={heroVideoSrc && !posterOnlyHero ? 'auto' : 'none'}
+              preload={ready && heroVideoSrc && !posterOnlyHero ? 'metadata' : 'none'}
               width={1920}
               height={1080}
               aria-label={hero.videoAria}

@@ -10,7 +10,11 @@ import {
 
 function tryPlay(video: HTMLVideoElement) {
   if (video.paused) {
-    void video.play().catch(() => {});
+    void video.play().then(() => {
+      video.classList.add('is-playing');
+    }).catch(() => {});
+  } else {
+    video.classList.add('is-playing');
   }
 }
 
@@ -18,12 +22,14 @@ function tryPlay(video: HTMLVideoElement) {
 export function useHeroVideoSource(
   videoRef: RefObject<HTMLVideoElement | null>,
   url: string | undefined,
+  enabled = true,
 ) {
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !url) return undefined;
+    if (!enabled || !video || !url) return undefined;
 
     video.crossOrigin = 'anonymous';
+    video.classList.remove('is-playing');
     const unbindLoopOffset = bindHeroVideoLoopOffset(video);
 
     const onMetadata = () => {
@@ -91,5 +97,5 @@ export function useHeroVideoSource(
       unbindLoopOffset();
       hls?.destroy();
     };
-  }, [videoRef, url]);
+  }, [videoRef, url, enabled]);
 }

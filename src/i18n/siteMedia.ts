@@ -6,6 +6,7 @@ const SEA = asset('/Foto%202024%20camere%20Le%20Vele/vista%20mare');
 const BATH = asset('/Foto%202024%20camere%20Le%20Vele/bagni');
 const CALA_LUPO = asset('/images/cala-lupo.webp');
 const CALA_LUPO_RESIDENCE = asset('/images/cala-lupo-residence.webp');
+const HERO_VIDEO_POSTER = asset('/images/hero-video-poster.webp');
 const LA_PELOSA = asset('/images/la-pelosa-spiaggia.webp');
 const ALGHERO_AIRPORT = asset('/images/alghero-aeroporto.webp');
 const PORTO_TORRES = asset('/images/porto-torres.webp');
@@ -68,7 +69,8 @@ export const logo = {
 
 export const heroMedia = {
   video: getHeroVideoUrl(),
-  poster: CALA_LUPO,
+  /** Fotogramma del video al punto di partenza (offset), per handoff senza salto. */
+  poster: HERO_VIDEO_POSTER,
 } as const;
 
 export const residenceCardMedia = [

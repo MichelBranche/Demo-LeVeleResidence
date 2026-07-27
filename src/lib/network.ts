@@ -55,19 +55,24 @@ export function getNetworkTier(): NetworkTier {
   return 'fast';
 }
 
-/** Preloader cinematico con video (~4 MB) — solo desktop con buona connessione. */
+/** Preloader cinematografico con video Mux — disattivato: ritarda LCP desktop (~6s). */
 export function shouldRunVideoPreloader(): boolean {
-  return getNetworkTier() === 'fast';
+  return false;
 }
 
-/** Carica il video hero subito (non solo poster) — solo tier fast. */
+/** Intro iniziale (poster / light) — sì tranne reti minime o reduced-motion. */
+export function shouldRunIntroPreloader(): boolean {
+  return getNetworkTier() !== 'minimal';
+}
+
+/** Carica il video hero subito (non solo poster) — solo tier fast e solo se preloader video attivo. */
 export function shouldAutoplayHeroVideoImmediately(): boolean {
-  return getNetworkTier() === 'fast';
+  return getNetworkTier() === 'fast' && shouldRunVideoPreloader();
 }
 
-/** Su mobile/rete media: poster prima, video dopo il primo paint. */
+/** Poster prima, video dopo il first paint — evita che Mux/HLS rubi la LCP. */
 export function shouldDeferHeroVideoLoad(): boolean {
-  return getNetworkTier() !== 'fast';
+  return !shouldAutoplayHeroVideoImmediately();
 }
 
 /** Solo poster: 2G / risparmio dati / downlink molto basso. */

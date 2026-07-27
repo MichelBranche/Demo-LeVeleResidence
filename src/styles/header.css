@@ -15,8 +15,8 @@
   --header-index: rgb(58 52 48 / 54%);
   --header-index-active: var(--carbone);
   --header-underline: var(--eyebrow);
-  --header-cta-border: rgb(58 52 48 / 14%);
-  --header-cta-bg: rgb(255 255 255 / 58%);
+  --header-cta-border: rgb(58 52 48 / 20%);
+  --header-cta-bg: rgb(255 255 255 / 78%);
   --header-cta-fg: var(--ink);
   --header-cta-hover-bg: rgb(87 144 241 / 24%);
   --header-cta-hover-fg: var(--ink);
@@ -31,17 +31,17 @@
   --header-bar-bg: rgb(58 52 48 / 22%);
   --header-bar-border: rgb(244 238 232 / 14%);
   --header-bar-shadow: none;
-  --header-fg: rgb(244 238 232 / 72%);
+  --header-fg: rgb(244 238 232 / 84%);
   --header-fg-active: var(--crema);
-  --header-index: rgb(244 238 232 / 58%);
+  --header-index: rgb(244 238 232 / 68%);
   --header-index-active: var(--eyebrow);
   --header-underline: var(--eyebrow);
-  --header-cta-border: rgb(244 238 232 / 26%);
-  --header-cta-bg: rgb(244 238 232 / 8%);
+  --header-cta-border: rgb(244 238 232 / 42%);
+  --header-cta-bg: rgb(244 238 232 / 18%);
   --header-cta-fg: var(--crema);
-  --header-cta-hover-bg: rgb(87 144 241 / 22%);
+  --header-cta-hover-bg: rgb(87 144 241 / 26%);
   --header-cta-hover-fg: var(--crema);
-  --header-cta-hover-border: rgb(87 144 241 / 42%);
+  --header-cta-hover-border: rgb(87 144 241 / 48%);
   --header-lang-ring: rgb(244 238 232 / 48%);
   --header-lang-hover-ring: rgb(87 144 241 / 55%);
 }
@@ -416,10 +416,10 @@
   border: 1px solid var(--header-cta-border);
   background: var(--header-cta-bg);
   color: var(--header-cta-fg);
-  font-size: var(--text-2xs);
+  font-size: var(--text-xs);
   font-weight: 700;
   line-height: 1;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
   transition:
@@ -434,6 +434,11 @@
   background: var(--header-cta-hover-bg);
   color: var(--header-cta-hover-fg);
   transform: translateY(-1px);
+}
+
+.site-header__cta:focus-visible {
+  outline: 2px solid var(--header-focus-ring);
+  outline-offset: 3px;
 }
 
 .site-header__cta-icon {
@@ -483,7 +488,7 @@
   }
 
   .site-header:not(.site-header--mobile-nav) .site-header__links a {
-    font-size: 0.625rem;
+    font-size: var(--text-2xs);
     letter-spacing: 0.12em;
   }
 }
@@ -636,6 +641,7 @@ body.site-nav-open .site-header--mobile-nav .lang-fab {
   transform: scale(0.92);
 }
 
+/* Mobile: CTA circolare con icona — evita crowding con logo/lingua su Safari iPhone */
 .site-header--mobile-nav .site-header__cta {
   justify-content: center;
   width: var(--header-control-h);
@@ -901,6 +907,12 @@ body.site-nav-open .site-header--mobile-nav .lang-fab {
 .site-header__mobile-book:hover,
 .site-header__mobile-book:focus-visible {
   border-bottom-color: rgb(75 129 231 / 42%);
+}
+
+.site-header__mobile-book:focus-visible {
+  outline: 2px solid var(--eyebrow-accessible);
+  outline-offset: 4px;
+  border-radius: 2px;
 }
 
 .site-header__mobile-book:hover .site-header__mobile-book-kicker,
