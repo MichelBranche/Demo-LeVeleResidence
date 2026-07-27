@@ -1,12 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import type { LocaleCopy } from '../i18n/types';
 
 type DirectBookingPopupProps = {
   open: boolean;
   copy: LocaleCopy['directBookingPopup'];
-  onCloseRequest: (options?: { scrollToOffers?: boolean }) => void;
+  onCloseRequest: () => void;
   onExitComplete: () => void;
 };
 
@@ -107,20 +108,21 @@ export function DirectBookingPopup({
       <div
         ref={backdropRef}
         className="home-offer-popup__backdrop"
-        onClick={() => onCloseRequest()}
+        onClick={onCloseRequest}
         aria-hidden
       />
       <div ref={cardRef} className="home-offer-popup__card">
         <p className="home-offer-popup__eyebrow">{copy.eyebrow}</p>
         <h2 className="home-offer-popup__title display-serif">{copy.title}</h2>
         <p className="home-offer-popup__text">{copy.text}</p>
-        <button
-          type="button"
-          className="home-offer-popup__cta"
-          onClick={() => onCloseRequest({ scrollToOffers: true })}
-        >
-          {copy.ctaLabel}
-        </button>
+        <div className="home-offer-popup__actions">
+          <Link to="/prenota" className="home-offer-popup__book" onClick={onCloseRequest}>
+            {copy.bookCta}
+          </Link>
+          <button type="button" className="home-offer-popup__close" onClick={onCloseRequest}>
+            {copy.closeCta}
+          </button>
+        </div>
       </div>
     </div>,
     document.body,

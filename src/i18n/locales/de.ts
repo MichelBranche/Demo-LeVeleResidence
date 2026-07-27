@@ -7,7 +7,8 @@ export const de: LocaleCopy = {
     eyebrow: 'Direktbuchung',
     title: 'Bestes verfügbares Angebot',
     text: 'Bei einer Direktbuchung über unsere Website erhalten Sie immer das beste verfügbare Angebot zum besten Preis.',
-    ctaLabel: 'Zu den Angeboten',
+    bookCta: 'Verfügbarkeit prüfen',
+    closeCta: 'Verstanden',
   },
   addressCountry: 'Italien',
   hero: {

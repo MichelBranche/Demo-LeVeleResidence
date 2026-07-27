@@ -19,7 +19,8 @@ export type LocaleCopy = {
     eyebrow: string;
     title: string;
     text: string;
-    ctaLabel: string;
+    bookCta: string;
+    closeCta: string;
   };
   addressCountry: string;
   hero: {

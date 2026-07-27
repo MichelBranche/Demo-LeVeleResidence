@@ -17,7 +17,6 @@ import {
   scheduleScrollTriggerRefresh,
   scheduleScrollTriggerRefreshAfterLayout,
 } from '../lib/scrollTriggerRefresh';
-import { scrollToHash } from '../lib/scroll';
 import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
   shouldRunVideoPreloader,
@@ -117,7 +116,6 @@ export function HomePage() {
   );
   const [directBookingPopupMounted, setDirectBookingPopupMounted] = useState(false);
   const [directBookingPopupOpen, setDirectBookingPopupOpen] = useState(false);
-  const scrollToOffersAfterCloseRef = useRef(false);
 
   useHomeLangReveal(ready);
 
@@ -368,14 +366,10 @@ export function HomePage() {
     };
   }, [ready]);
 
-  const handleDirectBookingPopupCloseRequest = useCallback(
-    (options?: { scrollToOffers?: boolean }) => {
-      if (!directBookingPopupOpen) return;
-      scrollToOffersAfterCloseRef.current = options?.scrollToOffers ?? false;
-      setDirectBookingPopupOpen(false);
-    },
-    [directBookingPopupOpen],
-  );
+  const handleDirectBookingPopupCloseRequest = useCallback(() => {
+    if (!directBookingPopupOpen) return;
+    setDirectBookingPopupOpen(false);
+  }, [directBookingPopupOpen]);
 
   const handleDirectBookingPopupExitComplete = useCallback(() => {
     setDirectBookingPopupMounted(false);
@@ -383,10 +377,6 @@ export function HomePage() {
       sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
     } catch {
       /* ignore */
-    }
-    if (scrollToOffersAfterCloseRef.current) {
-      scrollToOffersAfterCloseRef.current = false;
-      scrollToHash('#offerte');
     }
   }, []);
 
