@@ -725,7 +725,11 @@ button {
   overflow: hidden;
   scroll-snap-align: center;
   background: var(--surface-muted, #e9eef0);
-  box-shadow: 0 24px 60px -32px rgba(15, 32, 39, 0.55);
+  box-shadow:
+    0 28px 64px -28px rgba(15, 32, 39, 0.58),
+    0 10px 24px -18px rgba(15, 32, 39, 0.35);
+  transform-origin: center center;
+  will-change: transform, opacity;
 }
 
 .residence-scroll__slide img {
@@ -733,7 +737,9 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform-origin: center center;
   will-change: transform;
+  backface-visibility: hidden;
 }
 
 .residence-scroll__caption {
@@ -774,10 +780,11 @@ button {
   transform-origin: left center;
 }
 
-/* Desktop: pinned, GSAP-driven horizontal scroll */
+/* Desktop + mobile: pinned, GSAP-driven horizontal scroll */
 .residence-scroll.is-pinned {
   --slide-h: min(70vh, 620px);
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -789,6 +796,11 @@ button {
   scroll-snap-type: none;
 }
 
+.residence-scroll.is-pinned .residence-scroll__track {
+  gap: clamp(1.1rem, 2.4vw, 2rem);
+  padding-inline: clamp(1.5rem, 8vw, 10rem);
+}
+
 .residence-scroll.is-pinned .residence-scroll__slide {
   width: clamp(420px, 46vw, 760px);
   scroll-snap-align: none;
@@ -796,6 +808,26 @@ button {
 
 .residence-scroll.is-pinned .residence-scroll__progress {
   margin-top: clamp(1.5rem, 3vh, 2.5rem);
+}
+
+.residence-scroll.is-pinned--mobile {
+  --slide-h: min(52svh, 420px);
+  height: 100svh;
+  height: 100dvh;
+}
+
+.residence-scroll.is-pinned--mobile .residence-scroll__track {
+  gap: 0.85rem;
+  padding-inline: clamp(1rem, 8vw, 2rem);
+}
+
+.residence-scroll.is-pinned--mobile .residence-scroll__slide {
+  width: min(82vw, 420px);
+  border-radius: 16px;
+}
+
+.residence-scroll.is-pinned--mobile .residence-scroll__progress {
+  margin-inline: clamp(1rem, 8vw, 2rem);
 }
 
 .residence__list {

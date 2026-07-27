@@ -7,6 +7,84 @@ import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
+function setupSlideDepth(
+  slide: HTMLElement,
+  horizontalTween: gsap.core.Tween,
+  mobile: boolean,
+) {
+  const img = slide.querySelector('img');
+  const scrub = mobile ? 0.65 : true;
+
+  // Slide: più piccola/lontana ai lati, piena al centro (profondità coverflow).
+  gsap.fromTo(
+    slide,
+    {
+      scale: mobile ? 0.86 : 0.82,
+      y: mobile ? 18 : 28,
+      opacity: mobile ? 0.62 : 0.52,
+    },
+    {
+      scale: 1,
+      y: 0,
+      opacity: 1,
+      ease: 'none',
+      scrollTrigger: {
+        containerAnimation: horizontalTween,
+        trigger: slide,
+        start: 'left 92%',
+        end: 'center center',
+        scrub,
+      },
+    },
+  );
+
+  gsap.fromTo(
+    slide,
+    {
+      scale: 1,
+      y: 0,
+      opacity: 1,
+    },
+    {
+      scale: mobile ? 0.86 : 0.82,
+      y: mobile ? 18 : 28,
+      opacity: mobile ? 0.62 : 0.52,
+      ease: 'none',
+      immediateRender: false,
+      scrollTrigger: {
+        containerAnimation: horizontalTween,
+        trigger: slide,
+        start: 'center center',
+        end: 'right 8%',
+        scrub,
+      },
+    },
+  );
+
+  if (!img) return;
+
+  // Immagine: ken-burns + drift laterale più marcato mentre la card attraversa il viewport.
+  gsap.fromTo(
+    img,
+    {
+      scale: mobile ? 1.32 : 1.42,
+      xPercent: mobile ? -7 : -11,
+    },
+    {
+      scale: mobile ? 1.06 : 1.08,
+      xPercent: mobile ? 7 : 11,
+      ease: 'none',
+      scrollTrigger: {
+        containerAnimation: horizontalTween,
+        trigger: slide,
+        start: 'left right',
+        end: 'right left',
+        scrub,
+      },
+    },
+  );
+}
+
 export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>) {
   useGSAP(
     () => {
@@ -15,6 +93,8 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
 
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReduced) return;
+
+      const mobile = isMobileViewport();
 
       const intro = section.querySelector<HTMLElement>('.residence__intro');
       if (intro) {
@@ -73,13 +153,14 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
         });
       }
 
-      // Horizontal scroll-driven gallery (desktop only; mobile keeps native swipe).
+      // Gallery orizzontale pinnata (desktop + mobile) con profondità accentuata.
       const gallery = section.querySelector<HTMLElement>('.residence-scroll');
       const galleryTrack = section.querySelector<HTMLElement>('.residence-scroll__track');
       const progressBar = section.querySelector<HTMLElement>('.residence-scroll__progress-bar');
 
-      if (gallery && galleryTrack && !isMobileViewport()) {
+      if (gallery && galleryTrack) {
         gallery.classList.add('is-pinned');
+        if (mobile) gallery.classList.add('is-pinned--mobile');
 
         const getDistance = () => Math.max(0, galleryTrack.scrollWidth - window.innerWidth);
 
@@ -89,9 +170,9 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
           scrollTrigger: {
             trigger: gallery,
             start: 'top top',
-            end: () => '+=' + getDistance(),
+            end: () => '+=' + Math.max(getDistance() * (mobile ? 1.05 : 1), window.innerHeight * 0.75),
             pin: true,
-            scrub: 1,
+            scrub: mobile ? 0.85 : 1,
             invalidateOnRefresh: true,
             anticipatePin: 1,
             onUpdate: (self) => {
@@ -104,26 +185,7 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
           '.residence-scroll__slide',
           galleryTrack,
         );
-        slides.forEach((slide) => {
-          const img = slide.querySelector('img');
-          if (!img) return;
-          gsap.fromTo(
-            img,
-            { scale: 1.18, xPercent: -4 },
-            {
-              scale: 1,
-              xPercent: 4,
-              ease: 'none',
-              scrollTrigger: {
-                containerAnimation: horizontalTween,
-                trigger: slide,
-                start: 'left right',
-                end: 'right left',
-                scrub: true,
-              },
-            },
-          );
-        });
+        slides.forEach((slide) => setupSlideDepth(slide, horizontalTween, mobile));
       }
 
       scheduleScrollTriggerRefresh();
