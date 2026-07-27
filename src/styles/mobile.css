@@ -277,6 +277,39 @@
   a {
     -webkit-tap-highlight-color: rgb(224 122 95 / 18%);
   }
+
+  /*
+   * Fallback navbar iPhone/Safari: anche senza classe JS --mobile-nav,
+   * evita pillola PRENOTA e logo troppo larghi (overlap con bandiera).
+   */
+  .site-header__logo img {
+    width: min(108px, 30vw);
+    max-width: 100%;
+    height: auto;
+  }
+
+  .site-header__cta {
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    max-width: 2.5rem;
+    padding: 0;
+    border-radius: 50%;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .site-header__cta-icon {
+    display: block;
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  .site-header__cta-text,
+  .site-header__cta-arrow {
+    display: none !important;
+  }
 }
 
 @media (max-width: 767px) and (prefers-reduced-motion: reduce) {

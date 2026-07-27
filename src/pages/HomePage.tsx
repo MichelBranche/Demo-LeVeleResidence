@@ -6,6 +6,7 @@ import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { HeroSection } from '../components/HeroSection';
 import { Preloader } from '../components/Preloader';
+import { DirectBookingPopup } from '../components/DirectBookingPopup';
 import { useConsent } from '../hooks/useConsent';
 import { useHomeLangReveal } from '../hooks/useHomeLangReveal';
 import { useNetworkTier } from '../hooks/useNetworkTier';
@@ -16,6 +17,7 @@ import {
   scheduleScrollTriggerRefresh,
   scheduleScrollTriggerRefreshAfterLayout,
 } from '../lib/scrollTriggerRefresh';
+import { scrollToHash } from '../lib/scroll';
 import { useHeroVideoSource } from '../hooks/useHeroVideoSource';
 import {
   shouldRunVideoPreloader,
@@ -110,7 +112,9 @@ export function HomePage() {
   const [shellReady, setShellReady] = useState(
     () => readPreloaderDone() || !shouldRunVideoPreloader(),
   );
-  const [showDirectBookingPopup, setShowDirectBookingPopup] = useState(false);
+  const [directBookingPopupMounted, setDirectBookingPopupMounted] = useState(false);
+  const [directBookingPopupOpen, setDirectBookingPopupOpen] = useState(false);
+  const scrollToOffersAfterCloseRef = useRef(false);
 
   useHomeLangReveal(ready);
 
@@ -253,7 +257,8 @@ export function HomePage() {
     const openWithDelay = () => {
       if (timeoutId !== 0) return;
       timeoutId = window.setTimeout(() => {
-        setShowDirectBookingPopup(true);
+        setDirectBookingPopupMounted(true);
+        setDirectBookingPopupOpen(true);
       }, DIRECT_BOOKING_POPUP_DELAY_MS);
     };
 
@@ -311,31 +316,25 @@ export function HomePage() {
     };
   }, [ready]);
 
-  useEffect(() => {
-    if (!showDirectBookingPopup) return undefined;
+  const handleDirectBookingPopupCloseRequest = useCallback(
+    (options?: { scrollToOffers?: boolean }) => {
+      if (!directBookingPopupOpen) return;
+      scrollToOffersAfterCloseRef.current = options?.scrollToOffers ?? false;
+      setDirectBookingPopupOpen(false);
+    },
+    [directBookingPopupOpen],
+  );
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape') return;
-      setShowDirectBookingPopup(false);
-      try {
-        sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
-      } catch {
-        /* ignore */
-      }
-    };
-
-    document.addEventListener('keydown', onKeyDown);
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-    };
-  }, [showDirectBookingPopup]);
-
-  const closeDirectBookingPopup = useCallback(() => {
-    setShowDirectBookingPopup(false);
+  const handleDirectBookingPopupExitComplete = useCallback(() => {
+    setDirectBookingPopupMounted(false);
     try {
       sessionStorage.setItem(DIRECT_BOOKING_POPUP_KEY, '1');
     } catch {
       /* ignore */
+    }
+    if (scrollToOffersAfterCloseRef.current) {
+      scrollToOffersAfterCloseRef.current = false;
+      scrollToHash('#offerte');
     }
   }, []);
 
@@ -408,28 +407,14 @@ export function HomePage() {
         {ready && <BelowFoldSections />}
       </main>
       {ready && <Footer />}
-      {ready &&
-        showDirectBookingPopup &&
-        typeof document !== 'undefined' &&
-        createPortal(
-          <div
-            className="home-offer-popup"
-            role="dialog"
-            aria-modal="true"
-            aria-label={directBookingPopup.ariaLabel}
-          >
-            <div className="home-offer-popup__backdrop" onClick={closeDirectBookingPopup} aria-hidden />
-            <div className="home-offer-popup__card">
-              <p className="home-offer-popup__eyebrow">{directBookingPopup.eyebrow}</p>
-              <h2 className="home-offer-popup__title display-serif">{directBookingPopup.title}</h2>
-              <p className="home-offer-popup__text">{directBookingPopup.text}</p>
-              <button type="button" className="home-offer-popup__close" onClick={closeDirectBookingPopup}>
-                {directBookingPopup.closeCta}
-              </button>
-            </div>
-          </div>,
-          document.body,
-        )}
+      {ready && directBookingPopupMounted && (
+        <DirectBookingPopup
+          open={directBookingPopupOpen}
+          copy={directBookingPopup}
+          onCloseRequest={handleDirectBookingPopupCloseRequest}
+          onExitComplete={handleDirectBookingPopupExitComplete}
+        />
+      )}
     </>
   );
 }

@@ -70,7 +70,9 @@ export function Header({ animateEntrance = false }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [isMobileNav, setIsMobileNav] = useState(false);
+  const [isMobileNav, setIsMobileNav] = useState(() =>
+    typeof window !== 'undefined' ? shouldUseMobileNav() : false,
+  );
   const headerRef = useRef<HTMLElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLButtonElement>(null);

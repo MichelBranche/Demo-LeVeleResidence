@@ -53,6 +53,19 @@ body.oh-preloader-active.oh-preloader-header-phase .home-page__sticky-header {
   will-change: transform, opacity;
 }
 
+/* iOS Safari / notch: sfondo header sotto la status bar */
+.home-page__sticky-header .site-header__bar {
+  padding-top: max(0px, env(safe-area-inset-top, 0px));
+  padding-left: max(clamp(1.25rem, 3.5vw, 2.75rem), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(1.25rem, 3.5vw, 2.75rem), env(safe-area-inset-right, 0px));
+}
+
+.home-page__sticky-header .site-header--mobile-nav .site-header__bar {
+  padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
+  padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+}
+
 .home-hero-shell {
   --oh-pad: 0;
   position: relative;

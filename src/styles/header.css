@@ -504,39 +504,55 @@
 
 .site-header--mobile-nav .site-header__bar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 0.5rem 0.75rem;
-  min-height: 3.65rem;
-  padding: 0 clamp(0.85rem, 4vw, 1.25rem);
+  grid-template-columns: minmax(2.75rem, 1fr) minmax(0, auto) minmax(2.75rem, 1fr);
+  align-items: center;
+  column-gap: 0.5rem;
+  row-gap: 0;
+  min-height: 3.5rem;
+  /* iOS Safari: safe-area su notch/status + bordi laterali */
+  padding-top: max(0.35rem, env(safe-area-inset-top, 0px));
+  padding-bottom: 0.35rem;
+  padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+  padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
 }
 
 .site-header--mobile-nav .site-header__logo {
   grid-column: 2;
   grid-row: 1;
   justify-self: center;
+  align-self: center;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .site-header--mobile-nav .site-header__nav {
   grid-column: 1;
   grid-row: 1;
   justify-self: start;
+  align-self: center;
   flex: none;
+  min-width: 0;
+  z-index: 1;
 }
 
 .site-header--mobile-nav .site-header__aside {
   grid-column: 3;
   grid-row: 1;
   justify-self: end;
+  align-self: center;
   margin-left: 0;
-  --header-control-h: 2.75rem;
+  gap: 0.4rem;
+  --header-control-h: 2.5rem;
+  z-index: 2;
+  max-width: 100%;
 }
 
 .site-header--mobile-nav .site-header__menu {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.75rem;
-  height: 2.75rem;
+  width: var(--header-control-h, 2.5rem);
+  height: var(--header-control-h, 2.5rem);
   padding: 0;
   position: relative;
   z-index: var(--z-header-menu-controls);
@@ -553,7 +569,15 @@
 }
 
 .site-header--mobile-nav .site-header__logo img {
-  width: min(128px, 34vw);
+  width: min(108px, 30vw);
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Su home, dopo lo scroll: lingua in header → logo più compatto per evitare overlap */
+body.is-home-page.home-lang-visible .site-header--mobile-nav .site-header__logo img {
+  width: min(92px, 26vw);
 }
 
 .site-header--mobile-nav .site-header__lang-wrap--in-header {
@@ -561,7 +585,7 @@
 }
 
 body.is-home-page .site-header--mobile-nav .site-header__lang-wrap--in-header {
-  display: block;
+  display: inline-flex;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -617,9 +641,12 @@ body.site-nav-open .site-header--mobile-nav .lang-fab {
   width: var(--header-control-h);
   height: var(--header-control-h);
   min-width: var(--header-control-h);
+  max-width: var(--header-control-h);
   min-height: var(--header-control-h);
   padding: 0;
   border-radius: 50%;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .site-header--mobile-nav .site-header__cta-icon {
@@ -630,7 +657,7 @@ body.site-nav-open .site-header--mobile-nav .lang-fab {
 
 .site-header--mobile-nav .site-header__cta-text,
 .site-header--mobile-nav .site-header__cta-arrow {
-  display: none;
+  display: none !important;
 }
 
 /* Menu mobile fullscreen — portal su body (non discendente di .site-header) */
@@ -791,11 +818,11 @@ body.site-nav-open .site-header--mobile-nav .lang-fab {
   width: 100%;
   min-height: var(--touch-min, 48px);
   padding: clamp(0.95rem, 3.2vh, 1.25rem) 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 8vw, 2.75rem);
-  font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.03em;
+  font-family: var(--font-body);
+  font-size: clamp(1.55rem, 7vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   text-transform: none;
   color: var(--ink);
   text-decoration: none;
@@ -854,11 +881,11 @@ body.site-nav-open .site-header--mobile-nav .lang-fab {
 }
 
 .site-header__mobile-book-kicker {
-  font-family: var(--font-display);
-  font-size: clamp(1.55rem, 6.5vw, 2.15rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.03em;
+  font-family: var(--font-body);
+  font-size: clamp(1.4rem, 6vw, 1.9rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
   text-transform: none;
 }
 
