@@ -21,7 +21,7 @@ function splitSuiteTitle(title: string) {
 
 export function SuitePage() {
   const { content } = useSiteLocale();
-  const { suitePage, suites, config, residenceWelcome } = content;
+  const { suitePage, suites, residenceWelcome } = content;
   const { stage } = useRouteTransition();
   const { slug: paramSlug = '' } = useParams();
   const { pathname } = useLocation();
@@ -75,7 +75,6 @@ export function SuitePage() {
   }
 
   const otherSuite = suites.find((s) => s.slug !== suite.slug);
-  const mailSubject = `${suitePage.mailSubjectPrefix} ${suite.title}`;
   const marqueeLabel = `${suite.title} · Stintino · Sardegna · `;
   const { line1: titleLine1, line2: titleLine2 } = splitSuiteTitle(suite.title);
 
@@ -233,15 +232,12 @@ export function SuitePage() {
                 {suitePage.bookingTitle}
               </h2>
               <p className="suite-cta__text">{suitePage.bookingText}</p>
-              <a
-                className="suite-cta__btn"
-                href={`mailto:${config.email}?subject=${encodeURIComponent(mailSubject)}`}
-              >
+              <Link className="suite-cta__btn" to="/contatti">
                 <span className="suite-cta__btn-label">{suitePage.bookingCta}</span>
                 <span className="suite-cta__btn-arrow" aria-hidden>
                   →
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
 
