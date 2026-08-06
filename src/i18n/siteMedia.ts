@@ -52,12 +52,28 @@ export const siteLegal = {
   instagramUrl: 'https://www.instagram.com/residencelevele_stintino/',
 } as const;
 
+/**
+ * Single source of truth for map pin + Schema.org GeoCoordinates.
+ *
+ * TODO(owner): Confirm this pin against Google Business Profile / official survey.
+ * Temporary source (authoritative within this repo’s history): coordinates previously
+ * exposed by the embedded Google Maps place for the residence — NOT the discarded
+ * Schema-only pair 40.96913, 8.21387 (never used by the live address embed).
+ * External listings (~40.94625, 8.232777) fall in the same Cala Lupo area.
+ */
+export const SITE_GEO = {
+  latitude: 40.946053,
+  longitude: 8.232922,
+} as const;
+
+const geoQuery = `${SITE_GEO.latitude},${SITE_GEO.longitude}`;
+
 export const siteMapCoords = {
-  latitude: 40.96913,
-  longitude: 8.21387,
-  embedQuery: 'Via+Le+Vele+10-12,+07040+Stintino+SS',
-  hasMapUrl:
-    'https://www.google.com/maps/search/?api=1&query=Residence+Le+Vele+Via+Le+Vele+10-12+Stintino',
+  latitude: SITE_GEO.latitude,
+  longitude: SITE_GEO.longitude,
+  /** Used by GatedMap iframe and must stay in sync with SITE_GEO. */
+  embedQuery: geoQuery,
+  hasMapUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(geoQuery)}`,
   placeholderImage: CALA_LUPO,
 } as const;
 

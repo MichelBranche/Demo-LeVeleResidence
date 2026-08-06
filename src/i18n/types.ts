@@ -26,6 +26,10 @@ export type LocaleCopy = {
   hero: {
     kicker: string;
     titleLines: readonly [string, string];
+    /** Discreet brand + place line under the regional kicker. */
+    locationLine: string;
+    /** Short stay promise under the location line. */
+    microLine: string;
     tagline: string;
     lede: string;
     scrollAria: string;
@@ -118,6 +122,8 @@ export type LocaleCopy = {
   offers: {
     sectionEyebrow: string;
     sectionTitle: string;
+    /** Neutral, verifiable benefit under the section title (no invented discounts). */
+    sectionBenefit: string;
     items: readonly { title: string; period: string; badge: string; description: string }[];
   };
   infoServices: {

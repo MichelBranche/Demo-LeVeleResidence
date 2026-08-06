@@ -14,6 +14,8 @@ export const it: LocaleCopy = {
   hero: {
     kicker: 'Sardegna, Nord-Ovest',
     titleLines: ['Oltre', "l'Orizzonte"],
+    locationLine: 'Residence Le Vele · Cala Lupo, Stintino',
+    microLine: 'Monolocali con terrazza o giardino, a 300 m dal mare.',
     tagline: 'La tua prossima vacanza, comincia qui …',
     lede:
       "Residence Le Vele a Stintino: appartamenti vacanze in Sardegna per soggiorni vicino al mare. Natura selvaggia, fondali limpidi e sabbia candida — uno dei mari più belli dell'isola.",
@@ -108,14 +110,14 @@ export const it: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Kit di cortesia' },
           { icon: 'ac', label: 'Aria condizionata' },
           { icon: 'wifi', label: 'Connessione internet Wi-Fi' },
-          { icon: 'parking', label: 'Parcheggio gratuito' },
+          // TODO(owner): confirm "non custodito" is accurate for guest parking.
+          { icon: 'parking', label: 'Parcheggio gratuito non custodito' },
         ],
       },
       {
         id: 'paid',
         title: 'Servizi a pagamento',
         items: [
-          { icon: 'parking-paid', label: 'Parcheggio non custodito' },
           { icon: 'extra-cleaning', label: 'Pulizie extra della camera' },
           { icon: 'laundry', label: 'Lavanderia' },
           { icon: 'transport', label: 'Servizi di trasporto' },
@@ -190,7 +192,7 @@ export const it: LocaleCopy = {
       ],
       listLabel: 'Giardino',
       discoverAria: 'Scopri Con Vista Giardino',
-      exploreCta: 'Esplora la suite',
+      exploreCta: 'Scopri il monolocale',
       galleryKicker: 'Il monolocale · vista giardino',
       galleryTitle: 'Full immersion',
     },
@@ -229,7 +231,7 @@ export const it: LocaleCopy = {
       ],
       listLabel: 'Mare',
       discoverAria: 'Scopri Con Vista Mare',
-      exploreCta: 'Esplora la suite',
+      exploreCta: 'Scopri il monolocale',
       galleryKicker: 'Il monolocale · vista mare',
       galleryTitle: 'Full immersion',
     },
@@ -254,6 +256,7 @@ export const it: LocaleCopy = {
   offers: {
     sectionEyebrow: 'Pacchetti',
     sectionTitle: 'Offerte & soggiorni',
+    sectionBenefit: 'Disponibilità e tariffe aggiornate in tempo reale.',
     items: [
       {
         title: 'Pacchetto Coppia Relax',
@@ -270,11 +273,11 @@ export const it: LocaleCopy = {
           'Soggiorno in formula 4 ospiti con tariffa agevolata per permanenze settimanali e supporto dedicato per escursioni.',
       },
       {
-        title: 'Miglior prezzo garantito',
-        period: 'Prenotazione diretta',
-        badge: 'Garanzia diretta',
+        title: 'Prenotazione diretta',
+        period: 'Sul sito ufficiale',
+        badge: 'Diretta',
         description:
-          'Prenota sul sito o via email per ottenere la tariffa più vantaggiosa, senza commissioni di intermediari.',
+          'Disponibilità e tariffe aggiornate in tempo reale sul motore di prenotazione.',
       },
     ],
   },
@@ -538,8 +541,8 @@ export const it: LocaleCopy = {
       'Scrivici per date, numero di ospiti e preferenze — ti rispondiamo con un preventivo personalizzato.',
     bookingCta: 'Richiedi preventivo',
     mailSubjectPrefix: 'Prenotazione',
-    otherSuite: 'Altra suite',
-    allSuites: '← Tutte le suites',
+    otherSuite: 'Altro monolocale',
+    allSuites: '← Tutti i monolocali',
     heroAltSuffix: '— monolocale vacanze Stintino, Residence Le Vele',
   },
   header: {

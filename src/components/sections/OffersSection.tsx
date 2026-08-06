@@ -42,6 +42,7 @@ export function OffersSection() {
         <h2 id="offers-title" className="section-title">
           {offers.sectionTitle}
         </h2>
+        <p className="offers-benefit body-text">{offers.sectionBenefit}</p>
         {slopeEnabled && !useFallback ? (
           <SlopePromotionsWidget locale={locale} onError={handleSlopeError} />
         ) : (

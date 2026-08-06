@@ -14,6 +14,8 @@ export const zh: LocaleCopy = {
   hero: {
     kicker: '撒丁岛，西北部',
     titleLines: ['超越', '地平线'],
+    locationLine: 'Residence Le Vele · Cala Lupo, Stintino',
+    microLine: '带露台或花园的单间公寓，距海 300 米。',
     tagline: '您的下一次假期，从这里开始 …',
     lede:
       'Residence Le Vele 位于 Stintino：撒丁岛海滨度假公寓，亲近大海。原始自然、清澈海水与洁白沙滩——岛上最美的海域之一。',
@@ -108,14 +110,13 @@ export const zh: LocaleCopy = {
           { icon: 'courtesy-kit', label: '客用洗漱套装' },
           { icon: 'ac', label: '空调' },
           { icon: 'wifi', label: 'Wi-Fi 网络连接' },
-          { icon: 'parking', label: '免费停车位' },
+          { icon: 'parking', label: '免费非看守停车位' },
         ],
       },
       {
         id: 'paid',
         title: '付费服务',
         items: [
-          { icon: 'parking-paid', label: '无看守停车位' },
           { icon: 'extra-cleaning', label: '额外客房清洁' },
           { icon: 'laundry', label: '洗衣服务' },
           { icon: 'transport', label: '交通服务' },
@@ -190,7 +191,7 @@ export const zh: LocaleCopy = {
       ],
       listLabel: '园景',
       discoverAria: '探索园景',
-      exploreCta: '探索套房',
+      exploreCta: '了解单间公寓',
       galleryKicker: '工作室 · 园景',
       galleryTitle: '沉浸体验',
     },
@@ -229,7 +230,7 @@ export const zh: LocaleCopy = {
       ],
       listLabel: '海景',
       discoverAria: '探索海景',
-      exploreCta: '探索套房',
+      exploreCta: '了解单间公寓',
       galleryKicker: '工作室 · 海景',
       galleryTitle: '沉浸体验',
     },
@@ -254,6 +255,7 @@ export const zh: LocaleCopy = {
   offers: {
     sectionEyebrow: '套餐',
     sectionTitle: '优惠与住宿',
+    sectionBenefit: '实时更新的房态与房价。',
     items: [
       {
         title: '情侣放松套餐',
@@ -270,11 +272,11 @@ export const zh: LocaleCopy = {
           '4 位住客入住，周租享优惠价格，并提供游览专属协助。',
       },
       {
-        title: '最优价格保证',
-        period: '直接预订',
-        badge: '直接预订保障',
+        title: '官网直接预订',
+        period: '官方网站',
+        badge: '直订',
         description:
-          '通过本网站或电子邮件预订，享受最优价格，无第三方手续费。',
+          '预订引擎中的房态与房价实时更新。',
       },
     ],
   },
@@ -538,8 +540,8 @@ export const zh: LocaleCopy = {
       '请告知日期、住客人数与偏好——我们将回复个性化报价。',
     bookingCta: '索取报价',
     mailSubjectPrefix: '预订',
-    otherSuite: '其他套房',
-    allSuites: '← 全部套房',
+    otherSuite: '其他单间',
+    allSuites: '← 全部单间公寓',
     heroAltSuffix: '— Stintino 度假工作室，Residence Le Vele',
   },
   header: {

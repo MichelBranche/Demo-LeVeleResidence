@@ -4,9 +4,11 @@ const MUX_STREAM_BASE = 'https://stream.mux.com';
 const LOCAL_HERO_FALLBACK = asset('/Hero-Video.mp4?v=5');
 
 /** Playback ID Mux — override con VITE_MUX_HERO_PLAYBACK_ID in produzione. */
+const muxFromVite = import.meta.env?.VITE_MUX_HERO_PLAYBACK_ID as string | undefined;
+const muxFromNode = (globalThis as { process?: { env?: Record<string, string | undefined> } })
+  .process?.env?.VITE_MUX_HERO_PLAYBACK_ID;
 const MUX_HERO_PLAYBACK_ID =
-  (import.meta.env.VITE_MUX_HERO_PLAYBACK_ID as string | undefined)?.trim() ||
-  'LowyOggTofZ1rqZxKkT4mdeUHTzdW007W61UaghsNf01c';
+  (muxFromVite || muxFromNode)?.trim() || 'LowyOggTofZ1rqZxKkT4mdeUHTzdW007W61UaghsNf01c';
 
 export function getHeroVideoUrl(): string {
   if (MUX_HERO_PLAYBACK_ID) {

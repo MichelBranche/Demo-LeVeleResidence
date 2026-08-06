@@ -32,6 +32,11 @@ function upsertLink(rel: string, href: string) {
   el.href = href;
 }
 
+/**
+ * No hreflang: locales are client-side UI translations on the same URL,
+ * not separate translated documents. Do not emit fake alternate language URLs.
+ */
+
 export function PageSeo() {
   const { pathname } = useLocation();
   const { locale } = useSiteLocale();

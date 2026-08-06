@@ -1,13 +1,57 @@
+import fs from 'node:fs'
 import path from 'node:path'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, type Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
+import { SITEMAP_PATHS, resolveSiteUrl } from './src/lib/siteUrl'
 
-const DEFAULT_SITE_URL = 'https://www.rtalevele.com'
 const OG_IMAGE_PATH = '/images/og-share.webp'
 
 function siteUrlFromEnv(mode: string): string {
   const env = loadEnv(mode, process.cwd(), '')
-  return (env.VITE_SITE_URL || DEFAULT_SITE_URL).replace(/\/$/, '')
+  // Prefer VITE_SITE_URL (client); SITE_URL accepted as deploy alias.
+  return resolveSiteUrl(env.VITE_SITE_URL || env.SITE_URL)
+}
+
+function buildSitemapXml(siteUrl: string, lastmod: string): string {
+  const urls = SITEMAP_PATHS.map((p) => {
+    const loc = p === '/' ? `${siteUrl}/` : `${siteUrl}${p}`
+    const priority =
+      p === '/' ? '1.0' : p === '/prenota' ? '0.9' : p.startsWith('/camere/') ? '0.75' : '0.7'
+    const changefreq = p === '/' || p === '/prenota' ? 'weekly' : 'monthly'
+    return `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`
+  }).join('\n')
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>
+`
+}
+
+function seoStaticFilesPlugin(siteUrl: string): Plugin {
+  const lastmod = new Date().toISOString().slice(0, 10)
+  const writeDistFiles = (outDir: string) => {
+    fs.mkdirSync(outDir, { recursive: true })
+    fs.writeFileSync(
+      path.join(outDir, 'robots.txt'),
+      `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`,
+      'utf8',
+    )
+    fs.writeFileSync(path.join(outDir, 'sitemap.xml'), buildSitemapXml(siteUrl, lastmod), 'utf8')
+  }
+
+  return {
+    name: 'seo-static-files',
+    writeBundle() {
+      const outDir = path.resolve(__dirname, 'dist')
+      writeDistFiles(outDir)
+    },
+  }
 }
 
 function htmlSiteMeta(siteUrl: string) {
@@ -46,6 +90,7 @@ export default defineConfig(({ mode }) => {
             .replaceAll('%OG_SITE_NAME%', meta.siteName)
         },
       },
+      seoStaticFilesPlugin(siteUrl),
     ],
     resolve: {
       alias: {

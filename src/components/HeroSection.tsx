@@ -28,6 +28,12 @@ export function HeroSection() {
         <p className="hero-kicker">
           <HeroRevealLine>{hero.kicker}</HeroRevealLine>
         </p>
+        <p className="hero-place">
+          <HeroRevealLine>{hero.locationLine}</HeroRevealLine>
+        </p>
+        <p className="hero-micro">
+          <HeroRevealLine>{hero.microLine}</HeroRevealLine>
+        </p>
         <p className="hero-tagline">
           <HeroRevealLine>{hero.tagline}</HeroRevealLine>
         </p>

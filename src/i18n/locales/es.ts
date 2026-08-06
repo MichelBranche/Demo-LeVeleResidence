@@ -14,6 +14,8 @@ export const es: LocaleCopy = {
   hero: {
     kicker: 'Cerdeña, Noroeste',
     titleLines: ['Más allá', 'del horizonte'],
+    locationLine: 'Residence Le Vele · Cala Lupo, Stintino',
+    microLine: 'Estudios con terraza o jardín, a 300 m del mar.',
     tagline: 'Sus próximas vacaciones empiezan aquí …',
     lede:
       'Residence Le Vele en Stintino: apartamentos de vacaciones en Cerdeña para estancias cerca del mar. Naturaleza salvaje, fondos marinos cristalinos y arena blanca — uno de los mares más bellos de la isla.',
@@ -108,14 +110,13 @@ export const es: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Kit de cortesía' },
           { icon: 'ac', label: 'Aire acondicionado' },
           { icon: 'wifi', label: 'Conexión a internet Wi-Fi' },
-          { icon: 'parking', label: 'Aparcamiento gratuito' },
+          { icon: 'parking', label: 'Aparcamiento gratuito no vigilado' },
         ],
       },
       {
         id: 'paid',
         title: 'Servicios de pago',
         items: [
-          { icon: 'parking-paid', label: 'Aparcamiento no vigilado' },
           { icon: 'extra-cleaning', label: 'Limpieza extra de la habitación' },
           { icon: 'laundry', label: 'Lavandería' },
           { icon: 'transport', label: 'Servicios de transporte' },
@@ -190,7 +191,7 @@ export const es: LocaleCopy = {
       ],
       listLabel: 'Jardín',
       discoverAria: 'Descubrir Con Vista Jardín',
-      exploreCta: 'Explorar la suite',
+      exploreCta: 'Descubre el estudio',
       galleryKicker: 'El estudio · vista jardín',
       galleryTitle: 'Inmersión total',
     },
@@ -229,7 +230,7 @@ export const es: LocaleCopy = {
       ],
       listLabel: 'Mar',
       discoverAria: 'Descubrir Con Vista Mar',
-      exploreCta: 'Explorar la suite',
+      exploreCta: 'Descubre el estudio',
       galleryKicker: 'El estudio · vista mar',
       galleryTitle: 'Inmersión total',
     },
@@ -254,6 +255,7 @@ export const es: LocaleCopy = {
   offers: {
     sectionEyebrow: 'Paquetes',
     sectionTitle: 'Ofertas y estancias',
+    sectionBenefit: 'Disponibilidad y tarifas actualizadas en tiempo real.',
     items: [
       {
         title: 'Paquete Pareja Relax',
@@ -270,11 +272,11 @@ export const es: LocaleCopy = {
           'Estancia para 4 huéspedes con tarifa reducida para reservas semanales y asistencia dedicada para excursiones.',
       },
       {
-        title: 'Mejor precio garantizado',
-        period: 'Reserva directa',
-        badge: 'Garantía directa',
+        title: 'Reserva directa',
+        period: 'En el sitio oficial',
+        badge: 'Directa',
         description:
-          'Reserva en nuestra web o por correo para obtener la mejor tarifa, sin comisiones de intermediarios.',
+          'Disponibilidad y tarifas actualizadas en tiempo real en el motor de reservas.',
       },
     ],
   },
@@ -538,8 +540,8 @@ export const es: LocaleCopy = {
       'Escríbanos con fechas, número de huéspedes y preferencias — le responderemos con un presupuesto personalizado.',
     bookingCta: 'Solicitar presupuesto',
     mailSubjectPrefix: 'Reserva',
-    otherSuite: 'Otra suite',
-    allSuites: '← Todas las suites',
+    otherSuite: 'Otro estudio',
+    allSuites: '← Todos los estudios',
     heroAltSuffix: '— estudio de vacaciones Stintino, Residence Le Vele',
   },
   header: {

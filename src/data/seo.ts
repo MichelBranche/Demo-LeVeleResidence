@@ -1,8 +1,19 @@
 import { getLocaleCopy, getSiteContent } from '../i18n';
 import { siteConfig, siteMapCoords } from '../i18n/siteMedia';
 import type { SiteLocale } from '../lib/siteLocales';
+import { resolveSiteUrl, toAbsoluteUrl } from '../lib/siteUrl';
 import { normalizePathname } from './routes';
-const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://www.rtalevele.com';
+
+/** Canonical site origin — set VITE_SITE_URL (or SITE_URL at build) in production. */
+function readSiteUrlEnv(): string | undefined {
+  const viteUrl = import.meta.env?.VITE_SITE_URL;
+  if (typeof viteUrl === 'string' && viteUrl.trim()) return viteUrl;
+  const nodeProcess = (globalThis as { process?: { env?: Record<string, string | undefined> } })
+    .process;
+  return nodeProcess?.env?.VITE_SITE_URL || nodeProcess?.env?.SITE_URL;
+}
+
+export const SITE_URL = resolveSiteUrl(readSiteUrlEnv());
 
 /** Immagine anteprima social (Open Graph / WhatsApp / iMessage). */
 export const OG_IMAGE_PATH = '/images/og-share.webp';
@@ -62,9 +73,7 @@ export function getSeoForPath(pathname: string, locale: SiteLocale = 'it'): Page
 }
 
 export function absoluteUrl(path: string): string {
-  const base = SITE_URL.replace(/\/$/, '');
-  const normalized = path.startsWith('/') ? path : `/${path}`;
-  return `${base}${normalized}`;
+  return toAbsoluteUrl(SITE_URL, path);
 }
 
 export function buildLodgingSchema(locale: SiteLocale = 'it') {
@@ -117,7 +126,8 @@ export function buildLodgingSchema(locale: SiteLocale = 'it') {
       description: a.description,
     })),
     numberOfRooms: 18,
-    checkinTime: '15:00',
+    // Aligned with on-site copy (info & condizioni): check-in from 15:30.
+    checkinTime: '15:30',
     checkoutTime: '10:00',
   };
 }

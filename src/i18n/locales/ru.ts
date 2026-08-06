@@ -14,6 +14,8 @@ export const ru: LocaleCopy = {
   hero: {
     kicker: 'Сардиния, северо-запад',
     titleLines: ['За', 'горизонтом'],
+    locationLine: 'Residence Le Vele · Cala Lupo, Stintino',
+    microLine: 'Студии с террасой или садом, в 300 м от моря.',
     tagline: 'Ваш следующий отпуск начинается здесь …',
     lede:
       'Residence Le Vele в Stintino: апартаменты для отдыха на Сардинии у моря. Дикая природа, кристально чистая вода и белый песок — одно из самых красивых морей острова.',
@@ -108,14 +110,13 @@ export const ru: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Набор гостевых принадлежностей' },
           { icon: 'ac', label: 'Кондиционер' },
           { icon: 'wifi', label: 'Подключение к Wi-Fi' },
-          { icon: 'parking', label: 'Бесплатная парковка' },
+          { icon: 'parking', label: 'Бесплатная неохраняемая парковка' },
         ],
       },
       {
         id: 'paid',
         title: 'Платные услуги',
         items: [
-          { icon: 'parking-paid', label: 'Неохраняемая парковка' },
           { icon: 'extra-cleaning', label: 'Дополнительная уборка номера' },
           { icon: 'laundry', label: 'Прачечная' },
           { icon: 'transport', label: 'Транспортные услуги' },
@@ -190,7 +191,7 @@ export const ru: LocaleCopy = {
       ],
       listLabel: 'Сад',
       discoverAria: 'Открыть вид на сад',
-      exploreCta: 'Изучить студию',
+      exploreCta: 'Узнать о студии',
       galleryKicker: 'Студия · вид на сад',
       galleryTitle: 'Полное погружение',
     },
@@ -229,7 +230,7 @@ export const ru: LocaleCopy = {
       ],
       listLabel: 'Море',
       discoverAria: 'Открыть вид на море',
-      exploreCta: 'Изучить студию',
+      exploreCta: 'Узнать о студии',
       galleryKicker: 'Студия · вид на море',
       galleryTitle: 'Полное погружение',
     },
@@ -254,6 +255,7 @@ export const ru: LocaleCopy = {
   offers: {
     sectionEyebrow: 'Пакеты',
     sectionTitle: 'Предложения и проживание',
+    sectionBenefit: 'Доступность и тарифы обновляются в реальном времени.',
     items: [
       {
         title: 'Пакет Couple Relax',
@@ -270,11 +272,11 @@ export const ru: LocaleCopy = {
           'Проживание для 4 гостей со сниженным тарифом при недельном бронировании и персональной поддержкой при организации экскурсий.',
       },
       {
-        title: 'Гарантия лучшей цены',
-        period: 'Прямое бронирование',
-        badge: 'Прямая гарантия',
+        title: 'Прямое бронирование',
+        period: 'На официальном сайте',
+        badge: 'Прямо',
         description:
-          'Бронируйте через наш сайт или по электронной почте, чтобы получить лучшую цену без комиссий посредников.',
+          'Доступность и тарифы обновляются в реальном времени в системе бронирования.',
       },
     ],
   },

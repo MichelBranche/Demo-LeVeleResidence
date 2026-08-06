@@ -14,6 +14,8 @@ export const fr: LocaleCopy = {
   hero: {
     kicker: 'Sardaigne, Nord-Ouest',
     titleLines: ['Au-delà', "de l'horizon"],
+    locationLine: 'Residence Le Vele · Cala Lupo, Stintino',
+    microLine: 'Studios avec terrasse ou jardin, à 300 m de la mer.',
     tagline: 'Vos prochaines vacances commencent ici …',
     lede:
       'Residence Le Vele à Stintino : appartements de vacances en Sardaigne pour des séjours près de la mer. Nature sauvage, fonds marins limpides et sable blanc — l\'une des plus belles mers de l\'île.',
@@ -108,14 +110,13 @@ export const fr: LocaleCopy = {
           { icon: 'courtesy-kit', label: 'Kit de courtoisie' },
           { icon: 'ac', label: 'Climatisation' },
           { icon: 'wifi', label: 'Connexion internet Wi-Fi' },
-          { icon: 'parking', label: 'Parking gratuit' },
+          { icon: 'parking', label: 'Parking gratuit non gardé' },
         ],
       },
       {
         id: 'paid',
         title: 'Services payants',
         items: [
-          { icon: 'parking-paid', label: 'Parking non gardé' },
           { icon: 'extra-cleaning', label: 'Ménage supplémentaire de la chambre' },
           { icon: 'laundry', label: 'Blanchisserie' },
           { icon: 'transport', label: 'Services de transport' },
@@ -190,7 +191,7 @@ export const fr: LocaleCopy = {
       ],
       listLabel: 'Jardin',
       discoverAria: 'Découvrir Vue Jardin',
-      exploreCta: 'Explorer la suite',
+      exploreCta: 'Découvrir le studio',
       galleryKicker: 'Le monolocale · vue jardin',
       galleryTitle: 'Immersion totale',
     },
@@ -229,7 +230,7 @@ export const fr: LocaleCopy = {
       ],
       listLabel: 'Mer',
       discoverAria: 'Découvrir Vue Mer',
-      exploreCta: 'Explorer la suite',
+      exploreCta: 'Découvrir le studio',
       galleryKicker: 'Le monolocale · vue mer',
       galleryTitle: 'Immersion totale',
     },
@@ -254,6 +255,7 @@ export const fr: LocaleCopy = {
   offers: {
     sectionEyebrow: 'Forfaits',
     sectionTitle: 'Offres & séjours',
+    sectionBenefit: 'Disponibilités et tarifs mis à jour en temps réel.',
     items: [
       {
         title: 'Forfait Couple Détente',
@@ -270,11 +272,11 @@ export const fr: LocaleCopy = {
           'Séjour pour 4 personnes avec tarif réduit pour les réservations hebdomadaires et accompagnement dédié pour les excursions.',
       },
       {
-        title: 'Meilleur prix garanti',
-        period: 'Réservation directe',
-        badge: 'Garantie directe',
+        title: 'Réservation directe',
+        period: 'Sur le site officiel',
+        badge: 'Directe',
         description:
-          'Réservez sur notre site ou par e-mail pour bénéficier du meilleur tarif, sans frais d’intermédiaires.',
+          'Disponibilités et tarifs mis à jour en temps réel sur le moteur de réservation.',
       },
     ],
   },
@@ -538,8 +540,8 @@ export const fr: LocaleCopy = {
       'Écrivez-nous avec les dates, le nombre d\'hôtes et vos préférences — nous vous répondrons avec un devis personnalisé.',
     bookingCta: 'Demander un devis',
     mailSubjectPrefix: 'Réservation',
-    otherSuite: 'Autre suite',
-    allSuites: '← Toutes les suites',
+    otherSuite: 'Autre studio',
+    allSuites: '← Tous les studios',
     heroAltSuffix: '— studio de vacances Stintino, Residence Le Vele',
   },
   header: {

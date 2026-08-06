@@ -8,7 +8,8 @@
     "dev:vercel": "vercel dev",
     "generate-routes": "node scripts/generate-spa-routes.mjs",
     "prebuild": "npm run generate-routes",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run prerender",
+    "prerender": "tsx scripts/prerender.ts",
     "optimize-images": "node scripts/optimize-images.mjs",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -41,6 +42,7 @@
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
     "sharp": "^0.35.1",
+    "tsx": "^4.23.9",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12"
