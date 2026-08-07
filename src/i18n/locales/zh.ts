@@ -534,11 +534,13 @@ export const zh: LocaleCopy = {
     amenitiesEyebrow: '设施',
     amenitiesTitle: '一应俱全',
     galleryAria: '图库 {title}',
+    viewAllPhotos: '查看全部照片',
     bookingEyebrow: '预订',
     bookingTitle: '查询空房',
     bookingText:
       '请告知日期、住客人数与偏好——我们将回复个性化报价。',
     bookingCta: '索取报价',
+    bookingBookCta: '预订',
     mailSubjectPrefix: '预订',
     otherSuite: '其他单间',
     allSuites: '← 全部单间公寓',

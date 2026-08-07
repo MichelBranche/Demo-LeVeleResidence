@@ -534,11 +534,13 @@ export const en: LocaleCopy = {
     amenitiesEyebrow: 'Amenities',
     amenitiesTitle: 'Everything you need',
     galleryAria: 'Gallery {title}',
+    viewAllPhotos: 'See all photos',
     bookingEyebrow: 'Bookings',
     bookingTitle: 'Request availability',
     bookingText:
       'Write to us with dates, number of guests and preferences — we will reply with a personalised quote.',
     bookingCta: 'Request a quote',
+    bookingBookCta: 'Book',
     mailSubjectPrefix: 'Booking',
     otherSuite: 'Other studio',
     allSuites: '← All studios',

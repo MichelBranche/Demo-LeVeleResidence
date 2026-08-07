@@ -534,11 +534,13 @@ export const fr: LocaleCopy = {
     amenitiesEyebrow: 'Équipements',
     amenitiesTitle: 'Tout le nécessaire',
     galleryAria: 'Galerie {title}',
+    viewAllPhotos: 'Voir toutes les photos',
     bookingEyebrow: 'Réservations',
     bookingTitle: 'Demander la disponibilité',
     bookingText:
       'Écrivez-nous avec les dates, le nombre d\'hôtes et vos préférences — nous vous répondrons avec un devis personnalisé.',
     bookingCta: 'Demander un devis',
+    bookingBookCta: 'Réserver',
     mailSubjectPrefix: 'Réservation',
     otherSuite: 'Autre studio',
     allSuites: '← Tous les studios',

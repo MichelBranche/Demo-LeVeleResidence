@@ -1,0 +1,304 @@
+/**
+ * Site-wide hover micro-interactions (desktop / fine pointer only).
+ * Amplifies lift, scale, media zoom and link feedback without changing layout.
+ */
+
+:root {
+  --hover-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --hover-duration: 0.4s;
+  --hover-duration-fast: 0.28s;
+  --hover-lift: -4px;
+  --hover-lift-sm: -2px;
+  --hover-scale: 1.02;
+  --hover-scale-cta: 1.025;
+  --hover-media-scale: 1.045;
+  --hover-arrow: 6px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* —— Shared interactive easing —— */
+  .btn,
+  .site-header__cta,
+  .site-header__logo,
+  .site-header__lang,
+  .site-header__links a,
+  .suites__cta,
+  .suites__item,
+  .suites__media-stack,
+  .suite-back,
+  .suite-cta__btn,
+  .suite-cta__sibling,
+  .suite-cta__home,
+  .booking-page__submit,
+  .booking-page__picker-btn,
+  .booking-page__value-btn,
+  .booking-timepicker__pill,
+  .contact-page__cta--primary,
+  .contact-page__cta--ghost,
+  .contact-section__channel,
+  .pelosa-cta__btn--primary,
+  .pelosa-cta__btn--ghost,
+  .pelosa-hero__back,
+  .pelosa-gallery__item,
+  .offer-card,
+  .slope-promo-card-shell,
+  .slope-promo-card__cta,
+  .home-offer-popup__book,
+  .home-offer-popup__close,
+  .consent-btn,
+  .cookie-consent__chip,
+  .gated-map__enable,
+  .expandable-gallery__item,
+  .expandable-gallery__lead,
+  .expandable-gallery__lightbox-btn,
+  .reviews__platform,
+  .scroll-accordion__link,
+  .residence-services__item,
+  .residence-tilted__photo-pick-btn,
+  .mute-toggle,
+  .hero-scroll-cue,
+  .site-footer__nav-list a,
+  .site-footer__contact-list a,
+  .site-footer__social,
+  .site-footer__credit-link,
+  .site-footer__consent a,
+  .site-footer__consent button,
+  .legal-page a,
+  .error-fallback__btn {
+    transition-duration: var(--hover-duration);
+    transition-timing-function: var(--hover-ease);
+  }
+
+  /* —— Primary CTAs: lift + slight scale —— */
+  .btn:hover,
+  .site-header__cta:hover,
+  .suites__cta:hover,
+  .suite-cta__btn:hover,
+  .booking-page__submit:hover,
+  .contact-page__cta--primary:hover,
+  .pelosa-cta__btn--primary:hover,
+  .home-offer-popup__book:hover,
+  .consent-btn--primary:hover,
+  .gated-map__enable:hover,
+  .error-fallback__btn:hover {
+    transform: translateY(var(--hover-lift)) scale(var(--hover-scale-cta));
+  }
+
+  .suite-cta__btn--ghost:hover {
+    transform: translateY(var(--hover-lift-sm)) scale(var(--hover-scale));
+  }
+
+  .site-header__cta:hover .site-header__cta-arrow,
+  .suites__cta:hover .suites__cta-arrow,
+  .suite-cta__btn:hover .suite-cta__btn-arrow,
+  .booking-page__submit:hover .booking-page__submit-arrow {
+    transform: translateX(var(--hover-arrow));
+  }
+
+  /* —— Ghost / secondary —— */
+  .contact-page__cta--ghost:hover,
+  .pelosa-cta__btn--ghost:hover,
+  .consent-btn--ghost:hover,
+  .consent-btn--outline:hover,
+  .home-offer-popup__close:hover,
+  .booking-page__picker-btn:hover,
+  .booking-page__value-btn:hover,
+  .booking-timepicker__pill:hover {
+    transform: translateY(var(--hover-lift-sm)) scale(var(--hover-scale));
+  }
+
+  /* —— Cards & surfaces —— */
+  .offer-card:hover,
+  .suites__item:hover,
+  .slope-promo-card-shell:hover,
+  .contact-section__channel:hover {
+    transform: translateY(var(--hover-lift));
+  }
+
+  .slope-promo-card__cta:hover {
+    transform: translateY(var(--hover-lift-sm)) scale(var(--hover-scale));
+  }
+
+  .residence-services__item:hover {
+    transform: translateY(var(--hover-lift-sm));
+  }
+
+  /* —— Media zoom inside interactive frames —— */
+  .suites__media-stack--link,
+  .suites__media-stack,
+  .expandable-gallery__item img,
+  .expandable-gallery__lead img,
+  .pelosa-gallery__item img,
+  .suite-mosaic__lead img,
+  .suite-mosaic__wide img,
+  .suite-mosaic__tile img {
+    transition:
+      transform var(--hover-duration) var(--hover-ease),
+      filter var(--hover-duration) var(--hover-ease);
+  }
+
+  .suites__media:hover .suites__media-stack,
+  .suites__media-stack--link:hover {
+    transform: scale(var(--hover-media-scale));
+  }
+
+  .expandable-gallery__item:hover img,
+  .expandable-gallery__lead:hover img,
+  .pelosa-gallery__item:hover img {
+    transform: scale(var(--hover-media-scale));
+  }
+
+  /* —— Nav / text links —— */
+  .site-header__links a {
+    transition:
+      color var(--hover-duration-fast) var(--hover-ease),
+      transform var(--hover-duration) var(--hover-ease);
+  }
+
+  .site-header__links a:hover {
+    transform: translateY(-1px);
+  }
+
+  .site-header__logo:hover {
+    transform: scale(1.04);
+  }
+
+  .site-header__lang:hover {
+    transform: scale(1.06);
+  }
+
+  .site-footer__nav-list a,
+  .site-footer__contact-list a,
+  .site-footer__credit-link,
+  .legal-page a,
+  .booking-page__privacy a,
+  .cookie-consent__legal a,
+  .scroll-accordion__link {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0 1px;
+    transition:
+      color var(--hover-duration-fast) var(--hover-ease),
+      background-size var(--hover-duration) var(--hover-ease),
+      transform var(--hover-duration) var(--hover-ease),
+      opacity var(--hover-duration-fast) var(--hover-ease);
+  }
+
+  .site-footer__nav-list a:hover,
+  .site-footer__contact-list a:hover,
+  .site-footer__credit-link:hover,
+  .legal-page a:hover,
+  .booking-page__privacy a:hover,
+  .cookie-consent__legal a:hover,
+  .scroll-accordion__link:hover {
+    background-size: 100% 1px;
+    transform: translateY(-1px);
+  }
+
+  .site-footer__social:hover {
+    transform: translateY(var(--hover-lift-sm)) scale(1.06);
+  }
+
+  .reviews__platform:hover {
+    transform: translateY(var(--hover-lift-sm)) scale(var(--hover-scale));
+  }
+
+  /* —— Suite / Pelosa chrome —— */
+  .suite-back:hover,
+  .pelosa-hero__back:hover,
+  .suite-cta__home:hover {
+    transform: translateX(-3px);
+  }
+
+  .suite-cta__sibling:hover {
+    transform: translateY(var(--hover-lift-sm));
+  }
+
+  .suite-cta__sibling:hover .suite-cta__sibling-arrow {
+    transform: translateX(var(--hover-arrow));
+  }
+
+  /* —— Controls & chips —— */
+  .cookie-consent__chip:hover,
+  .consent-btn:hover,
+  .mute-toggle:hover,
+  .residence-tilted__photo-pick-btn:hover,
+  .expandable-gallery__lightbox-btn:hover,
+  .expandable-gallery__autoplay:hover:not(:disabled) {
+    transform: translateY(var(--hover-lift-sm)) scale(var(--hover-scale));
+  }
+
+  .hero-scroll-cue:hover {
+    transform: translateY(3px);
+  }
+
+  .hero-scroll-cue:hover .hero-scroll-mouse {
+    border-color: rgb(250 248 245 / 92%);
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .btn:hover,
+  .site-header__cta:hover,
+  .suites__cta:hover,
+  .suite-cta__btn:hover,
+  .booking-page__submit:hover,
+  .contact-page__cta--primary:hover,
+  .contact-page__cta--ghost:hover,
+  .pelosa-cta__btn--primary:hover,
+  .pelosa-cta__btn--ghost:hover,
+  .home-offer-popup__book:hover,
+  .home-offer-popup__close:hover,
+  .consent-btn--primary:hover,
+  .consent-btn--ghost:hover,
+  .consent-btn--outline:hover,
+  .consent-btn:hover,
+  .gated-map__enable:hover,
+  .error-fallback__btn:hover,
+  .offer-card:hover,
+  .suites__item:hover,
+  .slope-promo-card-shell:hover,
+  .slope-promo-card__cta:hover,
+  .contact-section__channel:hover,
+  .residence-services__item:hover,
+  .site-header__links a:hover,
+  .site-header__logo:hover,
+  .site-header__lang:hover,
+  .site-footer__nav-list a:hover,
+  .site-footer__contact-list a:hover,
+  .site-footer__credit-link:hover,
+  .site-footer__social:hover,
+  .reviews__platform:hover,
+  .suite-back:hover,
+  .pelosa-hero__back:hover,
+  .suite-cta__home:hover,
+  .suite-cta__sibling:hover,
+  .cookie-consent__chip:hover,
+  .mute-toggle:hover,
+  .residence-tilted__photo-pick-btn:hover,
+  .expandable-gallery__lightbox-btn:hover,
+  .expandable-gallery__autoplay:hover:not(:disabled),
+  .hero-scroll-cue:hover,
+  .booking-page__picker-btn:hover,
+  .booking-page__value-btn:hover,
+  .booking-timepicker__pill:hover {
+    transform: none;
+  }
+
+  .suites__media:hover .suites__media-stack,
+  .suites__media-stack--link:hover,
+  .expandable-gallery__item:hover img,
+  .expandable-gallery__lead:hover img,
+  .pelosa-gallery__item:hover img {
+    transform: none;
+  }
+
+  .site-header__cta:hover .site-header__cta-arrow,
+  .suites__cta:hover .suites__cta-arrow,
+  .suite-cta__btn:hover .suite-cta__btn-arrow,
+  .booking-page__submit:hover .booking-page__submit-arrow,
+  .suite-cta__sibling:hover .suite-cta__sibling-arrow {
+    transform: none;
+  }
+}

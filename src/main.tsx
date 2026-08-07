@@ -13,6 +13,7 @@ import './styles/mobile.css';
 import './styles/chrome.css';
 import './styles/route-transition.css';
 import './styles/error-fallback.css';
+import './styles/hover-interactions.css';
 
 const bootstrapLocale = readSiteLocale();
 applyDocumentLocale(bootstrapLocale);

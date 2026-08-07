@@ -433,7 +433,7 @@
   border-color: var(--header-cta-hover-border, var(--header-cta-border));
   background: var(--header-cta-hover-bg);
   color: var(--header-cta-hover-fg);
-  transform: translateY(-1px);
+  transform: translateY(-3px);
 }
 
 .site-header__cta:focus-visible {
@@ -462,7 +462,7 @@
 }
 
 .site-header__cta:hover .site-header__cta-arrow {
-  transform: translateX(3px);
+  transform: translateX(6px);
 }
 
 .home-page__sticky-header .site-header {

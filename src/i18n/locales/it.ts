@@ -535,11 +535,13 @@ export const it: LocaleCopy = {
     amenitiesEyebrow: 'Dotazioni',
     amenitiesTitle: 'Tutto il necessario',
     galleryAria: 'Galleria {title}',
+    viewAllPhotos: 'Vedi tutte le foto',
     bookingEyebrow: 'Prenotazioni',
     bookingTitle: 'Richiedi disponibilità',
     bookingText:
       'Scrivici per date, numero di ospiti e preferenze — ti rispondiamo con un preventivo personalizzato.',
     bookingCta: 'Richiedi preventivo',
+    bookingBookCta: 'Prenota',
     mailSubjectPrefix: 'Prenotazione',
     otherSuite: 'Altro monolocale',
     allSuites: '← Tutti i monolocali',

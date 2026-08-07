@@ -16,24 +16,21 @@ export function useSuitePageAnimations(pageRef: RefObject<HTMLElement | null>) {
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReduced) return;
 
-      const heroImg = page.querySelector<HTMLElement>('.suite-hero__img');
+      const mosaic = page.querySelector<HTMLElement>('.suite-mosaic');
       const lightMotion = isMobileViewport() || getNetworkTier() !== 'fast';
 
-      if (heroImg && !lightMotion) {
-        gsap.fromTo(
-          heroImg,
-          { scale: 1.14 },
-          {
-            scale: 1,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: page.querySelector('.suite-hero'),
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 1.1,
-            },
-          },
+      if (mosaic && !lightMotion) {
+        const cells = mosaic.querySelectorAll<HTMLElement>(
+          '.suite-mosaic__lead img, .suite-mosaic__wide img, .suite-mosaic__tile img',
         );
+        gsap.from(cells, {
+          opacity: 0,
+          y: 28,
+          duration: 0.9,
+          ease: 'power3.out',
+          stagger: 0.08,
+          clearProps: 'opacity,transform',
+        });
       }
 
       gsap.utils.toArray<HTMLElement>('[data-suite-reveal]', page).forEach((block) => {
@@ -68,22 +65,21 @@ export function useSuitePageAnimations(pageRef: RefObject<HTMLElement | null>) {
         });
       });
 
-      gsap.utils.toArray<HTMLElement>('.suite-amenities__item', page).forEach((item, index) => {
+      gsap.utils.toArray<HTMLElement>('.suite-features__item', page).forEach((item, index) => {
         gsap.from(item, {
-          y: 24,
+          y: 16,
           opacity: 0,
-          duration: 0.75,
+          duration: 0.65,
           ease: 'power3.out',
-          delay: (index % 4) * 0.05,
+          delay: (index % 6) * 0.04,
           clearProps: 'opacity,transform',
           scrollTrigger: {
             trigger: item,
-            start: 'top 90%',
+            start: 'top 92%',
             toggleActions: 'play none none none',
           },
         });
       });
-
     },
     { scope: pageRef, dependencies: [] },
   );

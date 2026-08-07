@@ -250,10 +250,12 @@ export type LocaleCopy = {
     amenitiesEyebrow: string;
     amenitiesTitle: string;
     galleryAria: string;
+    viewAllPhotos: string;
     bookingEyebrow: string;
     bookingTitle: string;
     bookingText: string;
     bookingCta: string;
+    bookingBookCta: string;
     mailSubjectPrefix: string;
     otherSuite: string;
     allSuites: string;

@@ -10,14 +10,8 @@ import { SuiteFeatureIcon } from '../components/SuiteFeatureIcon';
 import { ExpandableGallery } from '../components/ui/ExpandableGallery';
 import { getSuiteFeatureIcon } from '../lib/suiteFeatureIcons';
 
-function splitSuiteTitle(title: string) {
-  const parts = title.trim().split(/\s+/);
-  if (parts.length < 2) return { line1: title, line2: null as string | null };
-  return {
-    line1: parts.slice(0, -1).join(' '),
-    line2: parts[parts.length - 1] ?? null,
-  };
-}
+const MOSAIC_COUNT = 4;
+const FEATURE_PREVIEW = 6;
 
 export function SuitePage() {
   const { content } = useSiteLocale();
@@ -75,96 +69,158 @@ export function SuitePage() {
   }
 
   const otherSuite = suites.find((s) => s.slug !== suite.slug);
-  const marqueeLabel = `${suite.title} · Stintino · Sardegna · `;
-  const { line1: titleLine1, line2: titleLine2 } = splitSuiteTitle(suite.title);
+  const mosaicImages = suite.gallery.slice(0, MOSAIC_COUNT);
+  while (mosaicImages.length < MOSAIC_COUNT) {
+    mosaicImages.push({
+      src: suite.image,
+      alt: `${suite.title}${suitePage.heroAltSuffix}`,
+      layout: 'wide' as const,
+    });
+  }
+  const previewFeatures = suite.features.slice(0, FEATURE_PREVIEW);
+  const locationLine = `${suitePage.locationValue}, ${suitePage.locationLabel}`;
 
   return (
     <div
       key={slug}
       className={`suite-page suite-page--${suite.theme}`}
       ref={pageRef}
-      aria-labelledby="suite-hero-title"
+      aria-labelledby="suite-title"
     >
-      <section className="suite-hero">
-        <div className="suite-hero__media">
-          <img
-            className="suite-hero__img"
-            src={suite.image}
-            alt={`${suite.title}${suitePage.heroAltSuffix}`}
-            width={1024}
-            height={682}
-            fetchPriority="high"
-            decoding="async"
-          />
-        </div>
-        <div className="suite-hero__overlay" aria-hidden />
-        <div className="suite-hero__inner">
-          <Link to="/#suites" className="suite-hero__back">
-            {suitePage.backLink}
-          </Link>
-          <div className="suite-hero__content" data-suite-reveal-stagger>
-            <h1 id="suite-hero-title" className="suite-hero__title display-serif">
-              <span className="suite-hero__title-line">{titleLine1}</span>
-              {titleLine2 && (
-                <span className="suite-hero__title-line suite-hero__title-line--accent">
-                  {titleLine2}
-                </span>
-              )}
-            </h1>
-            <p className="suite-hero__tagline">{suite.tagline}</p>
-            <ul className="suite-hero__specs" aria-label={suitePage.specsAria}>
-              <li>
-                <span className="suite-hero__spec-value">{suitePage.guests}</span>
-                <span className="suite-hero__spec-label">{suitePage.guestsLabel}</span>
-              </li>
-              <li>
-                <span className="suite-hero__spec-value">{suitePage.locationValue}</span>
-                <span className="suite-hero__spec-label">{suitePage.locationLabel}</span>
-              </li>
-              <li>
-                <span className="suite-hero__spec-value">{suitePage.typeValue}</span>
-                <span className="suite-hero__spec-label">{suitePage.typeLabel}</span>
-              </li>
-            </ul>
-          </div>
-          <a href="#suite-story" className="suite-hero__scroll" aria-label={suitePage.scrollAria}>
-            <span className="suite-hero__scroll-line" aria-hidden />
-            <span>{suitePage.scrollLabel}</span>
-          </a>
-        </div>
-      </section>
+      <div className="suite-page__inner">
+        <Link to="/#suites" className="suite-back">
+          {suitePage.backLink}
+        </Link>
 
-      <div className="suite-marquee" aria-hidden>
-        <div className="suite-marquee__track">
-          <span>{marqueeLabel}</span>
-          <span>{marqueeLabel}</span>
-          <span>{marqueeLabel}</span>
-        </div>
+        <section
+          className="suite-mosaic"
+          aria-label={suitePage.galleryAria.replace('{title}', suite.title)}
+          data-suite-reveal
+        >
+          <a href="#suite-gallery" className="suite-mosaic__lead">
+            <img
+              src={mosaicImages[0].src}
+              alt={mosaicImages[0].alt}
+              width={900}
+              height={1200}
+              fetchPriority="high"
+              decoding="async"
+            />
+          </a>
+          <div className="suite-mosaic__side">
+            <a href="#suite-gallery" className="suite-mosaic__wide">
+              <img
+                src={mosaicImages[1].src}
+                alt={mosaicImages[1].alt}
+                width={1200}
+                height={800}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <div className="suite-mosaic__pair">
+              <a href="#suite-gallery" className="suite-mosaic__tile">
+                <img
+                  src={mosaicImages[2].src}
+                  alt={mosaicImages[2].alt}
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+              <a href="#suite-gallery" className="suite-mosaic__tile suite-mosaic__tile--more">
+                <img
+                  src={mosaicImages[3].src}
+                  alt={mosaicImages[3].alt}
+                  width={800}
+                  height={600}
+                  loading="lazy"
+                  decoding="async"
+                />
+                {suite.gallery.length > MOSAIC_COUNT ? (
+                  <span className="suite-mosaic__more">{suitePage.viewAllPhotos}</span>
+                ) : null}
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <header className="suite-header" data-suite-reveal-stagger>
+          <p className="suite-header__eyebrow">
+            <span>{suite.listLabel}</span>
+            <span aria-hidden>·</span>
+            <span>{locationLine}</span>
+          </p>
+          <h1 id="suite-title" className="suite-header__title display-serif">
+            {suite.title}
+          </h1>
+          <p className="suite-header__tagline">{suite.tagline}</p>
+          <ul className="suite-header__specs" aria-label={suitePage.specsAria}>
+            <li>
+              <span className="suite-header__spec-value">{suitePage.guests}</span>
+              <span className="suite-header__spec-label">{suitePage.guestsLabel}</span>
+            </li>
+            <li>
+              <span className="suite-header__spec-value">{suitePage.typeValue}</span>
+              <span className="suite-header__spec-label">{suitePage.typeLabel}</span>
+            </li>
+            <li>
+              <span className="suite-header__spec-value">{suitePage.locationValue}</span>
+              <span className="suite-header__spec-label">{suitePage.locationLabel}</span>
+            </li>
+          </ul>
+        </header>
+
+        <section className="suite-features" aria-labelledby="suite-features-title" data-suite-reveal>
+          <h2 id="suite-features-title" className="suite-features__title">
+            {suitePage.amenitiesTitle}
+          </h2>
+          <ul className="suite-features__list" role="list">
+            {previewFeatures.map((feature, i) => (
+              <li key={feature} className="suite-features__item">
+                <span className="suite-features__icon" aria-hidden>
+                  <SuiteFeatureIcon
+                    id={getSuiteFeatureIcon(suite.slug, i)}
+                    className="suite-features__icon-svg"
+                  />
+                </span>
+                <span className="suite-features__label">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="suite-overview" aria-labelledby="suite-overview-title">
+          <div className="suite-overview__copy" data-suite-reveal>
+            <p id="suite-overview-title" className="suite-overview__eyebrow">
+              {suitePage.experience}
+            </p>
+            <p className="suite-overview__lead">{suite.description}</p>
+            <p className="suite-overview__note">{suitePage.storyNote}</p>
+          </div>
+          <aside className="suite-overview__aside" data-suite-reveal>
+            <p className="suite-overview__booking-eyebrow">{suitePage.bookingEyebrow}</p>
+            <h2 className="suite-overview__booking-title">{suitePage.bookingTitle}</h2>
+            <p className="suite-overview__booking-text">{suitePage.bookingText}</p>
+            <div className="suite-overview__actions">
+              <Link className="suite-cta__btn" to="/prenota">
+                <span className="suite-cta__btn-label">{suitePage.bookingBookCta}</span>
+                <span className="suite-cta__btn-arrow" aria-hidden>
+                  →
+                </span>
+              </Link>
+              <Link className="suite-cta__btn suite-cta__btn--ghost" to="/contatti">
+                <span className="suite-cta__btn-label">{suitePage.bookingCta}</span>
+              </Link>
+            </div>
+          </aside>
+        </section>
       </div>
 
       <section
-        id="suite-story"
-        className="suite-story"
-        aria-labelledby="suite-story-label"
-      >
-        <div className="suite-story__inner">
-          <header className="suite-story__meta" data-suite-reveal>
-            <span className="suite-story__index" aria-hidden>
-              {suite.index}
-            </span>
-            <p id="suite-story-label" className="suite-story__label">
-              {suitePage.experience}
-            </p>
-          </header>
-          <div className="suite-story__content" data-suite-reveal>
-            <p className="suite-story__lead">{suite.description}</p>
-            <p className="suite-story__note">{suitePage.storyNote}</p>
-          </div>
-        </div>
-      </section>
-
-      <section
         ref={galleryRef}
+        id="suite-gallery"
         className="section section--gallery suite-gallery"
         aria-labelledby="suite-gallery-title"
       >
@@ -198,49 +254,11 @@ export function SuitePage() {
         </div>
       </section>
 
-      <section className="suite-amenities" aria-labelledby="suite-amenities-title">
-        <div className="suite-amenities__head" data-suite-reveal-stagger>
-          <p className="suite-amenities__eyebrow">{suitePage.amenitiesEyebrow}</p>
-          <h2 id="suite-amenities-title" className="suite-amenities__title display-serif">
-            {suitePage.amenitiesTitle}
-          </h2>
-        </div>
-        <ul className="suite-amenities__list" role="list">
-          {suite.features.map((feature, i) => (
-            <li key={feature} className="suite-amenities__item">
-              <div className="suite-amenities__icon-wrap" aria-hidden>
-                <SuiteFeatureIcon
-                  id={getSuiteFeatureIcon(suite.slug, i)}
-                  className="suite-amenities__icon"
-                />
-              </div>
-              <div className="suite-amenities__body">
-                <span className="suite-amenities__num">{String(i + 1).padStart(2, '0')}</span>
-                <span className="suite-amenities__name">{feature}</span>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="suite-cta" aria-labelledby="suite-cta-title">
+      <section className="suite-cta" aria-labelledby="suite-cta-nav-title">
         <div className="suite-cta__wrap">
-          <div className="suite-cta__panel" data-suite-reveal>
-            <div className="suite-cta__panel-inner">
-              <p className="suite-cta__eyebrow">{suitePage.bookingEyebrow}</p>
-              <h2 id="suite-cta-title" className="suite-cta__title">
-                {suitePage.bookingTitle}
-              </h2>
-              <p className="suite-cta__text">{suitePage.bookingText}</p>
-              <Link className="suite-cta__btn" to="/contatti">
-                <span className="suite-cta__btn-label">{suitePage.bookingCta}</span>
-                <span className="suite-cta__btn-arrow" aria-hidden>
-                  →
-                </span>
-              </Link>
-            </div>
-          </div>
-
+          <h2 id="suite-cta-nav-title" className="sr-only">
+            {suitePage.otherSuite}
+          </h2>
           <div className="suite-cta__nav">
             {otherSuite && (
               <Link

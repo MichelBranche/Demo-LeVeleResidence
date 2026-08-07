@@ -35,19 +35,19 @@ export function scrollToTop(immediate = true): void {
   });
 }
 
-/** Porta in cima alla hero suite (pathname /camere/* o alias /mare, /giardino, …). */
+/** Porta in cima alla pagina suite (pathname /camere/* o alias /mare, /giardino, …). */
 export function scrollToSuiteHero(immediate = true): void {
   scrollToTop(immediate);
 
-  const hero = document.querySelector<HTMLElement>('.suite-hero');
-  if (!hero) return;
+  const top = document.querySelector<HTMLElement>('.suite-page__inner, .suite-mosaic, .suite-page');
+  if (!top) return;
 
   if (lenisInstance) {
-    lenisInstance.scrollTo(hero, { immediate, offset: 0 });
+    lenisInstance.scrollTo(top, { immediate, offset: 0 });
     return;
   }
 
-  hero.scrollIntoView({ behavior: immediate ? 'instant' : 'smooth', block: 'start' });
+  top.scrollIntoView({ behavior: immediate ? 'instant' : 'smooth', block: 'start' });
 }
 
 const USER_SCROLL_ABORT_PX = 64;

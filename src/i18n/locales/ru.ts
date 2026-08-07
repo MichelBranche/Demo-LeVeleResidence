@@ -534,11 +534,13 @@ export const ru: LocaleCopy = {
     amenitiesEyebrow: 'Удобства',
     amenitiesTitle: 'Всё необходимое',
     galleryAria: 'Галерея {title}',
+    viewAllPhotos: 'Смотреть все фото',
     bookingEyebrow: 'Бронирование',
     bookingTitle: 'Запросить наличие',
     bookingText:
       'Напишите нам с датами, количеством гостей и предпочтениями — мы ответим персональным предложением.',
     bookingCta: 'Запросить предложение',
+    bookingBookCta: 'Забронировать',
     mailSubjectPrefix: 'Бронирование',
     otherSuite: 'Другая студия',
     allSuites: '← Все студии',

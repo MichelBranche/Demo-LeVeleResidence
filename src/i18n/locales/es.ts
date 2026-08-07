@@ -534,11 +534,13 @@ export const es: LocaleCopy = {
     amenitiesEyebrow: 'Equipamiento',
     amenitiesTitle: 'Todo lo necesario',
     galleryAria: 'Galería {title}',
+    viewAllPhotos: 'Ver todas las fotos',
     bookingEyebrow: 'Reservas',
     bookingTitle: 'Solicitar disponibilidad',
     bookingText:
       'Escríbanos con fechas, número de huéspedes y preferencias — le responderemos con un presupuesto personalizado.',
     bookingCta: 'Solicitar presupuesto',
+    bookingBookCta: 'Reservar',
     mailSubjectPrefix: 'Reserva',
     otherSuite: 'Otro estudio',
     allSuites: '← Todos los estudios',
