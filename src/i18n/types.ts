@@ -247,8 +247,6 @@ export type LocaleCopy = {
     scrollLabel: string;
     experience: string;
     storyNote: string;
-    amenitiesEyebrow: string;
-    amenitiesTitle: string;
     galleryAria: string;
     viewAllPhotos: string;
     bookingEyebrow: string;

@@ -531,8 +531,6 @@ export const es: LocaleCopy = {
     experience: 'La experiencia',
     storyNote:
       'Apartamento de vacaciones en la Residence Le Vele — Stintino, a pocos minutos de las playas más bellas del norte de Cerdeña.',
-    amenitiesEyebrow: 'Equipamiento',
-    amenitiesTitle: 'Todo lo necesario',
     galleryAria: 'Galería {title}',
     viewAllPhotos: 'Ver todas las fotos',
     bookingEyebrow: 'Reservas',

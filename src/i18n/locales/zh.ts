@@ -531,8 +531,6 @@ export const zh: LocaleCopy = {
     experience: '体验',
     storyNote:
       'Residence Le Vele 度假公寓 — Stintino，距撒丁岛西北部最美海滩仅数分钟。',
-    amenitiesEyebrow: '设施',
-    amenitiesTitle: '一应俱全',
     galleryAria: '图库 {title}',
     viewAllPhotos: '查看全部照片',
     bookingEyebrow: '预订',

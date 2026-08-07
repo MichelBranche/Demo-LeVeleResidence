@@ -531,8 +531,6 @@ export const ru: LocaleCopy = {
     experience: 'Впечатления',
     storyNote:
       'Апартамент для отдыха в Residence Le Vele — Stintino, в нескольких минутах от самых красивых пляжей северо-западной Сардинии.',
-    amenitiesEyebrow: 'Удобства',
-    amenitiesTitle: 'Всё необходимое',
     galleryAria: 'Галерея {title}',
     viewAllPhotos: 'Смотреть все фото',
     bookingEyebrow: 'Бронирование',

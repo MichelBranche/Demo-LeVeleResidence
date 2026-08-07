@@ -531,8 +531,6 @@ export const en: LocaleCopy = {
     experience: 'The experience',
     storyNote:
       'Holiday apartment at Residence Le Vele — Stintino, minutes from the most beautiful beaches of North Sardinia.',
-    amenitiesEyebrow: 'Amenities',
-    amenitiesTitle: 'Everything you need',
     galleryAria: 'Gallery {title}',
     viewAllPhotos: 'See all photos',
     bookingEyebrow: 'Bookings',

@@ -531,8 +531,6 @@ export const de: LocaleCopy = {
     experience: 'Das Erlebnis',
     storyNote:
       'Ferienwohnung in der Residence Le Vele — Stintino, wenige Minuten von den schönsten Stränden Nord-Sardiniens.',
-    amenitiesEyebrow: 'Ausstattung',
-    amenitiesTitle: 'Alles, was Sie brauchen',
     galleryAria: 'Galerie {title}',
     viewAllPhotos: 'Alle Fotos ansehen',
     bookingEyebrow: 'Buchungen',

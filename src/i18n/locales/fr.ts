@@ -531,8 +531,6 @@ export const fr: LocaleCopy = {
     experience: 'L\'expérience',
     storyNote:
       'Appartement de vacances à la Residence Le Vele — Stintino, à quelques minutes des plus belles plages du Nord de la Sardaigne.',
-    amenitiesEyebrow: 'Équipements',
-    amenitiesTitle: 'Tout le nécessaire',
     galleryAria: 'Galerie {title}',
     viewAllPhotos: 'Voir toutes les photos',
     bookingEyebrow: 'Réservations',

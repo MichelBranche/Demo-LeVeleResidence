@@ -8,10 +8,9 @@ import { useSiteLocale } from '../hooks/useSiteLocale';
 import { useSuitePageAnimations } from '../hooks/useSuitePageAnimations';
 import { SuiteFeatureIcon } from '../components/SuiteFeatureIcon';
 import { ExpandableGallery } from '../components/ui/ExpandableGallery';
-import { getSuiteFeatureIcon } from '../lib/suiteFeatureIcons';
+import { getSuiteFeatureIcon, SUITE_FEATURE_PREVIEW_INDICES } from '../lib/suiteFeatureIcons';
 
 const MOSAIC_COUNT = 4;
-const FEATURE_PREVIEW = 6;
 
 export function SuitePage() {
   const { content } = useSiteLocale();
@@ -77,7 +76,10 @@ export function SuitePage() {
       layout: 'wide' as const,
     });
   }
-  const previewFeatures = suite.features.slice(0, FEATURE_PREVIEW);
+  const previewFeatures = SUITE_FEATURE_PREVIEW_INDICES.flatMap((iconIndex) => {
+    const label = suite.features[iconIndex];
+    return label ? [{ label, iconIndex }] : [];
+  });
   const locationLine = `${suitePage.locationValue}, ${suitePage.locationLabel}`;
 
   return (
@@ -172,20 +174,17 @@ export function SuitePage() {
           </ul>
         </header>
 
-        <section className="suite-features" aria-labelledby="suite-features-title" data-suite-reveal>
-          <h2 id="suite-features-title" className="suite-features__title">
-            {suitePage.amenitiesTitle}
-          </h2>
+        <section className="suite-features" aria-label={suite.kicker} data-suite-reveal>
           <ul className="suite-features__list" role="list">
-            {previewFeatures.map((feature, i) => (
-              <li key={feature} className="suite-features__item">
+            {previewFeatures.map(({ label, iconIndex }) => (
+              <li key={label} className="suite-features__item">
                 <span className="suite-features__icon" aria-hidden>
                   <SuiteFeatureIcon
-                    id={getSuiteFeatureIcon(suite.slug, i)}
+                    id={getSuiteFeatureIcon(suite.slug, iconIndex)}
                     className="suite-features__icon-svg"
                   />
                 </span>
-                <span className="suite-features__label">{feature}</span>
+                <span className="suite-features__label">{label}</span>
               </li>
             ))}
           </ul>

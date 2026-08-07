@@ -316,16 +316,6 @@
   background: color-mix(in srgb, var(--suites-card-bg) 88%, white);
 }
 
-.suite-features__title {
-  margin: 0 0 1rem;
-  font-family: var(--font-body);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-
 .suite-features__list {
   list-style: none;
   margin: 0;
