@@ -176,14 +176,14 @@ export const suitesMedia = [
 ] as const;
 
 /**
- * Welcome gallery in #residence — the complex, then terraces.
- * `aerial` is the establishing shot (highlight lives in CSS/SVG, not in the file).
- * `full` / `wide` keep the photo’s aspect so edges are not cover-cropped.
- * The gozzo (`barca-vela-mare.webp`) is not here — it lives at the end of the sea-view suite gallery.
+ * Welcome gallery in #residence — sea aerial first, then the pool complex, then terraces.
+ * `aerial` marks the pool shot: the oval lives in CSS/SVG, not in the file.
+ * Every slide shares one cover crop. The gozzo (`barca-vela-mare.webp`) is not here —
+ * it lives at the end of the sea-view suite gallery.
  */
 export const residenceWelcomeMedia = [
-  { src: `${RESIDENCE_WELCOME}/drone-costa-piscina.webp`, frame: 'aerial' as const },
   { src: `${RESIDENCE_WELCOME}/drone-residence-mare.webp`, frame: 'full' as const },
+  { src: `${RESIDENCE_WELCOME}/drone-costa-piscina.webp`, frame: 'aerial' as const },
   { src: `${RESIDENCE_WELCOME}/drone-residence-tramonto.webp`, frame: 'full' as const },
   { src: `${RESIDENCE_WELCOME}/piazzetta-gazebi.webp`, frame: 'wide' as const },
   { src: `${GARDEN}/terrazza-giardino-vista-mare.webp`, frame: 'wide' as const },

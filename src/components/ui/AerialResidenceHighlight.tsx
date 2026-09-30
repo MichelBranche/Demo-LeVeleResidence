@@ -1,7 +1,7 @@
 /**
  * Soft oval over the residence cluster on the opening aerial.
  * Set to false to remove the highlight without touching the photo.
- * Mobile-only via CSS (`.residence-scroll__aerial-mark`).
+ * Same ring on desktop and mobile. Scroll behavior is unchanged.
  */
 export const SHOW_AERIAL_RESIDENCE_HIGHLIGHT = true;
 
