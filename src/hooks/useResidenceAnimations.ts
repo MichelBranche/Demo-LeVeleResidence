@@ -1,7 +1,7 @@
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import type { RefObject } from 'react';
+import { useEffect, type RefObject } from 'react';
 import { isMobileViewport } from '../lib/motion';
 import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 
@@ -62,6 +62,15 @@ function setupSlideDepth(
   );
 
   if (!img) return;
+
+  // Esterni del complesso: niente zoom/drift, altrimenti i bordi vengono tagliati.
+  if (
+    slide.classList.contains('residence-scroll__slide--full') ||
+    slide.classList.contains('residence-scroll__slide--wide') ||
+    slide.classList.contains('residence-scroll__slide--aerial')
+  ) {
+    return;
+  }
 
   // Immagine: ken-burns + drift laterale più marcato mentre la card attraversa il viewport.
   gsap.fromTo(
@@ -158,9 +167,10 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
       const galleryTrack = section.querySelector<HTMLElement>('.residence-scroll__track');
       const progressBar = section.querySelector<HTMLElement>('.residence-scroll__progress-bar');
 
-      if (gallery && galleryTrack) {
+      // Mobile: swipe orizzontale nativo (vedi useEffect). Il pin verticale
+      // lasciava la galleria a metà tra due foto.
+      if (gallery && galleryTrack && !mobile) {
         gallery.classList.add('is-pinned');
-        if (mobile) gallery.classList.add('is-pinned--mobile');
 
         const getDistance = () => Math.max(0, galleryTrack.scrollWidth - window.innerWidth);
 
@@ -192,4 +202,90 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
     },
     { scope: sectionRef, dependencies: [] },
   );
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || !isMobileViewport()) return;
+    return bindMobileResidenceGallery(section);
+  }, [sectionRef]);
+}
+
+/** Horizontal swipe + mandatory snap. Safari has no scrollsnapchange, so settle in JS. */
+function bindMobileResidenceGallery(section: HTMLElement) {
+  const viewport = section.querySelector<HTMLElement>('.residence-scroll__viewport');
+  const track = section.querySelector<HTMLElement>('.residence-scroll__track');
+  const progressBar = section.querySelector<HTMLElement>('.residence-scroll__progress-bar');
+  if (!viewport || !track) return;
+
+  const slides = () =>
+    Array.from(track.querySelectorAll<HTMLElement>('.residence-scroll__slide'));
+
+  const slideStart = (slide: HTMLElement) => {
+    const slideRect = slide.getBoundingClientRect();
+    const viewRect = viewport.getBoundingClientRect();
+    return slideRect.left - viewRect.left + viewport.scrollLeft;
+  };
+
+  const nearest = () => {
+    const items = slides();
+    const viewCenter = viewport.scrollLeft + viewport.clientWidth / 2;
+    let best = items[0];
+    let bestDist = Number.POSITIVE_INFINITY;
+    for (const slide of items) {
+      const center = slideStart(slide) + slide.offsetWidth / 2;
+      const dist = Math.abs(center - viewCenter);
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = slide;
+      }
+    }
+    return { best, bestDist };
+  };
+
+  const markActive = () => {
+    const { best } = nearest();
+    for (const slide of slides()) {
+      const active = slide === best;
+      slide.classList.toggle('is-active', active);
+    }
+    const max = viewport.scrollWidth - viewport.clientWidth;
+    const progress = max > 0 ? viewport.scrollLeft / max : 0;
+    if (progressBar) gsap.set(progressBar, { scaleX: progress });
+  };
+
+  let settling = false;
+  const settle = () => {
+    if (settling) return;
+    const { best, bestDist } = nearest();
+    if (!best || bestDist < 8) {
+      markActive();
+      return;
+    }
+    const left = slideStart(best) - (viewport.clientWidth - best.offsetWidth) / 2;
+    settling = true;
+    viewport.scrollTo({ left: Math.max(0, left), behavior: 'auto' });
+    window.setTimeout(() => {
+      settling = false;
+      markActive();
+    }, 140);
+  };
+
+  const onScroll = () => {
+    if (!settling) markActive();
+  };
+  const onScrollEnd = () => settle();
+  const onTouchEnd = () => {
+    window.setTimeout(settle, 140);
+  };
+
+  viewport.addEventListener('scroll', onScroll, { passive: true });
+  viewport.addEventListener('scrollend', onScrollEnd);
+  viewport.addEventListener('touchend', onTouchEnd, { passive: true });
+  markActive();
+
+  return () => {
+    viewport.removeEventListener('scroll', onScroll);
+    viewport.removeEventListener('scrollend', onScrollEnd);
+    viewport.removeEventListener('touchend', onTouchEnd);
+  };
 }

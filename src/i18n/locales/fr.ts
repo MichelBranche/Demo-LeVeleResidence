@@ -157,6 +157,7 @@ export const fr: LocaleCopy = {
     marquee: ['Vue mer', 'Vue jardin', 'Studios', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Afficher la photo de jour',
     cardToggleNightAria: 'Afficher la photo de nuit',
+    cardDayNightHint: 'Essaie',
   },
   suites: {
     'vista-giardino': {
@@ -227,6 +228,7 @@ export const fr: LocaleCopy = {
         'Détail intérieur du studio vue mer — Le Vele',
         'Salle de bain rénovée avec lavabo et finitions modernes — studio Le Vele',
         'Salle de bain rénovée avec grande douche walk-in — studio Le Vele',
+        'Barque à voile latine au large de la côte de Stintino',
       ],
       listLabel: 'Mer',
       discoverAria: 'Découvrir Vue Mer',
@@ -237,14 +239,15 @@ export const fr: LocaleCopy = {
   },
   residenceWelcome: {
     galleryAria: 'Galerie photo de la Residence Le Vele',
+    aerialCaption: 'Le complexe vu d\'en haut',
     imageAlts: [
-      'Vue aérienne au coucher du soleil de la Residence Le Vele avec place et jardins — Stintino',
-      'Terrasse privée avec pergola en bois, table et vue mer — Residence Le Vele',
       'Vue aérienne de la Residence Le Vele au bord de la mer — Stintino',
-      'Terrasses des studios avec pergola en bois et vue mer — Le Vele',
-      'Barque à voile latine au large de la côte de Stintino',
+      'Le complexe vu d\'en haut — vue aérienne de la Residence Le Vele avec piscine et côte, Stintino',
+      'Vue aérienne au coucher du soleil de la Residence Le Vele avec place et jardins — Stintino',
       'Place avec gazebos, parasols et vue mer — Residence Le Vele',
-      'Vue aérienne de la côte et de la plage — Residence Le Vele, Stintino',
+      'Terrasse face à la mer avec salon d\'extérieur et parasol — Residence Le Vele, Stintino',
+      'Terrasses des studios avec pergola en bois et vue mer — Le Vele',
+      'Terrasse privée avec pergola en bois, table et vue mer — Residence Le Vele',
     ],
     closeLabel: 'Fermer la galerie',
     prevLabel: 'Image précédente',

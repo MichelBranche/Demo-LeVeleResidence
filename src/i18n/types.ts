@@ -93,6 +93,7 @@ export type LocaleCopy = {
     marquee: readonly string[];
     cardToggleDayAria: string;
     cardToggleNightAria: string;
+    cardDayNightHint: string;
   };
   suites: Record<
     'vista-giardino' | 'vista-mare',
@@ -112,6 +113,8 @@ export type LocaleCopy = {
   >;
   residenceWelcome: {
     galleryAria: string;
+    /** Short on-slide caption for the opening aerial. */
+    aerialCaption: string;
     imageAlts: readonly string[];
     closeLabel: string;
     prevLabel: string;
