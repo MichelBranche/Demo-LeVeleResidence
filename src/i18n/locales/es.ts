@@ -246,7 +246,7 @@ export const es: LocaleCopy = {
       'Vista aérea al atardecer de la Residence Le Vele con plaza y jardines — Stintino',
       'Plaza con gazebos, sombrillas y vista al mar — Residence Le Vele',
       'Terraza al mar con salón exterior y sombrilla — Residence Le Vele, Stintino',
-      'Interior de estudio con cama y vista al mar desde la terraza — Residence Le Vele',
+      'Panorama desde la suite vista mar — Stintino, Cerdeña',
       'Veranda del estudio con desayuno y jardín — Residence Le Vele, Stintino',
     ],
     closeLabel: 'Cerrar galería',

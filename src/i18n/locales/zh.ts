@@ -246,7 +246,7 @@ export const zh: LocaleCopy = {
       '黄昏时分 Residence Le Vele 鸟瞰，广场与花园 — Stintino',
       '带凉亭、遮阳伞与海景的广场 — Residence Le Vele',
       '面海露台，配有休闲座椅与遮阳伞 — Residence Le Vele, Stintino',
-      '公寓室内：床铺与露台海景 — Residence Le Vele',
+      '海景套房全景 — Stintino，撒丁岛',
       '公寓凉廊：早餐与花园 — Residence Le Vele, Stintino',
     ],
     closeLabel: '关闭图库',

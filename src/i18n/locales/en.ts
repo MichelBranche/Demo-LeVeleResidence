@@ -246,7 +246,7 @@ export const en: LocaleCopy = {
       'Aerial golden-hour view of Residence Le Vele with piazza and gardens — Stintino',
       'Square with gazebos, umbrellas and sea view — Residence Le Vele',
       'Sea terrace with lounge seating and parasol — Residence Le Vele, Stintino',
-      'Studio interior with bed and sea view from the terrace — Residence Le Vele',
+      'Panorama from the sea-view suite — Stintino, Sardinia',
       'Studio veranda with breakfast table overlooking the garden — Residence Le Vele, Stintino',
     ],
     closeLabel: 'Close gallery',
