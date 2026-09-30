@@ -188,7 +188,7 @@ export const residenceWelcomeMedia = [
   { src: `${RESIDENCE_WELCOME}/piazzetta-gazebi.webp`, frame: 'wide' as const },
   { src: `${GARDEN}/terrazza-giardino-vista-mare.webp`, frame: 'wide' as const },
   { src: `${SEA}/29.webp`, frame: 'wide' as const },
-  { src: `${RESIDENCE_WELCOME}/interno-camera-02.webp`, frame: 'wide' as const },
+  { src: `${GARDEN}/veranda-giardino-tavolo.webp`, frame: 'wide' as const },
 ] as const;
 
 /** @deprecated Use residenceWelcomeMedia */

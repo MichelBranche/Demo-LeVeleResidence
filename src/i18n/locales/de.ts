@@ -247,7 +247,7 @@ export const de: LocaleCopy = {
       'Platz mit Pavillons, Sonnenschirmen und Meerblick — Residence Le Vele',
       'Meerterrasse mit Lounge und Sonnenschirm — Residence Le Vele, Stintino',
       'Panorama aus der Meerblick-Suite — Stintino, Sardinien',
-      'Studio-Veranda mit Frühstückstisch zum Garten — Residence Le Vele, Stintino',
+      'Essplatz auf der Veranda mit Mokka und Gartenblick — Gartenblick-Studio Le Vele',
     ],
     closeLabel: 'Galerie schließen',
     prevLabel: 'Vorheriges Bild',

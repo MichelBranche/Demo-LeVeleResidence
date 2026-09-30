@@ -248,7 +248,7 @@ export const it: LocaleCopy = {
       'Piazzetta con gazebi, ombrelloni e vista mare — Residence Le Vele',
       'Terrazza sul mare con salottino e ombrellone — Residence Le Vele, Stintino',
       'Panorama dalla suite vista mare — Stintino, Sardegna',
-      'Veranda del monolocale con colazione e giardino — Residence Le Vele, Stintino',
+      'Tavolo da pranzo in veranda con moka e vista giardino — monolocale vista giardino Le Vele',
     ],
     closeLabel: 'Chiudi galleria',
     prevLabel: 'Immagine precedente',

@@ -247,7 +247,7 @@ export const fr: LocaleCopy = {
       'Place avec gazebos, parasols et vue mer — Residence Le Vele',
       'Terrasse face à la mer avec salon d\'extérieur et parasol — Residence Le Vele, Stintino',
       'Panorama depuis la suite vue mer — Stintino, Sardaigne',
-      'Véranda du studio avec petit-déjeuner et jardin — Residence Le Vele, Stintino',
+      'Coin repas sur la véranda avec moka et vue jardin — studio vue jardin Le Vele',
     ],
     closeLabel: 'Fermer la galerie',
     prevLabel: 'Image précédente',
