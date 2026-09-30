@@ -858,6 +858,33 @@ button {
   margin-inline: clamp(1rem, 8vw, 2rem);
 }
 
+/* Full-complex and terrace frames keep the photo aspect (no side chop). */
+.residence-scroll__slide--full,
+.residence-scroll__slide--wide,
+.residence-scroll.is-pinned .residence-scroll__slide--full,
+.residence-scroll.is-pinned .residence-scroll__slide--wide {
+  height: auto;
+}
+
+.residence-scroll__slide--full {
+  aspect-ratio: 16 / 9;
+}
+
+.residence-scroll__slide--wide {
+  aspect-ratio: 3 / 2;
+}
+
+.residence-scroll__slide--full img,
+.residence-scroll__slide--wide img,
+.residence-scroll__slide--aerial img {
+  object-fit: cover;
+  object-position: center center;
+}
+
+.residence-scroll__aerial-mark {
+  display: none;
+}
+
 .residence__list {
   display: flex;
   flex-direction: column;

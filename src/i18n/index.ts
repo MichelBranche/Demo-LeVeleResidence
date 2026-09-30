@@ -58,7 +58,12 @@ export type SiteContent = Omit<LocaleCopy, 'suites'> & {
   siteMapCoords: typeof siteMapCoords;
   reviewLinks: typeof reviewLinks;
   suites: MergedSuite[];
-  residenceWelcomeImages: { src: string; alt: string }[];
+  residenceWelcomeImages: {
+    src: string;
+    alt: string;
+    caption?: string;
+    frame: (typeof residenceWelcomeMedia)[number]['frame'];
+  }[];
   /** @deprecated Use residenceWelcomeImages */
   galleryImages: { src: string; alt: string }[];
   contactPhotos: { src: string; alt: string }[];
@@ -112,6 +117,8 @@ export function getSiteContent(locale: SiteLocale): SiteContent {
   const residenceWelcomeImages = residenceWelcomeMedia.map((item, i) => ({
     src: item.src,
     alt: copy.residenceWelcome.imageAlts[i] ?? '',
+    caption: item.frame === 'aerial' ? copy.residenceWelcome.aerialCaption : undefined,
+    frame: item.frame,
   }));
 
   const galleryImages = residenceWelcomeImages;

@@ -112,6 +112,8 @@ export type LocaleCopy = {
   >;
   residenceWelcome: {
     galleryAria: string;
+    /** Short on-slide caption for the opening aerial. */
+    aerialCaption: string;
     imageAlts: readonly string[];
     closeLabel: string;
     prevLabel: string;

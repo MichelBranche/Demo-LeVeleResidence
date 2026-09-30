@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { AerialResidenceHighlight } from '../ui/AerialResidenceHighlight';
 import { useResidenceAnimations } from '../../hooks/useResidenceAnimations';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 
@@ -56,22 +57,25 @@ export function ResidenceSection() {
         aria-roledescription="carousel"
         aria-label={residenceWelcome.galleryAria}
       >
-        <div className="residence-scroll__viewport">
+        <div className="residence-scroll__viewport" tabIndex={0}>
           <div className="residence-scroll__track">
             {residenceWelcomeImages.map((image, index) => (
               <figure
-                className="residence-scroll__slide"
+                className={`residence-scroll__slide residence-scroll__slide--${image.frame}`}
                 key={image.src}
                 data-index={index + 1}
               >
                 <img
                   src={image.src}
                   alt={image.alt}
-                  loading="lazy"
+                  loading={index === 0 ? 'eager' : 'lazy'}
                   decoding="async"
                   draggable={false}
                 />
-                <figcaption className="residence-scroll__caption">{image.alt}</figcaption>
+                {image.frame === 'aerial' ? <AerialResidenceHighlight /> : null}
+                <figcaption className="residence-scroll__caption">
+                  {image.caption ?? image.alt}
+                </figcaption>
               </figure>
             ))}
           </div>
