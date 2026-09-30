@@ -157,6 +157,7 @@ export const es: LocaleCopy = {
     marquee: ['Vista mar', 'Vista jardín', 'Estudios', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Mostrar foto diurna',
     cardToggleNightAria: 'Mostrar foto nocturna',
+    cardDayNightHint: 'Pruébame',
   },
   suites: {
     'vista-giardino': {
@@ -227,6 +228,7 @@ export const es: LocaleCopy = {
         'Detalle interior del estudio con vista mar — Le Vele',
         'Baño reformado con lavabo y acabados modernos — estudio Le Vele',
         'Baño reformado con ducha walk-in amplia — estudio Le Vele',
+        'Barca de vela latina frente a la costa de Stintino',
       ],
       listLabel: 'Mar',
       discoverAria: 'Descubrir Con Vista Mar',
@@ -237,14 +239,15 @@ export const es: LocaleCopy = {
   },
   residenceWelcome: {
     galleryAria: 'Galería fotográfica de la Residence Le Vele',
+    aerialCaption: 'El complejo visto desde arriba',
     imageAlts: [
-      'Vista aérea al atardecer de la Residence Le Vele con plaza y jardines — Stintino',
-      'Terraza privada con pérgola de madera, mesa y vista al mar — Residence Le Vele',
+      'El complejo visto desde arriba — Residence Le Vele, Stintino (solo el edificio)',
       'Vista aérea de la Residence Le Vele junto al mar — Stintino',
-      'Terrazas de los estudios con pérgola de madera y vista al mar — Le Vele',
-      'Barca de vela latina frente a la costa de Stintino',
+      'Vista aérea al atardecer de la Residence Le Vele con plaza y jardines — Stintino',
       'Plaza con gazebos, sombrillas y vista al mar — Residence Le Vele',
-      'Vista aérea de la costa y la playa — Residence Le Vele, Stintino',
+      'Terraza al mar con salón exterior y sombrilla — Residence Le Vele, Stintino',
+      'Interior de estudio con cama y vista al mar desde la terraza — Residence Le Vele',
+      'Veranda del estudio con desayuno y jardín — Residence Le Vele, Stintino',
     ],
     closeLabel: 'Cerrar galería',
     prevLabel: 'Imagen anterior',

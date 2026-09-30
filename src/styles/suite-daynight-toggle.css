@@ -5,8 +5,47 @@
   left: 50%;
   bottom: 1rem;
   z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
   transform: translateX(-50%);
   pointer-events: none;
+}
+
+.suite-daynight-hint {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 8px rgb(0 0 0 / 55%);
+  pointer-events: none;
+  animation: suite-daynight-hint 1.6s ease-in-out infinite;
+}
+
+.suite-daynight-hint::after {
+  content: '';
+  display: block;
+  width: 0.38rem;
+  height: 0.38rem;
+  margin: 0.28rem auto 0;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+@keyframes suite-daynight-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
 }
 
 .suites__daynight-mount .suite-daynight-toggle {
@@ -239,6 +278,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .suite-daynight-hint {
+    animation: none;
+  }
+
   .suite-daynight-toggle__container,
   .suite-daynight-toggle__sun,
   .suite-daynight-toggle__moon-mask,

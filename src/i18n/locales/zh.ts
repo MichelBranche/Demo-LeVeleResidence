@@ -157,6 +157,7 @@ export const zh: LocaleCopy = {
     marquee: ['海景', '园景', '工作室公寓', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: '显示日间照片',
     cardToggleNightAria: '显示夜间照片',
+    cardDayNightHint: '试试看',
   },
   suites: {
     'vista-giardino': {
@@ -227,6 +228,7 @@ export const zh: LocaleCopy = {
         '海景工作室室内细节 — Le Vele',
         '翻新浴室，洗手盆与现代装潢 — Le Vele 工作室',
         '翻新浴室，宽敞步入式淋浴间 — Le Vele 工作室',
+        'Stintino 海岸外的传统三角帆船',
       ],
       listLabel: '海景',
       discoverAria: '探索海景',
@@ -237,14 +239,15 @@ export const zh: LocaleCopy = {
   },
   residenceWelcome: {
     galleryAria: 'Residence Le Vele 照片画廊',
+    aerialCaption: '从空中俯瞰整个建筑群',
     imageAlts: [
-      '黄昏时分 Residence Le Vele 鸟瞰，广场与花园 — Stintino',
-      '带木质凉棚的私人露台，餐桌与海景 — Residence Le Vele',
+      '从空中俯瞰整个建筑群 — Residence Le Vele，Stintino（仅建筑）',
       'Residence Le Vele 海边鸟瞰 — Stintino',
-      '带木质凉棚与海景的工作室露台 — Le Vele',
-      'Stintino 海岸外的传统三角帆船',
+      '黄昏时分 Residence Le Vele 鸟瞰，广场与花园 — Stintino',
       '带凉亭、遮阳伞与海景的广场 — Residence Le Vele',
-      '海岸与沙滩鸟瞰 — Residence Le Vele, Stintino',
+      '面海露台，配有休闲座椅与遮阳伞 — Residence Le Vele, Stintino',
+      '公寓室内：床铺与露台海景 — Residence Le Vele',
+      '公寓凉廊：早餐与花园 — Residence Le Vele, Stintino',
     ],
     closeLabel: '关闭图库',
     prevLabel: '上一张',

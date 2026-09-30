@@ -54,6 +54,7 @@ export function SuitesSection() {
                   cardImageNightPosition={suite.cardImageNightPosition}
                   dayToggleAria={suitesIntro.cardToggleDayAria}
                   nightToggleAria={suitesIntro.cardToggleNightAria}
+                  dayNightHint={suitesIntro.cardDayNightHint}
                 />
 
                 <div className="suites__content">
@@ -63,7 +64,7 @@ export function SuitesSection() {
                     </span>
                     <span className="suites__label">{suite.listLabel}</span>
                   </p>
-                  <h3 className="suites__name display-serif">{suite.title}</h3>
+                  <h3 className="suites__name">{suite.title}</h3>
                   <p className="suites__card-tagline">{suite.kicker}</p>
                   <ul className="suites__features" role="list">
                     {suite.features.slice(1).map((feature, i) => (

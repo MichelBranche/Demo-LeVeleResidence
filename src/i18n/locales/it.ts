@@ -158,6 +158,7 @@ export const it: LocaleCopy = {
     marquee: ['Vista mare', 'Vista giardino', 'Monolocali', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Mostra foto di giorno',
     cardToggleNightAria: 'Mostra foto notturna',
+    cardDayNightHint: 'Provalo',
   },
   suites: {
     'vista-giardino': {
@@ -228,6 +229,7 @@ export const it: LocaleCopy = {
         'Dettaglio interno monolocale vista mare — Le Vele',
         'Bagno ristrutturato con lavabo e finiture moderne — monolocale Le Vele',
         'Bagno ristrutturato con doccia walk-in ampia — monolocale Le Vele',
+        'Gozzo a vela latina al largo della costa di Stintino',
       ],
       listLabel: 'Mare',
       discoverAria: 'Scopri Con Vista Mare',
@@ -238,14 +240,15 @@ export const it: LocaleCopy = {
   },
   residenceWelcome: {
     galleryAria: 'Galleria fotografica del Residence Le Vele',
+    aerialCaption: 'Il complesso visto dall\'alto',
     imageAlts: [
-      'Vista aerea al tramonto del Residence Le Vele con piazza e giardini — Stintino',
-      'Terrazza privata con pergolato, tavolo e vista mare — Residence Le Vele',
+      'Il complesso visto dall\'alto — Residence Le Vele, Stintino (solo l\'edificio)',
       'Vista aerea del Residence Le Vele sul mare — Stintino',
-      'Terrazze dei monolocali con pergolato in legno e vista mare — Le Vele',
-      'Barca a vela latina davanti alla costa di Stintino',
+      'Vista aerea al tramonto del Residence Le Vele con piazza e giardini — Stintino',
       'Piazzetta con gazebi, ombrelloni e vista mare — Residence Le Vele',
-      'Vista aerea della costa e della spiaggia — Residence Le Vele, Stintino',
+      'Terrazza sul mare con salottino e ombrellone — Residence Le Vele, Stintino',
+      'Interno monolocale con letto e vista mare dalla terrazza — Residence Le Vele',
+      'Veranda del monolocale con colazione e giardino — Residence Le Vele, Stintino',
     ],
     closeLabel: 'Chiudi galleria',
     prevLabel: 'Immagine precedente',

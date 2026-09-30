@@ -157,6 +157,7 @@ export const ru: LocaleCopy = {
     marquee: ['Вид на море', 'Вид на сад', 'Студии', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Показать дневное фото',
     cardToggleNightAria: 'Показать ночное фото',
+    cardDayNightHint: 'Попробуй',
   },
   suites: {
     'vista-giardino': {
@@ -227,6 +228,7 @@ export const ru: LocaleCopy = {
         'Деталь интерьера студии с видом на море — Le Vele',
         'Обновлённая ванная с раковиной и современной отделкой — студия Le Vele',
         'Обновлённая ванная с просторной душевой кабиной — студия Le Vele',
+        'Традиционная лодка с латинским парусом у побережья Stintino',
       ],
       listLabel: 'Море',
       discoverAria: 'Открыть вид на море',
@@ -237,14 +239,15 @@ export const ru: LocaleCopy = {
   },
   residenceWelcome: {
     galleryAria: 'Фотогалерея Residence Le Vele',
+    aerialCaption: 'Комплекс сверху',
     imageAlts: [
-      'Вид с воздуха на Residence Le Vele на закате с площадью и садами — Stintino',
-      'Частная терраса с деревянной перголой, столом и видом на море — Residence Le Vele',
+      'Комплекс сверху — Residence Le Vele, Stintino (только здание)',
       'Вид с воздуха на Residence Le Vele у моря — Stintino',
-      'Террасы студий с деревянной перголой и видом на море — Le Vele',
-      'Традиционная лодка с латинским парусом у побережья Stintino',
+      'Вид с воздуха на Residence Le Vele на закате с площадью и садами — Stintino',
       'Площадь с беседками, зонтами и видом на море — Residence Le Vele',
-      'Вид с воздуха на побережье и пляж — Residence Le Vele, Stintino',
+      'Терраса у моря с лаунж-зоной и зонтом — Residence Le Vele, Stintino',
+      'Интерьер студии с кроватью и видом на море с террасы — Residence Le Vele',
+      'Веранда студии с завтраком и видом на сад — Residence Le Vele, Stintino',
     ],
     closeLabel: 'Закрыть галерею',
     prevLabel: 'Предыдущее изображение',

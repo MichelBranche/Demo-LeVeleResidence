@@ -9,6 +9,25 @@ import { DayNightThemeToggle } from './DayNightThemeToggle';
 gsap.registerPlugin(useGSAP);
 
 const REVEAL_ORIGIN = '50% 88%';
+const HINT_KEY = 'levele-daynight-hint';
+const HINT_EVENT = 'levele-daynight-hint';
+
+function hintAlreadyDismissed() {
+  try {
+    return sessionStorage.getItem(HINT_KEY) === '1';
+  } catch {
+    return false;
+  }
+}
+
+function dismissDayNightHint() {
+  try {
+    sessionStorage.setItem(HINT_KEY, '1');
+  } catch {
+    /* private mode */
+  }
+  window.dispatchEvent(new Event(HINT_EVENT));
+}
 
 type SuiteCardMediaProps = {
   href: string;
@@ -20,6 +39,7 @@ type SuiteCardMediaProps = {
   cardImageNightPosition: string;
   dayToggleAria: string;
   nightToggleAria: string;
+  dayNightHint: string;
 };
 
 export function SuiteCardMedia({
@@ -32,6 +52,7 @@ export function SuiteCardMedia({
   cardImageNightPosition,
   dayToggleAria,
   nightToggleAria,
+  dayNightHint,
 }: SuiteCardMediaProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
@@ -40,6 +61,9 @@ export function SuiteCardMedia({
   const ambientRef = useRef<HTMLSpanElement>(null);
 
   const [isNight, setIsNight] = useState(false);
+  const [showHint, setShowHint] = useState(() =>
+    typeof window === 'undefined' ? true : !hintAlreadyDismissed(),
+  );
   const [mobilePhotoLink, setMobilePhotoLink] = useState(() =>
     typeof window !== 'undefined' ? isMobileViewport() : false,
   );
@@ -72,6 +96,13 @@ export function SuiteCardMedia({
     },
     { scope: wrapRef },
   );
+
+  useEffect(() => {
+    const hide = () => setShowHint(false);
+    if (hintAlreadyDismissed()) hide();
+    window.addEventListener(HINT_EVENT, hide);
+    return () => window.removeEventListener(HINT_EVENT, hide);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -141,6 +172,7 @@ export function SuiteCardMedia({
 
       const next = !isNight;
       setIsNight(next);
+      dismissDayNightHint();
 
       if (prefersReducedMotion()) {
         applyStaticState(next);
@@ -188,6 +220,11 @@ export function SuiteCardMedia({
       )}
 
       <div className="suites__daynight-mount">
+        {showHint ? (
+          <p className="suite-daynight-hint" aria-hidden="true">
+            {dayNightHint}
+          </p>
+        ) : null}
         <DayNightThemeToggle
           isNight={isNight}
           dayAria={dayToggleAria}

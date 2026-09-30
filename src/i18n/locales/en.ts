@@ -157,6 +157,7 @@ export const en: LocaleCopy = {
     marquee: ['Sea view', 'Garden view', 'Studio apartments', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Show daytime photo',
     cardToggleNightAria: 'Show night photo',
+    cardDayNightHint: 'Try me',
   },
   suites: {
     'vista-giardino': {
@@ -227,6 +228,7 @@ export const en: LocaleCopy = {
         'Interior detail of the sea-view studio — Le Vele',
         'Renovated bathroom with washbasin and modern finishes — Le Vele studio',
         'Renovated bathroom with large walk-in shower — Le Vele studio',
+        'Traditional lateen-sail boat off the Stintino coast',
       ],
       listLabel: 'Sea',
       discoverAria: 'Discover Sea View',
@@ -237,14 +239,15 @@ export const en: LocaleCopy = {
   },
   residenceWelcome: {
     galleryAria: 'Photo gallery of Residence Le Vele',
+    aerialCaption: 'The complex seen from above',
     imageAlts: [
-      'Aerial golden-hour view of Residence Le Vele with piazza and gardens — Stintino',
-      'Private terrace with wooden pergola, table and sea view — Residence Le Vele',
+      'The complex from above — Residence Le Vele, Stintino (building only)',
       'Aerial view of Residence Le Vele by the sea — Stintino',
-      'Studio terraces with wooden pergola and sea view — Le Vele',
-      'Traditional lateen-sail boat off the Stintino coast',
+      'Aerial golden-hour view of Residence Le Vele with piazza and gardens — Stintino',
       'Square with gazebos, umbrellas and sea view — Residence Le Vele',
-      'Aerial view of the coast and beach — Residence Le Vele, Stintino',
+      'Sea terrace with lounge seating and parasol — Residence Le Vele, Stintino',
+      'Studio interior with bed and sea view from the terrace — Residence Le Vele',
+      'Studio veranda with breakfast table overlooking the garden — Residence Le Vele, Stintino',
     ],
     closeLabel: 'Close gallery',
     prevLabel: 'Previous image',
