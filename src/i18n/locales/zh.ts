@@ -157,6 +157,7 @@ export const zh: LocaleCopy = {
     marquee: ['海景', '园景', '工作室公寓', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: '显示日间照片',
     cardToggleNightAria: '显示夜间照片',
+    cardDayNightHint: '试试看',
   },
   suites: {
     'vista-giardino': {

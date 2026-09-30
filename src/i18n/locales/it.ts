@@ -158,6 +158,7 @@ export const it: LocaleCopy = {
     marquee: ['Vista mare', 'Vista giardino', 'Monolocali', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Mostra foto di giorno',
     cardToggleNightAria: 'Mostra foto notturna',
+    cardDayNightHint: 'Provalo',
   },
   suites: {
     'vista-giardino': {

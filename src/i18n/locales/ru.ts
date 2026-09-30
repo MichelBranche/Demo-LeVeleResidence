@@ -157,6 +157,7 @@ export const ru: LocaleCopy = {
     marquee: ['Вид на море', 'Вид на сад', 'Студии', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Показать дневное фото',
     cardToggleNightAria: 'Показать ночное фото',
+    cardDayNightHint: 'Попробуй',
   },
   suites: {
     'vista-giardino': {

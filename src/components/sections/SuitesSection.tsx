@@ -54,6 +54,7 @@ export function SuitesSection() {
                   cardImageNightPosition={suite.cardImageNightPosition}
                   dayToggleAria={suitesIntro.cardToggleDayAria}
                   nightToggleAria={suitesIntro.cardToggleNightAria}
+                  dayNightHint={suitesIntro.cardDayNightHint}
                 />
 
                 <div className="suites__content">
