@@ -147,6 +147,41 @@ export function RouteTransitionProvider({ children }: { children: ReactNode }) {
     return () => window.clearTimeout(timer);
   }, [stage, location.pathname, location.key]);
 
+  // During 'loading' the overlay stays up while the lazy suite chunk mounts.
+  // If pathname never matches (alias race) or Suspense hangs, force reveal.
+  useEffect(() => {
+    if (stage !== 'loading') return undefined;
+
+    const timer = window.setTimeout(() => {
+      const pending = pendingToRef.current;
+      if (!pending) {
+        reset();
+        return;
+      }
+      const pendingPath = pending.split('#')[0] || pending;
+      if (normalizePathname(location.pathname) !== normalizePathname(pendingPath)) {
+        navigate(pending);
+      }
+      releaseScrollToTop();
+      setStage('revealing');
+    }, 2200);
+
+    return () => window.clearTimeout(timer);
+  }, [stage, location.pathname, navigate, reset]);
+
+  // Hard failsafe: never leave guests on a stuck cream overlay.
+  useEffect(() => {
+    if (stage === 'idle') return undefined;
+
+    const timer = window.setTimeout(() => {
+      reset();
+      window.scrollTo(0, 0);
+      getLenisInstance()?.start();
+    }, 4200);
+
+    return () => window.clearTimeout(timer);
+  }, [stage, reset]);
+
   useEffect(() => {
     const onClick = (event: MouseEvent) => {
       if (event.defaultPrevented) return;

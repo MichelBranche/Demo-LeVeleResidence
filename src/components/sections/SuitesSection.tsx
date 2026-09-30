@@ -6,6 +6,7 @@ import { SuiteFeatureIcon } from '../SuiteFeatureIcon';
 import { useSiteLocale } from '../../hooks/useSiteLocale';
 import { useSuitesAnimations } from '../../hooks/useSuitesAnimations';
 import { getSuiteFeatureIcon } from '../../lib/suiteFeatureIcons';
+import { prefetchSuitePage } from '../../lib/prefetchSuitePage';
 
 export function SuitesSection() {
   const { content } = useSiteLocale();
@@ -14,7 +15,14 @@ export function SuitesSection() {
   useSuitesAnimations(sectionRef);
 
   return (
-    <section id="suites" className="suites" ref={sectionRef} aria-labelledby="suites-title">
+    <section
+      id="suites"
+      className="suites"
+      ref={sectionRef}
+      aria-labelledby="suites-title"
+      onPointerEnter={prefetchSuitePage}
+      onFocusCapture={prefetchSuitePage}
+    >
       <div className="suites__inner">
         <header className="suites__intro">
           <div className="suites__intro-main">

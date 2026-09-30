@@ -734,7 +734,7 @@ button {
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   scroll-padding-inline: clamp(1.25rem, 6vw, 8rem);
   cursor: grab;
   outline: none;
@@ -742,10 +742,16 @@ button {
   overscroll-behavior-x: contain;
 }
 
-.residence-scroll__viewport.is-dragging {
+.residence-scroll__viewport.is-dragging,
+.residence-scroll__viewport.is-soft-scrolling {
   cursor: grabbing;
   scroll-snap-type: none;
   user-select: none;
+}
+
+.residence-scroll__viewport.is-soft-scrolling {
+  cursor: grab;
+  pointer-events: none;
 }
 
 .residence-scroll__viewport:focus-visible {
