@@ -240,8 +240,8 @@ export const zh: LocaleCopy = {
     galleryAria: 'Residence Le Vele 照片画廊',
     aerialCaption: '从空中俯瞰整个建筑群',
     imageAlts: [
-      '从空中俯瞰整个建筑群 — Residence Le Vele 泳池与海岸鸟瞰，Stintino',
       'Residence Le Vele 海边鸟瞰 — Stintino',
+      '从空中俯瞰整个建筑群 — Residence Le Vele 泳池与海岸鸟瞰，Stintino',
       '黄昏时分 Residence Le Vele 鸟瞰，广场与花园 — Stintino',
       '带凉亭、遮阳伞与海景的广场 — Residence Le Vele',
       '面海露台，配有休闲座椅与遮阳伞 — Residence Le Vele, Stintino',

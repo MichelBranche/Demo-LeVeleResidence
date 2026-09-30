@@ -240,8 +240,8 @@ export const ru: LocaleCopy = {
     galleryAria: 'Фотогалерея Residence Le Vele',
     aerialCaption: 'Комплекс сверху',
     imageAlts: [
-      'Комплекс сверху — вид с воздуха на Residence Le Vele с бассейном и побережьем, Stintino',
       'Вид с воздуха на Residence Le Vele у моря — Stintino',
+      'Комплекс сверху — вид с воздуха на Residence Le Vele с бассейном и побережьем, Stintino',
       'Вид с воздуха на Residence Le Vele на закате с площадью и садами — Stintino',
       'Площадь с беседками, зонтами и видом на море — Residence Le Vele',
       'Терраса у моря с лаунж-зоной и зонтом — Residence Le Vele, Stintino',
