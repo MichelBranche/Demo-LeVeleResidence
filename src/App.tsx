@@ -17,6 +17,7 @@ import { RouteTransitionProvider, useRouteTransition } from './context/RouteTran
 import { getLaPelosaPaths, getPagePaths, getSuiteRouteEntries, isSuiteDetailPath, normalizePathname } from './data/routes';
 import { scheduleScrollToSuiteHero, scrollToHash, scrollToTop } from './lib/scroll';
 import { scheduleScrollTriggerRefresh } from './lib/scrollTriggerRefresh';
+import { loadSuitePage } from './lib/prefetchSuitePage';
 const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
 const BookingPage = lazy(() =>
   import('./pages/BookingPage').then((m) => ({ default: m.BookingPage })),
@@ -25,7 +26,7 @@ const BookingPage = lazy(() =>
 const LaPelosaPage = lazy(() =>
   import('./pages/LaPelosaPage').then((m) => ({ default: m.LaPelosaPage })),
 );
-const SuitePage = lazy(() => import('./pages/SuitePage').then((m) => ({ default: m.SuitePage })));
+const SuitePage = lazy(loadSuitePage);
 const PrivacyPolicyPage = lazy(() =>
   import('./pages/PrivacyPolicyPage').then((m) => ({ default: m.PrivacyPolicyPage })),
 );

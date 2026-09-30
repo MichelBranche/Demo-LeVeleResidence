@@ -22,9 +22,22 @@ export function RouteTransitionOverlay() {
     if (stage !== 'covering') return;
 
     const root = rootRef.current;
-    if (!root) return;
+    if (!root) {
+      notifyCoverComplete();
+      return;
+    }
     const { panels, chars, line, content } = getOverlayParts(root);
-    if (panels.length === 0 || !line || !content) return;
+    if (panels.length === 0 || !line || !content) {
+      notifyCoverComplete();
+      return;
+    }
+
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      notifyCoverComplete();
+    };
 
     gsap.killTweensOf([root, ...panels, ...chars, line, content]);
 
@@ -34,7 +47,7 @@ export function RouteTransitionOverlay() {
       gsap.set(chars, { yPercent: 0 });
       gsap.set(line, { scaleX: 1, opacity: 1 });
       gsap.set(content, { opacity: 1 });
-      notifyCoverComplete();
+      finish();
       return;
     }
 
@@ -46,7 +59,7 @@ export function RouteTransitionOverlay() {
     gsap.set(line, { scaleX: 0, opacity: 1 });
     gsap.set(content, { opacity: 1 });
 
-    const tl = gsap.timeline({ onComplete: notifyCoverComplete });
+    const tl = gsap.timeline({ onComplete: finish });
 
     tl.to(panels, {
       yPercent: 0,
@@ -66,8 +79,17 @@ export function RouteTransitionOverlay() {
       )
       .to(line, { scaleX: 1, duration: 0.4, ease: 'power3.out' }, '<0.1');
 
+    // If the effect is torn down mid-flight (Strict Mode / re-render), jump to covered
+    // and continue — otherwise the sand panel can freeze as a blank cream screen.
     return () => {
       tl.kill();
+      if (settled) return;
+      gsap.set(root, { autoAlpha: 1, pointerEvents: 'auto' });
+      gsap.set(panels, { yPercent: 0 });
+      gsap.set(chars, { yPercent: 0 });
+      gsap.set(line, { scaleX: 1, opacity: 1 });
+      gsap.set(content, { opacity: 1 });
+      finish();
     };
   }, [stage, notifyCoverComplete]);
 
@@ -75,19 +97,32 @@ export function RouteTransitionOverlay() {
     if (stage !== 'revealing') return;
 
     const root = rootRef.current;
-    if (!root) return;
+    if (!root) {
+      notifyRevealComplete();
+      return;
+    }
     const { panels, chars, line, content } = getOverlayParts(root);
-    if (panels.length === 0 || !line || !content) return;
+    if (panels.length === 0 || !line || !content) {
+      notifyRevealComplete();
+      return;
+    }
+
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      notifyRevealComplete();
+    };
 
     gsap.killTweensOf([root, ...panels, ...chars, line, content]);
 
     if (prefersReducedMotion()) {
       gsap.set(root, { autoAlpha: 0, pointerEvents: 'none' });
-      notifyRevealComplete();
+      finish();
       return;
     }
 
-    const tl = gsap.timeline({ onComplete: notifyRevealComplete });
+    const tl = gsap.timeline({ onComplete: finish });
 
     tl.to(
       chars,
@@ -114,6 +149,9 @@ export function RouteTransitionOverlay() {
 
     return () => {
       tl.kill();
+      if (settled) return;
+      gsap.set(root, { autoAlpha: 0, pointerEvents: 'none' });
+      finish();
     };
   }, [stage, notifyRevealComplete]);
 
