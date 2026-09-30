@@ -1,6 +1,6 @@
 /**
  * Soft oval over the Residence building on the opening aerial.
- * Tightened so the nearby pool stays outside the ring.
+ * Geometry matched to the client-marked aerial (building + piazzetta; pool outside).
  * Same ring on desktop and mobile.
  */
 export const SHOW_AERIAL_RESIDENCE_HIGHLIGHT = true;
@@ -22,10 +22,10 @@ export function AerialResidenceHighlight() {
     >
       <ellipse
         className="residence-scroll__aerial-mark-ring"
-        cx="1160"
-        cy="296"
-        rx="250"
-        ry="84"
+        cx="1140"
+        cy="380"
+        rx="195"
+        ry="103"
         vectorEffect="non-scaling-stroke"
       />
     </svg>
