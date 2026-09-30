@@ -157,6 +157,7 @@ export const fr: LocaleCopy = {
     marquee: ['Vue mer', 'Vue jardin', 'Studios', 'Stintino', 'La Pelosa'],
     cardToggleDayAria: 'Afficher la photo de jour',
     cardToggleNightAria: 'Afficher la photo de nuit',
+    cardDayNightHint: 'Essaie',
   },
   suites: {
     'vista-giardino': {
