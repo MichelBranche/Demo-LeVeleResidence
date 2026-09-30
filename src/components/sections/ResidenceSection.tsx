@@ -57,29 +57,50 @@ export function ResidenceSection() {
         aria-roledescription="carousel"
         aria-label={residenceWelcome.galleryAria}
       >
-        <div className="residence-scroll__viewport" tabIndex={0}>
-          <div className="residence-scroll__track">
-            {residenceWelcomeImages.map((image, index) => (
-              <figure
-                className={`residence-scroll__slide residence-scroll__slide--${image.frame}`}
-                key={image.src}
-                data-index={index + 1}
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  draggable={false}
-                />
-                {image.frame === 'aerial' ? <AerialResidenceHighlight /> : null}
-                <figcaption className="residence-scroll__caption">
-                  {image.caption ?? image.alt}
-                </figcaption>
-              </figure>
-            ))}
+        <div className="residence-scroll__chrome">
+          <button
+            type="button"
+            className="residence-scroll__nav residence-scroll__nav--prev"
+            data-residence-gallery-prev
+            aria-label={residenceWelcome.prevLabel}
+          >
+            <span aria-hidden="true">‹</span>
+          </button>
+
+          <div className="residence-scroll__viewport" tabIndex={0}>
+            <div className="residence-scroll__track">
+              {residenceWelcomeImages.map((image, index) => (
+                <figure
+                  className={`residence-scroll__slide residence-scroll__slide--${image.frame}`}
+                  key={image.src}
+                  data-index={index + 1}
+                >
+                  <img
+                    src={image.src}
+                    alt={image.alt}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    draggable={false}
+                  />
+                  {image.frame === 'aerial' ? <AerialResidenceHighlight /> : null}
+                  <figcaption className="residence-scroll__caption">
+                    {image.caption ?? image.alt}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
+
+          <button
+            type="button"
+            className="residence-scroll__nav residence-scroll__nav--next"
+            data-residence-gallery-next
+            aria-label={residenceWelcome.nextLabel}
+          >
+            <span aria-hidden="true">›</span>
+          </button>
         </div>
+
         <div className="residence-scroll__progress" aria-hidden="true">
           <span className="residence-scroll__progress-bar" />
         </div>

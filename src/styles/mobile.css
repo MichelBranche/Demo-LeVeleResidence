@@ -192,35 +192,41 @@
 
   /*
    * Gallery: horizontal swipe with mandatory snap.
-   * The desktop pin (vertical scrub) is not applied here — it rested between slides.
+   * Arrows stay available but sit tighter on small screens.
    */
-  .residence-scroll__viewport {
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: max(8vw, calc((100% - min(82vw, 420px)) / 2));
-    overscroll-behavior-x: contain;
-    touch-action: pan-x pan-y;
-    outline: none;
+  .residence-scroll {
+    --slide-h: min(52svh, 420px);
   }
 
-  .residence-scroll__viewport:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--ink) 40%, transparent);
-    outline-offset: 6px;
+  .residence-scroll__chrome {
+    grid-template-columns: 1fr;
+  }
+
+  .residence-scroll__nav {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    width: 2.4rem;
+    height: 2.4rem;
+    margin: 0;
+    background: color-mix(in srgb, #fff 82%, transparent);
+  }
+
+  .residence-scroll__nav--prev {
+    left: 0.45rem;
+  }
+
+  .residence-scroll__nav--next {
+    right: 0.45rem;
+  }
+
+  .residence-scroll__viewport {
+    scroll-padding-inline: max(8vw, calc((100% - min(82vw, 420px)) / 2));
   }
 
   .residence-scroll__track {
     gap: 0.85rem;
     padding-inline: max(8vw, calc((100% - min(82vw, 420px)) / 2));
-    will-change: auto;
-  }
-
-  .residence-scroll__slide {
-    scroll-snap-align: center;
-    scroll-snap-stop: always;
-    will-change: auto;
-  }
-
-  .residence-scroll__slide img {
-    will-change: auto;
   }
 
   .residence-scroll__slide--aerial,
@@ -229,11 +235,7 @@
     width: min(82vw, 420px);
     height: min(52svh, 420px);
     aspect-ratio: auto;
-  }
-
-  .residence-scroll__slide.is-active .residence-scroll__caption {
-    opacity: 1;
-    transform: none;
+    border-radius: 16px;
   }
 
   .section--services-accordion {

@@ -2,97 +2,9 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, type RefObject } from 'react';
-import { isMobileViewport } from '../lib/motion';
 import { scheduleScrollTriggerRefresh } from '../lib/scrollTriggerRefresh';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
-
-function setupSlideDepth(
-  slide: HTMLElement,
-  horizontalTween: gsap.core.Tween,
-  mobile: boolean,
-) {
-  const img = slide.querySelector('img');
-  const scrub = mobile ? 0.65 : true;
-
-  // Slide: più piccola/lontana ai lati, piena al centro (profondità coverflow).
-  gsap.fromTo(
-    slide,
-    {
-      scale: mobile ? 0.86 : 0.82,
-      y: mobile ? 18 : 28,
-      opacity: mobile ? 0.62 : 0.52,
-    },
-    {
-      scale: 1,
-      y: 0,
-      opacity: 1,
-      ease: 'none',
-      scrollTrigger: {
-        containerAnimation: horizontalTween,
-        trigger: slide,
-        start: 'left 92%',
-        end: 'center center',
-        scrub,
-      },
-    },
-  );
-
-  gsap.fromTo(
-    slide,
-    {
-      scale: 1,
-      y: 0,
-      opacity: 1,
-    },
-    {
-      scale: mobile ? 0.86 : 0.82,
-      y: mobile ? 18 : 28,
-      opacity: mobile ? 0.62 : 0.52,
-      ease: 'none',
-      immediateRender: false,
-      scrollTrigger: {
-        containerAnimation: horizontalTween,
-        trigger: slide,
-        start: 'center center',
-        end: 'right 8%',
-        scrub,
-      },
-    },
-  );
-
-  if (!img) return;
-
-  // Esterni del complesso: niente zoom/drift, altrimenti i bordi vengono tagliati.
-  if (
-    slide.classList.contains('residence-scroll__slide--full') ||
-    slide.classList.contains('residence-scroll__slide--wide') ||
-    slide.classList.contains('residence-scroll__slide--aerial')
-  ) {
-    return;
-  }
-
-  // Immagine: ken-burns + drift laterale più marcato mentre la card attraversa il viewport.
-  gsap.fromTo(
-    img,
-    {
-      scale: mobile ? 1.32 : 1.42,
-      xPercent: mobile ? -7 : -11,
-    },
-    {
-      scale: mobile ? 1.06 : 1.08,
-      xPercent: mobile ? 7 : 11,
-      ease: 'none',
-      scrollTrigger: {
-        containerAnimation: horizontalTween,
-        trigger: slide,
-        start: 'left right',
-        end: 'right left',
-        scrub,
-      },
-    },
-  );
-}
 
 export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>) {
   useGSAP(
@@ -102,8 +14,6 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
 
       const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (prefersReduced) return;
-
-      const mobile = isMobileViewport();
 
       const intro = section.querySelector<HTMLElement>('.residence__intro');
       if (intro) {
@@ -162,42 +72,7 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
         });
       }
 
-      // Gallery orizzontale pinnata (desktop + mobile) con profondità accentuata.
-      const gallery = section.querySelector<HTMLElement>('.residence-scroll');
-      const galleryTrack = section.querySelector<HTMLElement>('.residence-scroll__track');
-      const progressBar = section.querySelector<HTMLElement>('.residence-scroll__progress-bar');
-
-      // Mobile: swipe orizzontale nativo (vedi useEffect). Il pin verticale
-      // lasciava la galleria a metà tra due foto.
-      if (gallery && galleryTrack && !mobile) {
-        gallery.classList.add('is-pinned');
-
-        const getDistance = () => Math.max(0, galleryTrack.scrollWidth - window.innerWidth);
-
-        const horizontalTween = gsap.to(galleryTrack, {
-          x: () => -getDistance(),
-          ease: 'none',
-          scrollTrigger: {
-            trigger: gallery,
-            start: 'top top',
-            end: () => '+=' + Math.max(getDistance() * (mobile ? 1.05 : 1), window.innerHeight * 0.75),
-            pin: true,
-            scrub: mobile ? 0.85 : 1,
-            invalidateOnRefresh: true,
-            anticipatePin: 1,
-            onUpdate: (self) => {
-              if (progressBar) gsap.set(progressBar, { scaleX: self.progress });
-            },
-          },
-        });
-
-        const slides = gsap.utils.toArray<HTMLElement>(
-          '.residence-scroll__slide',
-          galleryTrack,
-        );
-        slides.forEach((slide) => setupSlideDepth(slide, horizontalTween, mobile));
-      }
-
+      // Gallery: native horizontal scroll on all viewports (arrows + drag/swipe).
       scheduleScrollTriggerRefresh();
     },
     { scope: sectionRef, dependencies: [] },
@@ -205,16 +80,18 @@ export function useResidenceAnimations(sectionRef: RefObject<HTMLElement | null>
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section || !isMobileViewport()) return;
-    return bindMobileResidenceGallery(section);
+    if (!section) return;
+    return bindResidenceGallery(section);
   }, [sectionRef]);
 }
 
-/** Horizontal swipe + mandatory snap. Safari has no scrollsnapchange, so settle in JS. */
-function bindMobileResidenceGallery(section: HTMLElement) {
+/** Horizontal scroll + snap + arrows + pointer drag. */
+function bindResidenceGallery(section: HTMLElement) {
   const viewport = section.querySelector<HTMLElement>('.residence-scroll__viewport');
   const track = section.querySelector<HTMLElement>('.residence-scroll__track');
   const progressBar = section.querySelector<HTMLElement>('.residence-scroll__progress-bar');
+  const prevBtn = section.querySelector<HTMLButtonElement>('[data-residence-gallery-prev]');
+  const nextBtn = section.querySelector<HTMLButtonElement>('[data-residence-gallery-next]');
   if (!viewport || !track) return;
 
   const slides = () =>
@@ -226,66 +103,149 @@ function bindMobileResidenceGallery(section: HTMLElement) {
     return slideRect.left - viewRect.left + viewport.scrollLeft;
   };
 
-  const nearest = () => {
+  const nearestIndex = () => {
     const items = slides();
     const viewCenter = viewport.scrollLeft + viewport.clientWidth / 2;
-    let best = items[0];
+    let bestIndex = 0;
     let bestDist = Number.POSITIVE_INFINITY;
-    for (const slide of items) {
+    items.forEach((slide, index) => {
       const center = slideStart(slide) + slide.offsetWidth / 2;
       const dist = Math.abs(center - viewCenter);
       if (dist < bestDist) {
         bestDist = dist;
-        best = slide;
+        bestIndex = index;
       }
-    }
-    return { best, bestDist };
+    });
+    return { bestIndex, bestDist, best: items[bestIndex] };
   };
 
-  const markActive = () => {
-    const { best } = nearest();
+  const scrollToIndex = (index: number, behavior: ScrollBehavior = 'smooth') => {
+    const items = slides();
+    const slide = items[Math.max(0, Math.min(index, items.length - 1))];
+    if (!slide) return;
+    const left = slideStart(slide) - (viewport.clientWidth - slide.offsetWidth) / 2;
+    viewport.scrollTo({ left: Math.max(0, left), behavior });
+  };
+
+  const syncNav = () => {
+    const { best, bestIndex } = nearestIndex();
     for (const slide of slides()) {
-      const active = slide === best;
-      slide.classList.toggle('is-active', active);
+      slide.classList.toggle('is-active', slide === best);
     }
     const max = viewport.scrollWidth - viewport.clientWidth;
     const progress = max > 0 ? viewport.scrollLeft / max : 0;
     if (progressBar) gsap.set(progressBar, { scaleX: progress });
+
+    const atStart = bestIndex <= 0;
+    const atEnd = bestIndex >= slides().length - 1;
+    if (prevBtn) prevBtn.disabled = atStart;
+    if (nextBtn) nextBtn.disabled = atEnd;
   };
 
   let settling = false;
   const settle = () => {
     if (settling) return;
-    const { best, bestDist } = nearest();
+    const { best, bestDist, bestIndex } = nearestIndex();
     if (!best || bestDist < 8) {
-      markActive();
+      syncNav();
       return;
     }
-    const left = slideStart(best) - (viewport.clientWidth - best.offsetWidth) / 2;
     settling = true;
-    viewport.scrollTo({ left: Math.max(0, left), behavior: 'auto' });
+    scrollToIndex(bestIndex, 'auto');
     window.setTimeout(() => {
       settling = false;
-      markActive();
+      syncNav();
     }, 140);
   };
 
   const onScroll = () => {
-    if (!settling) markActive();
+    if (!settling) syncNav();
   };
   const onScrollEnd = () => settle();
   const onTouchEnd = () => {
     window.setTimeout(settle, 140);
   };
 
+  const onPrev = () => scrollToIndex(nearestIndex().bestIndex - 1);
+  const onNext = () => scrollToIndex(nearestIndex().bestIndex + 1);
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      onPrev();
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      onNext();
+    }
+  };
+
+  // Mouse / pen drag (touch already scrolls natively).
+  let dragPointerId: number | null = null;
+  let dragStartX = 0;
+  let dragStartScroll = 0;
+  let dragMoved = false;
+
+  const onPointerDown = (event: PointerEvent) => {
+    if (event.pointerType === 'touch') return;
+    if (event.button !== 0) return;
+    dragPointerId = event.pointerId;
+    dragStartX = event.clientX;
+    dragStartScroll = viewport.scrollLeft;
+    dragMoved = false;
+    viewport.setPointerCapture(event.pointerId);
+    viewport.classList.add('is-dragging');
+  };
+
+  const onPointerMove = (event: PointerEvent) => {
+    if (dragPointerId !== event.pointerId) return;
+    const dx = event.clientX - dragStartX;
+    if (Math.abs(dx) > 3) dragMoved = true;
+    viewport.scrollLeft = dragStartScroll - dx;
+  };
+
+  const endDrag = (event: PointerEvent) => {
+    if (dragPointerId !== event.pointerId) return;
+    dragPointerId = null;
+    viewport.classList.remove('is-dragging');
+    try {
+      viewport.releasePointerCapture(event.pointerId);
+    } catch {
+      /* already released */
+    }
+    if (dragMoved) settle();
+  };
+
+  const onClickCapture = (event: MouseEvent) => {
+    if (!dragMoved) return;
+    event.preventDefault();
+    event.stopPropagation();
+    dragMoved = false;
+  };
+
   viewport.addEventListener('scroll', onScroll, { passive: true });
   viewport.addEventListener('scrollend', onScrollEnd);
   viewport.addEventListener('touchend', onTouchEnd, { passive: true });
-  markActive();
+  viewport.addEventListener('keydown', onKeyDown);
+  viewport.addEventListener('pointerdown', onPointerDown);
+  viewport.addEventListener('pointermove', onPointerMove);
+  viewport.addEventListener('pointerup', endDrag);
+  viewport.addEventListener('pointercancel', endDrag);
+  viewport.addEventListener('click', onClickCapture, true);
+  prevBtn?.addEventListener('click', onPrev);
+  nextBtn?.addEventListener('click', onNext);
+  syncNav();
 
   return () => {
     viewport.removeEventListener('scroll', onScroll);
     viewport.removeEventListener('scrollend', onScrollEnd);
     viewport.removeEventListener('touchend', onTouchEnd);
+    viewport.removeEventListener('keydown', onKeyDown);
+    viewport.removeEventListener('pointerdown', onPointerDown);
+    viewport.removeEventListener('pointermove', onPointerMove);
+    viewport.removeEventListener('pointerup', endDrag);
+    viewport.removeEventListener('pointercancel', endDrag);
+    viewport.removeEventListener('click', onClickCapture, true);
+    prevBtn?.removeEventListener('click', onPrev);
+    nextBtn?.removeEventListener('click', onNext);
   };
 }
