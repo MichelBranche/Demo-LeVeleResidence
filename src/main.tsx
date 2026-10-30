@@ -1,8 +1,10 @@
+import { initBotId } from 'botid/client/core';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.tsx';
 import { ErrorBoundary } from './components/ErrorBoundary.tsx';
 import { ensureLocaleLoaded } from './i18n/localeLoader';
+import { bookingBotProtection } from './lib/botProtection';
 import { applyDocumentLocale, readSiteLocale } from './lib/siteLocaleStorage';
 import 'lenis/dist/lenis.css';
 import './styles/fonts.css';
@@ -14,6 +16,10 @@ import './styles/chrome.css';
 import './styles/route-transition.css';
 import './styles/error-fallback.css';
 import './styles/hover-interactions.css';
+
+initBotId({
+  protect: bookingBotProtection,
+});
 
 const bootstrapLocale = readSiteLocale();
 applyDocumentLocale(bootstrapLocale);

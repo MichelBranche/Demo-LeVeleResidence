@@ -1,3 +1,4 @@
+import { checkBotId } from 'botid/server';
 import { Resend } from 'resend';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
@@ -120,6 +121,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (body.website?.trim()) {
     return res.status(200).json({ ok: true });
+  }
+
+  try {
+    const verification = await checkBotId({
+      advancedOptions: { headers: req.headers },
+    });
+    if (verification.isBot) {
+      return res.status(403).json({ error: 'bot_detected' });
+    }
+  } catch (err) {
+    console.error('BotID verification failed:', err);
+    return res.status(503).json({ error: 'bot_check_unavailable' });
   }
 
   const locale = body.locale === 'en' ? 'en' : 'it';
