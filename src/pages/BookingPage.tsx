@@ -120,6 +120,8 @@ export function BookingPage() {
         anotherRequest: 'Invia un’altra richiesta',
         errorGeneric:
           'Non è stato possibile inviare la richiesta. Riprova tra qualche minuto o contattaci telefonicamente.',
+        errorBot:
+          'Non siamo riusciti a verificare la richiesta. Ricarica la pagina e riprova, oppure chiamaci.',
         errorNetwork: 'Connessione assente. Controlla la rete e riprova.',
         errorResendDomain:
           'Il servizio email è in modalità test: su Resend va verificato il dominio rtalevele.com, oppure (solo per prove) imposta BOOKING_TO_EMAIL con l’email del tuo account Resend.',
@@ -186,6 +188,7 @@ export function BookingPage() {
         anotherRequest: 'Send another request',
         errorGeneric:
           'We could not send your request. Please try again in a few minutes or call us.',
+        errorBot: 'We could not verify this request. Reload the page and try again, or call us.',
         errorNetwork: 'No connection. Check your network and try again.',
         errorResendDomain:
           'Email is in test mode: verify rtalevele.com on Resend, or (for testing only) set BOOKING_TO_EMAIL to your Resend account email.',
@@ -254,6 +257,8 @@ export function BookingPage() {
         anotherRequest: 'Weitere Anfrage senden',
         errorGeneric:
           'Die Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es später erneut oder rufen Sie uns an.',
+        errorBot:
+          'Wir konnten die Anfrage nicht prüfen. Laden Sie die Seite neu und versuchen Sie es erneut, oder rufen Sie uns an.',
         errorNetwork: 'Keine Verbindung. Prüfen Sie das Netzwerk und versuchen Sie es erneut.',
         errorResendDomain:
           'E-Mail im Testmodus: Domain rtalevele.com bei Resend verifizieren oder BOOKING_TO_EMAIL für Tests setzen.',
@@ -322,6 +327,8 @@ export function BookingPage() {
         anotherRequest: 'Envoyer une autre demande',
         errorGeneric:
           'Impossible d’envoyer la demande. Réessayez dans quelques minutes ou contactez-nous par téléphone.',
+        errorBot:
+          'Nous n’avons pas pu vérifier la demande. Rechargez la page et réessayez, ou appelez-nous.',
         errorNetwork: 'Pas de connexion. Vérifiez le réseau et réessayez.',
         errorResendDomain:
           'E-mail en mode test : vérifiez le domaine rtalevele.com sur Resend ou définissez BOOKING_TO_EMAIL pour les tests.',
@@ -390,6 +397,8 @@ export function BookingPage() {
         anotherRequest: 'Enviar otra solicitud',
         errorGeneric:
           'No se pudo enviar la solicitud. Inténtelo de nuevo en unos minutos o llámenos.',
+        errorBot:
+          'No hemos podido verificar la solicitud. Recargue la página e inténtelo de nuevo, o llámenos.',
         errorNetwork: 'Sin conexión. Compruebe la red e inténtelo de nuevo.',
         errorResendDomain:
           'Correo en modo prueba: verifique el dominio rtalevele.com en Resend o configure BOOKING_TO_EMAIL para pruebas.',
@@ -456,6 +465,7 @@ export function BookingPage() {
         anotherRequest: 'Отправить ещё один запрос',
         errorGeneric:
           'Не удалось отправить запрос. Повторите через несколько минут или позвоните нам.',
+        errorBot: 'Не удалось проверить запрос. Обновите страницу и повторите, или позвоните нам.',
         errorNetwork: 'Нет соединения. Проверьте сеть и повторите.',
         errorResendDomain:
           'Email в тестовом режиме: подтвердите домен rtalevele.com в Resend или задайте BOOKING_TO_EMAIL для тестов.',
@@ -519,6 +529,7 @@ export function BookingPage() {
         backHome: '返回首页',
         anotherRequest: '再次发送请求',
         errorGeneric: '无法发送请求。请几分钟后重试或致电联系我们。',
+        errorBot: '无法验证此请求。请刷新页面后重试，或致电联系我们。',
         errorNetwork: '无网络连接。请检查网络后重试。',
         errorResendDomain:
           '邮件处于测试模式：请在 Resend 验证 rtalevele.com 域名，或设置 BOOKING_TO_EMAIL 进行测试。',
@@ -644,6 +655,7 @@ export function BookingPage() {
     if (errorKey === 'resend_domain') return labels.errorResendDomain;
     if (errorKey === 'resend_from') return labels.errorResendFrom;
     if (errorKey === 'service_unavailable') return labels.errorService;
+    if (errorKey === 'bot_detected' || errorKey === 'bot_check_unavailable') return labels.errorBot;
     if (import.meta.env.DEV && errorKey === 'send_failed') return labels.errorLocalDev;
     return labels.errorGeneric;
   })();
